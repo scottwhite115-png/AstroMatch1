@@ -1,1 +1,10 @@
+node_modules/
+.next/
+dist/
+.env
+node_modules/
+.next/
+dist/
+.env
+
 node_modules
