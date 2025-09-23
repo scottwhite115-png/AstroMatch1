@@ -1,0 +1,193 @@
+---
+description: How to do backend logging
+globs: 
+alwaysApply: false
+---
+# Logging
+
+We use `createScopedLogger` to do logging:
+
+```typescript
+import { createScopedLogger } from "@/utils/logger";
+
+const logger = createScopedLogger("action/rules");
+
+logger.log("Created rule", { userId });
+```
+
+Typically this will be added at the top of a file.
+If we have a large function that reuses multiple variables we can do this within a function:
+
+```typescript
+const logger = createScopedLogger("action/rules").with({ userId: user.id });
+
+// Can now call without passing userId:
+logger.log("Created rule");
+```
+
+Don't use `.with()` for a global logger. Only use within a specific function.
+
+## AstroMatch Specific Examples
+
+### Authentication Logging
+```typescript
+import { createScopedLogger } from "@/utils/logger";
+
+const logger = createScopedLogger("auth/login");
+
+export async function handleLogin(email: string) {
+  logger.log("User attempting login", { email });
+  
+  try {
+    const user = await authenticateUser(email);
+    logger.log("Login successful", { userId: user.id });
+    return user;
+  } catch (error) {
+    logger.error("Login failed", { email, error: error.message });
+    throw error;
+  }
+}
+```
+
+### Matching Engine Logging
+```typescript
+import { createScopedLogger } from "@/utils/logger";
+
+const logger = createScopedLogger("matching/engine");
+
+export async function calculateCompatibility(user1: User, user2: User) {
+  const scopedLogger = logger.with({ 
+    user1Id: user1.id, 
+    user2Id: user2.id 
+  });
+  
+  scopedLogger.log("Starting compatibility calculation");
+  
+  const result = await performCalculation(user1, user2);
+  
+  scopedLogger.log("Compatibility calculated", { 
+    score: result.overallScore 
+  });
+  
+  return result;
+}
+```
+
+### Chat Logging
+```typescript
+import { createScopedLogger } from "@/utils/logger";
+
+const logger = createScopedLogger("chat/messages");
+
+export async function sendMessage(chatId: string, message: Message) {
+  const scopedLogger = logger.with({ chatId, messageId: message.id });
+  
+  scopedLogger.log("Sending message", { 
+    senderId: message.senderId,
+    contentLength: message.content.length 
+  });
+  
+  try {
+    await saveMessage(message);
+    scopedLogger.log("Message saved successfully");
+  } catch (error) {
+    scopedLogger.error("Failed to save message", { error: error.message });
+    throw error;
+  }
+}
+```
+
+### Profile Updates Logging
+```typescript
+import { createScopedLogger } from "@/utils/logger";
+
+const logger = createScopedLogger("profile/updates");
+
+export async function updateUserProfile(userId: string, updates: ProfileUpdates) {
+  logger.log("Profile update initiated", { userId, fields: Object.keys(updates) });
+  
+  const scopedLogger = logger.with({ userId });
+  
+  try {
+    const updatedProfile = await saveProfile(userId, updates);
+    scopedLogger.log("Profile updated successfully", { 
+      updatedFields: Object.keys(updates) 
+    });
+    return updatedProfile;
+  } catch (error) {
+    scopedLogger.error("Profile update failed", { error: error.message });
+    throw error;
+  }
+}
+```
+
+## Best Practices
+
+### Use Descriptive Scopes
+```typescript
+// Good: Clear scope that indicates the feature area
+const logger = createScopedLogger("matching/compatibility");
+
+// Bad: Too generic
+const logger = createScopedLogger("app");
+```
+
+### Log Important Events
+```typescript
+// Good: Log user actions and system events
+logger.log("User created match", { matchId, userId1, userId2 });
+logger.log("Compatibility calculation completed", { score, processingTime });
+
+// Bad: Logging every minor operation
+logger.log("Function called");
+logger.log("Variable assigned");
+```
+
+### Include Relevant Context
+```typescript
+// Good: Include useful debugging information
+logger.log("Match created", { 
+  matchId, 
+  userId1, 
+  userId2, 
+  compatibilityScore,
+  createdAt 
+});
+
+// Bad: Missing important context
+logger.log("Match created");
+```
+
+### Use Appropriate Log Levels
+```typescript
+// Info: Normal operations
+logger.log("User logged in", { userId });
+
+// Error: Something went wrong
+logger.error("Database connection failed", { error: error.message });
+
+// Debug: Detailed information for debugging
+logger.debug("Processing compatibility matrix", { matrixSize, processingTime });
+```
+
+### Scoped Logging for Functions
+```typescript
+export async function processMatches(userId: string) {
+  const scopedLogger = logger.with({ userId });
+  
+  scopedLogger.log("Starting match processing");
+  
+  const matches = await findPotentialMatches(userId);
+  scopedLogger.log("Found potential matches", { count: matches.length });
+  
+  for (const match of matches) {
+    const result = await calculateCompatibility(userId, match.id);
+    scopedLogger.log("Compatibility calculated", { 
+      matchId: match.id, 
+      score: result.overallScore 
+    });
+  }
+  
+  scopedLogger.log("Match processing completed");
+}
+```
