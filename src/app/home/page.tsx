@@ -2,6 +2,7 @@
 
 import React from "react";
 import Logo from "@/components/Logo";
+import BottomNavigation from "@/components/BottomNavigation";
 
 export default function Home() {
   return (
@@ -21,6 +22,12 @@ export default function Home() {
       <div className="mt-12 text-center">
         <Logo />
       </div>
+
+      {/* Spacer to prevent content from being hidden behind nav */}
+      <div className="h-20"></div>
+
+      {/* Bottom Navigation */}
+      <BottomNavigation />
     </div>
   );
 }
