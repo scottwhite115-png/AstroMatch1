@@ -16,17 +16,17 @@ export default function SparkleBig({ size = 48, color = "#ff7a00" }: Props) {
       aria-label="sparkle"
     >
       {/* Big sparkle: smooth four-point star */}
-      <path
-        d="
-          M50 0
-          C37 40, 40 37, 0 50
-          C40 60, 37 60, 50 100
-          C60 60, 60 63, 100 50
-          C60 37, 63 40, 50 0
-          Z
-        "
-        fill={color}
-      />
+          <path
+            d="
+              M50 0
+              C42 35, 35 42, 0 50
+              C35 58, 42 65, 50 100
+              C58 65, 65 58, 100 50
+              C65 42, 58 35, 50 0
+              Z
+            "
+            fill={color}
+          />
     </svg>
   );
 }

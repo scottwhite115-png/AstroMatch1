@@ -10,7 +10,11 @@ export default function Home() {
       style={{
         background: 'linear-gradient(to top, #fef3c7, #fce7f3, #1e40af)',
         minHeight: '100vh',
-        width: '100vw'
+        width: '100vw',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        overflowY: 'auto'
       }}
     >
       {/* Logo */}

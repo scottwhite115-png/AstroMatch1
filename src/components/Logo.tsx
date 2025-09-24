@@ -12,11 +12,11 @@ interface LogoProps {
 }
 
 export default function Logo({ 
-  starSize = 24, 
+  starSize = 14, 
   starColor = "#ff7a00", 
-  textSize = '3rem', 
+  textSize = '1.75rem', 
   textColor = '#ff7a00',
-  className = "flex items-start gap-3 select-none",
+  className = "flex items-start gap-2 select-none",
   style = {}
 }: LogoProps) {
   return (
