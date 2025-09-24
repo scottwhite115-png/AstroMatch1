@@ -38,7 +38,7 @@ export default function Login() {
       {/* Logo + slogan */}
       <div className="mt-12 text-center">
         <Logo />
-        <p className="font-semibold text-lg" style={{ color: '#ff7a00', marginTop: '0px', marginLeft: '90px' }}>
+        <p className="font-semibold text-lg" style={{ color: '#ff7a00', marginTop: '0px', marginLeft: '20px' }}>
           Find harmony in the stars
         </p>
       </div>
