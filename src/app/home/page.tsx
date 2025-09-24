@@ -1,7 +1,7 @@
 'use client'
 
 import React from "react";
-import Logo from "@/components/Logo";
+import SparkleBig from "@/components/SparkleBig";
 import BottomNavigation from "@/components/BottomNavigation";
 
 export default function Home() {
@@ -20,7 +20,9 @@ export default function Home() {
     >
       {/* Logo */}
       <div className="mt-12 text-center">
-        <Logo />
+        <div style={{ transform: 'translateY(12px)', marginLeft: '0px' }}>
+          <SparkleBig size={48} color="#ff7a00" />
+        </div>
       </div>
 
       {/* Spacer to prevent content from being hidden behind nav */}

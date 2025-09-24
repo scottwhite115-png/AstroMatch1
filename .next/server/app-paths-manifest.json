@@ -1,1 +1,7 @@
-{}
+{
+  "/home/page": "app/home/page.js",
+  "/astrology/page": "app/astrology/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/discover/page": "app/discover/page.js",
+  "/matches/page": "app/matches/page.js"
+}

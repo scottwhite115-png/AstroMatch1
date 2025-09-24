@@ -19,10 +19,14 @@ export default function SparkleBig({ size = 48, color = "#ff7a00" }: Props) {
           <path
             d="
               M50 0
-              C42 35, 35 42, 0 50
-              C35 58, 42 65, 50 100
-              C58 65, 65 58, 100 50
-              C65 42, 58 35, 50 0
+              L40 40
+              L0 50
+              L40 60
+              L50 100
+              L60 60
+              L100 50
+              L60 40
+              L50 0
               Z
             "
             fill={color}
