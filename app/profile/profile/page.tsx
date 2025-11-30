@@ -1,0 +1,3365 @@
+"use client"
+
+import type React from "react"
+
+import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { useTheme } from "@/contexts/ThemeContext"
+import {
+  getWesternZodiacSign,
+  getChineseZodiacSign,
+  getWesternSignEmoji,
+  getChineseSignEmoji,
+} from "@/lib/utils/zodiac-calculator"
+import { getChineseZodiacFromDate, CHINESE_ELEMENT_CHAR, type ChineseElement } from "@/lib/chineseZodiac"
+import {
+  getBothSunSigns,
+  saveSunSigns,
+  getSavedSunSigns,
+  type SunSign,
+} from "@/lib/sunSignCalculator"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
+import { explainMatchAndScore } from "@/lib/matchExplainAndScore"
+import type { West, East } from "@/lib/matchEngine"
+import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
+import { autoInsight } from "@/lib/insight"
+import { INSIGHT_OVERRIDES, type OverrideKey } from "@/data/insight_overrides"
+import { getCompleteLongformBlurb, getTierKeyFromScore, createPairId } from "@/data/longformBlurbsComplete"
+import ConnectionBoxSimple from "@/components/ConnectionBoxSimple"
+import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
+import ProfilePhotoCarouselWithRanking from "@/components/ProfilePhotoCarouselWithRanking"
+import PhotoCarouselWithGestures from "@/components/PhotoCarouselWithGestures"
+import { computeMatchWithNewEngine } from "@/lib/matchEngineAdapter"
+import { evaluateMatch } from "@/engine/astromatch-engine"
+import { BirthInformationSection } from "@/components/profile/BirthInformationSection"
+import { SectionHeader } from "@/components/profile/SectionHeader"
+import { GenderSection } from "@/components/profile/GenderSection"
+import { OrientationSection } from "@/components/profile/OrientationSection"
+
+const FourPointedStar = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+)
+
+const ChevronLeft = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+)
+
+const ChevronRight = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+)
+
+const X = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m18 6-12 12" />
+    <path d="m6 6 12 12" />
+  </svg>
+)
+
+const ChevronDown = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+)
+
+const HeartIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+  </svg>
+)
+
+const UserIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+)
+
+const InfoIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <circle cx="12" cy="12" r="10" />
+    <line x1="12" y1="16" x2="12" y2="12" />
+    <line x1="12" y1="8" x2="12.01" y2="8" />
+  </svg>
+)
+
+const Settings = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <circle cx="12" cy="12" r="3" />
+    <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24" />
+  </svg>
+)
+
+const Check = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className={className}>
+    <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+)
+
+interface ProfilePageProps {
+  pageIndex?: number
+  totalPages?: number
+  onNavigatePrev?: () => void
+  onNavigateNext?: () => void
+}
+
+export default function AstrologyProfilePage({
+  pageIndex = 0,
+  totalPages = 1,
+  onNavigatePrev,
+  onNavigateNext,
+}: ProfilePageProps = {}) {
+  const router = useRouter()
+  const { theme, setTheme } = useTheme()
+
+  const [activeTab, setActiveTab] = useState<"edit" | "view">("edit")
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const [isSaving, setIsSaving] = useState(false)
+  const [savedSuccessfully, setSavedSuccessfully] = useState(false)
+  const [showProfileMenu, setShowProfileMenu] = useState(true)
+  const [showStickyNameHeader, setShowStickyNameHeader] = useState(false)
+  const [showMatchDropdown, setShowMatchDropdown] = useState(false)
+  const [showInterestsDropdown, setShowInterestsDropdown] = useState(false)
+  const [showInterestCategoryDropdowns, setShowInterestCategoryDropdowns] = useState<{[key: string]: boolean}>({})
+  const [showLifestyleDropdown, setShowLifestyleDropdown] = useState(false)
+  const [showRelationshipGoalsDropdown, setShowRelationshipGoalsDropdown] = useState(false)
+  const [showPromptsDropdown, setShowPromptsDropdown] = useState(false)
+  const [showRomanticPromptsDropdown, setShowRomanticPromptsDropdown] = useState(false)
+  const [showDeepPromptsDropdown, setShowDeepPromptsDropdown] = useState(false)
+  const [showDeepPromptsDisplay, setShowDeepPromptsDisplay] = useState(true)
+  const [selectedPromptCategory, setSelectedPromptCategory] = useState("Dating")
+  const [showMatchDetails, setShowMatchDetails] = useState(false)
+  const [showPhotoOverlayMatchDetails, setShowPhotoOverlayMatchDetails] = useState(false)
+  
+  // Second prompt box - independent state
+  const [showDeepPromptsDropdown2, setShowDeepPromptsDropdown2] = useState(false)
+  const [selectedPromptCategory2, setSelectedPromptCategory2] = useState("Dating")
+  const [selectedDeepPrompts2, setSelectedDeepPrompts2] = useState<string[]>([])
+  const [deepPromptAnswers2, setDeepPromptAnswers2] = useState<{[key: string]: string}>({})
+  
+  // Connection box state - using new engine
+  const [connectionBoxData, setConnectionBoxData] = useState<ConnectionBoxData | null>(null)
+
+  // Note: Removed auto-close dropdown when changing photos to allow photo scrolling with dropdown open
+  
+  // Full-screen zoom state
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false)
+  const [zoomScale, setZoomScale] = useState(1)
+  const [zoomPosX, setZoomPosX] = useState(0)
+  const [zoomPosY, setZoomPosY] = useState(0)
+  const lastZoomDistanceRef = useRef(0)
+  const lastTouchPosRef = useRef({ x: 0, y: 0 })
+  const lastTwoFingerMidpointRef = useRef({ x: 0, y: 0 })
+  const aboutMeTextareaRef = useRef<HTMLTextAreaElement>(null)
+  const interestsDropdownRef = useRef<HTMLDivElement>(null)
+  const relationshipGoalsDropdownRef = useRef<HTMLDivElement>(null)
+
+  // Full-screen zoom handlers
+  const getDistance = (touches: TouchList) => {
+    const touch1 = touches[0]
+    const touch2 = touches[1]
+    return Math.sqrt(
+      Math.pow(touch2.clientX - touch1.clientX, 2) + 
+      Math.pow(touch2.clientY - touch1.clientY, 2)
+    )
+  }
+
+  const getTwoFingerMidpoint = (touches: TouchList) => {
+    const touch1 = touches[0]
+    const touch2 = touches[1]
+    return {
+      x: (touch1.clientX + touch2.clientX) / 2,
+      y: (touch1.clientY + touch2.clientY) / 2
+    }
+  }
+
+  const handleImageTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Two fingers - prepare for zoom but don't open modal yet
+      e.preventDefault()
+      e.stopPropagation()
+      lastZoomDistanceRef.current = getDistance(e.touches)
+      lastTwoFingerMidpointRef.current = getTwoFingerMidpoint(e.touches)
+    } else if (e.touches.length === 1) {
+      // Single finger - allow normal scrolling
+      lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+  }
+
+  const handleImageTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      // Initialize distance tracking on first two-finger touch
+      if (lastZoomDistanceRef.current === 0) {
+        lastZoomDistanceRef.current = getDistance(e.touches)
+        lastTwoFingerMidpointRef.current = getTwoFingerMidpoint(e.touches)
+        return
+      }
+      
+      // Handle zoom - Ultra smooth with modal trigger
+      const distance = getDistance(e.touches)
+      if (lastZoomDistanceRef.current > 0) {
+        const scaleFactor = distance / lastZoomDistanceRef.current
+        setZoomScale(prevScale => {
+          const newScale = prevScale * Math.pow(scaleFactor, 0.9) // Stronger zoom
+          // Open modal when user actually starts zooming (1.05x threshold for smoother transition)
+          if (newScale > 1.05 && !isZoomModalOpen) {
+            setIsZoomModalOpen(true)
+          }
+          return Math.min(Math.max(1, newScale), 4)
+        })
+      }
+      lastZoomDistanceRef.current = distance
+
+      // Handle two-finger pan - Excellent responsiveness
+      const currentMidpoint = getTwoFingerMidpoint(e.touches)
+      const deltaX = currentMidpoint.x - lastTwoFingerMidpointRef.current.x
+      const deltaY = currentMidpoint.y - lastTwoFingerMidpointRef.current.y
+      setZoomPosX(prev => prev + deltaX * 1.1) // Excellent responsive pan
+      setZoomPosY(prev => prev + deltaY * 1.1)
+      lastTwoFingerMidpointRef.current = currentMidpoint
+    } else if (e.touches.length === 1 && zoomScale > 1) {
+      // Pan when zoomed in - Full photo exploration
+      e.preventDefault()
+      e.stopPropagation()
+      const touch = e.touches[0]
+      const deltaX = touch.clientX - lastTouchPosRef.current.x
+      const deltaY = touch.clientY - lastTouchPosRef.current.y
+      
+      // Allow panning to explore the entire zoomed photo
+      setZoomPosX(prev => {
+        const newX = prev + deltaX * 1.3 // More responsive for better exploration
+        // Allow wider panning range based on zoom level
+        const maxPan = (zoomScale - 1) * 200 // Increase pan range with zoom
+        return Math.max(-maxPan, Math.min(maxPan, newX))
+      })
+      
+      setZoomPosY(prev => {
+        const newY = prev + deltaY * 1.3 // More responsive for better exploration
+        // Allow wider panning range based on zoom level
+        const maxPan = (zoomScale - 1) * 200 // Increase pan range with zoom
+        return Math.max(-maxPan, Math.min(maxPan, newY))
+      })
+      
+      lastTouchPosRef.current = { x: touch.clientX, y: touch.clientY }
+    }
+  }
+
+  const handleZoomTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault()
+      const distance = getDistance(e.touches)
+      if (lastZoomDistanceRef.current > 0) {
+        const scaleFactor = distance / lastZoomDistanceRef.current
+        setZoomScale(prevScale => {
+          // Reduced zoom sensitivity for smoother control
+          const newScale = prevScale * Math.pow(scaleFactor, 0.8)
+          return Math.min(Math.max(1, newScale), 15) // Min 1x, Max 15x
+        })
+      }
+      lastZoomDistanceRef.current = distance
+
+      // Handle two-finger pan - ultra smooth
+      const currentMidpoint = getTwoFingerMidpoint(e.touches)
+      const deltaX = currentMidpoint.x - lastTwoFingerMidpointRef.current.x
+      const deltaY = currentMidpoint.y - lastTwoFingerMidpointRef.current.y
+      // Smooth, controlled sensitivity
+      setZoomPosX(prev => prev + deltaX * 0.7)
+      setZoomPosY(prev => prev + deltaY * 0.7)
+      lastTwoFingerMidpointRef.current = currentMidpoint
+    } else if (e.touches.length === 1 && zoomScale > 1) {
+      // Pan when zoomed in - Tinder/Hinge style responsive panning
+      const touch = e.touches[0]
+      const deltaX = touch.clientX - lastTouchPosRef.current.x
+      const deltaY = touch.clientY - lastTouchPosRef.current.y
+      // Ultra smooth panning
+      setZoomPosX(prev => prev + deltaX * 0.8)
+      setZoomPosY(prev => prev + deltaY * 0.8)
+      lastTouchPosRef.current = { x: touch.clientX, y: touch.clientY }
+    }
+  }
+
+  const handleZoomTouchEnd = (e: React.TouchEvent) => {
+    // Reset zoom when all fingers are lifted - Smooth return
+    if (e.touches.length === 0) {
+      // Smooth reset with proper timing
+      setZoomScale(1)
+      setZoomPosX(0)
+      setZoomPosY(0)
+      lastZoomDistanceRef.current = 0
+      // Close modal with smooth transition
+      setTimeout(() => {
+        setIsZoomModalOpen(false)
+      }, 300) // Match the CSS transition duration for smoothness
+    } else if (e.touches.length === 1) {
+      // Transitioning from two fingers to one - keep zoom, prepare for pan
+      lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+  }
+
+  // Listen for custom event to switch to edit tab
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const handleSwitchToEdit = () => {
+      setActiveTab("edit")
+    }
+    window.addEventListener("switchToEditTab", handleSwitchToEdit)
+    return () => window.removeEventListener("switchToEditTab", handleSwitchToEdit)
+  }, [])
+
+  // Scroll handler for sticky name header in view tab
+  useEffect(() => {
+    if (typeof window === 'undefined' || activeTab !== 'view') return
+    
+    const handleScroll = () => {
+      const nameHeader = document.getElementById('profile-view-name-header')
+      if (nameHeader) {
+        const rect = nameHeader.getBoundingClientRect()
+        // Show sticky header when name touches the top of screen
+        const shouldShow = rect.top <= 0
+        setShowStickyNameHeader(shouldShow)
+      }
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [activeTab])
+
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+    
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showMatchDropdown && !(event.target as Element).closest('.match-dropdown-container')) {
+        setShowMatchDropdown(false)
+      }
+      if (showInterestsDropdown && !(event.target as Element).closest('.interests-dropdown-container')) {
+        setShowInterestsDropdown(false)
+      }
+      if (showRelationshipGoalsDropdown && !(event.target as Element).closest('.relationship-goals-dropdown-container')) {
+        setShowRelationshipGoalsDropdown(false)
+      }
+      if (showPromptsDropdown && !(event.target as Element).closest('.prompts-dropdown-container')) {
+        setShowPromptsDropdown(false)
+      }
+      if (showRomanticPromptsDropdown && !(event.target as Element).closest('.romantic-prompts-dropdown-container')) {
+        setShowRomanticPromptsDropdown(false)
+      }
+      if (showDeepPromptsDropdown && !(event.target as Element).closest('.deep-prompts-dropdown-container')) {
+        setShowDeepPromptsDropdown(false)
+      }
+      if (showDeepPromptsDropdown2 && !(event.target as Element).closest('.deep-prompts-dropdown-container-2')) {
+        setShowDeepPromptsDropdown2(false)
+      }
+    }
+
+    if (showMatchDropdown || showInterestsDropdown || showRelationshipGoalsDropdown || showPromptsDropdown || showRomanticPromptsDropdown || showDeepPromptsDropdown || showDeepPromptsDropdown2) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showMatchDropdown, showInterestsDropdown, showRelationshipGoalsDropdown, showPromptsDropdown, showRomanticPromptsDropdown, showDeepPromptsDropdown, showDeepPromptsDropdown2])
+
+  const [name, setName] = useState("")
+
+  const [distanceRadius, setDistanceRadius] = useState(50)
+  const [ageRange, setAgeRange] = useState<[number, number]>([25, 40])
+
+  // Load birth info from localStorage on mount
+  const [birthInfo, setBirthInfo] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('userBirthInfo')
+      if (saved) {
+        return JSON.parse(saved)
+      }
+    }
+    return {
+      birthdate: "1995-06-15",
+      birthTime: "14:30",
+      birthPlace: "Los Angeles, CA",
+      showBirthTime: true,
+    }
+  })
+
+  const sunSignSystemPreference = useSunSignSystem()
+  const [userSunSigns, setUserSunSigns] = useState<{ tropical: SunSign | null; sidereal: SunSign | null }>(() => {
+    if (typeof window === 'undefined') {
+      return { tropical: null, sidereal: null }
+    }
+    return getSavedSunSigns()
+  })
+
+  const [calculatedSigns, setCalculatedSigns] = useState({
+    westernSign: "Gemini",
+    chineseSign: "Pig",
+  })
+
+  // State for zodiac signs display
+  const [zodiacSigns, setZodiacSigns] = useState<{
+    western: string | null
+    chinese: string | null
+    chineseElement: ChineseElement | null
+    westernElement: string | null
+  }>({
+    western: null,
+    chinese: null,
+    chineseElement: null,
+    westernElement: null
+  })
+
+  useEffect(() => {
+    const display = sunSignSystemPreference === "sidereal" ? userSunSigns.sidereal : userSunSigns.tropical
+    if (display) {
+      setZodiacSigns((prev) => ({ ...prev, western: display }))
+    }
+    
+    // Load Chinese element and Western element from localStorage if available
+    if (typeof window !== 'undefined') {
+      const savedChineseElement = localStorage.getItem("userChineseElement");
+      const savedWesternElement = localStorage.getItem("userWesternElement");
+      if (savedChineseElement) {
+        setZodiacSigns((prev) => ({ ...prev, chineseElement: savedChineseElement as ChineseElement }))
+      }
+      if (savedWesternElement) {
+        setZodiacSigns((prev) => ({ ...prev, westernElement: savedWesternElement }))
+      }
+    }
+  }, [sunSignSystemPreference, userSunSigns])
+
+  // Interests state
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([])
+  const [selectedInterestCategory, setSelectedInterestCategory] = useState("Wellness")
+  
+  // Load selectedInterests from localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const savedInterests = localStorage.getItem("selectedInterests")
+    if (savedInterests) {
+      try {
+        setSelectedInterests(JSON.parse(savedInterests))
+      } catch (error) {
+        console.error("Error parsing saved interests:", error)
+      }
+    }
+  }, [])
+  
+  // Save selectedInterests to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    localStorage.setItem("selectedInterests", JSON.stringify(selectedInterests))
+  }, [selectedInterests])
+  
+  const interestCategories = {
+    "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
+    "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
+    "Going Out": ["Pubs & Bars", "Cocktail Bars", "Rooftop Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Food Trucks", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
+    "Sport & Fitness": ["Surfing", "Running", "F45", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
+    "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
+  }
+
+  const [showCalendar, setShowCalendar] = useState(false)
+  const [calendarMonth, setCalendarMonth] = useState(5) // June (0-indexed)
+  const [calendarYear, setCalendarYear] = useState(1995)
+  const [showYearPicker, setShowYearPicker] = useState(false)
+  const calendarRef = useRef<HTMLDivElement>(null)
+
+  const [selectedMonth, setSelectedMonth] = useState(6)
+  const [selectedDay, setSelectedDay] = useState(15)
+  const [selectedYear, setSelectedYear] = useState(1995)
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ]
+
+  const days = Array.from({ length: 31 }, (_, i) => i + 1)
+  const years = Array.from({ length: 80 }, (_, i) => 2024 - i)
+
+  useEffect(() => {
+    if (birthInfo.birthdate) {
+      const [year, month, day] = birthInfo.birthdate.split("-").map(Number)
+      setSelectedYear(year)
+      setSelectedMonth(month)
+      setSelectedDay(day)
+      setCalendarMonth(month - 1)
+      setCalendarYear(year)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+        setShowCalendar(false)
+      }
+    }
+
+    if (showCalendar) {
+      document.addEventListener("mousedown", handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [showCalendar])
+
+  const getDaysInMonth = (month: number, year: number) => {
+    return new Date(year, month + 1, 0).getDate()
+  }
+
+  const getFirstDayOfMonth = (month: number, year: number) => {
+    return new Date(year, month, 1).getDay()
+  }
+
+  const handleDateSelect = (day: number) => {
+    const formattedDate = `${calendarYear}-${String(calendarMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+    setBirthInfo((prev) => ({ ...prev, birthdate: formattedDate }))
+    setSelectedDay(day)
+    setSelectedMonth(calendarMonth + 1)
+    setSelectedYear(calendarYear)
+    setShowCalendar(false)
+    setShowYearPicker(false)
+  }
+
+  const handlePrevMonth = () => {
+    if (calendarMonth === 0) {
+      setCalendarMonth(11)
+      setCalendarYear(calendarYear - 1)
+    } else {
+      setCalendarMonth(calendarMonth - 1)
+    }
+  }
+
+  const handleNextMonth = () => {
+    if (calendarMonth === 11) {
+      setCalendarMonth(0)
+      setCalendarYear(calendarYear + 1)
+    } else {
+      setCalendarMonth(calendarMonth + 1)
+    }
+  }
+
+  const handleYearSelect = (year: number) => {
+    setCalendarYear(year)
+    setShowYearPicker(false)
+  }
+
+  const yearPickerYears = Array.from({ length: 71 }, (_, i) => 2010 - i)
+
+  const formatDisplayDate = (dateString: string) => {
+    const [year, month, day] = dateString.split("-")
+    return `${Number.parseInt(day)} ${months[Number.parseInt(month) - 1]} ${year}`
+  }
+
+  const handleScroll = (
+    ref: React.RefObject<HTMLDivElement>,
+    setter: (value: number) => void,
+    values: number[] | string[],
+  ) => {
+    if (!ref.current) return
+    const scrollTop = ref.current.scrollTop
+    const itemHeight = 48
+    const index = Math.round(scrollTop / itemHeight)
+    const value = typeof values[index] === "string" ? index + 1 : (values[index] as number)
+    setter(value)
+  }
+
+  const [genderOrientation, setGenderOrientation] = useState({
+    gender: "Man",
+    interestedIn: "Women",
+    showMeTo: "Women",
+  })
+
+  const [bio, setBio] = useState(
+    "Adventure seeker with a passion for hiking and stargazing. Gemini sun, Scorpio moon. Looking for someone to explore the cosmos with.",
+  )
+
+  const [visibilitySettings, setVisibilitySettings] = useState({
+    showOccupation: true,
+    showHeight: true,
+    showChildren: true,
+    showLocation: true, // Added location visibility setting
+  })
+
+  const [selectedOptions, setSelectedOptions] = useState<string[]>(["Yoga", "Hiking", "Reading", "Cooking", "Travel"])
+  const [selectedOrganizedInterests, setSelectedOrganizedInterests] = useState<{[category: string]: string[]}>({})
+  const [selectedLifestyleOptions, setSelectedLifestyleOptions] = useState<string[]>([])
+  const [selectedFoods, setSelectedFoods] = useState<string[]>([])
+  const [selectedRelationshipGoals, setSelectedRelationshipGoals] = useState<string[]>(["Life companion", "Soul mate", "Best friend", "Intimate connection"])
+  const [selectedPrompts, setSelectedPrompts] = useState<string[]>([])
+  const [promptAnswers, setPromptAnswers] = useState<{[key: string]: string}>({})
+  const [selectedRomanticPrompts, setSelectedRomanticPrompts] = useState<string[]>([])
+  const [romanticPromptAnswers, setRomanticPromptAnswers] = useState<{[key: string]: string}>({})
+  const [selectedDeepPrompts, setSelectedDeepPrompts] = useState<string[]>([])
+  const [deepPromptAnswers, setDeepPromptAnswers] = useState<{[key: string]: string}>({})
+
+  const [aboutMeText, setAboutMeText] = useState("I'm passionate about living life to the fullest and making meaningful connections. I love exploring new places, trying new foods, and having deep conversations about life, dreams, and everything in between. Looking for someone who values authenticity, kindness, and personal growth.")
+  const [aboutMeText2, setAboutMeText2] = useState("")
+  const [hobbiesDescription, setHobbiesDescription] = useState("")
+  const [dreamsText, setDreamsText] = useState("")
+  const [photo6Text, setPhoto6Text] = useState("")
+  const [selectedHeight, setSelectedHeight] = useState("")
+  const [selectedOccupation, setSelectedOccupation] = useState("")
+  const [selectedChildrenOption, setSelectedChildrenOption] = useState("")
+  const [selectedReligion, setSelectedReligion] = useState("")
+  const [showReligion, setShowReligion] = useState(true)
+  const [selectedCity, setSelectedCity] = useState("")
+  const [cityInput, setCityInput] = useState("")
+  const [showCitySuggestions, setShowCitySuggestions] = useState(false)
+  const [filteredCities, setFilteredCities] = useState<string[]>([])
+  const cityInputRef = useRef<HTMLDivElement>(null)
+
+  // Build self-compatibility box when user signs change using new match engine
+  useEffect(() => {
+    console.log('[Profile View Tab] Building connection box...')
+    console.log('[Profile View Tab] calculatedSigns:', calculatedSigns)
+    
+    if (calculatedSigns.westernSign && calculatedSigns.chineseSign) {
+      try {
+        const western = capitalizeSign(calculatedSigns.westernSign) as West
+        const eastern = capitalizeSign(calculatedSigns.chineseSign) as East
+        
+        console.log('[Profile View Tab] Western:', western, 'Eastern:', eastern)
+        
+        // Calculate self-compatibility using enhanced match engine with overlays and taglines
+        const newEngineResult = computeMatchWithNewEngine(
+          western,
+          eastern,
+          western,
+          eastern
+        )
+
+        const astroMatch = evaluateMatch(
+          western,
+          eastern,
+          western,
+          eastern
+        )
+
+        // Retain legacy result for override/longform metadata and debugging fallback
+        const legacyResult = explainMatchAndScore(
+          western,
+          eastern,
+          western,
+          eastern
+        )
+        
+        const result = {
+          score: newEngineResult.score,
+          rankKey: newEngineResult.rankKey,
+          rankLabel: newEngineResult.rankLabel,
+          emoji: newEngineResult.emoji,
+          colorRgb: newEngineResult.colorRgb,
+          connectionLabel: newEngineResult.connectionLabel,
+          east_relation: newEngineResult.east_relation,
+          east_summary: newEngineResult.east_summary,
+          west_relation: newEngineResult.west_relation,
+          west_summary: newEngineResult.west_summary,
+          tagline: newEngineResult.tagline,
+          tags: newEngineResult.tags || [],
+          hasOverride: legacyResult.hasOverride,
+          hasLongform: legacyResult.hasLongform,
+          debugNotes: newEngineResult.notes || [],
+          tier: newEngineResult.tier,
+        }
+        
+        console.log('[Profile View Tab] Match result:', result)
+        
+        // Create normalized pair ID
+        const pairId = createPairId(western, eastern, western, eastern)
+        
+        // Get tier key from score
+        const tierKey = getTierKeyFromScore(result.score)
+        
+        // Try to get longform content for this tier
+        const longformContent = getCompleteLongformBlurb(pairId, tierKey)
+        
+        console.log('[Profile View Tab] Longform lookup:', {
+          pairId,
+          tierKey,
+          score: result.score,
+          found: !!longformContent
+        })
+        
+        // Determine which insight to use (priority: longform > override > auto-generated)
+        let insight: string | undefined
+        let useOverride = false
+        
+        if (longformContent) {
+          // Use longform body as insight
+          insight = longformContent.body
+          console.log('[Profile View Tab] Using longform body as insight')
+        } else {
+          // Fall back to override or auto-generated
+          const pairKeyStr = `${western.toLowerCase()}_${eastern.toLowerCase()}__${western.toLowerCase()}_${eastern.toLowerCase()}` as OverrideKey
+          const override = INSIGHT_OVERRIDES[pairKeyStr]
+          
+          // Use override if it matches the rank, otherwise use auto-generated insight
+          useOverride = override && override.rank === result.rankKey
+          insight = useOverride ? override.insight : autoInsight(result)
+          
+          if (useOverride) {
+            console.log('[Profile View Tab] Using override insight')
+          } else {
+            console.log('[Profile View Tab] Using auto-generated insight')
+          }
+        }
+        
+        // Use longform labels if available, otherwise use result labels
+        const eastLabel = longformContent?.east_label || result.east_relation
+        const eastText = longformContent?.east_text || result.east_summary
+        const westLabel = longformContent?.west_label || result.west_relation
+        const westText = longformContent?.west_text || result.west_summary
+        const headline = longformContent?.headline || result.connectionLabel
+        const eastTagline = result.east_tagline || result.tagline
+        const overallTagline = longformContent?.tagline || result.tagline
+        
+        const badgeTags = astroMatch.badges?.length ? astroMatch.badges : []
+        const combinedTags = Array.from(new Set([...(result.tags ?? []), ...badgeTags]))
+        const rankLabelDisplay = `${astroMatch.tier} Match`
+
+        const boxData: ConnectionBoxData = {
+          score: astroMatch.score,
+          rank: rankLabelDisplay,
+          rankLabel: rankLabelDisplay,
+          rankKey: result.rankKey,
+          emoji: result.emoji,
+          colorRgb: newEngineResult.colorRgb || astroMatch.color,  // Use classifier color first
+          connectionLabel: headline,
+          tagline: overallTagline,
+          east_tagline: eastTagline,
+          tags: combinedTags,
+          insight: insight,
+          longformBody: longformContent?.body, // Add longform body
+          hasOverride: result.hasOverride,
+          hasLongform: !!longformContent,
+          east_relation: eastLabel,
+          east_summary: eastText,
+          west_relation: westLabel,
+          west_summary: westText,
+          tier: result.tier,
+          astroMatch,
+          a: {
+            west: western,
+            east: eastern,
+            westGlyph: getWesternSignGlyph(western),
+            eastGlyph: getChineseSignGlyph(eastern)
+          },
+          b: {
+            west: western,
+            east: eastern,
+            westGlyph: getWesternSignGlyph(western),
+            eastGlyph: getChineseSignGlyph(eastern)
+          },
+          // Profile sections
+          aboutMeText: aboutMeText || undefined,
+          selectedDeepPrompts: selectedDeepPrompts && selectedDeepPrompts.length > 0 ? selectedDeepPrompts : undefined,
+          deepPromptAnswers: deepPromptAnswers && Object.keys(deepPromptAnswers).length > 0 ? deepPromptAnswers : undefined,
+          selectedRelationshipGoals: selectedRelationshipGoals && selectedRelationshipGoals.length > 0 ? selectedRelationshipGoals : undefined,
+          // Essentials
+          age: birthInfo?.birthdate ? (() => {
+            const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+            const today = new Date();
+            let calculatedAge = today.getFullYear() - year;
+            const monthDiff = today.getMonth() + 1 - month;
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+              calculatedAge--;
+            }
+            return calculatedAge > 0 ? calculatedAge : undefined;
+          })() : undefined,
+          occupation: selectedOccupation || undefined,
+          city: selectedCity || cityInput || undefined,
+          distance: 2, // Default distance in km - can be updated with real GPS calculation
+          height: selectedHeight || undefined,
+          children: selectedChildrenOption || undefined,
+          religion: selectedReligion || undefined,
+        }
+        
+        setConnectionBoxData(boxData)
+        console.log('[Profile View Tab] ✨ Complete Longform System Active')
+        console.log('[Profile View Tab] Tier:', tierKey)
+        console.log('[Profile View Tab] Longform content:', longformContent ? 'YES' : 'NO')
+        console.log('[Profile View Tab] Self-compat box:', boxData)
+        if (result.debugNotes && result.debugNotes.length > 0) {
+          console.log('[Profile View Tab] Score breakdown notes:', result.debugNotes)
+        }
+      } catch (error) {
+        console.error("[Profile View] Error building self-compat box:", error)
+      }
+    }
+  }, [calculatedSigns, aboutMeText, selectedDeepPrompts, deepPromptAnswers, selectedRelationshipGoals, selectedOccupation, selectedCity, cityInput, selectedHeight, selectedChildrenOption, selectedReligion, birthInfo])
+
+  // Major cities list for autocomplete
+  const majorCities = [
+    // Australian Cities - New South Wales
+    "Sydney, NSW",
+    "Newcastle, NSW",
+    "Wollongong, NSW",
+    "Central Coast, NSW",
+    "Maitland, NSW",
+    "Wagga Wagga, NSW",
+    "Albury, NSW",
+    "Port Macquarie, NSW",
+    "Tamworth, NSW",
+    "Orange, NSW",
+    "Dubbo, NSW",
+    "Bathurst, NSW",
+    "Lismore, NSW",
+    "Nowra, NSW",
+    "Coffs Harbour, NSW",
+    "Queanbeyan, NSW",
+    "Broken Hill, NSW",
+    "Armidale, NSW",
+    "Goulburn, NSW",
+    "Griffith, NSW",
+
+    // Australian Cities - Victoria
+    "Melbourne, VIC",
+    "Geelong, VIC",
+    "Ballarat, VIC",
+    "Bendigo, VIC",
+    "Shepparton, VIC",
+    "Mildura, VIC",
+    "Warrnambool, VIC",
+    "Wodonga, VIC",
+    "Traralgon, VIC",
+    "Wangaratta, VIC",
+    "Horsham, VIC",
+    "Sale, VIC",
+    "Echuca, VIC",
+    "Moe, VIC",
+    "Morwell, VIC",
+    "Colac, VIC",
+    "Swan Hill, VIC",
+    "Hamilton, VIC",
+
+    // Australian Cities - Queensland
+    "Brisbane, QLD",
+    "Gold Coast, QLD",
+    "Sunshine Coast, QLD",
+    "Townsville, QLD",
+    "Cairns, QLD",
+    "Toowoomba, QLD",
+    "Mackay, QLD",
+    "Rockhampton, QLD",
+    "Bundaberg, QLD",
+    "Hervey Bay, QLD",
+    "Gladstone, QLD",
+    "Maryborough, QLD",
+    "Mount Isa, QLD",
+    "Gympie, QLD",
+    "Emerald, QLD",
+    "Warwick, QLD",
+    "Kingaroy, QLD",
+    "Dalby, QLD",
+    "Ipswich, QLD",
+    "Logan, QLD",
+    "Redland Bay, QLD",
+
+    // Australian Cities - South Australia
+    "Adelaide, SA",
+    "Mount Gambier, SA",
+    "Whyalla, SA",
+    "Murray Bridge, SA",
+    "Port Lincoln, SA",
+    "Port Augusta, SA",
+    "Port Pirie, SA",
+    "Victor Harbor, SA",
+    "Gawler, SA",
+    "Mount Barker, SA",
+
+    // Australian Cities - Western Australia
+    "Perth, WA",
+    "Mandurah, WA",
+    "Bunbury, WA",
+    "Kalgoorlie, WA",
+    "Geraldton, WA",
+    "Albany, WA",
+    "Broome, WA",
+    "Busselton, WA",
+    "Rockingham, WA",
+    "Karratha, WA",
+    "Port Hedland, WA",
+    "Esperance, WA",
+    "Carnarvon, WA",
+
+    // Australian Cities - Tasmania
+    "Hobart, TAS",
+    "Launceston, TAS",
+    "Devonport, TAS",
+    "Burnie, TAS",
+    "Ulverstone, TAS",
+    "Kingston, TAS",
+
+    // Australian Cities - Northern Territory
+    "Darwin, NT",
+    "Alice Springs, NT",
+    "Palmerston, NT",
+    "Katherine, NT",
+
+    // Australian Cities - Australian Capital Territory
+    "Canberra, ACT",
+
+    // International Cities
+    "New York, NY",
+    "Los Angeles, CA",
+    "Chicago, IL",
+    "Houston, TX",
+    "Phoenix, AZ",
+    "Philadelphia, PA",
+    "San Antonio, TX",
+    "San Diego, CA",
+    "Dallas, TX",
+    "San Jose, CA",
+    "Austin, TX",
+    "Jacksonville, FL",
+    "Fort Worth, TX",
+    "Columbus, OH",
+    "Charlotte, NC",
+    "San Francisco, CA",
+    "Indianapolis, IN",
+    "Seattle, WA",
+    "Denver, CO",
+    "Washington, DC",
+    "Boston, MA",
+    "Nashville, TN",
+    "Detroit, MI",
+    "Portland, OR",
+    "Las Vegas, NV",
+    "Miami, FL",
+    "Atlanta, GA",
+    "Minneapolis, MN",
+    "Orlando, FL",
+    "Tampa, FL",
+    "London, UK",
+    "Paris, France",
+    "Berlin, Germany",
+    "Madrid, Spain",
+    "Rome, Italy",
+    "Amsterdam, Netherlands",
+    "Barcelona, Spain",
+    "Vienna, Austria",
+    "Dublin, Ireland",
+    "Brussels, Belgium",
+    "Toronto, Canada",
+    "Vancouver, Canada",
+    "Montreal, Canada",
+    "Calgary, Canada",
+    "Ottawa, Canada",
+    "Auckland, New Zealand",
+    "Tokyo, Japan",
+    "Osaka, Japan",
+    "Seoul, South Korea",
+    "Singapore",
+    "Hong Kong",
+    "Bangkok, Thailand",
+    "Dubai, UAE",
+    "Mumbai, India",
+    "Delhi, India",
+    "Bangalore, India",
+    "Mexico City, Mexico",
+    "São Paulo, Brazil",
+    "Rio de Janeiro, Brazil",
+    "Buenos Aires, Argentina",
+    "Lima, Peru",
+  ].sort()
+
+  const [photos, setPhotos] = useState([
+    { id: 1, src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80", hasImage: true },
+    { id: 2, src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80", hasImage: true },
+    { id: 3, src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&q=80", hasImage: true },
+    { id: 4, src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80", hasImage: true },
+    { id: 5, src: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=800&q=80", hasImage: true },
+    { id: 6, src: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=800&q=80", hasImage: true },
+  ])
+
+  const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
+
+  // Force placeholder color to be dull - runs after every render
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return
+    
+    const applyPlaceholderStyle = () => {
+      const styleId = 'about-me-placeholder-style'
+      let styleElement = document.getElementById(styleId) as HTMLStyleElement
+      
+      if (!styleElement) {
+        styleElement = document.createElement('style')
+        styleElement.id = styleId
+        document.head.appendChild(styleElement)
+      }
+      
+      styleElement.textContent = `
+        textarea.about-me-textarea::placeholder,
+        .light textarea.about-me-textarea::placeholder,
+        .dark textarea.about-me-textarea::placeholder {
+          color: #5a5a5a !important;
+          opacity: 1 !important;
+          -webkit-text-fill-color: #5a5a5a !important;
+        }
+        textarea.about-me-textarea::-webkit-input-placeholder,
+        .light textarea.about-me-textarea::-webkit-input-placeholder,
+        .dark textarea.about-me-textarea::-webkit-input-placeholder {
+          color: #5a5a5a !important;
+          opacity: 1 !important;
+          -webkit-text-fill-color: #5a5a5a !important;
+        }
+        textarea.about-me-textarea::-moz-placeholder,
+        .light textarea.about-me-textarea::-moz-placeholder,
+        .dark textarea.about-me-textarea::-moz-placeholder {
+          color: #5a5a5a !important;
+          opacity: 1 !important;
+        }
+        textarea.about-me-textarea:-ms-input-placeholder,
+        .light textarea.about-me-textarea:-ms-input-placeholder,
+        .dark textarea.about-me-textarea:-ms-input-placeholder {
+          color: #5a5a5a !important;
+          opacity: 1 !important;
+        }
+        /* Force birthdate display font size */
+        .birthdate-display {
+          font-size: 20px !important;
+          font-weight: 400 !important;
+          line-height: 1.5 !important;
+        }
+        /* Desktop: Ensure date input matches other inputs exactly */
+        @media (min-width: 641px) {
+          div:has(input[type="date"].occupation-input) {
+            width: 100% !important;
+            max-width: 100% !important;
+          }
+          input[type="date"].occupation-input {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            box-sizing: border-box !important;
+          }
+        }
+        /* Mobile ONLY: constrained width to match zodiac box */
+        @media (max-width: 640px) {
+          input[type="date"].occupation-input {
+            width: calc(100% - 20px) !important;
+            max-width: calc(100% - 20px) !important;
+            margin: 0 auto !important;
+            display: block !important;
+            height: 48px !important;
+            line-height: 48px !important;
+            padding: 12px 16px !important;
+          }
+          select.gender-select,
+          select.orientation-select {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            display: block !important;
+            height: 48px !important;
+            line-height: 48px !important;
+            padding: 12px 16px !important;
+            font-size: 1.25rem !important;
+          }
+        }
+        /* Hide native date text on all devices - NO SIZE CHANGES */
+        input[type="date"].occupation-input {
+          color: transparent !important;
+          -webkit-text-fill-color: transparent !important;
+        }
+        input[type="date"].occupation-input::-webkit-datetime-edit {
+          display: none !important;
+        }
+        input[type="date"].occupation-input::-webkit-calendar-picker-indicator {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          width: 100% !important;
+          height: 100% !important;
+          opacity: 0;
+          cursor: pointer;
+          z-index: 2;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+      `
+    }
+    
+    applyPlaceholderStyle()
+    // Re-apply after a short delay to override any late-loading styles
+    const timeout = setTimeout(applyPlaceholderStyle, 100)
+    return () => clearTimeout(timeout)
+  })
+
+  useEffect(() => {
+    // Save the first test photo to localStorage for the nav bar
+    const firstPhoto = photos[0]
+    if (firstPhoto?.hasImage && firstPhoto.src) {
+      localStorage.setItem("profilePhoto1", firstPhoto.src)
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('profilePhotoUpdated'))
+      }
+    }
+    
+    // Commented out to keep test photos visible
+    // const savedPhotos = localStorage.getItem("userPhotos")
+    // if (savedPhotos) {
+    //   try {
+    //     const parsedPhotos = JSON.parse(savedPhotos)
+    //     if (Array.isArray(parsedPhotos)) {
+    //       setPhotos(parsedPhotos)
+    //     }
+    //   } catch (error) {
+    //     console.log("[v0] Error parsing saved photos:", error)
+    //   }
+    // }
+  }, [])
+
+  const handlePhotoUpload = (photoId: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Photo size must be less than 5MB")
+      return
+    }
+
+    // Check file type
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file")
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      const base64String = reader.result as string
+      const updatedPhotos = photos.map((photo) =>
+        photo.id === photoId ? { ...photo, src: base64String, hasImage: true } : photo,
+      )
+      setPhotos(updatedPhotos)
+      localStorage.setItem("userPhotos", JSON.stringify(updatedPhotos))
+      
+      // If this is the first photo (id: 1), save it separately for the nav bar
+      if (photoId === 1) {
+        localStorage.setItem("profilePhoto1", base64String)
+        // Dispatch event to update navigation bar
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(new Event('profilePhotoUpdated'))
+        }
+      }
+    }
+    reader.readAsDataURL(file)
+  }
+
+  const handlePhotoDelete = (photoId: number) => {
+    const updatedPhotos = photos.map((photo) => (photo.id === photoId ? { ...photo, src: "", hasImage: false } : photo))
+    setPhotos(updatedPhotos)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("userPhotos", JSON.stringify(updatedPhotos))
+      
+      // If deleting the first photo, also remove it from nav bar
+      if (photoId === 1) {
+        localStorage.removeItem("profilePhoto1")
+        window.dispatchEvent(new Event('profilePhotoUpdated'))
+      }
+    }
+  }
+
+  const triggerFileInput = (index: number) => {
+    fileInputRefs.current[index]?.click()
+  }
+
+  const nextPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev + 1) % photos.length)
+  }
+
+  const prevPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev - 1 + photos.length) % photos.length)
+  }
+
+  const userProfile = {
+    name: "Alex",
+    age: 28,
+    westernSign: calculatedSigns.westernSign,
+    easternSign: calculatedSigns.chineseSign,
+    occupation: "Software Engineer",
+    height: "180 cm",
+    children: "Don't have children",
+  }
+
+  const relationshipGoalsOptions = [
+    "Soul mate",
+    "Best friend",
+    "Intimate connection",
+    "Confidant",
+    "Partner in crime",
+    "Traveling together",
+    "Adventures",
+    "Weekend getaways",
+    "Road trips",
+    "Beach walks",
+    "Romantic dinners",
+    "Cozy nights in",
+    "Date nights",
+    "Sunset watching",
+    "Movie marathons",
+    "Cooking together",
+    "Settling down",
+    "Lazy Sundays",
+    "Short-term relationship",
+    "Long-term relationship",
+    "Marriage",
+    "Pet parenting",
+    "Building a future",
+    "Shared dreams"
+  ]
+
+  const promptsOptions = [
+    "I get way too competitive about",
+    "Most spontaneous thing I've done",
+    "My unpopular opinion is",
+    "I'm secretly really into",
+    "Something surprising about me",
+    "My weird flex",
+    "I'll always defend",
+    "Hot take on",
+    "Thing that makes me laugh",
+    "Nerdiest thing about me",
+    "I still can't believe I",
+    "My comfort food is",
+    "If I could relive one day",
+    "Something that changed my perspective",
+    "I'm working on being better at",
+    "Random fact about me",
+    "My go-to karaoke song",
+    "Thing I'm passionate about",
+    "My biggest pet peeve",
+    "Weirdest place I've been"
+  ]
+
+  const romanticPromptsOptions = [
+    "Let's argue about the best coffee order",
+    "My hidden talent is",
+    "I'm weirdly good at",
+    "Sunday morning ritual",
+    "My last spontaneous adventure",
+    "Best meal I've ever had",
+    "I could talk for hours about",
+    "My guilty pleasure is",
+    "Most random skill I have",
+    "If I could master anything",
+    "My go-to karaoke jam",
+    "Weekend plan that never fails",
+    "Playlist that defines my vibe",
+    "I'm lowkey obsessed with",
+    "Best advice I've ever received",
+    "My unpopular food opinion",
+    "Dream adventure I'm planning",
+    "Thing I'll drop everything for",
+    "My party trick is",
+    "I dare you to ask me about"
+  ]
+
+  const deepPromptsOptions = {
+    "Dating": [
+      "My ideal hangout spot",
+      "Best way to impress me",
+      "Adventure I'm keen for",
+      "My perfect weekend looks like",
+      "First date that'd win me over",
+      "I'm attracted to people who",
+      "Green flag I look for",
+      "Deal breaker for me",
+      "Spontaneous or planned"
+    ],
+    "About Me": [
+      "My signature dish is",
+      "Two truths and a lie",
+      "I'm weirdly good at",
+      "Sunday morning ritual",
+      "My guilty pleasure is",
+      "I'm lowkey obsessed with",
+      "I show I care by",
+      "Thing I'll drop everything for",
+      "My party trick is",
+      "Unpopular opinion I have",
+      "My comfort zone is"
+    ],
+    "My Type": [
+      "I vibe with someone who",
+      "Energy I'm drawn to",
+      "Personality trait I love",
+      "Sense of humor I appreciate",
+      "I respect people who",
+      "Quality that matters most",
+      "I click with people who",
+      "Values that align with mine",
+      "My ideal adventure partner",
+      "I appreciate someone who"
+    ],
+    "Fun": [
+      "My most chaotic trait is",
+      "I would rate my cooking skills a",
+      "My weirdest habit is",
+      "I can't help but laugh when",
+      "I'm awkwardly into",
+      "My most random skill is",
+      "The time I embarrassed myself was",
+      "I'm weirdly competitive about",
+      "My most controversial take is",
+      "The best way to butter me up is",
+      "I have a conspiracy theory about"
+    ]
+  }
+
+
+  const hobbiesOptions = [
+    "Art",
+    "Films",
+    "Sports",
+    "Fishing",
+    "Gym",
+    "Surfing",
+    "AFL",
+    "NRL",
+    "Rugby",
+    "Cricket",
+    "Tennis",
+    "Swimming",
+    "Hiking",
+    "Cycling",
+    "Boxing",
+    "Yoga",
+    "Running",
+    "Golf",
+    "Painting",
+    "Drawing",
+    "Photography",
+    "Music",
+    "Guitar",
+    "Fashion",
+    "Design",
+    "Writing",
+    "Shopping",
+    "Nightlife",
+    "Live music",
+    "Festivals",
+    "Concerts",
+    "Comedy",
+    "Karaoke",
+    "Dancing",
+    "Beach",
+    "BBQ",
+    "Coffee",
+    "Beach life",
+    "Bushwalking",
+    "Camping",
+    "4WD",
+    "Outback",
+    "Wine",
+    "Coffee culture",
+    "Cooking",
+    "Fine dining",
+    "Asian cuisine",
+    "Gaming",
+    "Streaming",
+    "Podcasts",
+    "Netflix",
+    "Tech",
+    "Travel",
+    "Adventure",
+    "Gardening",
+    "Investing",
+    "Career",
+    "Art galleries",
+    "Sailing",
+    "Meditation",
+    "Wellness",
+    "Photography",
+    "Business",
+    "Entrepreneurship",
+    "Sustainability",
+    "Politics",
+    "Property",
+    "Family",
+    "Pets",
+    "Dancing",
+    "Interior design",
+    "DIY",
+    "Pilates",
+    "Barre",
+    "Ballet",
+    "Skincare",
+    "Beauty",
+    "Makeup",
+    "Spa days",
+    "Brunch",
+    "Reading",
+    "Book clubs",
+    "Journaling",
+    "Crafts",
+    "Knitting",
+    "Sewing",
+    "Thrifting",
+    "Vintage shopping",
+    "Baking",
+    "Pottery",
+    "Jewelry making",
+    "Candle making",
+    "Floristry",
+    "Home decor",
+    "Antiques",
+    "Theater",
+    "Musicals",
+    "Ballet dancing",
+    "Salsa",
+    "Zumba",
+    "Horseback riding",
+    "Ice skating",
+    "Roller skating",
+    "Astrology",
+    "Tarot",
+    "Crystals",
+    "Self-care",
+    "Aromatherapy",
+    "Herbalism",
+    "Plant care",
+    "Farmer's markets",
+    "Volunteer work",
+    "Charity",
+    "Teaching",
+    "Mentoring",
+    "Romance novels",
+    "Reality TV",
+    "True crime"
+  ]
+
+  const foodOptions = [
+    // Most Popular Cuisines
+    "Italian",
+    "Mexican",
+    "Thai",
+    "Japanese",
+    "Vietnamese",
+    "Indian",
+    "Greek",
+    "Lebanese",
+    "Korean",
+    "Chinese",
+    
+    // Tech & Modern
+    "Gaming",
+    "Streaming",
+    "Podcasts",
+    "TikTok",
+    "Instagram",
+    "YouTube",
+    "Netflix",
+    "Spotify",
+    "Crypto",
+    "Tech",
+    "Startups",
+    "Entrepreneurship",
+    "Travel",
+    "Adventure",
+    "Exploration",
+    
+    // Mature Lifestyle (30-40s)
+    "Wine tasting",
+    "Fine dining",
+    "Cooking",
+    "Gardening",
+    "Home improvement",
+    "Investing",
+    "Real estate",
+    "Career",
+    "Networking",
+    "Mentoring",
+    "Volunteering",
+    "Charity work",
+    "Book clubs",
+    "Art galleries",
+    "Museums",
+    "Theatre",
+    "Classical music",
+    "Jazz",
+    "Antiques",
+    "Collecting",
+    "Wine collecting",
+    "Whiskey",
+    "Craft cocktails",
+    "Coffee roasting",
+    "Brewing",
+    "Sailing",
+    "Golf",
+    "Tennis",
+    "Squash",
+    "Pilates",
+    "Meditation",
+    "Wellness",
+    "Health",
+    "Nutrition",
+    "Fitness",
+    "Running",
+    "Marathons",
+    "Triathlons",
+    "Cycling",
+    "Hiking",
+    "Bushwalking",
+    "Camping",
+    "4WD",
+    "Outback",
+    "Travel",
+    "International travel",
+    "Luxury travel",
+    "Adventure travel",
+    "Cultural experiences",
+    "Language learning",
+    "Photography",
+    "Videography",
+    "Blogging",
+    "Writing",
+    "Journalism",
+    "Public speaking",
+    "Leadership",
+    "Management",
+    "Consulting",
+    "Freelancing",
+    "Remote work",
+    "Digital nomad",
+    "Sustainability",
+    "Environment",
+    "Climate action",
+    "Social justice",
+    "Politics",
+    "Current events",
+    "News",
+    "Economics",
+    "Finance",
+    "Investment",
+    "Property",
+    "Business",
+    "Entrepreneurship",
+    "Innovation",
+    "Technology",
+    "AI",
+    "Blockchain",
+    "Cryptocurrency",
+    "Trading",
+    "Stocks",
+    "Real estate",
+    "Property investment",
+    "Home ownership",
+    "Family",
+    "Parenting",
+    "Kids",
+    "Pets",
+    "Dogs",
+    "Cats",
+    "Horses",
+    "Equestrian",
+    "Horse riding",
+    "Polo",
+    "Racing",
+    "Betting",
+    "Gambling",
+    "Casinos",
+    "Poker",
+    "Bridge",
+    "Chess",
+    "Board games",
+    "Trivia",
+    "Quiz nights",
+    "Pub trivia",
+    "Comedy",
+    "Stand-up",
+    "Improv",
+    "Drama",
+    "Acting",
+    "Dancing",
+    "Ballroom",
+    "Latin",
+    "Salsa",
+    "Bachata",
+    "Swing",
+    "Jazz",
+    "Blues",
+    "Rock",
+    "Indie",
+    "Electronic",
+    "House",
+    "Techno",
+    "Trance",
+    "Drum and bass",
+    "Hip hop",
+    "Rap",
+    "R&B",
+    "Soul",
+    "Funk",
+    "Disco",
+    "80s",
+    "90s",
+    "Retro",
+    "Vintage",
+    "Fashion",
+    "Style",
+    "Design",
+    "Interior design",
+    "Architecture",
+    "Art",
+    "Contemporary art",
+    "Modern art",
+    "Street art",
+    "Graffiti",
+    "Sculpture",
+    "Ceramics",
+    "Pottery",
+    "Woodworking",
+    "Carpentry",
+    "DIY",
+    "Home renovation",
+    "Gardening",
+    "Landscaping",
+    "Permaculture",
+    "Sustainability",
+    "Organic",
+    "Farm to table",
+    "Local produce",
+    "Farmers markets",
+    "Community gardens",
+    "Urban farming",
+    "Beekeeping",
+    "Chickens",
+    "Homesteading",
+    "Self-sufficiency",
+    "Minimalism",
+    "Decluttering",
+    "Organization",
+    "Productivity",
+    "Time management",
+    "Goal setting",
+    "Personal development",
+    "Self-improvement",
+    "Mindfulness",
+    "Meditation",
+    "Yoga",
+    "Pilates",
+    "Tai chi",
+    "Qi gong",
+    "Martial arts",
+    "Self-defense",
+    "Boxing",
+    "MMA",
+    "Jiu-jitsu",
+    "Karate",
+    "Taekwondo",
+    "Kung fu",
+    "Capoeira",
+    "Parkour",
+    "Free running",
+    "Rock climbing",
+    "Bouldering",
+    "Mountaineering",
+    "Alpine",
+    "Skiing",
+    "Snowboarding",
+    "Ice skating",
+    "Hockey",
+    "Ice hockey",
+    "Field hockey",
+    "Lacrosse",
+    "Water polo",
+    "Polo",
+    "Equestrian",
+    "Horse riding",
+    "Dressage",
+    "Show jumping",
+    "Eventing",
+    "Racing",
+    "Thoroughbred",
+    "Harness racing",
+    "Greyhound racing",
+    "Dog racing",
+    "Cockfighting",
+    "Bullfighting",
+    "Rodeo",
+    "Roping",
+    "Riding",
+    "Horseback riding",
+    "Trail riding",
+    "Endurance riding",
+    "Dressage",
+    "Show jumping",
+    "Eventing",
+    "Polo",
+    "Horse racing",
+    "Thoroughbred racing",
+    "Harness racing",
+    "Greyhound racing",
+    "Dog racing",
+    "Cockfighting",
+    "Bullfighting",
+    "Rodeo",
+    "Roping",
+    "Riding",
+    "Horseback riding",
+    "Trail riding",
+    "Endurance riding",
+    "Dressage",
+    "Show jumping",
+    "Eventing",
+    "Polo",
+    "Horse racing",
+    "Thoroughbred racing",
+    "Harness racing",
+    "Greyhound racing",
+    "Dog racing",
+    "Cockfighting",
+    "Bullfighting",
+    "Rodeo",
+    "Roping",
+    "Riding",
+    "Horseback riding",
+    "Trail riding",
+    "Endurance riding"
+  ]
+
+  const heightOptions = Array.from({ length: 71 }, (_, i) => `${150 + i} cm`)
+
+  const childrenOptions = ["Have children", "Don't have children"]
+
+  const religionOptions = [
+    "Agnostic",
+    "Atheist",
+    "Buddhist",
+    "Catholic",
+    "Christian",
+    "Hindu",
+    "Jewish",
+    "Muslim",
+    "Sikh",
+    "Spiritual",
+    "Other",
+    "Prefer not to say"
+  ]
+
+  const handleHobbyToggle = (hobby: string) => {
+    let updatedOptions: string[]
+    if (selectedOptions.includes(hobby)) {
+      updatedOptions = selectedOptions.filter((opt) => opt !== hobby)
+    } else {
+      if (selectedOptions.length >= 6) return
+      updatedOptions = [...selectedOptions, hobby]
+    }
+    setSelectedOptions(updatedOptions)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("hobbiesAndInterests", JSON.stringify(updatedOptions))
+    }
+  }
+
+  const handleRelationshipGoalToggle = (goal: string) => {
+    let updatedGoals: string[]
+    if (selectedRelationshipGoals.includes(goal)) {
+      updatedGoals = selectedRelationshipGoals.filter((opt) => opt !== goal)
+    } else {
+      if (selectedRelationshipGoals.length >= 6) return
+      updatedGoals = [...selectedRelationshipGoals, goal]
+    }
+    setSelectedRelationshipGoals(updatedGoals)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("relationshipGoals", JSON.stringify(updatedGoals))
+    }
+  }
+
+  const handlePromptToggle = (prompt: string) => {
+    let updatedPrompts: string[]
+    if (selectedPrompts.includes(prompt)) {
+      updatedPrompts = selectedPrompts.filter((opt) => opt !== prompt)
+      // Remove the answer when removing the prompt
+      const updatedAnswers = { ...promptAnswers }
+      delete updatedAnswers[prompt]
+      setPromptAnswers(updatedAnswers)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("promptAnswers", JSON.stringify(updatedAnswers))
+      }
+    } else {
+      // Only allow one prompt - replace the current one
+      updatedPrompts = [prompt]
+      // Close the dropdown after selection
+      setShowPromptsDropdown(false)
+    }
+    setSelectedPrompts(updatedPrompts)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("prompts", JSON.stringify(updatedPrompts))
+    }
+  }
+
+  const handlePromptAnswerChange = (prompt: string, answer: string) => {
+    const updatedAnswers = { ...promptAnswers, [prompt]: answer }
+    setPromptAnswers(updatedAnswers)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("promptAnswers", JSON.stringify(updatedAnswers))
+    }
+  }
+
+  const handleRomanticPromptToggle = (prompt: string) => {
+    let updatedPrompts: string[]
+    if (selectedRomanticPrompts.includes(prompt)) {
+      updatedPrompts = selectedRomanticPrompts.filter((opt) => opt !== prompt)
+      // Remove the answer when removing the prompt
+      const updatedAnswers = { ...romanticPromptAnswers }
+      delete updatedAnswers[prompt]
+      setRomanticPromptAnswers(updatedAnswers)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("romanticPromptAnswers", JSON.stringify(updatedAnswers))
+      }
+    } else {
+      // Only allow one prompt - replace the current one
+      updatedPrompts = [prompt]
+      // Close the dropdown after selection
+      setShowRomanticPromptsDropdown(false)
+    }
+    setSelectedRomanticPrompts(updatedPrompts)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("romanticPrompts", JSON.stringify(updatedPrompts))
+    }
+  }
+
+  const handleRomanticPromptAnswerChange = (prompt: string, answer: string) => {
+    const updatedAnswers = { ...romanticPromptAnswers, [prompt]: answer }
+    setRomanticPromptAnswers(updatedAnswers)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("romanticPromptAnswers", JSON.stringify(updatedAnswers))
+    }
+  }
+
+  const handleDeepPromptToggle = (prompt: string) => {
+    let updatedPrompts: string[]
+    if (selectedDeepPrompts.includes(prompt)) {
+      updatedPrompts = selectedDeepPrompts.filter((opt) => opt !== prompt)
+      // Remove the answer when removing the prompt
+      const updatedAnswers = { ...deepPromptAnswers }
+      delete updatedAnswers[prompt]
+      setDeepPromptAnswers(updatedAnswers)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("deepPromptAnswers", JSON.stringify(updatedAnswers))
+      }
+    } else {
+      // Only allow one prompt - replace the current one
+      updatedPrompts = [prompt]
+      // Close the dropdown after selection
+      setShowDeepPromptsDropdown(false)
+    }
+    setSelectedDeepPrompts(updatedPrompts)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("deepPrompts", JSON.stringify(updatedPrompts))
+    }
+  }
+
+  const handleDeepPromptAnswerChange = (prompt: string, answer: string) => {
+    const updatedAnswers = { ...deepPromptAnswers, [prompt]: answer }
+    setDeepPromptAnswers(updatedAnswers)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("deepPromptAnswers", JSON.stringify(updatedAnswers))
+    }
+  }
+
+  // Handler functions for second prompt box
+  const handleDeepPromptToggle2 = (prompt: string) => {
+    let updatedPrompts: string[]
+    if (selectedDeepPrompts2.includes(prompt)) {
+      updatedPrompts = selectedDeepPrompts2.filter((opt) => opt !== prompt)
+      // Remove the answer when removing the prompt
+      const updatedAnswers = { ...deepPromptAnswers2 }
+      delete updatedAnswers[prompt]
+      setDeepPromptAnswers2(updatedAnswers)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("deepPromptAnswers2", JSON.stringify(updatedAnswers))
+      }
+    } else {
+      // Only allow one prompt - replace the current one
+      updatedPrompts = [prompt]
+      // Close the dropdown after selection
+      setShowDeepPromptsDropdown2(false)
+    }
+    setSelectedDeepPrompts2(updatedPrompts)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("selectedDeepPrompts2", JSON.stringify(updatedPrompts))
+    }
+  }
+
+  const handleDeepPromptAnswerChange2 = (prompt: string, answer: string) => {
+    const updatedAnswers = { ...deepPromptAnswers2, [prompt]: answer }
+    setDeepPromptAnswers2(updatedAnswers)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("deepPromptAnswers2", JSON.stringify(updatedAnswers))
+    }
+  }
+
+  const handleFoodToggle = (food: string) => {
+    let updatedOptions: string[]
+    if (selectedFoods.includes(food)) {
+      updatedOptions = selectedFoods.filter((opt) => opt !== food)
+    } else {
+      if (selectedFoods.length >= 8) return
+      updatedOptions = [...selectedFoods, food]
+    }
+    setSelectedFoods(updatedOptions)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("favouriteFoods", JSON.stringify(updatedOptions))
+    }
+  }
+
+
+
+  const handleHobbiesDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value
+    setHobbiesDescription(newText)
+    if (newText.trim() && typeof window !== 'undefined') {
+      localStorage.setItem("hobbiesDescription", newText.trim())
+    }
+  }
+
+  const handleAboutMeTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value
+    setAboutMeText(newText)
+    if (newText.trim() && typeof window !== 'undefined') {
+      localStorage.setItem("aboutMeText", newText.trim())
+    }
+  }
+
+  const handleAboutMeText2Change = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value
+    setAboutMeText2(newText)
+    if (newText.trim() && typeof window !== 'undefined') {
+      localStorage.setItem("aboutMeText2", newText.trim())
+    }
+  }
+
+  const handleDreamsTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value
+    setDreamsText(newText)
+    if (newText.trim() && typeof window !== 'undefined') {
+      localStorage.setItem("dreamsText", newText.trim())
+    }
+  }
+
+  const handlePhoto6TextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newText = e.target.value
+    setPhoto6Text(newText)
+    if (newText.trim() && typeof window !== 'undefined') {
+      localStorage.setItem("photo6Text", newText.trim())
+    }
+  }
+
+  const handleOccupationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newOccupation = e.target.value
+    setSelectedOccupation(newOccupation)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("userOccupation", newOccupation)
+    }
+  }
+
+  const handleCityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setCityInput(value)
+
+    if (value.trim().length > 0) {
+      const filtered = majorCities.filter((city) => city.toLowerCase().includes(value.toLowerCase())).slice(0, 5) // Show max 5 suggestions
+      setFilteredCities(filtered)
+      setShowCitySuggestions(true)
+    } else {
+      setFilteredCities([])
+      setShowCitySuggestions(false)
+    }
+  }
+
+  const handleCitySelect = (city: string) => {
+    setSelectedCity(city)
+    setCityInput(city)
+    setShowCitySuggestions(false)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("userCity", city)
+    }
+  }
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cityInputRef.current && !cityInputRef.current.contains(event.target as Node)) {
+        setShowCitySuggestions(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
+  const handleHeightSelect = (height: string) => {
+    setSelectedHeight(height)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("userHeight", height)
+    }
+  }
+
+  const handleChildrenOptionSelect = (option: string) => {
+    setSelectedChildrenOption(option)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("childrenPreference", option)
+    }
+  }
+
+  const handleReligionSelect = (religion: string) => {
+    setSelectedReligion(religion)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("userReligion", religion)
+    }
+  }
+
+  const handleDistanceChange = (value: number) => {
+    setDistanceRadius(value)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("distanceRadius", value.toString())
+    }
+  }
+
+  const handleAgeRangeChange = (newRange: [number, number]) => {
+    setAgeRange(newRange)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("ageRange", JSON.stringify(newRange))
+    }
+    
+    // Save to backend
+    saveAgePreferences(newRange[0], newRange[1])
+  }
+
+  const saveAgePreferences = async (ageMin: number, ageMax: number) => {
+    try {
+      // Get current user ID (you may need to adjust this based on your auth setup)
+      const userId = localStorage.getItem('userId') || 'mock-user-id' // Fallback for design mode
+      
+      await fetch("/api/preferences/age", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          user_id: userId, 
+          age_min: ageMin, 
+          age_max: ageMax 
+        })
+      })
+    } catch (error) {
+      console.error('Failed to save age preferences:', error)
+    }
+  }
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const savedName = localStorage.getItem("userFullName")
+    if (savedName) {
+      setName(savedName)
+    }
+
+    const savedAboutMe = localStorage.getItem("aboutMeText")
+    if (savedAboutMe) setAboutMeText(savedAboutMe)
+
+    const savedAboutMe2 = localStorage.getItem("aboutMeText2")
+    if (savedAboutMe2) setAboutMeText2(savedAboutMe2)
+
+    const savedHobbiesDescription = localStorage.getItem("hobbiesDescription")
+    if (savedHobbiesDescription) setHobbiesDescription(savedHobbiesDescription)
+
+    const savedDreamsText = localStorage.getItem("dreamsText")
+    if (savedDreamsText) setDreamsText(savedDreamsText)
+
+    const savedPhoto6Text = localStorage.getItem("photo6Text")
+    if (savedPhoto6Text) setPhoto6Text(savedPhoto6Text)
+
+    const savedSelectedOptions = localStorage.getItem("hobbiesAndInterests")
+    if (savedSelectedOptions) {
+      try {
+        const parsedOptions = JSON.parse(savedSelectedOptions)
+        if (Array.isArray(parsedOptions)) setSelectedOptions(parsedOptions)
+      } catch (error) {
+        console.log("[v0] Error parsing saved hobbies and interests:", error)
+      }
+    }
+
+    const savedOrganizedInterests = localStorage.getItem("selectedOrganizedInterests")
+    if (savedOrganizedInterests) {
+      try {
+        const parsedOrganizedInterests = JSON.parse(savedOrganizedInterests)
+        if (typeof parsedOrganizedInterests === 'object' && parsedOrganizedInterests !== null) {
+          setSelectedOrganizedInterests(parsedOrganizedInterests)
+        }
+      } catch (error) {
+        console.log("[v0] Error parsing saved organized interests:", error)
+      }
+    }
+
+    const savedLifestyleOptions = localStorage.getItem("selectedLifestyleOptions")
+    if (savedLifestyleOptions) {
+      try {
+        const parsedLifestyleOptions = JSON.parse(savedLifestyleOptions)
+        if (Array.isArray(parsedLifestyleOptions)) {
+          setSelectedLifestyleOptions(parsedLifestyleOptions)
+        }
+      } catch (error) {
+        console.log("[v0] Error parsing saved lifestyle options:", error)
+      }
+    }
+
+    const savedFoodOptions = localStorage.getItem("favouriteFoods")
+    if (savedFoodOptions) {
+      try {
+        const parsedOptions = JSON.parse(savedFoodOptions)
+        if (Array.isArray(parsedOptions)) setSelectedFoods(parsedOptions)
+      } catch (error) {
+        console.log("[v0] Error parsing saved favourite foods:", error)
+      }
+    }
+
+    const savedRelationshipGoals = localStorage.getItem("relationshipGoals")
+    if (savedRelationshipGoals) {
+      try {
+        const parsedGoals = JSON.parse(savedRelationshipGoals)
+        if (Array.isArray(parsedGoals)) setSelectedRelationshipGoals(parsedGoals)
+      } catch (error) {
+        console.log("[v0] Error parsing saved relationship goals:", error)
+      }
+    }
+
+    const savedHeight = localStorage.getItem("userHeight")
+    if (savedHeight) setSelectedHeight(savedHeight)
+
+    const savedOccupation = localStorage.getItem("userOccupation")
+    if (savedOccupation) setSelectedOccupation(savedOccupation)
+
+    const savedCity = localStorage.getItem("userCity")
+    if (savedCity) {
+      setSelectedCity(savedCity)
+      setCityInput(savedCity)
+    }
+
+    const savedChildren = localStorage.getItem("childrenPreference")
+    if (savedChildren) setSelectedChildrenOption(savedChildren)
+
+    const savedReligion = localStorage.getItem("userReligion")
+    if (savedReligion) setSelectedReligion(savedReligion)
+
+    const savedRadius = localStorage.getItem("distanceRadius")
+    if (savedRadius) {
+      setDistanceRadius(Number(savedRadius))
+    }
+
+    const savedAgeRange = localStorage.getItem("ageRange")
+    if (savedAgeRange) {
+      try {
+        setAgeRange(JSON.parse(savedAgeRange))
+      } catch (error) {
+        console.log("[v0] Error parsing saved age range:", error)
+      }
+    }
+
+    const savedGenderOrientation = localStorage.getItem("genderOrientation")
+    if (savedGenderOrientation) {
+      try {
+        const parsedGenderOrientation = JSON.parse(savedGenderOrientation)
+        setGenderOrientation(parsedGenderOrientation)
+      } catch (error) {
+        console.log("[v0] Error parsing saved gender orientation:", error)
+      }
+    }
+
+    const savedShowOccupation = localStorage.getItem("showOccupation")
+    if (savedShowOccupation !== null) {
+      try {
+        setVisibilitySettings((prev) => ({
+          ...prev,
+          showOccupation: JSON.parse(savedShowOccupation),
+        }))
+      } catch (error) {
+        console.log("[v0] Error parsing showOccupation:", error)
+      }
+    }
+
+    const savedShowHeight = localStorage.getItem("showHeight")
+    if (savedShowHeight !== null) {
+      try {
+        setVisibilitySettings((prev) => ({
+          ...prev,
+          showHeight: JSON.parse(savedShowHeight),
+        }))
+      } catch (error) {
+        console.log("[v0] Error parsing showHeight:", error)
+      }
+    }
+
+    const savedShowChildren = localStorage.getItem("showChildren")
+    if (savedShowChildren !== null) {
+      try {
+        setVisibilitySettings((prev) => ({
+          ...prev,
+          showChildren: JSON.parse(savedShowChildren),
+        }))
+      } catch (error) {
+        console.log("[v0] Error parsing showChildren:", error)
+      }
+    }
+
+    const savedShowLocation = localStorage.getItem("showLocation")
+    if (savedShowLocation !== null) {
+      try {
+        setVisibilitySettings((prev) => ({
+          ...prev,
+          showLocation: JSON.parse(savedShowLocation),
+        }))
+      } catch (error) {
+        console.log("[v0] Error parsing showLocation:", error)
+      }
+    }
+
+    const savedShowReligion = localStorage.getItem("showReligion")
+    if (savedShowReligion !== null) {
+      try {
+        setShowReligion(JSON.parse(savedShowReligion))
+      } catch (error) {
+        console.log("[v0] Error parsing showReligion:", error)
+      }
+    }
+
+    const savedPrompts = localStorage.getItem("prompts")
+    if (savedPrompts) {
+      try {
+        const parsedPrompts = JSON.parse(savedPrompts)
+        if (Array.isArray(parsedPrompts)) setSelectedPrompts(parsedPrompts)
+      } catch (error) {
+        console.log("[v0] Error parsing saved prompts:", error)
+      }
+    }
+
+    const savedPromptAnswers = localStorage.getItem("promptAnswers")
+    if (savedPromptAnswers) {
+      try {
+        const parsedAnswers = JSON.parse(savedPromptAnswers)
+        if (typeof parsedAnswers === 'object' && parsedAnswers !== null) {
+          setPromptAnswers(parsedAnswers)
+        }
+      } catch (error) {
+        console.log("[v0] Error parsing saved prompt answers:", error)
+      }
+    }
+
+    const savedRomanticPrompts = localStorage.getItem("romanticPrompts")
+    if (savedRomanticPrompts) {
+      try {
+        const parsedPrompts = JSON.parse(savedRomanticPrompts)
+        if (Array.isArray(parsedPrompts)) setSelectedRomanticPrompts(parsedPrompts)
+      } catch (error) {
+        console.log("[v0] Error parsing saved romantic prompts:", error)
+      }
+    }
+
+    const savedRomanticPromptAnswers = localStorage.getItem("romanticPromptAnswers")
+    if (savedRomanticPromptAnswers) {
+      try {
+        const parsedAnswers = JSON.parse(savedRomanticPromptAnswers)
+        if (typeof parsedAnswers === 'object' && parsedAnswers !== null) {
+          setRomanticPromptAnswers(parsedAnswers)
+        }
+      } catch (error) {
+        console.log("[v0] Error parsing saved romantic prompt answers:", error)
+      }
+    }
+
+    const savedDeepPrompts = localStorage.getItem("deepPrompts")
+    if (savedDeepPrompts) {
+      try {
+        const parsedPrompts = JSON.parse(savedDeepPrompts)
+        if (Array.isArray(parsedPrompts)) setSelectedDeepPrompts(parsedPrompts)
+      } catch (error) {
+        console.log("[v0] Error parsing saved deep prompts:", error)
+      }
+    }
+
+    const savedDeepPromptAnswers = localStorage.getItem("deepPromptAnswers")
+    if (savedDeepPromptAnswers) {
+      try {
+        const parsedAnswers = JSON.parse(savedDeepPromptAnswers)
+        if (typeof parsedAnswers === 'object' && parsedAnswers !== null) {
+          setDeepPromptAnswers(parsedAnswers)
+        }
+      } catch (error) {
+        console.log("[v0] Error parsing saved deep prompt answers:", error)
+      }
+    }
+
+    const savedDeepPromptsDisplay = localStorage.getItem("showDeepPromptsDisplay")
+    if (savedDeepPromptsDisplay) {
+      try {
+        setShowDeepPromptsDisplay(JSON.parse(savedDeepPromptsDisplay))
+      } catch (error) {
+        console.log("[v0] Error parsing saved deep prompts display:", error)
+      }
+    }
+
+    // Load second prompt box data
+    const savedDeepPrompts2 = localStorage.getItem("selectedDeepPrompts2")
+    if (savedDeepPrompts2) {
+      try {
+        const parsedPrompts = JSON.parse(savedDeepPrompts2)
+        if (Array.isArray(parsedPrompts)) setSelectedDeepPrompts2(parsedPrompts)
+      } catch (error) {
+        console.log("[v0] Error parsing saved deep prompts 2:", error)
+      }
+    }
+
+    const savedDeepPromptAnswers2 = localStorage.getItem("deepPromptAnswers2")
+    if (savedDeepPromptAnswers2) {
+      try {
+        const parsedAnswers = JSON.parse(savedDeepPromptAnswers2)
+        if (typeof parsedAnswers === 'object' && parsedAnswers !== null) {
+          setDeepPromptAnswers2(parsedAnswers)
+        }
+      } catch (error) {
+        console.log("[v0] Error parsing saved deep prompt answers 2:", error)
+      }
+    }
+  }, [birthInfo, sunSignSystemPreference])
+
+  const toggleOccupationVisibility = () => {
+    const newValue = !visibilitySettings.showOccupation
+    setVisibilitySettings((prev) => ({
+      ...prev,
+      showOccupation: newValue,
+    }))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("showOccupation", JSON.stringify(newValue))
+    }
+  }
+
+  const toggleHeightVisibility = () => {
+    const newValue = !visibilitySettings.showHeight
+    setVisibilitySettings((prev) => ({
+      ...prev,
+      showHeight: newValue,
+    }))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("showHeight", JSON.stringify(newValue))
+    }
+  }
+
+  const handleOrganizedInterestToggle = (category: string, interest: string) => {
+    const currentCategoryInterests = selectedOrganizedInterests[category] || []
+    let updatedInterests: string[]
+    
+    if (currentCategoryInterests.includes(interest)) {
+      updatedInterests = currentCategoryInterests.filter((item) => item !== interest)
+    } else {
+      // Limit to 6 selections per category
+      if (currentCategoryInterests.length >= 6) return
+      updatedInterests = [...currentCategoryInterests, interest]
+    }
+    
+    const updatedSelectedOrganizedInterests = {
+      ...selectedOrganizedInterests,
+      [category]: updatedInterests
+    }
+    
+    setSelectedOrganizedInterests(updatedSelectedOrganizedInterests)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("selectedOrganizedInterests", JSON.stringify(updatedSelectedOrganizedInterests))
+    }
+  }
+
+  // Lifestyle options
+  const lifestyleOptions = [
+    "Beach life", "City living", "Outdoor enthusiast", "Foodie culture", "Coffee lover", 
+    "Fitness focused", "Work-life balance", "Sustainability conscious", "Tech-savvy", 
+    "Social media active", "Travel lover", "Pet parent", "Wine connoisseur", 
+    "Weekend warrior", "Early riser", "Night owl", 
+    "Minimalist", "Maximalist", "Plant parent", "Van life", 
+    "Solo living", "Family oriented", "Career focused", "Entrepreneurial",
+    "Brunch regular", "Rooftop vibes", "Beach walks", "City exploring", "Local spots", "Hidden gems",
+    "Weekend adventures", "Spontaneous plans", "Chill vibes", "Good energy", "Positive mindset", "Growth focused"
+  ]
+
+  const handleLifestyleToggle = (lifestyle: string) => {
+    let updatedOptions: string[]
+    if (selectedLifestyleOptions.includes(lifestyle)) {
+      updatedOptions = selectedLifestyleOptions.filter((opt) => opt !== lifestyle)
+    } else {
+      // Limit to 6 selections
+      if (selectedLifestyleOptions.length >= 6) return
+      updatedOptions = [...selectedLifestyleOptions, lifestyle]
+    }
+    setSelectedLifestyleOptions(updatedOptions)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("selectedLifestyleOptions", JSON.stringify(updatedOptions))
+    }
+  }
+
+  const toggleInterestCategoryDropdown = (category: string) => {
+    setShowInterestCategoryDropdowns(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }))
+  }
+
+  const toggleChildrenVisibility = () => {
+    const newValue = !visibilitySettings.showChildren
+    setVisibilitySettings((prev) => ({
+      ...prev,
+      showChildren: newValue,
+    }))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("showChildren", JSON.stringify(newValue))
+    }
+  }
+
+  const toggleLocationVisibility = () => {
+    const newValue = !visibilitySettings.showLocation
+    setVisibilitySettings((prev) => ({
+      ...prev,
+      showLocation: newValue,
+    }))
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("showLocation", JSON.stringify(newValue))
+    }
+  }
+
+  const toggleReligionVisibility = () => {
+    const newValue = !showReligion
+    setShowReligion(newValue)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem("showReligion", JSON.stringify(newValue))
+    }
+  }
+
+  // CHANGE: Updated to pass month and day to getChineseZodiacSign for accurate calculation
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    try {
+      // Check if birthdate is properly formatted
+      if (!birthInfo.birthdate || !birthInfo.birthdate.includes("-")) {
+        console.warn("[v0] Invalid birthdate format:", birthInfo.birthdate)
+        return
+      }
+      
+      const dateParts = birthInfo.birthdate.split("-")
+      if (dateParts.length !== 3) {
+        console.warn("[v0] Invalid birthdate format:", birthInfo.birthdate)
+        return
+      }
+      
+      const [year, month, day] = dateParts.map(Number)
+      
+      // Validate the parsed numbers
+      if (isNaN(year) || isNaN(month) || isNaN(day)) {
+        console.warn("[v0] Invalid birthdate numbers:", { year, month, day })
+        return
+      }
+      
+      const western = getWesternZodiacSign(month, day)
+      const chinese = getChineseZodiacSign(year, month, day)
+      
+      // Calculate Chinese element from birthdate
+      const birthDate = new Date(year, month - 1, day)
+      const chineseZodiac = getChineseZodiacFromDate(birthDate)
+
+      console.log("[v0] Calculating zodiac signs from birth date:", birthInfo.birthdate)
+      console.log("[v0] Calculated Western sign:", western.name)
+      console.log("[v0] Calculated Western element:", western.element)
+      console.log("[v0] Calculated Chinese sign:", chinese.name)
+      console.log("[v0] Calculated Chinese element:", chineseZodiac.element)
+
+      const { tropical, sidereal } = getBothSunSigns(month, day)
+      saveSunSigns(tropical, sidereal)
+      setUserSunSigns({ tropical, sidereal })
+
+      const displayWesternSign = sunSignSystemPreference === "sidereal" ? sidereal ?? western.name : tropical ?? western.name
+
+      setCalculatedSigns({
+        westernSign: western.name,
+        chineseSign: chinese.name,
+      })
+
+      setZodiacSigns({
+        western: displayWesternSign,
+        chinese: chinese.name,
+        chineseElement: chineseZodiac.element,
+        westernElement: western.element
+      })
+
+      localStorage.setItem("userChineseSign", chinese.name.toLowerCase())
+      localStorage.setItem("userChineseElement", chineseZodiac.element)
+      localStorage.setItem("userWesternElement", western.element)
+      localStorage.setItem("userBirthInfo", JSON.stringify(birthInfo))
+
+      console.log("[v0] Saved to localStorage - userChineseSign:", chinese.name.toLowerCase())
+      console.log("[v0] Saved to localStorage - userBirthInfo:", birthInfo)
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new Event('sunSignSystemChanged'))
+      }
+    } catch (error) {
+      console.error("[v0] Error calculating zodiac signs:", error)
+    }
+  }, [birthInfo, sunSignSystemPreference])
+
+  // Auto-expand About Me textarea when text exists
+  useEffect(() => {
+    if (aboutMeTextareaRef.current && aboutMeText) {
+      const textarea = aboutMeTextareaRef.current
+      textarea.style.height = 'auto'
+      textarea.style.height = Math.max(60, textarea.scrollHeight) + 'px'
+    }
+  }, [aboutMeText, activeTab])
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value
+    setName(newName)
+    if (newName.trim() && typeof window !== 'undefined') {
+      localStorage.setItem("userFullName", newName.trim())
+    }
+  }
+
+  const handleSaveChanges = () => {
+    // Set saved state
+    setSavedSuccessfully(true)
+
+    // Reset after 1.5 seconds
+    setTimeout(() => {
+      setSavedSuccessfully(false)
+    }, 1500)
+  }
+
+  return (
+    <div
+      className={`${theme === "light" ? "light bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} profile-page min-h-screen relative overflow-x-hidden touch-pan-y`}
+      style={{ overscrollBehavior: 'contain' }}
+    >
+
+      <div className="relative z-10">
+        <div className="px-3 pt-2 pb-2 flex items-center justify-between">
+          <div className="flex items-center gap-0.5">
+            <FourPointedStar className="w-4 h-4 text-orange-500" />
+            <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              AstroMatch
+            </span>
+          </div>
+          
+          {/* Theme Toggle Button */}
+          <button
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+            aria-label="Toggle theme"
+          >
+            {theme === "light" ? (
+              <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            )}
+          </button>
+        </div>
+
+        {/* Horizontal Tabs Navigation */}
+        <div className="px-5 py-4">
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent">
+            <div className="flex gap-2 min-w-max">
+              <button
+                onClick={() => router.push("/profile/profile")}
+                className={`px-6 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                  theme === "light"
+                    ? "bg-purple-500 text-white shadow-md"
+                    : "bg-purple-600/90 text-white shadow-lg"
+                }`}
+              >
+                Profile
+              </button>
+              <button
+                onClick={() => router.push("/profile/account")}
+                className={`px-6 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                  theme === "light"
+                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-slate-800/40 text-white/70 hover:bg-slate-800/60"
+                }`}
+              >
+                Account
+              </button>
+              <button
+                onClick={() => router.push("/profile/safety-privacy")}
+                className={`px-6 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                  theme === "light"
+                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-slate-800/40 text-white/70 hover:bg-slate-800/60"
+                }`}
+              >
+                Safety & Privacy
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="px-5 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 flex justify-start">
+              <button
+                onClick={() => router.push("/profile/safety-privacy")}
+                className="hover:opacity-70 transition-opacity invisible"
+                aria-label="Previous"
+              >
+                <ChevronLeft className={`w-7 h-7 ${theme === "light" ? "!text-gray-500 hover:!text-gray-600" : "!text-gray-400 hover:!text-gray-300"} transition-colors`} />
+              </button>
+            </div>
+            <h1 className="font-semibold text-2xl whitespace-nowrap bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent">
+              Profile
+            </h1>
+            <div className="flex-1 flex justify-end">
+              <button
+                onClick={() => router.push("/profile/account")}
+                className="hover:opacity-70 transition-opacity"
+                aria-label="Next"
+              >
+                <ChevronRight className={`w-7 h-7 ${theme === "light" ? "!text-gray-500 hover:!text-gray-600" : "!text-gray-400 hover:!text-gray-300"} transition-colors`} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex px-5 mb-3 pt-1">
+          <button
+            onClick={() => setActiveTab("edit")}
+            className={`flex-1 pb-3 pt-2 text-center font-semibold transition-all duration-300 relative profile-tab-button ${
+              activeTab === "edit" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70 hover:!text-black" : "!text-white/70 hover:!text-white")
+            }`}
+          >
+            <span className={`relative z-10 text-lg ${activeTab === "edit" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70" : "!text-white/70")}`}>Edit</span>
+          </button>
+          <button
+            onClick={() => setActiveTab("view")}
+            className={`flex-1 pb-3 pt-2 text-center font-semibold transition-all duration-300 relative profile-tab-button ${
+              activeTab === "view" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70 hover:!text-black" : "!text-white/70 hover:!text-white")
+            }`}
+          >
+            <span className={`relative z-10 text-lg ${activeTab === "view" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70" : "!text-white/70")}`}>View</span>
+          </button>
+        </div>
+
+        {activeTab === "edit" && (
+          <div className="px-5 mb-8">
+            <div className="photo-grid">
+              {photos.map((photo, index) => (
+                <div key={photo.id} className="photo-slot">
+                  <input
+                    ref={(el) => {
+                      fileInputRefs.current[index] = el
+                    }}
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handlePhotoUpload(photo.id, e)}
+                    className="hidden"
+                  />
+
+                  {photo.hasImage ? (
+                    <div className="relative w-full h-full cursor-pointer" onClick={() => triggerFileInput(index)}>
+                      <img src={photo.src || "/placeholder.svg"} alt="" className="w-full h-full object-cover" />
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation() // Prevent triggering file input when deleting
+                          handlePhotoDelete(photo.id)
+                        }}
+                        className="delete-button"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ) : (
+                    <div
+                      className="photo-placeholder w-full h-full cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => triggerFileInput(index)}
+                    >
+                      <div className="photo-placeholder-icon text-4xl font-bold">{index + 1}</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "view" && (
+          <>
+            <div className="mb-8 pb-48" style={{ overflowY: 'visible', position: 'relative' }}>
+              {/* Photo Carousel with Ranking */}
+              {photos.some(p => p.hasImage) && (
+                <div className="px-2 mb-3">
+                  <ProfilePhotoCarouselWithRanking
+                    images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
+                    profileName={name || ""}
+                    profileAge={(() => {
+                      if (birthInfo?.birthdate) {
+                        const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+                        const today = new Date();
+                        let age = today.getFullYear() - year;
+                        const monthDiff = today.getMonth() + 1 - month;
+                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+                          age--;
+                        }
+                        return age > 0 ? age : 27;
+                      }
+                      return 27;
+                    })()}
+                  connectionBoxData={connectionBoxData || undefined}
+                  theme={theme}
+                  showDropdown={false}
+                  badgePosition="none"
+                    aboutMeText={aboutMeText}
+                    selectedOccupation={selectedOccupation}
+                    selectedCity={selectedCity}
+                    cityInput={cityInput}
+                    selectedHeight={selectedHeight}
+                    selectedChildrenOption={selectedChildrenOption}
+                    selectedReligion={selectedReligion}
+                    birthInfo={birthInfo}
+                    onPhotoChange={setCurrentPhotoIndex}
+                  />
+                </div>
+              )}
+
+              {/* Connection Box - Permanently displayed below photo carousel */}
+              {connectionBoxData && (
+                <div className="px-2">
+                  <ConnectionBoxSimple
+                    data={{
+                      ...connectionBoxData,
+                      aboutMeText: connectionBoxData.aboutMeText ?? aboutMeText,
+                      occupation: connectionBoxData.occupation ?? selectedOccupation,
+                      city: connectionBoxData.city ?? selectedCity ?? cityInput,
+                      height: connectionBoxData.height ?? selectedHeight,
+                      children: connectionBoxData.children ?? selectedChildrenOption,
+                      religion: connectionBoxData.religion ?? selectedReligion,
+                      age: connectionBoxData.age ?? (() => {
+                        if (birthInfo?.birthdate) {
+                          const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+                          const today = new Date();
+                          let age = today.getFullYear() - year;
+                          const monthDiff = today.getMonth() + 1 - month;
+                          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+                            age--;
+                          }
+                          return age > 0 ? age : 27;
+                        }
+                        return 27;
+                      })(),
+                      selectedDeepPrompts: connectionBoxData.selectedDeepPrompts ?? selectedDeepPrompts,
+                      deepPromptAnswers: connectionBoxData.deepPromptAnswers ?? deepPromptAnswers,
+                    }}
+                    alwaysExpanded={true}
+                    hideHeader={true}
+                  />
+                </div>
+              )}
+
+            </div>
+          </>
+        )}
+
+        {activeTab === "edit" && (
+          <div className="px-7 pb-32">
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="First name"
+                icon={<span role="img" aria-label="user">👤</span>}
+              />
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={handleNameChange}
+                  placeholder="Enter your first name"
+                  className={`w-full px-4 py-3 rounded-lg focus:outline-none transition-all text-lg first-name-input ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/50" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
+                  style={{ 
+                    fontSize: '1.25rem !important',
+                    fontFamily: 'inherit !important'
+                  }}
+                />
+              </div>
+            </div>
+
+
+            {/* About Me Section */}
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="About me"
+                icon={<span role="img" aria-label="star">⭐</span>}
+              />
+              <div className="space-y-2">
+                <div className="relative">
+                  <textarea
+                    ref={aboutMeTextareaRef}
+                    value={aboutMeText}
+                    onChange={handleAboutMeTextChange}
+                    placeholder="Tell us about yourself..."
+                    maxLength={300}
+                    className={`w-full px-4 py-3 pb-6 text-lg rounded-lg focus:outline-none transition-all resize-none about-me-textarea ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/50" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
+                    rows={2}
+                    style={{ 
+                      minHeight: '60px',
+                      height: 'auto',
+                      overflow: 'hidden'
+                    }}
+                    onInput={(e) => {
+                      const target = e.target as HTMLTextAreaElement;
+                      target.style.height = 'auto';
+                      target.style.height = target.scrollHeight + 'px';
+                    }}
+                  />
+                  <div className={`absolute bottom-2 right-3 text-xs ${theme === "light" ? "text-black/40" : "text-white/40"}`}>
+                    {300 - (aboutMeText || '').length}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Birth Information Section */}
+            <BirthInformationSection
+              birthDateISO={birthInfo.birthdate}
+              onBirthDateChange={(value) => {
+                setBirthInfo((prev) => ({ ...prev, birthdate: value }))
+                const [year, month, day] = value.split("-").map(Number)
+                setSelectedYear(year)
+                setSelectedMonth(month)
+                setSelectedDay(day)
+              }}
+            />
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Occupation / Industry"
+                icon={<span role="img" aria-label="briefcase">💼</span>}
+              />
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  value={selectedOccupation}
+                  onChange={handleOccupationChange}
+                  placeholder="Enter your profession"
+                  maxLength={30}
+                  className={`w-full px-4 py-3 rounded-xl focus:outline-none transition-all occupation-input ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/40" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
+                  style={{ fontSize: '1.25rem !important' }}
+                />
+                <div className="flex items-center justify-between pt-2">
+                  <div></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
+                      Display
+                    </span>
+                    <button
+                      onClick={toggleOccupationVisibility}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        visibilitySettings.showOccupation
+                          ? "bg-gray-300"
+                          : "bg-transparent border border-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                          visibilitySettings.showOccupation ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
+                        }`}
+                        style={!visibilitySettings.showOccupation ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
+                      ></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Location"
+                icon={<span role="img" aria-label="location">📍</span>}
+              />
+              <div className="space-y-4">
+                <div className="relative" ref={cityInputRef}>
+                  <input
+                    type="text"
+                    value={cityInput}
+                    onChange={handleCityInputChange}
+                    onFocus={() => {
+                      if (cityInput.trim().length > 0 && filteredCities.length > 0) {
+                        setShowCitySuggestions(true)
+                      }
+                    }}
+                    placeholder="Start typing your city..."
+                    className={`w-full px-4 py-3 rounded-xl focus:outline-none transition-all location-input !text-xl ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/40" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
+                    style={{ fontSize: '1.25rem !important' }}
+                  />
+
+                  {showCitySuggestions && filteredCities.length > 0 && (
+                    <div
+                      className={`absolute top-full left-0 right-0 mt-2 rounded-xl shadow-lg z-50 max-h-48 overflow-y-auto ${theme === "light" ? "bg-white border border-gray-200" : "bg-gray-800/95 backdrop-blur-sm border border-white/20"}`}
+                    >
+                      {filteredCities.map((city, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleCitySelect(city)}
+                          className={`w-full px-4 py-3 text-left transition-colors ${
+                            theme === "starlight" || theme === "light" ? "text-gray-900 hover:bg-gray-100" : "text-white hover:bg-white/10"
+                          } ${index === 0 ? "rounded-t-xl" : ""} ${index === filteredCities.length - 1 ? "rounded-b-xl" : ""}`}
+                        >
+                          {city}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center justify-between pt-2">
+                  <div></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
+                      Display
+                    </span>
+                    <button
+                      onClick={toggleLocationVisibility}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        visibilitySettings.showLocation
+                          ? "bg-gray-300"
+                          : "bg-transparent border border-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                          visibilitySettings.showLocation ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
+                        }`}
+                        style={!visibilitySettings.showLocation ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
+                      ></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Height"
+                icon={<span role="img" aria-label="ruler">📏</span>}
+              />
+              <div className="space-y-4">
+                <select
+                  value={selectedHeight}
+                  onChange={(e) => handleHeightSelect(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl focus:outline-none appearance-none cursor-pointer transition-all height-select !text-xl ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white" : theme === "light" ? "border border-gray-300 bg-white text-black !bg-white !text-black" : "bg-slate-900/50 border border-indigo-400/20 !text-white focus:border-indigo-400/40"}`}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23${theme === "light" ? "000000" : "ffffff"}' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "1.5em 1.5em",
+                    fontSize: '1.25rem !important',
+                    ...(theme === "light" && { backgroundColor: 'white', color: 'black' })
+                  }}
+                >
+                  <option value="" disabled style={{ fontSize: "0.5rem" }}>
+                    Select your height
+                  </option>
+                  {heightOptions.map((height) => (
+                    <option key={height} value={height} style={{ fontSize: "0.5rem" }}>
+                      {height}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex items-center justify-between pt-2">
+                  <div></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
+                      Display
+                    </span>
+                    <button
+                      onClick={toggleHeightVisibility}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        visibilitySettings.showHeight
+                          ? "bg-gray-300"
+                          : "bg-transparent border border-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                          visibilitySettings.showHeight ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
+                        }`}
+                        style={!visibilitySettings.showHeight ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
+                      ></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Children"
+                icon={<span role="img" aria-label="family">👨‍👩‍👧</span>}
+              />
+              <div className="space-y-4">
+                <select
+                  value={selectedChildrenOption}
+                  onChange={(e) => handleChildrenOptionSelect(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl focus:outline-none appearance-none cursor-pointer transition-all children-select !text-xl ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white" : theme === "light" ? "border border-gray-300 bg-white text-black !bg-white !text-black" : "bg-slate-900/50 border border-indigo-400/20 !text-white focus:border-indigo-400/40"}`}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23${theme === "light" ? "000000" : "ffffff"}' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "1.5em 1.5em",
+                    fontSize: '1.25rem !important',
+                    ...(theme === "light" && { backgroundColor: 'white', color: 'black' })
+                  }}
+                >
+                  <option value="" disabled style={{ fontSize: "0.625rem" }}>
+                    Select your status
+                  </option>
+                  {childrenOptions.map((option) => (
+                    <option key={option} value={option} style={{ fontSize: "0.625rem" }}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex items-center justify-between pt-2">
+                  <div></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
+                      Display
+                    </span>
+                    <button
+                      onClick={toggleChildrenVisibility}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        visibilitySettings.showChildren
+                          ? "bg-gray-300"
+                          : "bg-transparent border border-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                          visibilitySettings.showChildren ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
+                        }`}
+                        style={!visibilitySettings.showChildren ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
+                      ></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Religion"
+                icon={<span role="img" aria-label="star">✨</span>}
+              />
+              <div className="space-y-4">
+                <select
+                  value={selectedReligion}
+                  onChange={(e) => handleReligionSelect(e.target.value)}
+                  className={`w-full px-4 py-3 rounded-xl focus:outline-none appearance-none cursor-pointer transition-all religion-select !text-xl ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white" : theme === "light" ? "border border-gray-300 bg-white text-black !bg-white !text-black" : "bg-slate-900/50 border border-indigo-400/20 !text-white focus:border-indigo-400/40"}`}
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23${theme === "light" ? "000000" : "ffffff"}' strokeLinecap='round' strokeLinejoin='round' strokeWidth='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+                    backgroundPosition: "right 0.75rem center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "1.5em 1.5em",
+                    fontSize: '1.25rem !important',
+                    ...(theme === "light" && { backgroundColor: 'white', color: 'black' })
+                  }}
+                >
+                  <option value="" disabled style={{ fontSize: "0.625rem" }}>
+                    Select your religion
+                  </option>
+                  {religionOptions.map((religion) => (
+                    <option key={religion} value={religion} style={{ fontSize: "0.625rem" }}>
+                      {religion}
+                    </option>
+                  ))}
+                </select>
+                <div className="flex items-center justify-between pt-2">
+                  <div></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
+                      Display
+                    </span>
+                    <button
+                      onClick={toggleReligionVisibility}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        showReligion
+                          ? "bg-gray-300"
+                          : "bg-transparent border border-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                          showReligion ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
+                        }`}
+                        style={!showReligion ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
+                      ></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <GenderSection
+                value={genderOrientation.gender.toLowerCase() as "man" | "woman" | "other" | ""}
+                onChange={(value) => {
+                  const capitalizedValue = value.charAt(0).toUpperCase() + value.slice(1);
+                  const newGenderOrientation = { ...genderOrientation, gender: capitalizedValue }
+                  setGenderOrientation(newGenderOrientation)
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem("genderOrientation", JSON.stringify(newGenderOrientation))
+                  }
+                }}
+              />
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <OrientationSection
+                value={genderOrientation.orientation as "Men" | "Women" | ""}
+                onChange={(value) => {
+                  const newGenderOrientation = { ...genderOrientation, orientation: value }
+                  setGenderOrientation(newGenderOrientation)
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem("genderOrientation", JSON.stringify(newGenderOrientation))
+                  }
+                }}
+              />
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Distance"
+                icon={<span role="img" aria-label="radar">📡</span>}
+              />
+              <div className="space-y-3">
+                <div className="relative pt-6">
+                  {/* Track background */}
+                  <div
+                    className={`rounded-full ${theme === "starlight" ? "bg-white/20" : "bg-gray-400/60"}`}
+                    style={{ height: "3px" }}
+                  />
+                  
+                  <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    value={distanceRadius}
+                    onChange={(e) => handleDistanceChange(Number(e.target.value))}
+                    className="absolute top-3 left-0 w-full h-6 bg-transparent appearance-none cursor-pointer
+                            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
+                            [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2
+                            [&::-webkit-slider-thumb]:border-gray-500/40 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer
+                            [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform
+                            [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6
+                            [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2
+                            [&::-moz-range-thumb]:border-gray-500/40 [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:cursor-pointer
+                            [&::-moz-range-thumb]:hover:scale-110 [&::-moz-range-thumb]:transition-transform"
+                  />
+                  
+                  {/* Value display above thumb */}
+                  <div
+                    className={`absolute -top-2 text-sm font-semibold ${theme === "starlight" ? "text-white" : "text-white/70"}`}
+                    style={{
+                      left: `${(distanceRadius / 200) * 100}%`,
+                      transform: "translateX(-50%)",
+                    }}
+                  >
+                    {distanceRadius}km
+                  </div>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>0km</span>
+                  <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>200km</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Age"
+                icon={<span role="img" aria-label="hourglass">⏳</span>}
+              />
+              <div className="space-y-4">
+                {/* Age Range Display */}
+                <div className="flex justify-between items-center">
+                  <span className={theme === "light" ? "text-black text-sm" : "text-white/70 text-sm"}>
+                    {ageRange[0]} - {ageRange[1]}
+                  </span>
+                </div>
+                
+                {/* Dual Range Slider - Single Bar */}
+                <div className="relative h-8">
+                  {/* Background Track */}
+                  <div className="absolute top-3 left-0 right-0 h-[3px] bg-gray-400/30 rounded-full"></div>
+                  
+                  {/* Active Range Track */}
+                  <div 
+                    className="absolute top-3 h-[3px] bg-gray-400 rounded-full"
+                    style={{
+                      left: `${((ageRange[0] - 18) / (80 - 18)) * 100}%`,
+                      width: `${((ageRange[1] - ageRange[0]) / (80 - 18)) * 100}%`
+                    }}
+                  />
+                  
+                  {/* Min Range Slider */}
+                  <input
+                    type="range"
+                    min="18"
+                    max="80"
+                    value={ageRange[0]}
+                    onChange={(e) => {
+                      const newMin = Math.min(Number(e.target.value), ageRange[1] - 1)
+                      handleAgeRangeChange([newMin, ageRange[1]])
+                    }}
+                    className="absolute top-0 w-full h-8 bg-transparent appearance-none cursor-pointer pointer-events-none z-30
+                            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
+                            [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:mt-1
+                            [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-400
+                            [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto
+                            [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6
+                            [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0
+                            [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-gray-400
+                            [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
+                  />
+                  
+                  {/* Max Range Slider */}
+                  <input
+                    type="range"
+                    min="18"
+                    max="80"
+                    value={ageRange[1]}
+                    onChange={(e) => {
+                      const newMax = Math.max(Number(e.target.value), ageRange[0] + 1)
+                      handleAgeRangeChange([ageRange[0], newMax])
+                    }}
+                    className="absolute top-0 w-full h-8 bg-transparent appearance-none cursor-pointer pointer-events-none z-20
+                            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
+                            [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:mt-1
+                            [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-400
+                            [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto
+                            [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6
+                            [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0
+                            [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-gray-400
+                            [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto"
+                  />
+                </div>
+                
+                {/* Age Labels */}
+                <div className="flex justify-between text-xs text-white/50">
+                  <span>18</span>
+                  <span>80</span>
+                </div>
+              </div>
+            </div>
+
+            <button 
+              onClick={handleSaveChanges}
+              className="w-full py-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
+            >
+              {savedSuccessfully ? "Saved" : "Save Changes"}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Full-Screen Zoom Modal */}
+      {isZoomModalOpen && (
+        <div 
+          className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+          onTouchStart={(e) => {
+            if (e.touches.length === 2) {
+              lastZoomDistanceRef.current = getDistance(e.touches)
+              lastTwoFingerMidpointRef.current = getTwoFingerMidpoint(e.touches)
+            } else if (e.touches.length === 1) {
+              lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+            }
+          }}
+          onTouchMove={handleZoomTouchMove}
+          onTouchEnd={handleZoomTouchEnd}
+          style={{ 
+            touchAction: 'none',
+            transition: 'opacity 0.3s ease-out',
+            opacity: 1
+          }}
+        >
+          <img
+            src={photos[currentPhotoIndex].src || "/placeholder.svg"}
+            alt=""
+            className="max-w-full max-h-full object-contain"
+            style={{
+              transform: `translate(${zoomPosX}px, ${zoomPosY}px) scale(${zoomScale})`,
+              transformOrigin: 'center center',
+              transition: zoomScale === 1 ? 'transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)' : 'none',
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+              pointerEvents: 'none',
+              willChange: 'transform'
+            }}
+          />
+        </div>
+      )}
+    </div>
+  )
+}

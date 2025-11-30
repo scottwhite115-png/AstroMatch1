@@ -1,0 +1,132 @@
+{
+  "blurbs": {
+    "air-air": {
+      "relation": "Same Element",
+      "label": "Air × Air",
+      "summary_line": "A meeting of minds — communicative, curious, and light-hearted.",
+      "expanded": "Two Air signs fall in love with ideas and shared freedom. Conversation flows, friendship anchors the romance, and optimism keeps you exploring. Depth grows when you pause to feel as much as you think.",
+      "nurture": "Ideas dates, travel, social cross-pollination.",
+      "caution": "Analysis loops — decide, then act."
+    },
+    "fire-fire": {
+      "relation": "Same Element",
+      "label": "Fire × Fire",
+      "summary_line": "Two flames burning bright — passionate, inspiring, and bold.",
+      "expanded": "This is ignition energy. You motivate each other, dream loudly, and move fast. Greatness comes when you aim the blaze together and honor turn-taking.",
+      "nurture": "Celebrate wins; channel drive into shared aims.",
+      "caution": "Competing heat; practice turn-taking."
+    },
+    "earth-earth": {
+      "relation": "Same Element",
+      "label": "Earth × Earth",
+      "summary_line": "Grounded and practical — slow-built security and trust.",
+      "expanded": "Stability is your love language. You value reliability, rituals, and tangible progress. Make room for novelty so comfort stays alive.",
+      "nurture": "Rituals, routines, tangible progress.",
+      "caution": "Ruts; schedule novelty on purpose."
+    },
+    "water-water": {
+      "relation": "Same Element",
+      "label": "Water × Water",
+      "summary_line": "Deep emotional flow — intuitive and nurturing.",
+      "expanded": "You feel first and speak second. The bond is soulful and protective. Name feelings clearly so sensitivity becomes intimacy, not overwhelm.",
+      "nurture": "Gentle honesty, cozy time, creative outlets.",
+      "caution": "Mood spirals — name feelings, not just vibes."
+    },
+    "air-fire": {
+      "relation": "Compatible",
+      "label": "Air × Fire",
+      "summary_line": "Air fuels Fire — vibrant, creative, full of motion.",
+      "expanded": "One brings momentum, the other perspective. Together you spark courage and possibility. Keep focus so brilliance finishes what it starts.",
+      "nurture": "Playful debate, big dreams, momentum.",
+      "caution": "Scattered focus; finish what you start."
+    },
+    "fire-air": {
+      "relation": "Compatible",
+      "label": "Fire × Air",
+      "summary_line": "Air fuels Fire — vibrant, creative, full of motion.",
+      "expanded": "One brings momentum, the other perspective. Together you spark courage and possibility. Keep focus so brilliance finishes what it starts.",
+      "nurture": "Playful debate, big dreams, momentum.",
+      "caution": "Scattered focus; finish what you start."
+    },
+    "earth-water": {
+      "relation": "Compatible",
+      "label": "Earth × Water",
+      "summary_line": "Water nourishes Earth — stable, tender, growth-oriented.",
+      "expanded": "Practical care meets emotional depth. You create a dependable home for feelings and plans to flourish.",
+      "nurture": "Home projects, shared care, steady dates.",
+      "caution": "Over-caretaking; keep roles balanced."
+    },
+    "water-earth": {
+      "relation": "Compatible",
+      "label": "Water × Earth",
+      "summary_line": "Water nourishes Earth — stable, tender, growth-oriented.",
+      "expanded": "Practical care meets emotional depth. You create a dependable home for feelings and plans to flourish.",
+      "nurture": "Home projects, shared care, steady dates.",
+      "caution": "Over-caretaking; keep roles balanced."
+    },
+    "fire-water": {
+      "relation": "Opposing",
+      "label": "Fire × Water",
+      "summary_line": "Steam and storm — intense attraction but turbulent emotions.",
+      "expanded": "Magnetic, moody, unforgettable. Learn to cool and soothe after conflict so passion becomes devotion, not drama.",
+      "nurture": "Rituals to cool/soothe after conflict.",
+      "caution": "Hot–cold cycles; avoid ultimatums."
+    },
+    "water-fire": {
+      "relation": "Opposing",
+      "label": "Water × Fire",
+      "summary_line": "Steam and storm — intense attraction but turbulent emotions.",
+      "expanded": "Magnetic, moody, unforgettable. Learn to cool and soothe after conflict so passion becomes devotion, not drama.",
+      "nurture": "Rituals to cool/soothe after conflict.",
+      "caution": "Hot–cold cycles; avoid ultimatums."
+    },
+    "air-earth": {
+      "relation": "Opposing",
+      "label": "Air × Earth",
+      "summary_line": "Different speeds — one seeks change, the other stability.",
+      "expanded": "Curiosity meets caution. The pairing grows when plans have play built in and spontaneity respects structure.",
+      "nurture": "Clear plans with room for play.",
+      "caution": "Critic vs dreamer dynamic; trade lenses."
+    },
+    "earth-air": {
+      "relation": "Opposing",
+      "label": "Earth × Air",
+      "summary_line": "Different speeds — one seeks change, the other stability.",
+      "expanded": "Curiosity meets caution. The pairing grows when plans have play built in and spontaneity respects structure.",
+      "nurture": "Clear plans with room for play.",
+      "caution": "Critic vs dreamer dynamic; trade lenses."
+    },
+    "earth-fire": {
+      "relation": "Semi-Compatible",
+      "label": "Earth × Fire",
+      "summary_line": "Fire's enthusiasm can warm Earth's steadiness — with respect and timing.",
+      "expanded": "Inspiration meets implementation. Agree on pace and milestones so the spark turns into something built to last.",
+      "nurture": "Aim the fire at practical milestones.",
+      "caution": "Impatience vs caution; set pace rules."
+    },
+    "fire-earth": {
+      "relation": "Semi-Compatible",
+      "label": "Fire × Earth",
+      "summary_line": "Fire's enthusiasm can warm Earth's steadiness — with respect and timing.",
+      "expanded": "Inspiration meets implementation. Agree on pace and milestones so the spark turns into something built to last.",
+      "nurture": "Aim the fire at practical milestones.",
+      "caution": "Impatience vs caution; set pace rules."
+    },
+    "air-water": {
+      "relation": "Semi-Compatible",
+      "label": "Air × Water",
+      "summary_line": "Mind meets emotion — fascinating if communication stays gentle.",
+      "expanded": "Ideas need feelings and feelings need words. This match shines with empathy and reflective listening.",
+      "nurture": "Story-sharing, reflective listening.",
+      "caution": "Detach vs overwhelm; time-outs help."
+    },
+    "water-air": {
+      "relation": "Semi-Compatible",
+      "label": "Water × Air",
+      "summary_line": "Mind meets emotion — fascinating if communication stays gentle.",
+      "expanded": "Ideas need feelings and feelings need words. This match shines with empathy and reflective listening.",
+      "nurture": "Story-sharing, reflective listening.",
+      "caution": "Detach vs overwhelm; time-outs help."
+    }
+  }
+}

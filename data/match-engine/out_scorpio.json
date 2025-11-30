@@ -1,0 +1,232 @@
+{
+  "Scorpio-Rat": {
+    "Scorpio-Rat": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Water depth → emotional and intuitive.",
+        "Rat–Rat ambition adds sharp instincts.",
+        "Fixed loyalty strengthens lasting devotion.",
+        "West/East balance → 90/94 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 92,
+        "communication": 84,
+        "lifestyle": 88,
+        "long_term": 94,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Scorpio-Ox": {
+      "overall": 96,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth → emotional foundation meets persistence.",
+        "Rat–Ox stability suits Scorpio's depth.",
+        "Shared goals bring lasting security.",
+        "West/East balance → 94/98 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 96,
+        "communication": 86,
+        "lifestyle": 94,
+        "long_term": 96,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Scorpio-Tiger": {
+      "overall": 90,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Fire intensity: magnetic attraction.",
+        "Rat–Tiger: strong will and mutual respect.",
+        "Shared courage and loyalty run deep.",
+        "West/East balance → 88/92 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 84,
+        "lifestyle": 86,
+        "long_term": 90,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Scorpio-Rabbit": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Water empathy and care.",
+        "Rat–Rabbit harmony through patience.",
+        "Deep emotional safety fuels love.",
+        "West/East balance → 84/88 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 82,
+        "lifestyle": 84,
+        "long_term": 88,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Scorpio-Dragon": {
+      "overall": 98,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Fire union: passion and loyalty.",
+        "Rat–Dragon same trine → shared ambition.",
+        "Both love power, success, and each other.",
+        "West/East balance → 96/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 90,
+        "lifestyle": 92,
+        "long_term": 98,
+        "growth": 88
+      },
+      "color": "green"
+    },
+    "Scorpio-Snake": {
+      "overall": 100,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth → emotional intuition with wisdom.",
+        "Rat–Snake secret-friend tie → spiritual bond.",
+        "Mysterious, sensual, unbreakable connection.",
+        "West/East balance → 100/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 100,
+        "communication": 92,
+        "lifestyle": 94,
+        "long_term": 100,
+        "growth": 90
+      },
+      "color": "green"
+    },
+    "Scorpio-Horse": {
+      "overall": 60,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Water–Fire clash of willpower.",
+        "Rat–Horse opposition adds volatility.",
+        "Mutual respect must outweigh pride.",
+        "West/East balance → 64/56 split."
+      ],
+      "scores": {
+        "core_vibe": 68,
+        "chemistry": 62,
+        "communication": 66,
+        "lifestyle": 60,
+        "long_term": 58,
+        "growth": 62
+      },
+      "color": "yellow"
+    },
+    "Scorpio-Goat": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Earth → sensitive and dependable.",
+        "Rat–Goat: opposite temperaments, shared artistry.",
+        "Emotional honesty keeps love pure.",
+        "West/East balance → 82/86 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 84,
+        "communication": 82,
+        "lifestyle": 80,
+        "long_term": 86,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Scorpio-Monkey": {
+      "overall": 80,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Air → depth meets humor.",
+        "Rat–Monkey same trine → smart bond.",
+        "Scorpio's passion grounds Monkey's wit.",
+        "West/East balance → 82/78 split."
+      ],
+      "scores": {
+        "core_vibe": 84,
+        "chemistry": 82,
+        "communication": 86,
+        "lifestyle": 76,
+        "long_term": 82,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Scorpio-Rooster": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Air connection: intuition meets logic.",
+        "Rat–Rooster same trine → perfectionist allies.",
+        "They sharpen one another's ambitions.",
+        "West/East balance → 84/88 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 84,
+        "lifestyle": 82,
+        "long_term": 86,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Scorpio-Dog": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Air pairing rooted in trust and devotion.",
+        "Rat–Dog loyalty deepens emotional security.",
+        "Protective, faithful, deeply bonded.",
+        "West/East balance → 92/96 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 88,
+        "lifestyle": 90,
+        "long_term": 96,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Scorpio-Pig": {
+      "overall": 99,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Water soulmates.",
+        "Rat–Pig secret friends → full compassion.",
+        "Emotional and physical chemistry unmatched.",
+        "West/East balance → 98/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 99,
+        "communication": 92,
+        "lifestyle": 94,
+        "long_term": 98,
+        "growth": 88
+      },
+      "color": "green"
+    }
+  }
+}

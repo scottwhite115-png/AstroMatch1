@@ -1,0 +1,232 @@
+{
+  "Cancer-Rat": {
+    "Cancer-Rat": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Water emotional attunement.",
+        "Rat–Rat ambition merges with deep empathy.",
+        "Cardinal intuition creates family and security.",
+        "West/East balance → 82/86 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 84,
+        "communication": 80,
+        "lifestyle": 84,
+        "long_term": 86,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Cancer-Ox": {
+      "overall": 90,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth complement → stability and trust.",
+        "Rat–Ox supportive neighbors → reliable teamwork.",
+        "Security and shared goals strengthen bond.",
+        "West/East balance → 88/92 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 82,
+        "lifestyle": 90,
+        "long_term": 92,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Cancer-Tiger": {
+      "overall": 67,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Water–Fire: emotion meets action.",
+        "Rat–Tiger different trines → passion but conflict.",
+        "Care and independence must balance.",
+        "West/East balance → 70/64 split."
+      ],
+      "scores": {
+        "core_vibe": 72,
+        "chemistry": 70,
+        "communication": 68,
+        "lifestyle": 65,
+        "long_term": 63,
+        "growth": 70
+      },
+      "color": "yellow"
+    },
+    "Cancer-Rabbit": {
+      "overall": 96,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Water tenderness; shared intuition.",
+        "Rat–Rabbit similar sensitivity → emotional safety.",
+        "Both value peace, family, and devotion.",
+        "West/East balance → 94/98 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 90,
+        "lifestyle": 94,
+        "long_term": 96,
+        "growth": 88
+      },
+      "color": "green"
+    },
+    "Cancer-Dragon": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Fire = passion with purpose.",
+        "Rat–Dragon same trine → loyal partners.",
+        "Cancer steadies Dragon's ambition beautifully.",
+        "West/East balance → 84/88 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 88,
+        "communication": 84,
+        "lifestyle": 82,
+        "long_term": 86,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Cancer-Snake": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth elegance → quiet strength.",
+        "Rat–Snake secret-friend tie deepens trust.",
+        "Romantic, loyal, and protective connection.",
+        "West/East balance → 92/96 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 94,
+        "communication": 88,
+        "lifestyle": 92,
+        "long_term": 94,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Cancer-Horse": {
+      "overall": 60,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Water–Fire → mood vs motion.",
+        "Rat–Horse clash: pace mismatch.",
+        "Mutual admiration but friction likely.",
+        "West/East balance → 64/56 split."
+      ],
+      "scores": {
+        "core_vibe": 68,
+        "chemistry": 64,
+        "communication": 62,
+        "lifestyle": 58,
+        "long_term": 57,
+        "growth": 62
+      },
+      "color": "yellow"
+    },
+    "Cancer-Goat": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth nurturing alliance.",
+        "Rat–Goat blend: care and creativity.",
+        "Deep emotional safety and artistic harmony.",
+        "West/East balance → 88/96 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 90,
+        "communication": 86,
+        "lifestyle": 92,
+        "long_term": 94,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Cancer-Monkey": {
+      "overall": 75,
+      "summary": "Good Potential",
+      "insight": [
+        "Water–Air can work through empathy and humor.",
+        "Rat–Monkey same trine → smart bond.",
+        "Emotional Cancer stabilizes witty Monkey.",
+        "West/East balance → 78/72 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 78,
+        "communication": 84,
+        "lifestyle": 72,
+        "long_term": 74,
+        "growth": 74
+      },
+      "color": "yellow"
+    },
+    "Cancer-Rooster": {
+      "overall": 70,
+      "summary": "Good Potential",
+      "insight": [
+        "Water–Air requires mutual patience.",
+        "Rat–Rooster same trine → shared intellect.",
+        "Different expression but same goals.",
+        "West/East balance → 74/66 split."
+      ],
+      "scores": {
+        "core_vibe": 74,
+        "chemistry": 72,
+        "communication": 78,
+        "lifestyle": 70,
+        "long_term": 70,
+        "growth": 72
+      },
+      "color": "yellow"
+    },
+    "Cancer-Dog": {
+      "overall": 91,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Air: intuition meets loyalty.",
+        "Rat–Dog moral duo; trust is unshakable.",
+        "Supportive, affectionate, lasting pair.",
+        "West/East balance → 88/94 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 88,
+        "lifestyle": 86,
+        "long_term": 92,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Cancer-Pig": {
+      "overall": 98,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Water full harmony: emotional telepathy.",
+        "Rat–Pig secret friends → pure trust.",
+        "Romantic, generous, lifelong affection.",
+        "West/East balance → 96/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 94,
+        "lifestyle": 96,
+        "long_term": 98,
+        "growth": 90
+      },
+      "color": "green"
+    }
+  }
+}

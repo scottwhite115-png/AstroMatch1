@@ -1,0 +1,232 @@
+{
+  "Virgo-Rat": {
+    "Virgo-Rat": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Air style: grounded thinker and sharp analyst.",
+        "Rat–Rat ambition unites on practical goals.",
+        "Mutable nature keeps Virgo adaptable in partnership.",
+        "West/East balance → 82/86 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 84,
+        "communication": 86,
+        "lifestyle": 80,
+        "long_term": 86,
+        "growth": 76
+      },
+      "color": "green"
+    },
+    "Virgo-Ox": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Earth synergy: productive and secure.",
+        "Rat–Ox harmony adds patience and precision.",
+        "Both value dedication and steady progress.",
+        "West/East balance → 90/94 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 92,
+        "communication": 84,
+        "lifestyle": 92,
+        "long_term": 94,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Virgo-Tiger": {
+      "overall": 70,
+      "summary": "Good Potential",
+      "insight": [
+        "Earth–Fire: logic meets passion.",
+        "Rat–Tiger difference encourages mutual growth.",
+        "Respecting space preserves balance.",
+        "West/East balance → 74/66 split."
+      ],
+      "scores": {
+        "core_vibe": 76,
+        "chemistry": 72,
+        "communication": 70,
+        "lifestyle": 68,
+        "long_term": 70,
+        "growth": 72
+      },
+      "color": "yellow"
+    },
+    "Virgo-Rabbit": {
+      "overall": 90,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Water complement builds comfort and care.",
+        "Rat–Rabbit softens Virgo's edge with grace.",
+        "Shared kindness and patience foster love.",
+        "West/East balance → 86/94 split."
+      ],
+      "scores": {
+        "core_vibe": 92,
+        "chemistry": 88,
+        "communication": 84,
+        "lifestyle": 90,
+        "long_term": 92,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Virgo-Dragon": {
+      "overall": 82,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Fire = discipline meets vision.",
+        "Rat–Dragon same trine → trust and drive.",
+        "Practical Virgo refines Dragon's grand ideas.",
+        "West/East balance → 80/84 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 84,
+        "communication": 80,
+        "lifestyle": 82,
+        "long_term": 86,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Virgo-Snake": {
+      "overall": 98,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Earth harmony → trust, intelligence, elegance.",
+        "Rat–Snake secret-friend tie deepens devotion.",
+        "Quiet mutual understanding defines this union.",
+        "West/East balance → 96/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 92,
+        "lifestyle": 96,
+        "long_term": 98,
+        "growth": 88
+      },
+      "color": "green"
+    },
+    "Virgo-Horse": {
+      "overall": 63,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Earth–Fire friction: routine vs impulse.",
+        "Rat–Horse clash adds unpredictability.",
+        "Tolerance and humor help maintain balance.",
+        "West/East balance → 66/60 split."
+      ],
+      "scores": {
+        "core_vibe": 68,
+        "chemistry": 64,
+        "communication": 66,
+        "lifestyle": 60,
+        "long_term": 62,
+        "growth": 64
+      },
+      "color": "yellow"
+    },
+    "Virgo-Goat": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Earth = comfort, reliability, and artful life.",
+        "Rat–Goat: practical yet creative duo.",
+        "Virgo provides structure; Goat provides warmth.",
+        "West/East balance → 90/94 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 92,
+        "communication": 86,
+        "lifestyle": 92,
+        "long_term": 94,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Virgo-Monkey": {
+      "overall": 78,
+      "summary": "Good Potential",
+      "insight": [
+        "Earth–Air → grounded meets curious.",
+        "Rat–Monkey same trine → witty teamwork.",
+        "Virgo guides ideas to completion.",
+        "West/East balance → 82/74 split."
+      ],
+      "scores": {
+        "core_vibe": 82,
+        "chemistry": 78,
+        "communication": 84,
+        "lifestyle": 76,
+        "long_term": 78,
+        "growth": 76
+      },
+      "color": "yellow"
+    },
+    "Virgo-Rooster": {
+      "overall": 95,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Air → pragmatic perfectionists unite.",
+        "Rat–Rooster same trine → mutual respect and precision.",
+        "Attention to detail and loyalty define them.",
+        "West/East balance → 94/96 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 90,
+        "lifestyle": 92,
+        "long_term": 96,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Virgo-Dog": {
+      "overall": 88,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Air pairing built on trust and purpose.",
+        "Rat–Dog share strong ethics and care.",
+        "Dependable bond built for the long haul.",
+        "West/East balance → 86/90 split."
+      ],
+      "scores": {
+        "core_vibe": 92,
+        "chemistry": 88,
+        "communication": 86,
+        "lifestyle": 86,
+        "long_term": 88,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Virgo-Pig": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Water → nurturing, peaceful partnership.",
+        "Rat–Pig secret friends → effortless empathy.",
+        "Compassion and trust anchor them deeply.",
+        "West/East balance → 92/96 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 88,
+        "lifestyle": 90,
+        "long_term": 96,
+        "growth": 86
+      },
+      "color": "green"
+    }
+  }
+}

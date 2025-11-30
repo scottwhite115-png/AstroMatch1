@@ -1,0 +1,232 @@
+{
+  "Pisces-Rat": {
+    "Pisces-Rat": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Air → imagination meets intellect.",
+        "Rat–Rat same trine → clever, adaptable partners.",
+        "Pisces intuition blends well with Rat's ambition.",
+        "West/East balance → 82/86 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 84,
+        "communication": 88,
+        "lifestyle": 78,
+        "long_term": 84,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Pisces-Ox": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth → mutual stability and depth.",
+        "Rat–Ox partnership anchors Pisces' emotion.",
+        "Reliability and tenderness merge seamlessly.",
+        "West/East balance → 90/94 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 92,
+        "communication": 84,
+        "lifestyle": 92,
+        "long_term": 94,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Pisces-Tiger": {
+      "overall": 78,
+      "summary": "Good Potential",
+      "insight": [
+        "Water–Fire → passion and inspiration.",
+        "Rat–Tiger creative, driven, but restless.",
+        "Need empathy and space to thrive.",
+        "West/East balance → 80/76 split."
+      ],
+      "scores": {
+        "core_vibe": 84,
+        "chemistry": 78,
+        "communication": 80,
+        "lifestyle": 74,
+        "long_term": 76,
+        "growth": 78
+      },
+      "color": "yellow"
+    },
+    "Pisces-Rabbit": {
+      "overall": 100,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Water empathy at its finest.",
+        "Rat–Rabbit harmony through intuition and care.",
+        "Deeply emotional and artistically inspired pair.",
+        "West/East balance → 100/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 100,
+        "communication": 94,
+        "lifestyle": 94,
+        "long_term": 98,
+        "growth": 90
+      },
+      "color": "green"
+    },
+    "Pisces-Dragon": {
+      "overall": 90,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Fire → creative and emotionally magnetic.",
+        "Rat–Dragon same trine → visionary partners.",
+        "Pisces fuels Dragon's dreams with feeling.",
+        "West/East balance → 88/92 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 86,
+        "lifestyle": 84,
+        "long_term": 90,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Pisces-Snake": {
+      "overall": 98,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth → soulful and elegant.",
+        "Rat–Snake secret-friend connection deepens trust.",
+        "They intuit each other's moods perfectly.",
+        "West/East balance → 96/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 90,
+        "lifestyle": 94,
+        "long_term": 98,
+        "growth": 88
+      },
+      "color": "green"
+    },
+    "Pisces-Horse": {
+      "overall": 66,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Water–Fire contrast: emotion vs independence.",
+        "Rat–Horse clash tests patience.",
+        "Dreamy Pisces may tire of Horse's pace.",
+        "West/East balance → 68/64 split."
+      ],
+      "scores": {
+        "core_vibe": 70,
+        "chemistry": 66,
+        "communication": 68,
+        "lifestyle": 64,
+        "long_term": 62,
+        "growth": 68
+      },
+      "color": "yellow"
+    },
+    "Pisces-Goat": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Earth → gentle, nurturing harmony.",
+        "Rat–Goat creative but balanced pairing.",
+        "Together they build warmth and stability.",
+        "West/East balance → 92/96 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 88,
+        "lifestyle": 92,
+        "long_term": 96,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Pisces-Monkey": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Air → imagination meets humor.",
+        "Rat–Monkey same trine → easy friendship.",
+        "Dreamy and clever balance of energies.",
+        "West/East balance → 86/82 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 84,
+        "communication": 90,
+        "lifestyle": 80,
+        "long_term": 84,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Pisces-Rooster": {
+      "overall": 82,
+      "summary": "Great Match",
+      "insight": [
+        "Water–Air → thoughtful and refined connection.",
+        "Rat–Rooster same trine → shared ideals.",
+        "Respect and kindness ensure peace.",
+        "West/East balance → 82/82 split."
+      ],
+      "scores": {
+        "core_vibe": 86,
+        "chemistry": 82,
+        "communication": 86,
+        "lifestyle": 78,
+        "long_term": 82,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Pisces-Dog": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Air → compassion and justice unite.",
+        "Rat–Dog loyalty amplifies emotional trust.",
+        "Soft-hearted love built to last.",
+        "West/East balance → 94/94 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 90,
+        "lifestyle": 88,
+        "long_term": 94,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Pisces-Pig": {
+      "overall": 100,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Water–Water → pure harmony and empathy.",
+        "Rat–Pig secret friends → true love and loyalty.",
+        "Dreamers who heal and uplift each other.",
+        "West/East balance → 100/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 100,
+        "communication": 92,
+        "lifestyle": 96,
+        "long_term": 100,
+        "growth": 90
+      },
+      "color": "green"
+    }
+  }
+}

@@ -1,0 +1,232 @@
+{
+  "Gemini-Rat": {
+    "Gemini-Rat": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Air synergy → instant mental rapport.",
+        "Rat–Rat: same drive and wit — never dull.",
+        "Mutable flexibility keeps life light and adventurous.",
+        "West/East balance → 96/92 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 97,
+        "lifestyle": 90,
+        "long_term": 86,
+        "growth": 84
+      },
+      "color": "green"
+    },
+    "Gemini-Ox": {
+      "overall": 66,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Air–Earth mismatch: thinker vs doer.",
+        "Rat–Ox neighbors: steady Ox slows fast Gemini.",
+        "Balance intellect with routine for success.",
+        "West/East balance → 70/62 split."
+      ],
+      "scores": {
+        "core_vibe": 72,
+        "chemistry": 68,
+        "communication": 74,
+        "lifestyle": 64,
+        "long_term": 62,
+        "growth": 70
+      },
+      "color": "yellow"
+    },
+    "Gemini-Tiger": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Fire harmony ignites bold ideas.",
+        "Rat–Tiger: driven and dynamic.",
+        "Adventure and curiosity fuel lasting excitement.",
+        "West/East balance → 94/90 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 92,
+        "communication": 94,
+        "lifestyle": 86,
+        "long_term": 88,
+        "growth": 83
+      },
+      "color": "green"
+    },
+    "Gemini-Rabbit": {
+      "overall": 85,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Water blend: emotion meets intellect.",
+        "Rat–Rabbit: cautious but curious connection.",
+        "Playful charm and empathy keep it steady.",
+        "West/East balance → 88/82 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 90,
+        "lifestyle": 82,
+        "long_term": 80,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Gemini-Dragon": {
+      "overall": 97,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Fire brilliance: sparks fly mentally and socially.",
+        "Rat–Dragon same trine → natural collaborators.",
+        "Ideas soar; respect anchors success.",
+        "West/East balance → 96/98 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 97,
+        "communication": 98,
+        "lifestyle": 90,
+        "long_term": 92,
+        "growth": 88
+      },
+      "color": "green"
+    },
+    "Gemini-Snake": {
+      "overall": 83,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Earth connection: curiosity meets depth.",
+        "Rat–Snake secret-friend vibe → clever loyalty.",
+        "Gemini explores; Snake refines.",
+        "West/East balance → 86/80 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 84,
+        "communication": 90,
+        "lifestyle": 80,
+        "long_term": 82,
+        "growth": 79
+      },
+      "color": "green"
+    },
+    "Gemini-Horse": {
+      "overall": 95,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Fire sparkle: freedom and laughter.",
+        "Rat–Horse clash yet exciting tension.",
+        "If egos soften, this is magnetic.",
+        "West/East balance → 98/92 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 95,
+        "communication": 94,
+        "lifestyle": 88,
+        "long_term": 86,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Gemini-Goat": {
+      "overall": 69,
+      "summary": "Good Potential",
+      "insight": [
+        "Air–Earth contrast: thinker vs feeler.",
+        "Rat–Goat: different tempos yet creative synergy.",
+        "Mutual curiosity keeps connection alive.",
+        "West/East balance → 74/64 split."
+      ],
+      "scores": {
+        "core_vibe": 74,
+        "chemistry": 72,
+        "communication": 80,
+        "lifestyle": 70,
+        "long_term": 66,
+        "growth": 72
+      },
+      "color": "yellow"
+    },
+    "Gemini-Monkey": {
+      "overall": 99,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Air brilliance → witty, adventurous duo.",
+        "Rat–Monkey same trine → instant rapport.",
+        "Both love learning and variety; lifelong laughter.",
+        "West/East balance → 100/98 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 99,
+        "communication": 100,
+        "lifestyle": 94,
+        "long_term": 92,
+        "growth": 90
+      },
+      "color": "green"
+    },
+    "Gemini-Rooster": {
+      "overall": 76,
+      "summary": "Good Potential",
+      "insight": [
+        "Air–Air harmony but critical edge.",
+        "Rat–Rooster same trine → smart debates.",
+        "Respect each other's expertise.",
+        "West/East balance → 80/72 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 78,
+        "communication": 84,
+        "lifestyle": 74,
+        "long_term": 72,
+        "growth": 76
+      },
+      "color": "yellow"
+    },
+    "Gemini-Dog": {
+      "overall": 74,
+      "summary": "Good Potential",
+      "insight": [
+        "Air–Air can work with shared values.",
+        "Rat–Dog tension: ideals vs tactics.",
+        "Clear honesty keeps it strong.",
+        "West/East balance → 78/70 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 76,
+        "communication": 82,
+        "lifestyle": 70,
+        "long_term": 72,
+        "growth": 74
+      },
+      "color": "yellow"
+    },
+    "Gemini-Pig": {
+      "overall": 90,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Water → dreamer meets thinker.",
+        "Rat–Pig secret friends → natural trust.",
+        "Caring humor bridges any gaps.",
+        "West/East balance → 88/92 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 92,
+        "lifestyle": 84,
+        "long_term": 86,
+        "growth": 82
+      },
+      "color": "green"
+    }
+  }
+}

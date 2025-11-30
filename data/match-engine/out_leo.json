@@ -1,0 +1,232 @@
+{
+  "Leo-Rat": {
+    "Leo-Rat": {
+      "overall": 88,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Fire passion creates natural leadership and drive.",
+        "Rat–Rat doubles ambition and wit.",
+        "Fixed loyalty forms a powerful partnership when egos align.",
+        "West/East balance → 86/90 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 82,
+        "lifestyle": 86,
+        "long_term": 88,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Leo-Ox": {
+      "overall": 76,
+      "summary": "Good Potential",
+      "insight": [
+        "Fire–Earth contrast: pride meets patience.",
+        "Rat–Ox steady but different in tempo.",
+        "Shared goals work best with mutual respect.",
+        "West/East balance → 80/72 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 78,
+        "communication": 76,
+        "lifestyle": 74,
+        "long_term": 74,
+        "growth": 72
+      },
+      "color": "yellow"
+    },
+    "Leo-Tiger": {
+      "overall": 99,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Fire = blazing charisma.",
+        "Rat–Tiger different trines but share courage.",
+        "Inspiration, confidence, and chemistry overflow.",
+        "West/East balance → 98/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 99,
+        "communication": 96,
+        "lifestyle": 92,
+        "long_term": 94,
+        "growth": 90
+      },
+      "color": "green"
+    },
+    "Leo-Rabbit": {
+      "overall": 68,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Fire–Water can misread moods.",
+        "Rat–Rabbit cautious; Leo must soften approach.",
+        "Kindness builds long-term trust.",
+        "West/East balance → 72/64 split."
+      ],
+      "scores": {
+        "core_vibe": 72,
+        "chemistry": 68,
+        "communication": 66,
+        "lifestyle": 64,
+        "long_term": 64,
+        "growth": 68
+      },
+      "color": "yellow"
+    },
+    "Leo-Dragon": {
+      "overall": 97,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Fire brilliance: endless mutual admiration.",
+        "Rat–Dragon same trine → elite power duo.",
+        "Confidence and creativity fuel progress.",
+        "West/East balance → 96/98 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 94,
+        "lifestyle": 90,
+        "long_term": 94,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Leo-Snake": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Earth: warmth and wisdom.",
+        "Rat–Snake secret friends → shared loyalty.",
+        "Leo inspires; Snake refines and advises.",
+        "West/East balance → 84/88 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 84,
+        "lifestyle": 82,
+        "long_term": 86,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Leo-Horse": {
+      "overall": 95,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Fire = pure energy and charisma.",
+        "Rat–Horse clash adds excitement and flair.",
+        "Both crave freedom, making them equals in fire.",
+        "West/East balance → 96/94 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 96,
+        "communication": 92,
+        "lifestyle": 88,
+        "long_term": 90,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Leo-Goat": {
+      "overall": 73,
+      "summary": "Good Potential",
+      "insight": [
+        "Fire–Earth creates artistic tension.",
+        "Rat–Goat softens Leo's pride with charm.",
+        "Mutual admiration sustains this bond.",
+        "West/East balance → 76/70 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 76,
+        "communication": 78,
+        "lifestyle": 72,
+        "long_term": 70,
+        "growth": 74
+      },
+      "color": "yellow"
+    },
+    "Leo-Monkey": {
+      "overall": 98,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Air → dynamic and playful.",
+        "Rat–Monkey same trine → clever partners.",
+        "A power couple with humor and ambition.",
+        "West/East balance → 98/98 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 96,
+        "lifestyle": 90,
+        "long_term": 94,
+        "growth": 88
+      },
+      "color": "green"
+    },
+    "Leo-Rooster": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Air: warm yet analytical.",
+        "Rat–Rooster same trine → loyal thinkers.",
+        "Shared pride can cause sparks—mostly good ones.",
+        "West/East balance → 86/82 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 84,
+        "communication": 82,
+        "lifestyle": 80,
+        "long_term": 82,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Leo-Dog": {
+      "overall": 78,
+      "summary": "Good Potential",
+      "insight": [
+        "Fire–Air cooperation depends on respect.",
+        "Rat–Dog values differ but trust possible.",
+        "Shared courage builds loyalty.",
+        "West/East balance → 80/76 split."
+      ],
+      "scores": {
+        "core_vibe": 82,
+        "chemistry": 80,
+        "communication": 78,
+        "lifestyle": 76,
+        "long_term": 74,
+        "growth": 78
+      },
+      "color": "yellow"
+    },
+    "Leo-Pig": {
+      "overall": 90,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Water: Leo leads, Pig comforts.",
+        "Rat–Pig secret friends → genuine devotion.",
+        "Passionate, loyal, forgiving love story.",
+        "West/East balance → 88/92 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 92,
+        "communication": 86,
+        "lifestyle": 86,
+        "long_term": 90,
+        "growth": 82
+      },
+      "color": "green"
+    }
+  }
+}
