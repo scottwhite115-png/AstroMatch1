@@ -1,0 +1,1499 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@theme {
+  --color-rank-gold: rgb(251 191 36);
+  --color-rank-orange: rgb(249 115 22);
+  --color-rank-pink: rgb(236 72 153);
+  --color-rank-purple: rgb(168 85 247);
+  --color-rank-blue: rgb(59 130 246);
+  --color-rank-red: rgb(239 68 68);
+  --color-rank-gray: rgb(107 114 128);
+}
+
+:root {
+  /* Enhanced compatibility tier colors (deep, muted tones) */
+  --compat-soulmate: #064e3b;   /* deep green */
+  --compat-twin: #0f3d56;        /* deep blue */
+  --compat-excellent: #4a2f63;   /* deep violet */
+  --compat-good: #374151;        /* slate */
+  --compat-learning: #6b7280;    /* grey */
+  --compat-challenging: #7f1d1d; /* deep red */
+  --compat-incompatible: #3f3f46; /* dark grey */
+}
+
+/* Mobile viewport optimizations */
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus (iOS) */
+input, textarea, select {
+  font-size: 16px;
+}
+
+/* Override font size for first name input */
+.first-name-input {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for about me textarea */
+.about-me-textarea {
+  font-size: 1.25rem !important;
+}
+
+/* Override placeholder color for about me textarea - HIGHEST PRIORITY */
+textarea.about-me-textarea::placeholder,
+textarea.about-me-textarea::-webkit-input-placeholder,
+textarea.about-me-textarea::-moz-placeholder,
+textarea.about-me-textarea:-ms-input-placeholder,
+.light textarea.about-me-textarea::placeholder,
+.light textarea.about-me-textarea::-webkit-input-placeholder,
+.light textarea.about-me-textarea::-moz-placeholder,
+.light textarea.about-me-textarea:-ms-input-placeholder,
+.dark textarea.about-me-textarea::placeholder,
+.dark textarea.about-me-textarea::-webkit-input-placeholder,
+.dark textarea.about-me-textarea::-moz-placeholder,
+.dark textarea.about-me-textarea:-ms-input-placeholder,
+html textarea.about-me-textarea::placeholder,
+html textarea.about-me-textarea::-webkit-input-placeholder,
+html textarea.about-me-textarea::-moz-placeholder,
+html textarea.about-me-textarea:-ms-input-placeholder {
+  color: #5a5a5a !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #5a5a5a !important;
+}
+
+/* Override font size for birth date display */
+.birth-date-display {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for gender select */
+.gender-select {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for occupation input */
+.occupation-input {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for location input */
+.location-input {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for height select */
+.height-select {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for children select */
+.children-select {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for religion select */
+.religion-select {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for orientation select */
+.orientation-select {
+  font-size: 1.25rem !important;
+}
+
+/* Override font size for profile name in view tab */
+.profile-name-large {
+  font-size: 2.75rem !important;
+}
+
+/* Specific override for profile view page name and age */
+.bg-zinc-900 .profile-name-large {
+  font-size: 2.75rem !important;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant starlight (&:is(.starlight *));
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --color-primary: #ff6b6b;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #fef3f3;
+  --color-secondary-foreground: #1a1a1a;
+  --color-accent: #ff8787;
+  --color-accent-foreground: #ffffff;
+
+  --brand-gradient-primary: linear-gradient(to right, #f97316, #dc2626);
+  --brand-gradient-primary-starlight: linear-gradient(to right, #fb923c, #ef4444);
+  --brand-gradient-secondary: linear-gradient(to right, #a855f7, #ec4899);
+  --brand-gradient-secondary-starlight: linear-gradient(to right, #c084fc, #f472b6);
+  --brand-gradient-tertiary: linear-gradient(to right, #d946ef, #ec4899);
+  --brand-gradient-tertiary-starlight: linear-gradient(to right, #e879f9, #f472b6);
+
+  --color-success: #10b981;
+  --color-success-foreground: #ffffff;
+  --color-warning: #f59e0b;
+  --color-warning-foreground: #ffffff;
+  --color-info: #3b82f6;
+  --color-info-foreground: #ffffff;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.269 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.985 0 0);
+  --border: oklch(0.269 0 0);
+  --input: oklch(0.269 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.145 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+html,
+body {
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.mobile-container {
+  max-width: 375px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--color-background);
+}
+
+.status-bar {
+  background: var(--color-background);
+  padding: 8px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.photo-slot {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-placeholder {
+  background: #e5e5ea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-placeholder-icon {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #c7c7cc;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.delete-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.astrology-cosmic-bg {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.astrology-cosmic-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(25, 25, 112, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.astrology-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.25rem, 5vw, 2.5rem);
+  letter-spacing: -0.02em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 2;
+  padding: 0.5rem;
+}
+
+.astrology-western {
+  background: var(--brand-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.astrology-chinese {
+  background: var(--brand-gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.astrology-glow {
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.1));
+}
+
+.astrology-heading-primary {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: clamp(1.125rem, 4vw, 1.5rem);
+  letter-spacing: -0.01em;
+  background: var(--brand-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 15px rgba(255, 107, 107, 0.2);
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.05));
+}
+
+.astrology-heading-secondary {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: clamp(1rem, 3.5vw, 1.25rem);
+  letter-spacing: -0.01em;
+  background: var(--brand-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 12px rgba(255, 107, 107, 0.2);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.05));
+}
+
+.astrology-heading-tertiary {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  font-size: clamp(0.875rem, 3vw, 1.125rem);
+  letter-spacing: -0.005em;
+  background: var(--brand-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 10px rgba(255, 107, 107, 0.2);
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.05));
+}
+
+.zodiac-sign-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.zodiac-sign-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.1) 0%,
+    rgba(255, 107, 107, 0.1) 50%,
+    rgba(78, 205, 196, 0.1) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.zodiac-sign-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.2);
+}
+
+.zodiac-sign-card:hover::before {
+  opacity: 1;
+}
+
+/* Message Profile Card Glow Effect */
+.message-profile-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.message-profile-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 215, 0, 0.15) 0%,
+    rgba(255, 165, 0, 0.15) 50%,
+    rgba(255, 140, 0, 0.15) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 0.75rem;
+}
+
+.message-profile-card:active::before,
+.message-profile-card.active::before {
+  opacity: 1;
+}
+
+.message-profile-card:active {
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+}
+
+.message-profile-card.active {
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+}
+
+
+.zodiac-symbol {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 0.75rem;
+  background: #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  color: white;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.zodiac-symbol:hover {
+  background: #2a2a2a;
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+}
+
+.zodiac-symbol.aries::before {
+  content: "♈";
+}
+.zodiac-symbol.taurus::before {
+  content: "♉";
+}
+.zodiac-symbol.gemini::before {
+  content: "♊";
+}
+.zodiac-symbol.cancer::before {
+  content: "♋";
+}
+.zodiac-symbol.leo::before {
+  content: "♌";
+}
+.zodiac-symbol.virgo::before {
+  content: "♍";
+}
+.zodiac-symbol.libra::before {
+  content: "♎";
+}
+.zodiac-symbol.scorpio::before {
+  content: "♏";
+}
+.zodiac-symbol.sagittarius::before {
+  content: "♐";
+}
+.zodiac-symbol.capricorn::before {
+  content: "♑";
+}
+.zodiac-symbol.aquarius::before {
+  content: "♒";
+}
+.zodiac-symbol.pisces::before {
+  content: "♓";
+}
+
+.zodiac-name {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+  position: relative;
+  z-index: 2;
+}
+
+.zodiac-dates {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.01em;
+  position: relative;
+  z-index: 2;
+}
+
+.zodiac-list-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.5rem 0.875rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(156, 163, 175, 0.4);
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  text-align: left;
+  min-height: 52px;
+}
+
+.zodiac-list-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(107, 114, 128, 0.5);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.zodiac-list-item.western:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(107, 114, 128, 0.5);
+}
+
+.zodiac-list-item.western:hover .zodiac-symbol-small {
+  background: #2a2a2a;
+  border-color: rgba(156, 163, 175, 0.4);
+}
+
+.zodiac-list-item.western .zodiac-name-small {
+  font-weight: 600;
+}
+
+.zodiac-list-item.western:hover .zodiac-name-small {
+  font-weight: 600;
+}
+
+.zodiac-list-item.chinese:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(107, 114, 128, 0.5);
+}
+
+.zodiac-list-item.chinese:hover .zodiac-symbol-small {
+  background: #2a2a2a;
+  border-color: rgba(156, 163, 175, 0.4);
+}
+
+.zodiac-list-item.chinese .zodiac-name-small {
+  font-weight: 600;
+}
+
+.zodiac-list-item.chinese:hover .zodiac-name-small {
+  font-weight: 600;
+}
+
+.zodiac-symbol-small {
+  width: 36px;
+  height: 36px;
+  background: #1a1a1a;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.125rem;
+  color: white;
+  font-weight: 600;
+  border: 2px solid rgba(156, 163, 175, 0.3);
+  flex-shrink: 0;
+}
+
+.zodiac-name-small {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zodiac-dates-small {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 400;
+  font-size: 0.625rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.astro-highlight-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  outline: none;
+}
+
+.astro-highlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(251, 191, 36, 0.14) 0%,
+    rgba(249, 115, 22, 0.14) 45%,
+    rgba(236, 72, 153, 0.14) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.astro-highlight-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.astro-highlight-card:hover,
+.astro-highlight-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(249, 115, 22, 0.18);
+}
+
+.astro-highlight-card:hover::before,
+.astro-highlight-card:focus-visible::before {
+  opacity: 1;
+}
+
+.astro-highlight-card:focus-visible {
+  outline: none;
+}
+
+.astro-highlight-card:active,
+.astro-highlight-card.is-selected {
+  transform: translateY(0);
+  box-shadow: 0 10px 22px rgba(249, 115, 22, 0.18);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.85) 0%, rgba(249, 115, 22, 0.82) 50%, rgba(236, 72, 153, 0.78) 100%);
+  border-color: rgba(249, 115, 22, 0.65) !important;
+}
+
+.astro-highlight-card:active::before,
+.astro-highlight-card.is-selected::before {
+  opacity: 1;
+}
+
+.light .astro-highlight-card::before {
+  background: linear-gradient(
+    135deg,
+    rgba(253, 230, 138, 0.35) 0%,
+    rgba(251, 191, 36, 0.3) 45%,
+    rgba(249, 115, 22, 0.2) 100%
+  );
+}
+
+.light .astro-highlight-card:hover,
+.light .astro-highlight-card:focus-visible {
+  box-shadow: 0 18px 34px rgba(249, 115, 22, 0.18);
+}
+
+.light .astro-highlight-card:active,
+.light .astro-highlight-card.is-selected {
+  background: linear-gradient(135deg, rgba(253, 230, 138, 1) 0%, rgba(251, 191, 36, 0.95) 45%, rgba(249, 115, 22, 0.85) 100%);
+  border-color: rgba(251, 191, 36, 0.7) !important;
+}
+
+/* Light mode styles for zodiac buttons */
+.light .zodiac-list-item {
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(209, 213, 219, 0.8);
+}
+
+.light .zodiac-list-item:hover {
+  background: rgba(249, 250, 251, 0.95);
+  border-color: rgba(156, 163, 175, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.light .zodiac-name-small {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+.light .zodiac-dates-small {
+  color: rgba(75, 85, 99, 0.8);
+}
+
+.light .zodiac-symbol-small {
+  background: rgba(243, 244, 246, 0.8);
+  border-color: rgba(209, 213, 219, 0.8);
+  color: rgba(17, 24, 39, 0.9);
+}
+
+/* Force all text in zodiac buttons to black in light mode */
+.light .zodiac-list-item * {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+.light .zodiac-list-item svg {
+  stroke: rgba(17, 24, 39, 0.9) !important;
+  fill: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Override white text in light mode on astrology page */
+:global(.light) .zodiac-info span {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) svg.zodiac-symbol {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) .astrology-page .text-white {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) .astrology-page svg.text-white {
+  stroke: rgba(17, 24, 39, 0.9) !important;
+  fill: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) .astrology-page .text-white\/95 {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Light mode for combination pages (144 sign pages) */
+:global(.light) .combination-page {
+  background: #ffffff !important;
+}
+
+:global(.light) .combination-page .astrology-cosmic-bg {
+  background: #ffffff !important;
+}
+
+:global(.light) .combination-page .text-white {
+  color: rgba(17, 24, 39, 0.95) !important;
+}
+
+:global(.light) .combination-page .text-white\/95 {
+  color: rgba(17, 24, 39, 0.95) !important;
+}
+
+:global(.light) .combination-page .text-white\/90 {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) .combination-page .text-white\/80 {
+  color: rgba(17, 24, 39, 0.85) !important;
+}
+
+:global(.light) .combination-page .text-white\/70 {
+  color: rgba(75, 85, 99, 0.9) !important;
+}
+
+:global(.light) .combination-page .text-white\/60 {
+  color: rgba(107, 114, 128, 0.9) !important;
+}
+
+:global(.light) .combination-page .text-white\/50 {
+  color: rgba(107, 114, 128, 0.8) !important;
+}
+
+:global(.light) .combination-page .text-white\/40 {
+  color: rgba(156, 163, 175, 0.8) !important;
+}
+
+:global(.light) .combination-page svg {
+  stroke: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) .combination-page button svg {
+  stroke: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Hide celestial particles in light mode */
+:global(.light) .combination-page .celestial-particles {
+  display: none !important;
+}
+
+/* Background colors in light mode */
+:global(.light) .combination-page .bg-white\/5 {
+  background: rgba(243, 244, 246, 0.8) !important;
+}
+
+:global(.light) .combination-page .bg-white\/10 {
+  background: rgba(229, 231, 235, 0.8) !important;
+}
+
+:global(.light) .combination-page .bg-white\/20 {
+  background: rgba(209, 213, 219, 0.6) !important;
+}
+
+/* Border colors in light mode */
+:global(.light) .combination-page .border-white\/10 {
+  border-color: rgba(209, 213, 219, 0.8) !important;
+}
+
+:global(.light) .combination-page .border-white\/20 {
+  border-color: rgba(156, 163, 175, 0.6) !important;
+}
+
+
+/* Force all text in zodiac buttons to black in light mode */
+:global(.light) .zodiac-list-item .text-white,
+:global(.light) .zodiac-list-item .text-white\/95 {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+:global(.light) .zodiac-list-item svg.text-white {
+  stroke: rgba(17, 24, 39, 0.9) !important;
+  fill: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Change white text in compatibility sections to black in light mode */
+.light .text-white\/90,
+.light .text-white\/70,
+.light .text-white\/60 {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Ensure all text in compatibility cards is dark in light mode */
+.light .zodiac-sign-card p,
+.light .zodiac-sign-card h3,
+.light .zodiac-sign-card span {
+  color: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Override zodiac-name and zodiac-dates colors in light mode combination pages */
+:global(.light) .combination-page .zodiac-name {
+  color: rgba(17, 24, 39, 0.95) !important;
+}
+
+:global(.light) .combination-page .zodiac-dates {
+  color: rgba(75, 85, 99, 0.9) !important;
+}
+
+:global(.light) .combination-page .zodiac-symbol {
+  color: rgba(17, 24, 39, 0.95) !important;
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  border: 2px solid rgba(17, 24, 39, 0.1) !important;
+}
+
+/* Additional specificity for light mode zodiac symbols */
+:global(.light).combination-page .zodiac-symbol,
+.light .combination-page .zodiac-symbol {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+:global(.light) .combination-page .astrology-heading-primary,
+:global(.light) .combination-page .astrology-heading-secondary,
+:global(.light) .combination-page .astrology-heading-tertiary {
+  color: rgba(17, 24, 39, 0.95) !important;
+}
+
+.light .bg-white\/5 {
+  background: rgba(243, 244, 246, 0.5) !important;
+}
+
+.light .border-white\/10 {
+  border-color: rgba(209, 213, 219, 0.8) !important;
+}
+
+/* Make badge text darker in light mode */
+.light .text-green-300 {
+  color: #166534 !important;
+}
+
+.light .text-yellow-300 {
+  color: #854d0e !important;
+}
+
+.light .text-red-300 {
+  color: #991b1b !important;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+div[class*="overflow-y"],
+div[class*="overflow-auto"],
+div[class*="overflow-scroll"] {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+div[class*="overflow-y"]::-webkit-scrollbar,
+div[class*="overflow-auto"]::-webkit-scrollbar,
+div[class*="overflow-scroll"]::-webkit-scrollbar {
+  display: none;
+}
+
+.starlight .zodiac-name-small {
+  color: white;
+}
+
+.light {
+  background: white !important;
+}
+
+.light body,
+.light
+  p:not([class*="bg-gradient"]):not([class*="text-transparent"]):not([class*="text-yellow"]):not(
+    [class*="text-orange"]
+  ):not([class*="text-red"]):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-purple"]):not(
+    [class*="text-pink"]
+  ):not([class*="match-percentage-text"]):not([class*="text-white"]),
+.light
+  span:not([class*="bg-gradient"]):not([class*="text-transparent"]):not([class*="text-yellow"]):not(
+    [class*="text-orange"]
+  ):not([class*="text-red"]):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-purple"]):not(
+    [class*="text-pink"]
+  ):not([class*="match-percentage-text"]):not([class*="text-white"]):not([class*="text-black/"]):not([class*="text-gray"]):not([class*="photo-overlay-text"]),
+.light
+  label:not([class*="bg-gradient"]):not([class*="text-transparent"]):not([class*="text-yellow"]):not(
+    [class*="text-orange"]
+  ):not([class*="text-red"]):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-purple"]):not(
+    [class*="text-pink"]
+  ):not([class*="match-percentage-text"]):not([class*="text-white"]),
+.light
+  div:not([class*="bg-gradient"]):not([class*="text-transparent"]):not([class*="text-yellow"]):not(
+    [class*="text-orange"]
+  ):not([class*="text-red"]):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-purple"]):not(
+    [class*="text-pink"]
+  ):not([class*="match-percentage-text"]):not([class*="photo-overlay"]):not([class*="text-white"]):not([class*="photo-overlay-text"]) {
+  color: #1a1a1a !important;
+}
+
+.light input,
+.light textarea,
+.light select,
+.light option {
+  color: #1a1a1a !important;
+}
+
+.light input::placeholder,
+.light textarea::placeholder,
+.light select::placeholder {
+  color: #6b7280 !important;
+}
+
+.light select option,
+.light option,
+.light [role="option"],
+.light [role="listbox"],
+.light [role="combobox"] {
+  color: #1a1a1a !important;
+  background-color: white !important;
+}
+
+/* Force white background for all select dropdowns in light mode */
+.light .height-select option,
+.light .children-select option,
+.light .religion-select option,
+.light .gender-select option,
+.light .orientation-select option {
+  background-color: white !important;
+  color: #1a1a1a !important;
+}
+
+.light svg.lucide-chevron-left,
+.light button svg.lucide-chevron-left,
+.light a svg.lucide-chevron-left {
+  color: #4a4a4a !important;
+  stroke: #4a4a4a !important;
+}
+
+.light svg.lucide-settings,
+.light svg.lucide-settings-2,
+.light button svg.lucide-settings,
+.light button svg.lucide-settings-2 {
+  color: #4a4a4a !important;
+  stroke: #4a4a4a !important;
+}
+
+.light svg[class*="text-emerald"],
+.light svg[class*="text-cyan"],
+.light svg[class*="text-red"],
+.light svg[class*="text-purple"],
+.light svg[class*="text-pink"],
+.light svg[class*="text-blue"],
+.light svg[class*="text-green"] {
+  color: inherit !important;
+  fill: currentColor !important;
+}
+
+/* Orange SVGs in light mode - keep orange color */
+.light svg[class*="text-orange"],
+.light svg.text-orange-500 {
+  color: rgb(249 115 22) !important;
+  fill: rgb(249 115 22) !important;
+}
+
+.light svg.text-yellow-500,
+.light .text-yellow-500 svg,
+.light [class*="text-yellow"] svg {
+  color: rgb(234 179 8) !important;
+  fill: rgb(234 179 8) !important;
+  stroke: rgb(234 179 8) !important;
+}
+
+.light [class*="border-emerald"],
+.light [class*="border-cyan"],
+.light [class*="border-orange"],
+.light [class*="border-yellow"],
+.light [class*="border-red"],
+.light [class*="border-purple"],
+.light [class*="border-pink"],
+.light [class*="border-blue"],
+.light [class*="border-green"] {
+  border-color: inherit !important;
+}
+
+.profile-builder-container {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fef3f3 0%, #ffffff 100%);
+}
+
+.profile-builder-container.starlight-bg {
+  background: var(--brand-gradient-secondary-starlight);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-builder-container.starlight-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(75, 0, 130, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(25, 25, 112, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.profile-builder-container.starlight-bg h1,
+.profile-builder-container.starlight-bg h2,
+.profile-builder-container.starlight-bg h3,
+.profile-builder-container.starlight-bg p,
+.profile-builder-container.starlight-bg label,
+.profile-builder-container.starlight-bg span {
+  color: white;
+}
+
+.profile-builder-container.starlight-bg .text-gray-900 {
+  color: white !important;
+}
+
+.profile-builder-container.starlight-bg .text-gray-600 {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.profile-builder-container.starlight-bg .text-gray-500 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.profile-builder-container.starlight-bg .sticky {
+  background: rgba(10, 10, 10, 0.8) !important;
+  backdrop-filter: blur(10px);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.profile-builder-container.starlight-bg .photo-upload-slot {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.profile-builder-container.starlight-bg .photo-upload-slot:hover {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.profile-builder-container.starlight-bg .interest-tag {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.profile-builder-container.starlight-bg .interest-tag:hover {
+  border-color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.profile-builder-container.starlight-bg .interest-tag.selected {
+  background: #ff6b6b;
+  border-color: #ff6b6b;
+  color: white;
+}
+
+.photo-upload-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.photo-upload-slot {
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  background: #f5f5f5;
+  border: 2px dashed #e0e0e0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.photo-upload-slot:hover {
+  border-color: #ff6b6b;
+  background: #fff5f5;
+}
+
+.photo-upload-slot.has-image {
+  border: none;
+}
+
+.photo-upload-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.photo-delete-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.photo-delete-btn:hover {
+  background: rgba(255, 107, 107, 0.9);
+  transform: scale(1.1);
+}
+
+.interest-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 2px solid #e0e0e0;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.interest-tag:hover {
+  border-color: #ff6b6b;
+  background: #fff5f5;
+}
+
+.interest-tag.selected {
+  background: #ff6b6b;
+  border-color: #ff6b6b;
+  color: white;
+}
+
+.progress-bar {
+  height: 4px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--brand-gradient-primary);
+  transition: width 0.3s ease;
+}
+
+.profile-view-card,
+.profile-view-card:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+  border-color: inherit !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.match-percentage-text {
+  color: #ffffff !important;
+}
+
+/* Hide Next.js dev indicator/badge */
+nextjs-portal,
+[data-nextjs-toast],
+[data-nextjs-dialog-overlay],
+.__next-build-indicator,
+.nextjs-error-indicator,
+[class*="build-error"],
+[class*="build-indicator"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+/* Improve mobile scrolling */
+html,
+body {
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overflow-x: hidden !important;
+  overscroll-behavior-x: none !important;
+}
+
+body > div {
+  -webkit-overflow-scrolling: touch !important;
+}
+
+/* Prevent horizontal scrolling and page swiping */
+html {
+  overscroll-behavior-x: none !important;
+}
+
+body {
+  overscroll-behavior-x: none !important;
+}
+
+#__next,
+main,
+[role="main"] {
+  overflow-x: hidden !important;
+  touch-action: pan-y !important;
+  overscroll-behavior-x: none !important;
+}
+
+/* Ensure pages can scroll on mobile */
+[class*="overflow-y-auto"],
+[class*="overflow-auto"] {
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+  overscroll-behavior: contain !important;
+  overflow-x: hidden !important;
+}
+
+/* Force white text for photo overlay - applies in ALL themes */
+.photo-overlay-text,
+.photo-overlay-text *,
+.photo-overlay-text div,
+.photo-overlay-text span,
+.light .photo-overlay-text,
+.light .photo-overlay-text *,
+.light .photo-overlay-text div,
+.light .photo-overlay-text span,
+.bg-white .photo-overlay-text,
+.bg-white .photo-overlay-text *,
+.bg-white .photo-overlay-text div,
+.bg-white .photo-overlay-text span {
+  color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Additional rule to override any light mode text color rules for photo overlay children */
+.light .photo-overlay-text > *,
+.light .photo-overlay-text span,
+.light .photo-overlay-text div {
+  color: #ffffff !important;
+}
+
+/* Force soft white text for profile info */
+.profile-info-text,
+.profile-info-text *,
+.profile-info-text div,
+.profile-info-text span,
+.light .profile-info-text,
+.light .profile-info-text *,
+.light .profile-info-text div,
+.light .profile-info-text span {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Dynamic border radius for profile photos */
+.profile-photo-rounded {
+  border-radius: 12px !important;
+  border-bottom-left-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.profile-photo-rounded-top-only {
+  border-radius: 12px 12px 0 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+/* Force white text for relationship goal pills in light mode */
+.light .relationship-goal-pill,
+.light .relationship-goal-pill span,
+.light .relationship-goal-pill * {
+  color: white !important;
+}
+
+/* Override any conflicting styles */
+.profile-page .light .relationship-goal-pill,
+.profile-page .light .relationship-goal-pill span,
+.profile-page .light .relationship-goal-pill * {
+  color: white !important;
+}
+
+/* Most specific selector for relationship goal pills */
+.light [data-text-color="white"],
+.light [data-text-color="white"] span,
+.light [data-text-color="white"] * {
+  color: white !important;
+  -webkit-text-fill-color: white !important;
+}
+
+/* HIGHEST PRIORITY: Force white text for photo overlay in ALL modes including light mode */
+.photo-overlay-text.text-white,
+.photo-overlay-text .text-white,
+.photo-overlay-text span.text-white,
+.light .photo-overlay-text,
+.light .photo-overlay-text.text-white,
+.light .photo-overlay-text .text-white,
+.light .photo-overlay-text span,
+.light .photo-overlay-text span.text-white {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Force match ranking colors to override theme text colors */
+.match-ranking-colored {
+  color: var(--ranking-color) !important;
+  -webkit-text-fill-color: var(--ranking-color) !important;
+}
+
+.light .match-ranking-colored,
+.dark .match-ranking-colored {
+  color: var(--ranking-color) !important;
+  -webkit-text-fill-color: var(--ranking-color) !important;
+}
+
+/* Force match label colors in light mode */
+.light .match-label-soulmate {
+  color: #d97706 !important;
+  -webkit-text-fill-color: #d97706 !important;
+}
+
+.light .match-label-twin-flame {
+  color: #c026d3 !important;
+  -webkit-text-fill-color: #c026d3 !important;
+}
+
+.light .match-label-harmonious {
+  color: #059669 !important;
+  -webkit-text-fill-color: #059669 !important;
+}
+
+.light .match-label-neutral {
+  color: #42526B !important;
+  -webkit-text-fill-color: #42526B !important;
+}
+
+.dark .match-label-neutral {
+  color: #E5E7EB !important;
+  -webkit-text-fill-color: #E5E7EB !important;
+}
+
+.light .match-label-opposites {
+  color: #F97316 !important;
+  -webkit-text-fill-color: #F97316 !important;
+}
+
+.dark .match-label-opposites {
+  color: #FEF3C7 !important;
+  -webkit-text-fill-color: #FEF3C7 !important;
+}
+
+.light .match-label-difficult {
+  color: #dc2626 !important;
+  -webkit-text-fill-color: #dc2626 !important;
+}

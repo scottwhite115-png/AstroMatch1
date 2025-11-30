@@ -1,0 +1,25 @@
+{
+  "themes": {
+    "spark": "instant chemistry",
+    "builder": "steady growth",
+    "brains": "clever teamwork",
+    "royal": "high-visibility duo",
+    "cozy": "home-and-hearth",
+    "passion": "intense connection",
+    "harmony": "natural balance",
+    "adventure": "shared exploration",
+    "trust": "deep loyalty",
+    "vision": "big dreams together"
+  },
+  "warnings": {
+    "ego": "ego clashes",
+    "impulse": "impulsive choices",
+    "drift": "emotional drifting",
+    "control": "power struggles",
+    "pace": "mismatch of pace",
+    "detached": "emotional distance",
+    "clash": "fundamental differences",
+    "restless": "need for stability"
+  }
+}
+

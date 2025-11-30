@@ -1,0 +1,125 @@
+
+> my-v0-project@0.1.0 dev
+> next dev -H 0.0.0.0
+
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://0.0.0.0:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     · allowedDevOrigins
+
+ ✓ Starting...
+ ✓ Ready in 1420ms
+ ✓ Compiled /middleware in 90ms
+ ✓ Compiled (80 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 1283ms (681 modules)
+ GET / 200 in 1855ms
+ ⚠ Cross origin request detected from 192.168.1.104 to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ ✓ Compiled /matches in 315ms (738 modules)
+ GET /matches 200 in 390ms
+ GET /matches 200 in 38ms
+ ✓ Compiled in 632ms (738 modules)
+ GET /matches 200 in 79ms
+ GET /matches 200 in 68ms
+ ⨯ ./lib/compat/engine.ts
+Module parse failed: Identifier 'westernSection' has already been declared (1061:10)
+|     const chineseLine = (chineseSection === null || chineseSection === void 0 ? void 0 : chineseSection.headingLine) || "".concat(animalALabel, " \xd7 ").concat(animalBLabel);
+|     // Build Western section using new buildWesternSection function
+>     const westernSection = buildWesternSection(signALabel, signBLabel);
+|     const westernLine = westernSection.headingLine;
+|     const westernDescription = westernSection.meaningLine;
+
+Import trace for requested module:
+./lib/compat/engine.ts
+./app/matches/page.tsx
+ ⨯ ./lib/compat/engine.ts
+Module parse failed: Identifier 'westernSection' has already been declared (1061:10)
+|     const chineseLine = (chineseSection === null || chineseSection === void 0 ? void 0 : chineseSection.headingLine) || "".concat(animalALabel, " \xd7 ").concat(animalBLabel);
+|     // Build Western section using new buildWesternSection function
+>     const westernSection = buildWesternSection(signALabel, signBLabel);
+|     const westernLine = westernSection.headingLine;
+|     const westernDescription = westernSection.meaningLine;
+
+Import trace for requested module:
+./lib/compat/engine.ts
+./app/matches/page.tsx
+ ⨯ ./lib/compat/engine.ts
+Module parse failed: Identifier 'westernSection' has already been declared (1061:10)
+|     const chineseLine = (chineseSection === null || chineseSection === void 0 ? void 0 : chineseSection.headingLine) || "".concat(animalALabel, " \xd7 ").concat(animalBLabel);
+|     // Build Western section using new buildWesternSection function
+>     const westernSection = buildWesternSection(signALabel, signBLabel);
+|     const westernLine = westernSection.headingLine;
+|     const westernDescription = westernSection.meaningLine;
+
+Import trace for requested module:
+./lib/compat/engine.ts
+./app/matches/page.tsx
+ ○ Compiling /_not-found ...
+ ⨯ ./lib/compat/engine.ts
+Module parse failed: Identifier 'westernSection' has already been declared (1061:10)
+|     const chineseLine = (chineseSection === null || chineseSection === void 0 ? void 0 : chineseSection.headingLine) || "".concat(animalALabel, " \xd7 ").concat(animalBLabel);
+|     // Build Western section using new buildWesternSection function
+>     const westernSection = buildWesternSection(signALabel, signBLabel);
+|     const westernLine = westernSection.headingLine;
+|     const westernDescription = westernSection.meaningLine;
+
+Import trace for requested module:
+./lib/compat/engine.ts
+./app/matches/page.tsx
+ ⨯ ./lib/compat/engine.ts
+Module parse failed: Identifier 'westernSection' has already been declared (1061:10)
+|     const chineseLine = (chineseSection === null || chineseSection === void 0 ? void 0 : chineseSection.headingLine) || "".concat(animalALabel, " \xd7 ").concat(animalBLabel);
+|     // Build Western section using new buildWesternSection function
+>     const westernSection = buildWesternSection(signALabel, signBLabel);
+|     const westernLine = westernSection.headingLine;
+|     const westernDescription = westernSection.meaningLine;
+
+Import trace for requested module:
+./lib/compat/engine.ts
+./app/matches/page.tsx
+ GET /astrology 500 in 2653ms
+ GET /astrology 500 in 12ms
+ GET /astrology 500 in 18ms
+ GET /astrology 500 in 18ms
+ GET /astrology 500 in 16ms
+ GET /matches 500 in 70ms
+ ⨯ ./lib/compat/engine.ts
+Module parse failed: Identifier 'westernSection' has already been declared (1052:10)
+|     const chineseLine = chineseSection?.headingLine || `${animalALabel} × ${animalBLabel}`;
+|     // Build Western section using new buildWesternSection function
+>     const westernSection = buildWesternSection(signALabel, signBLabel);
+|     const westernLine = westernSection.headingLine;
+|     const westernDescription = westernSection.meaningLine;
+
+Import trace for requested module:
+./lib/compat/engine.ts
+./app/matches/page.tsx
+ GET / 500 in 195ms
+ ✓ Compiled /_not-found in 876ms (1072 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET /_next/static/webpack/4326fa3c0f357992.webpack.hot-update.json 404 in 676ms
+ GET / 200 in 40ms
+ GET /matches 200 in 20ms
+ ✓ Compiled /astrology in 61ms (479 modules)
+ GET /astrology 200 in 115ms
+ GET /astrology 200 in 8ms
+ ✓ Compiled /astrology/guide in 177ms (1071 modules)
+ GET /astrology/guide 200 in 234ms
+ ✓ Compiled /astrology/guide/aries in 143ms (1078 modules)
+ GET /astrology/guide/aries 200 in 172ms
+ ✓ Compiled in 217ms (1092 modules)
+ GET /astrology/guide/aries 200 in 28ms
+ ✓ Compiled /astrology/guide/next in 278ms (1090 modules)
+ GET /astrology/guide/next 200 in 322ms
+ GET /astrology/guide/next 200 in 27ms
+ ✓ Compiled /astrology/guide/next/ox in 171ms (1085 modules)
+ GET /astrology/guide/next/ox 200 in 197ms
+ GET /matches 200 in 26ms
+ ✓ Compiled in 250ms (605 modules)
+ GET /matches 200 in 106ms
+ ✓ Compiled in 340ms (605 modules)
+ GET /matches 200 in 25ms
+[?25h

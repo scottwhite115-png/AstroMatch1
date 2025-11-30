@@ -1,0 +1,232 @@
+{
+  "Taurus-Rat": {
+    "Taurus-Rat": {
+      "overall": 82,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Earth steadiness → loyal, practical pair.",
+        "Rat–Rat kinship supports shared ambition and resourcefulness.",
+        "Fixed sign resolve: set goals early and stick to them.",
+        "West/East balance → 80/85 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 82,
+        "communication": 78,
+        "lifestyle": 84,
+        "long_term": 86,
+        "growth": 72
+      },
+      "color": "green"
+    },
+    "Taurus-Ox": {
+      "overall": 88,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Earth harmony favors security and comfort.",
+        "Rat–Ox complement: Ox steadies, Rat strategizes.",
+        "Fixed + Fixed: patience required, but dependable.",
+        "West/East balance → 82/93 split."
+      ],
+      "scores": {
+        "core_vibe": 92,
+        "chemistry": 84,
+        "communication": 77,
+        "lifestyle": 90,
+        "long_term": 90,
+        "growth": 70
+      },
+      "color": "green"
+    },
+    "Taurus-Tiger": {
+      "overall": 63,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Earth vs Fire pace: steady builder meets bold sprinter.",
+        "Rat–Tiger different trines → respect independence.",
+        "Compromise on risk-taking strengthens trust.",
+        "West/East balance → 72/55 split."
+      ],
+      "scores": {
+        "core_vibe": 68,
+        "chemistry": 64,
+        "communication": 62,
+        "lifestyle": 60,
+        "long_term": 61,
+        "growth": 66
+      },
+      "color": "yellow"
+    },
+    "Taurus-Rabbit": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Water complement → gentle, supportive rhythm.",
+        "Rat–Rabbit cautious but compatible when trust forms.",
+        "Home, art, and comfort thrive together.",
+        "West/East balance → 78/94 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 82,
+        "communication": 80,
+        "lifestyle": 90,
+        "long_term": 89,
+        "growth": 76
+      },
+      "color": "green"
+    },
+    "Taurus-Dragon": {
+      "overall": 70,
+      "summary": "Good Potential",
+      "insight": [
+        "Earth stabilizes Dragon's grand plans.",
+        "Rat–Dragon same trine → shared momentum.",
+        "Agree on timelines: steady steps toward big goals.",
+        "West/East balance → 76/86 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 74,
+        "communication": 70,
+        "lifestyle": 72,
+        "long_term": 69,
+        "growth": 71
+      },
+      "color": "yellow"
+    },
+    "Taurus-Snake": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Earth ease with sensual depth.",
+        "Rat–Snake secret-friend bond → subtle, loyal support.",
+        "Refined tastes; patient intimacy grows strong.",
+        "West/East balance → 85/98 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 92,
+        "communication": 84,
+        "lifestyle": 94,
+        "long_term": 93,
+        "growth": 80
+      },
+      "color": "green"
+    },
+    "Taurus-Horse": {
+      "overall": 58,
+      "summary": "Challenging",
+      "insight": [
+        "Earth–Fire friction over pace and freedom.",
+        "Rat–Horse clash: aims and methods differ.",
+        "Clear roles and space are essential.",
+        "West/East balance → 70/46 split."
+      ],
+      "scores": {
+        "core_vibe": 62,
+        "chemistry": 58,
+        "communication": 57,
+        "lifestyle": 55,
+        "long_term": 52,
+        "growth": 60
+      },
+      "color": "red"
+    },
+    "Taurus-Goat": {
+      "overall": 90,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Earth comfort with artistic flair.",
+        "Rat–Goat: different styles, but Taurus anchors harmony.",
+        "Shared love of beauty, food, traditions.",
+        "West/East balance → 86/94 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 90,
+        "communication": 84,
+        "lifestyle": 95,
+        "long_term": 92,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Taurus-Monkey": {
+      "overall": 72,
+      "summary": "Good Potential",
+      "insight": [
+        "Earth–Air: practical builder meets clever improvisor.",
+        "Rat–Monkey same trine → witty teamwork.",
+        "Set shared budgets; keep playfulness alive.",
+        "West/East balance → 78/86 split."
+      ],
+      "scores": {
+        "core_vibe": 82,
+        "chemistry": 76,
+        "communication": 75,
+        "lifestyle": 70,
+        "long_term": 68,
+        "growth": 73
+      },
+      "color": "yellow"
+    },
+    "Taurus-Rooster": {
+      "overall": 88,
+      "summary": "Great Match",
+      "insight": [
+        "Earth–Air can align on craft and quality.",
+        "Rat–Rooster same trine → mutual respect and precision.",
+        "Strong work ethic; tidy, goal-focused life.",
+        "West/East balance → 80/95 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 82,
+        "lifestyle": 88,
+        "long_term": 90,
+        "growth": 74
+      },
+      "color": "green"
+    },
+    "Taurus-Dog": {
+      "overall": 84,
+      "summary": "Great Match",
+      "insight": [
+        "Earth with Air/Fire Dog: loyal, principled pair.",
+        "Rat–Dog can differ, but fairness prevails.",
+        "Shared duty and care build a warm home.",
+        "West/East balance → 78/90 split."
+      ],
+      "scores": {
+        "core_vibe": 88,
+        "chemistry": 82,
+        "communication": 80,
+        "lifestyle": 86,
+        "long_term": 87,
+        "growth": 75
+      },
+      "color": "green"
+    },
+    "Taurus-Pig": {
+      "overall": 91,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Earth–Water tenderness; generosity flows both ways.",
+        "Rat–Pig secret-friend vibe → true allies in life.",
+        "Comfort, cuisine, and devotion thrive.",
+        "West/East balance → 84/98 split."
+      ],
+      "scores": {
+        "core_vibe": 95,
+        "chemistry": 92,
+        "communication": 86,
+        "lifestyle": 94,
+        "long_term": 93,
+        "growth": 82
+      },
+      "color": "green"
+    }
+  }
+}

@@ -1,1 +1,6 @@
-{}
+{
+  "src/lib/matchEngine.ts -> @/lib/compat/engine": {
+    "id": "src/lib/matchEngine.ts -> @/lib/compat/engine",
+    "files": []
+  }
+}
