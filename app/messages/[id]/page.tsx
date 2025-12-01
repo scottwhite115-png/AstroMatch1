@@ -442,6 +442,16 @@ export default function ChatPage() {
 
         <div className="flex items-center gap-2 absolute right-4">
           {/* Theme Toggle Button */}
+          <Button
+            ref={buttonRef}
+            variant="ghost"
+            size="icon"
+            onClick={() => setShowMenu(!showMenu)}
+            className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-800/50"}`}
+          >
+            <MoreVertical className="w-5 h-5" />
+          </Button>
+          
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
             className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
@@ -465,16 +475,6 @@ export default function ChatPage() {
               </svg>
             )}
           </button>
-          
-          <Button
-            ref={buttonRef}
-            variant="ghost"
-            size="icon"
-            onClick={() => setShowMenu(!showMenu)}
-            className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-800/50"}`}
-          >
-            <MoreVertical className="w-5 h-5" />
-          </Button>
         </div>
       </div>
 

@@ -1,5 +1,9 @@
 // src/lib/matchEngine.ts
 
+import { adjustForNeutralChineseHighWestern } from './compatibility/scoreAdjustments';
+import { mapToChinesePatternId } from './compatibility/helpers';
+import type { WesternAspect as WesternAspectCompat } from './compatibility/types';
+
 // ----------------- TYPES -----------------
 
 export type WesternSign =
@@ -570,23 +574,33 @@ export function computeMatchScore(ctx: MatchContext): MatchScoreResult {
   );
   rawScore += wuXingDelta;
 
-  // 4) Clamp and round raw score
+  // 4) Apply neutral Chinese + high Western boost
+  // Maps to ChinesePatternId and applies adjustment for neutral Chinese with strong Western aspects
+  const chinesePatternId = mapToChinesePatternId(chinesePattern);
+  const westernAspectCompat = westAspect as WesternAspectCompat;
+  rawScore = adjustForNeutralChineseHighWestern(
+    rawScore,
+    chinesePatternId!,
+    westernAspectCompat
+  );
+
+  // 5) Clamp and round raw score
   rawScore = clamp(Math.round(rawScore), 0, 100);
 
-  // 5) Determine tier based on raw score
+  // 6) Determine tier based on raw score
   const tier = getMatchTier(rawScore, {
     chinesePattern,
     westAspect,
     isChineseOpposite: !!isChineseOpposite,
   });
 
-  // 6) Calculate Wu Xing relation for calibration
+  // 7) Calculate Wu Xing relation for calibration
   const wuXingRelation = computeWuXingRelation(
     chineseA.yearElement,
     chineseB.yearElement
   );
 
-  // 7) Calibrate final score based on tier and astrological factors
+  // 8) Calibrate final score based on tier and astrological factors
   const score = calibrateScoreForLabel(
     rawScore,
     tier,

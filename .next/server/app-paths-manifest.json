@@ -1,6 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/astrology/page": "app/astrology/page.js",
-  "/page": "app/page.js",
-  "/matches/page": "app/matches/page.js"
+  "/astrology/guide/next/rabbit/page": "app/astrology/guide/next/rabbit/page.js",
+  "/astrology/guide/next/page": "app/astrology/guide/next/page.js",
+  "/astrology/guide/next/ox/page": "app/astrology/guide/next/ox/page.js",
+  "/astrology/guide/page": "app/astrology/guide/page.js",
+  "/astrology/page": "app/astrology/page.js"
 }

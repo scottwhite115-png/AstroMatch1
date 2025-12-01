@@ -627,24 +627,40 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
   const gradientColors = pattern ? getPatternGradientColors(pattern) : getGradientColors(tier);
   
   // Use new pattern helpers for display
-  const patternIconNew = pattern ? getPatternIcon(pattern as any) : (patternEmoji || parsedPattern.emoji);
-  const patternLabelBase = pattern ? getPatternHeaderLabel(pattern as any) : (patternLabelEn || parsedPattern.labelEn);
+  const patternIconNew = pattern ? getPatternIcon(pattern as any) : (patternEmoji || parsedPattern.emoji || '');
+  const patternLabelBase = pattern ? getPatternHeaderLabel(pattern as any) : (patternLabelEn || parsedPattern.labelEn || '');
   
-  // Add pinyin and Chinese characters after the English translation
-  const chineseInfo = getPatternChinese(pattern || patternLabelEn);
-  let patternLabelNew = patternLabelBase;
+  // Safely build pattern label - don't crash if data is missing
+  let patternLabelNew = patternLabelBase || tier || 'Match';
   
-  if (chineseInfo.pinyin && chineseInfo.hanzi) {
-    // Check if pinyin is already in the label
-    if (!patternLabelBase.includes(chineseInfo.pinyin)) {
-      // Format: ""Triple Harmony" · San He 三合"
-      // Remove the English part if it's already there, then rebuild
-      const englishPart = patternLabelBase.replace(chineseInfo.hanzi, '').trim();
-      patternLabelNew = `"${englishPart}" · ${chineseInfo.pinyin} ${chineseInfo.hanzi}`;
+  // Only try to enhance the label if we have the base data
+  if (patternLabelBase && pattern) {
+    try {
+      const chineseInfo = getPatternChinese(pattern);
+      if (chineseInfo.pinyin && chineseInfo.hanzi) {
+        // Check if pinyin is already in the label
+        if (!patternLabelBase.includes(chineseInfo.pinyin)) {
+          // Format: "Triple Harmony (San He 三合)"
+          const englishPart = patternLabelBase.replace(chineseInfo.hanzi, '').trim();
+          if (englishPart) {
+            patternLabelNew = `${englishPart} (${chineseInfo.pinyin} ${chineseInfo.hanzi})`;
+          }
+        }
+      }
+    } catch (error) {
+      console.error('[ConnectionBoxNew] Error formatting pattern label:', error);
+      // Just use the base label or tier
     }
   }
   
-  const patternTaglineNew = pattern ? getNewPatternTagline(pattern as any) : (patternTagline || baseTagline);
+  // Safely get pattern tagline
+  let patternTaglineNew = '';
+  try {
+    patternTaglineNew = pattern ? getNewPatternTagline(pattern as any) : (patternTagline || baseTagline || '');
+  } catch (error) {
+    console.error('[ConnectionBoxNew] Error getting pattern tagline:', error);
+    patternTaglineNew = patternTagline || baseTagline || '';
+  }
 
   // Build formatted labels for connection overview
   const userALabel = `${westA} / ${eastA}`;
@@ -677,14 +693,15 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
       {showElements && (
         <div 
           className={clsx(
-            "w-full max-w-xl rounded-2xl border p-4 sm:p-5 backdrop-blur-md",
+            "w-full max-w-xl rounded-2xl p-4 sm:p-5 backdrop-blur-md",
             theme === "light" 
-              ? "bg-white border-gray-200 shadow-xl shadow-gray-200/40" 
-              : "bg-slate-900/90 border-white/10"
+              ? "bg-white" 
+              : "bg-slate-900/90"
           )}
           style={{ 
             minHeight: showProfile ? 'auto' : '240px',
-            paddingBottom: showProfile ? undefined : '40px'
+            paddingBottom: showProfile ? undefined : '16px',
+            border: `1.5px solid ${gradientColors.start}`,
           }}
         >
           {/* Pattern + sun sign + elements */}
@@ -692,11 +709,11 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
             
             {/* Astrology sign combinations - at the very top */}
             <div className="px-3 py-2 flex items-center justify-center overflow-visible">
-              {/* Use grid to ensure heart is centered */}
-              <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 w-full">
-                {/* Left signs - right aligned */}
+              {/* Center the entire line as one unit */}
+              <div className="flex items-center gap-1 justify-center">
+                {/* Left signs */}
                 <span className={clsx(
-                  "font-medium text-sm sm:text-base text-right whitespace-nowrap",
+                  "font-bold text-xl whitespace-nowrap",
                   theme === "light" ? "text-slate-700" : "text-slate-200"
                 )}>
                   {userALabel}
@@ -710,9 +727,9 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                   ♥
                 </span>
                 
-                {/* Right signs - left aligned */}
+                {/* Right signs */}
                 <span className={clsx(
-                  "font-medium text-sm sm:text-base text-left whitespace-nowrap",
+                  "font-bold text-xl whitespace-nowrap",
                   theme === "light" ? "text-slate-700" : "text-slate-200"
                 )}>
                   {userBLabel}
@@ -730,14 +747,14 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
                   }}
                 >
-                  {patternLabelNew} · {score}%
+                  {`${patternLabelNew || tier || 'Match'} · ${score}%`}
                 </div>
               </div>
 
               {/* One-line pattern description */}
               {patternTaglineNew && pattern !== "NO_PATTERN" && (
                 <p className={clsx(
-                  "mt-1 text-sm text-center",
+                  "mt-1 text-base text-center",
                   theme === "light" ? "text-gray-600" : "text-slate-400"
                 )}>
                   {patternTaglineNew}
@@ -747,7 +764,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               {/* Special neutral line for No Major Pattern */}
               {pattern === "NO_PATTERN" && (
                 <p className={clsx(
-                  "mt-1 text-sm text-center",
+                  "mt-1 text-base text-center",
                   theme === "light" ? "text-gray-600" : "text-slate-400"
                 )}>
                   Neutral in Chinese astrology; no strong harmony or conflict pattern.
@@ -768,15 +785,25 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-1 text-xs sm:text-sm leading-relaxed text-center",
+                    "space-y-1 text-sm sm:text-base leading-relaxed text-center",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Chinese zodiac signs on their own line */}
-                    <p className="font-semibold text-sm whitespace-nowrap">{eastA} × {eastB}</p>
+                    <p className={`font-semibold text-xl whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{eastA} × {eastB}</p>
                     
                     {/* Rest of the Chinese line (pattern description) */}
                     {chineseLine && (
-                      <p>{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
+                      <p className="text-base">{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
+                    )}
+                    
+                    {/* Chinese Year Elements - displayed under the Chinese connection */}
+                    {(wuXingLine || elementsLineText) && (
+                      <p className={clsx(
+                        "text-sm pt-1",
+                        theme === "light" ? "text-slate-600" : "text-slate-300"
+                      )}>
+                        {wuXingLine || elementsLineText}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -789,19 +816,19 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-1 text-xs sm:text-sm leading-relaxed text-center",
+                    "space-y-1 text-sm sm:text-base leading-relaxed text-center",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Western zodiac signs on their own line */}
-                    <p className="font-semibold text-sm whitespace-nowrap">{westA} × {westB}</p>
+                    <p className={`font-semibold text-xl whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{westA} × {westB}</p>
                     
                     {/* Sun sign description */}
                     {sunMatchBlurb && (
-                      <p>{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
+                      <p className="text-base">{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
                     )}
                     
-                    {/* Element line */}
-                    {westernLine && <p>{westernLine}</p>}
+                    {/* Element line - match Chinese elements styling */}
+                    {westernLine && <p className="text-sm">{westernLine}</p>}
                   </div>
                 </div>
 
@@ -814,7 +841,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 {/* Pass Button */}
                 <button
                   onClick={onPass}
-                  className="inline-flex items-center justify-center rounded-full px-3 py-2 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
+                  className="inline-flex items-center justify-center rounded-full px-3 py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
                   style={{
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`
                   }}
@@ -827,7 +854,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 {/* Like Button */}
                 <button
                   onClick={onLike}
-                  className="inline-flex items-center justify-center rounded-full px-3 py-2 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
+                  className="inline-flex items-center justify-center rounded-full px-3 py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
                   style={{
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`
                   }}
@@ -840,7 +867,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 {/* Chat Button */}
                 <button
                   onClick={onMessage}
-                  className="inline-flex items-center justify-center rounded-full px-3 py-2 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
+                  className="inline-flex items-center justify-center rounded-full px-3 py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
                   style={{
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`
                   }}
@@ -853,7 +880,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 {/* Profile Button */}
                 <button
                   onClick={onViewProfile}
-                  className="inline-flex items-center justify-center rounded-full px-3 py-2 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
+                  className="inline-flex items-center justify-center rounded-full px-3 py-2.5 text-xs font-semibold tracking-wide text-white transition-opacity hover:opacity-90 shadow-lg active:scale-95"
                   style={{
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`
                   }}
@@ -892,7 +919,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
           className={clsx(
             "w-full max-w-xl rounded-2xl border p-4 sm:p-5 backdrop-blur-md mt-3",
             theme === "light" 
-              ? "bg-white border-gray-200 shadow-xl shadow-gray-200/40" 
+              ? "bg-white border-gray-200" 
               : "bg-slate-900/90 border-white/10"
           )}
         >

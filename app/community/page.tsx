@@ -32,6 +32,13 @@ type Topic = {
 
 const TOPICS: Topic[] = [
   {
+    id: "relationship",
+    label: "Relationship",
+    description:
+      "Synastry, East × West patterns and how connections feel in real life.",
+    icon: "❌",
+  },
+  {
     id: "sun_signs",
     label: "Sun Signs",
     description: "Posts about Western Sun signs, elements and aspects.",
@@ -48,13 +55,6 @@ const TOPICS: Topic[] = [
     label: "Vedic Astrology",
     description: "Moon signs, dashas and Jyotiṣa techniques.",
     icon: "🕉️",
-  },
-  {
-    id: "relationship",
-    label: "Relationship Astrology",
-    description:
-      "Synastry, East × West patterns and how connections feel in real life.",
-    icon: "💞",
   },
   {
     id: "qa",
@@ -164,8 +164,8 @@ function ThemeToggle() {
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       className={`flex items-center justify-center w-9 h-9 rounded-full transition-all ${
         theme === "light"
-          ? "bg-slate-200 hover:bg-slate-300 text-slate-700"
-          : "bg-slate-800 hover:bg-slate-700 text-yellow-300"
+          ? "bg-transparent hover:bg-slate-100 text-slate-700"
+          : "bg-transparent hover:bg-slate-800/50 text-yellow-300"
       }`}
       aria-label="Toggle theme"
     >
@@ -321,10 +321,10 @@ export default function CommunityPage() {
           <button
             type="button"
             onClick={handleNewPost}
-            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+            className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all border-2 ${
               theme === "light"
-                ? "bg-emerald-500 hover:bg-emerald-600 text-white"
-                : "bg-emerald-600 hover:bg-emerald-700 text-white"
+                ? "bg-transparent border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+                : "bg-transparent border-emerald-500 text-emerald-400 hover:bg-emerald-950/30"
             }`}
           >
             <span>＋</span>
@@ -337,6 +337,13 @@ export default function CommunityPage() {
       {/* Left slide-in drawer */}
       {isDrawerOpen && (
         <>
+          {/* Backdrop overlay - click to close drawer */}
+          <div 
+            className="fixed inset-0 bg-black/30 z-40"
+            onClick={() => setIsDrawerOpen(false)}
+            aria-label="Close drawer"
+          />
+          
           {/* Drawer panel */}
           <aside 
             className={`fixed left-0 bottom-0 z-50 w-72 max-w-[80vw] shadow-xl border-r flex flex-col ${
@@ -345,6 +352,7 @@ export default function CommunityPage() {
                 : "bg-slate-900 border-slate-800"
             }`}
             style={{ top: 'var(--header-height, 60px)' }}
+            onClick={(e) => e.stopPropagation()}
           >
 
             <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-3">

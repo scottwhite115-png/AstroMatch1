@@ -126,7 +126,7 @@ export function BottomNavigation() {
     },
     {
       icon: MessageCircle,
-      label: "Messages",
+      label: "Connections",
       path: "/messages",
     },
     {
@@ -136,7 +136,7 @@ export function BottomNavigation() {
     },
     {
       icon: FourPointedStar,
-      label: "Astrology",
+      label: "AstroLibrary",
       path: "/astrology",
     },
     {

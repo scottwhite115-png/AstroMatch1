@@ -78,10 +78,10 @@ export default function Discover() {
             </div>
 
             {/* Profile info */}
-            <div className="absolute bottom-4 left-4 text-white">
-              <h2 className="text-3xl font-bold">Sarah, 28</h2>
-              <p className="text-purple-300 font-medium">Aries-Dragon</p>
-              <div className="flex items-center space-x-1 mt-1">
+            <div className="absolute bottom-4 left-4">
+              <h2 className="text-3xl font-bold text-white">Sarah, 28</h2>
+              <p className="font-medium text-white" style={{ color: '#ffffff' }}>Aries-Dragon</p>
+              <div className="flex items-center space-x-1 mt-1 text-white">
                 <Star className="w-4 h-4 text-yellow-400" fill="currentColor" />
                 <span className="text-sm font-semibold">87% Match</span>
               </div>

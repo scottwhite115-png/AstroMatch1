@@ -307,7 +307,7 @@ export default function DogPage() {
                           key={index}
                           className={`border-t ${theme === "light" ? "border-gray-200" : "border-indigo-500/20"} ${index % 2 === 0 ? (theme === "light" ? "bg-white" : "bg-slate-800/40") : (theme === "light" ? "bg-gray-50" : "bg-slate-900/30")}`}
                         >
-                          <td className={`px-4 py-3 text-sm ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
+                          <td className={`px-4 py-3 text-sm font-medium`} style={{ color: row.color }}>
                             {row.pattern}
                           </td>
                           <td className={`px-4 py-3 text-sm ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>

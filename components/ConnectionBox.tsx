@@ -134,14 +134,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Left side */}
         <div className="flex items-center gap-2 text-xs">
           <div className="flex flex-col items-center">
-            <div className="text-2xl">{leftSunEmoji}</div>
-            <div className="mt-0.5 text-[10px] font-medium text-slate-900 dark:text-slate-50">
+            <div className="text-3xl">{leftSunEmoji}</div>
+            <div className="mt-0.5 text-2xl font-bold text-slate-900 dark:text-slate-50">
               {leftSunLabel}
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-xl leading-none">{leftChineseEmoji}</span>
-            <span className="mt-0.5 text-[10px] text-slate-500 dark:text-slate-300">{leftChineseLabel}</span>
+            <span className="text-2xl leading-none">{leftChineseEmoji}</span>
+            <span className="mt-0.5 text-2xl font-bold text-slate-500 dark:text-slate-300">{leftChineseLabel}</span>
           </div>
         </div>
 
@@ -159,14 +159,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Right side */}
         <div className="flex items-center gap-2 text-xs">
           <div className="flex flex-col items-center">
-            <div className="text-2xl">{rightSunEmoji}</div>
-            <div className="mt-0.5 text-[10px] font-medium text-slate-900 dark:text-slate-50">
+            <div className="text-3xl">{rightSunEmoji}</div>
+            <div className="mt-0.5 text-2xl font-bold text-slate-900 dark:text-slate-50">
               {rightSunLabel}
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-xl leading-none">{rightChineseEmoji}</span>
-            <span className="mt-0.5 text-[10px] text-slate-500 dark:text-slate-300">{rightChineseLabel}</span>
+            <span className="text-2xl leading-none">{rightChineseEmoji}</span>
+            <span className="mt-0.5 text-2xl font-bold text-slate-500 dark:text-slate-300">{rightChineseLabel}</span>
           </div>
         </div>
       </div>
