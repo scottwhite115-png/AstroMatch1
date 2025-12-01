@@ -638,24 +638,68 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
           {/* Combined Match Details */}
           <div
             className="px-4 py-4 rounded-lg space-y-4"
-            style={{ backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.03)" : "rgba(255, 255, 255, 0.05)", marginBottom: '0.75rem' }}
+            style={{ 
+              backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.03)" : "rgba(255, 255, 255, 0.05)", 
+              marginBottom: '0.75rem',
+              border: `1.5px solid ${labelColorStyle}`,
+            }}
           >
             {/* Pattern Header - NEW: Show pattern full label and tagline from match engine */}
             {(data.patternFullLabel || data.pillLabel || data.pattern) && (
               <div className="space-y-2 pb-4" style={{ borderBottom: `1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"}` }}>
                 {/* Display pattern heading - color-coded with the match rank color */}
-                {(data.patternFullLabel || (data.pattern && data.score)) && (
-                  <h3 
-                    className="text-base font-bold" 
-                    style={{ 
-                      color: labelColorStyle, 
-                      WebkitTextFillColor: labelColorStyle,
-                      // Ensure all text content including dots and percentage are colored
-                    }}
-                  >
-                    {data.patternFullLabel || (data.pattern && data.score ? getPatternHeading(data.pattern as ChinesePattern, data.score) : '')}
-                  </h3>
-                )}
+                {(data.patternFullLabel || (data.pattern && data.score)) && (() => {
+                  try {
+                    // Parse and reformat pattern label to be cleaner
+                    // Input: "🌟 San He 三合 · Triple Harmony · 92%" or "San He 三合 · Triple Harmony · 92%"
+                    // Output: "Triple Harmony (San He 三合) · 92%"
+                    let displayLabel = data.patternFullLabel || (data.pattern && data.score ? getPatternHeading(data.pattern as ChinesePattern, data.score) : '');
+                    
+                    // Remove emoji
+                    displayLabel = displayLabel.replace(/[🌟💫⚠️◽🪞✨]+/g, '').trim();
+                    
+                    // Extract parts: "San He 三合 · Triple Harmony · 92%"
+                    const parts = displayLabel.split('·').map(p => p.trim());
+                    
+                    if (parts.length >= 3) {
+                      // parts[0] = "San He 三合"
+                      // parts[1] = "Triple Harmony" or ""Triple Harmony""
+                      // parts[2] = "92%"
+                      const chinesePart = parts[0];
+                      const englishPart = parts[1].replace(/^[""]|[""]$/g, '');
+                      const scorePart = parts[2];
+                      
+                      // Reformat: "Triple Harmony (San He 三合) · 92%"
+                      displayLabel = `${englishPart} (${chinesePart}) · ${scorePart}`;
+                    }
+                    
+                    return (
+                      <h3 
+                        className="text-base font-bold" 
+                        style={{ 
+                          color: labelColorStyle, 
+                          WebkitTextFillColor: labelColorStyle,
+                        }}
+                      >
+                        {displayLabel}
+                      </h3>
+                    );
+                  } catch (error) {
+                    console.error('[ConnectionBoxSimple] Error parsing pattern label:', error);
+                    // Fallback: just display the raw label
+                    return (
+                      <h3 
+                        className="text-base font-bold" 
+                        style={{ 
+                          color: labelColorStyle, 
+                          WebkitTextFillColor: labelColorStyle,
+                        }}
+                      >
+                        {data.patternFullLabel || (data.pattern && data.score ? getPatternHeading(data.pattern as ChinesePattern, data.score) : '')}
+                      </h3>
+                    );
+                  }
+                })()}
                 
                 {/* Fallback: Show pillLabel if patternFullLabel is missing and no pattern/score */}
                 {!data.patternFullLabel && !data.pattern && data.pillLabel && (
@@ -665,7 +709,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 )}
                 
                 {data.baseTagline && (
-                  <p className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                  <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
                     {data.baseTagline}
                   </p>
                 )}
@@ -738,25 +782,29 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
               {/* Chinese Compatibility Section */}
               {hasChineseSection && (() => {
-                // Combine pattern heading and element heading into one line
-                const combinedChineseHeading = chineseHeading && chineseElementPair
-                  ? `${chineseHeading}, ${chineseElementPair.heading}`
-                  : chineseHeading;
+                // Don't combine element heading into main heading - show it separately
                 
                 return (
                   <div className="space-y-2">
                     <h4 className={`text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-slate-500" : "text-slate-400"}`}>
                       Chinese Zodiac
                     </h4>
-                    {combinedChineseHeading && (
-                      <div className="text-sm font-semibold leading-relaxed">
-                        {makeChinesePatternsBold(combinedChineseHeading)}
+                    {chineseHeading && (
+                      <div className={`text-base font-semibold leading-relaxed ${theme === "light" ? "text-black" : "text-white"}`}>
+                        {makeChinesePatternsBold(chineseHeading)}
                       </div>
                     )}
 
                     {chineseDescription && (
-                      <p className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
                         {makeChinesePatternsBold(chineseDescription)}
+                      </p>
+                    )}
+                    
+                    {/* Chinese Year Elements - displayed under the Chinese connection */}
+                    {chineseElementPair && (
+                      <p className={`text-sm ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                        {chineseElementPair.heading}
                       </p>
                     )}
                   </div>
@@ -779,13 +827,13 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                       Western Zodiac
                     </h4>
                     {combinedWestHeading && (
-                      <div className="text-sm font-semibold leading-relaxed">
+                      <div className={`text-base font-semibold leading-relaxed ${theme === "light" ? "text-black" : "text-white"}`}>
                         {combinedWestHeading}
                       </div>
                     )}
 
                     {westDescription && (
-                      <p className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
                         {westDescription}
                       </p>
                     )}

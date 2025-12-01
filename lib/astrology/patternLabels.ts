@@ -128,7 +128,7 @@ export function getPatternIcon(pattern: ChinesePattern): string {
 export function getPatternTagline(pattern: ChinesePattern): string {
   switch (pattern) {
     case "SAN_HE":
-      return "Classic trine alliance with strong, long-term harmony.";
+      return "Trine alliance with strong, long-term harmony.";
     case "LIU_HE":
       return "Close one-to-one bond with a soft, quietly supportive tone.";
     case "SAME_SIGN":

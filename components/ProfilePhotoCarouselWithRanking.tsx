@@ -422,6 +422,21 @@ export default function ProfilePhotoCarouselWithRanking({
               <div className="text-white font-semibold text-3xl mb-1">
                 {profileName}
               </div>
+              {/* Zodiac Signs with Emojis */}
+              {(westernSign || easternSign) && (
+                <div className="font-medium flex items-center gap-2" style={{ color: '#ffffff !important', fontSize: '1.25rem', WebkitTextFillColor: '#ffffff' }}>
+                  {westernSign && (
+                    <span className="flex items-center gap-1" style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
+                      {getWesternSignGlyph(westernSign)} {westernSign}
+                    </span>
+                  )}
+                  {easternSign && (
+                    <span className="flex items-center gap-1" style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
+                      {getChineseSignGlyph(easternSign)} {easternSign}
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

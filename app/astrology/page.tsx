@@ -30,6 +30,28 @@ export default function AstrologySection() {
   const { theme, setTheme } = useTheme()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
+  // Section menu items for the drawer
+  const sectionItems = [
+    {
+      id: 'match-generator',
+      label: 'Match Generator',
+      description: 'Calculate compatibility between two birthdates',
+      icon: '🧮',
+    },
+    {
+      id: 'what-shapes-score',
+      label: 'What Shapes Your Score',
+      description: 'How the match engine works',
+      icon: '⚙️',
+    },
+    {
+      id: 'chinese-patterns',
+      label: 'Chinese Pattern Ranking',
+      description: 'Traditional Chinese zodiac compatibility patterns',
+      icon: '📊',
+    },
+  ]
+
   // Astrology pages menu items
   const astrologyPages = [
     {
@@ -244,6 +266,11 @@ export default function AstrologySection() {
             style={{ top: 'var(--header-height, 60px)' }}
           >
             <nav className="flex-1 space-y-1 overflow-y-auto px-2 py-3">
+              {/* Section heading for Pages */}
+              <div className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-gray-500" : "text-slate-500"}`}>
+                Pages
+              </div>
+              
               {astrologyPages.map((page) => {
                 return (
                   <button
@@ -267,6 +294,46 @@ export default function AstrologySection() {
                         theme === "light" ? "text-gray-500" : "text-slate-500"
                       }`}>
                         {page.description}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+
+              {/* Divider */}
+              <div className={`my-2 border-t ${theme === "light" ? "border-gray-200" : "border-slate-700"}`} />
+
+              {/* Section heading for Charts & Sections */}
+              <div className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-gray-500" : "text-slate-500"}`}>
+                Charts & Sections
+              </div>
+
+              {sectionItems.map((section) => {
+                return (
+                  <button
+                    key={section.id}
+                    type="button"
+                    onClick={() => {
+                      const element = document.getElementById(section.id);
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                      setIsDrawerOpen(false);
+                    }}
+                    className={[
+                      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
+                      theme === "light"
+                        ? "text-gray-600 hover:bg-gray-100"
+                        : "text-slate-400 hover:bg-slate-800",
+                    ].join(" ")}
+                  >
+                    <span className="mt-[1px] text-base">{section.icon}</span>
+                    <span className="flex flex-col">
+                      <span className="font-medium">{section.label}</span>
+                      <span className={`text-xs ${
+                        theme === "light" ? "text-gray-500" : "text-slate-500"
+                      }`}>
+                        {section.description}
                       </span>
                     </span>
                   </button>
@@ -303,7 +370,7 @@ export default function AstrologySection() {
           </div>
 
           {/* Match Engine Generator */}
-          <div className={`mb-6 p-4 rounded-2xl border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
+          <div id="match-generator" className={`mb-6 p-4 rounded-2xl border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
             <h2 className={`text-lg font-bold mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
               Match Engine Generator
             </h2>
@@ -686,7 +753,7 @@ export default function AstrologySection() {
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
 
           {/* What Shapes Your Match Score Section */}
-          <div className="mb-6">
+          <div id="what-shapes-score" className="mb-6">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
               <h2 className="astrology-heading-secondary mb-4">What Shapes Your Match Score</h2>
               
@@ -735,7 +802,7 @@ export default function AstrologySection() {
           </div>
 
           {/* Match Engine Ranking - Chinese Pattern Based */}
-          <div className="mb-6">
+          <div id="chinese-patterns" className="mb-6">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
               <h2 className="astrology-heading-secondary mb-4">Chinese Pattern Ranking</h2>
               
@@ -805,17 +872,19 @@ export default function AstrologySection() {
                 <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
                   <div className="flex items-start justify-between gap-2 mb-1">
                     <h3 
-                      className={`text-sm font-semibold ${theme === "light" ? "text-slate-600" : "text-slate-300"}`}
+                      className="text-sm font-semibold"
+                      style={{ 
+                        backgroundImage: "linear-gradient(to right, #60a5fa, #818cf8, #3b82f6)", 
+                        WebkitBackgroundClip: "text", 
+                        WebkitTextFillColor: "transparent", 
+                        backgroundClip: "text" 
+                      }}
                     >
                       ◽ Neutral 中
                     </h3>
                     <span 
-                      className="text-xs px-2 py-0.5 rounded font-medium" 
-                      style={{ 
-                        background: theme === "light" ? "#cbd5e1" : "#475569",
-                        color: theme === "light" ? "#475569" : "#e2e8f0",
-                        border: theme === "light" ? "1px solid #94a3b8" : "1px solid #64748b"
-                      }}
+                      className="text-xs px-2 py-0.5 rounded font-medium text-white" 
+                      style={{ background: "linear-gradient(to right, #60a5fa, #818cf8, #3b82f6)" }}
                     >
                       50-65%
                     </span>

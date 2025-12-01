@@ -182,9 +182,6 @@ export function ProfileSettings() {
               selectedOccupation="Graphic Designer"
               selectedCity="Melbourne, VIC"
               cityInput=""
-              selectedHeight="5'7\""
-              selectedChildrenOption="Don't have, want someday"
-              selectedReligion="Agnostic"
               selectedDeepPrompts={["My simple pleasures...", "What makes me unique..."]}
               deepPromptAnswers={{
                 "My simple pleasures...": "Good coffee, live music, and long conversations under the stars.",
