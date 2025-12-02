@@ -3,6 +3,15 @@
 import { adjustForNeutralChineseHighWestern } from './compatibility/scoreAdjustments';
 import { mapToChinesePatternId } from './compatibility/helpers';
 import type { WesternAspect as WesternAspectCompat } from './compatibility/types';
+import {
+  ChineseAnimal as ChineseAnimalNew,
+  ChinesePatternTag,
+  getPrimaryChinesePatternTag,
+  patternTagToPatternId,
+} from './matchEngine/chinesePatterns';
+
+// Re-export for convenience
+export { ChinesePatternTag, getPrimaryChinesePatternTag } from './matchEngine/chinesePatterns';
 
 // ----------------- TYPES -----------------
 
@@ -88,6 +97,7 @@ export interface MatchContext {
   chineseA: { animal: ChineseAnimal; yearElement: WuXing };
   chineseB: { animal: ChineseAnimal; yearElement: WuXing };
   chinesePattern: ChinesePattern;
+  chinesePatternTag?: ChinesePatternTag; // Store original tag for more precise scoring
 
   // extra flags from your metadata
   isChineseOpposite?: boolean; // opposite signs (Rat–Horse, Ox–Goat, etc.)
@@ -303,11 +313,69 @@ function getWuXingScoreBonus(
 
 // ----------------- BASE CHINESE SCORE -----------------
 
+/**
+ * Element relationship categories for same-sign scoring
+ */
+type ElementRelationship = "same" | "compatible" | "semi" | "clash";
+
+/**
+ * Convert WestElementRelation to ElementRelationship for same-sign scoring
+ */
+function toElementRelationship(rel: WestElementRelation): ElementRelationship {
+  switch (rel) {
+    case "same":
+      return "same";
+    case "compatible":
+      return "compatible";
+    case "semi_compatible":
+      return "semi";
+    case "clash":
+      return "clash";
+    case "neutral":
+      return "semi"; // treat neutral as semi-compatible
+    default:
+      return "semi";
+  }
+}
+
+/**
+ * Get base Chinese score with element-aware same-sign scoring
+ */
 function getBaseChineseScore(
   pattern: ChinesePattern,
+  patternTag: ChinesePatternTag | undefined,
+  westElementRelation?: WestElementRelation,
   isLivelyPair?: boolean
 ): number {
-  // Start around 50 and nudge
+  // Same-sign scoring based on element relationships
+  const sameSignScoreMap: Record<ElementRelationship, number> = {
+    same: 68,
+    compatible: 65,
+    semi: 62,
+    clash: 58,
+  };
+
+  const selfPunishSameSignScoreMap: Record<ElementRelationship, number> = {
+    same: 64,
+    compatible: 61,
+    semi: 58,
+    clash: 54,
+  };
+
+  // Handle same_animal pattern with element-based scoring using pattern tag
+  if (pattern === "same_animal" && westElementRelation && patternTag) {
+    const rel = toElementRelationship(westElementRelation);
+    
+    if (patternTag === "SAME_SIGN") {
+      return sameSignScoreMap[rel];
+    } else if (patternTag === "SAME_SIGN_SELF_PUNISH") {
+      return selfPunishSameSignScoreMap[rel];
+    }
+    // Fallback to regular same-sign scoring
+    return sameSignScoreMap[rel];
+  }
+
+  // Start around 50 and nudge for other patterns
   let score = 50;
 
   switch (pattern) {
@@ -321,7 +389,7 @@ function getBaseChineseScore(
       score += 15;
       break;
     case "same_animal":
-      score += 8; // intense mirror, can be great or too much
+      score += 8; // fallback if westElementRelation not provided
       break;
     case "cross_trine":
       score += 0;
@@ -552,12 +620,18 @@ export function computeMatchScore(ctx: MatchContext): MatchScoreResult {
     chineseA,
     chineseB,
     chinesePattern,
+    chinesePatternTag,
     isChineseOpposite,
     isLivelyPair,
   } = ctx;
 
-  // 1) Base scores
-  const baseChineseScore = getBaseChineseScore(chinesePattern, isLivelyPair);
+  // 1) Base scores with element-aware same-sign scoring
+  const baseChineseScore = getBaseChineseScore(
+    chinesePattern,
+    chinesePatternTag,
+    westElementRelation,
+    isLivelyPair
+  );
   const baseWesternScore = getBaseWesternScore(
     westAspect,
     westElementRelation
@@ -649,6 +723,33 @@ function mapChinesePattern(pattern: string): ChinesePattern {
 }
 
 /**
+ * Convert ChinesePatternTag from new system to ChinesePattern
+ */
+function patternTagToPattern(tag: ChinesePatternTag): ChinesePattern {
+  switch (tag) {
+    case "SAME_SIGN":
+    case "SAME_SIGN_SELF_PUNISH":
+      return "same_animal";
+    case "SAN_HE":
+      return "san_he";
+    case "LIU_HE":
+      return "liu_he";
+    case "LIU_CHONG":
+      return "liu_chong";
+    case "LIU_HAI":
+      return "liu_hai";
+    case "XING":
+      return "xing";
+    case "PO":
+      return "po";
+    case "NONE":
+      return "none";
+    default:
+      return "none";
+  }
+}
+
+/**
  * Convert Western sign from existing format (lowercase) to new format (capitalized)
  */
 function normalizeWesternSign(sign: string): WesternSign {
@@ -677,7 +778,18 @@ export function buildMatchContext(
   const normalizedWestB = typeof westB === 'string' ? normalizeWesternSign(westB) : westB;
   const normalizedChineseA = typeof chineseA === 'string' ? capitalizeAnimal(chineseA) : chineseA;
   const normalizedChineseB = typeof chineseB === 'string' ? capitalizeAnimal(chineseB) : chineseB;
-  const normalizedPattern = chinesePattern ? mapChinesePattern(String(chinesePattern)) : 'none';
+  
+  // If pattern not provided, use the new pattern detection system
+  let normalizedPattern: ChinesePattern;
+  let patternTag: ChinesePatternTag | undefined;
+  
+  if (chinesePattern) {
+    normalizedPattern = mapChinesePattern(String(chinesePattern));
+  } else {
+    // Use new pattern detection
+    patternTag = getPrimaryChinesePatternTag(normalizedChineseA, normalizedChineseB);
+    normalizedPattern = patternTagToPattern(patternTag);
+  }
 
   // Calculate Western aspect and element relation
   const westAspect = calculateWestAspect(normalizedWestA, normalizedWestB);
@@ -700,6 +812,7 @@ export function buildMatchContext(
     chineseA: { animal: normalizedChineseA, yearElement: yearElementA },
     chineseB: { animal: normalizedChineseB, yearElement: yearElementB },
     chinesePattern: normalizedPattern,
+    chinesePatternTag: patternTag,
     isChineseOpposite,
     isLivelyPair,
   };
