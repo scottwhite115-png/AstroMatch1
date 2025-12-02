@@ -608,7 +608,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   });
   
   return (
-    <div>
+    <div className="min-h-[400px] flex flex-col">
       {/* Compact Header - Always Visible (unless hideHeader is true) */}
       {!hideHeader && !alwaysExpanded && (
         <button
@@ -634,14 +634,15 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
       {/* Expanded Content */}
       {(isExpanded || alwaysExpanded) && (
-        <div className="pb-2 pt-0">
+        <div className="pb-6 pt-0 flex-1 flex flex-col">
           {/* Combined Match Details */}
           <div
-            className="px-4 py-4 rounded-lg space-y-4"
+            className="px-4 py-4 rounded-lg space-y-4 flex-1"
             style={{ 
               backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.03)" : "rgba(255, 255, 255, 0.05)", 
               marginBottom: '0.75rem',
               border: `1.5px solid ${labelColorStyle}`,
+              minHeight: '100%',
             }}
           >
             {/* Pattern Header - NEW: Show pattern full label and tagline from match engine */}
@@ -756,7 +757,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
             )}
 
             {/* Main Match Info */}
-            <div>
+            <div className="pb-2">
               {/* Header: Label · Score% on same line */}
               <div className="flex items-center justify-center gap-2 mb-2">
                 <div className="text-xl font-semibold">
@@ -934,7 +935,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
             {hasProfileDetails && showProfile && (
               <>
                 <div className={`h-px ${theme === "light" ? "bg-black/10" : "bg-white/10"}`} />
-                <div className="space-y-4">
+                <div className="space-y-4 pb-2">
                   {data.aboutMeText && (
                     <div>
                       <h4

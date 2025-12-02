@@ -27,7 +27,7 @@ export default function DogPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -150,13 +150,13 @@ export default function DogPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dog × Ox — Neutral
+                    Dog × Ox — Punishment (Xing 刑)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Duty and devotion
                   </p>
                   <p>
-                    Both value commitment and sincerity, creating a calm, dependable foundation. Ox brings stability and patience; Dog brings intuition and fairness. While there's no classical harmony, shared reliability strengthens the match over time. Mutual encouragement keeps this pairing solid and quietly loyal.
+                    Both value commitment and sincerity, creating a calm, dependable foundation. Ox brings stability and patience; Dog brings intuition and fairness. As a Xing (刑) punishment pairing, pressure and unspoken resentment can build if duty feels one-sided. When both share the load and talk honestly, shared reliability strengthens the match over time. Mutual encouragement keeps this pairing solid and quietly loyal.
                   </p>
                 </div>
 
@@ -234,7 +234,7 @@ export default function DogPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dog × Rooster — Six Damages / Harm (Liu Hai 六害)
+                    Dog × Rooster — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Rules and principles
@@ -246,13 +246,13 @@ export default function DogPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dog × Dog — Same Sign (Self-Punishment 相刑)
+                    Dog × Dog — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Loyal hearts
                   </p>
                   <p>
-                    Two Dogs form a deeply loyal and principled bond. But as a self-punishment Xing (相刑) pairing, shared intensity and worry can amplify emotional strain. When both practice reassurance and avoid overthinking, the match becomes protective and fulfilling. This pairing creates a strong emotional home when balanced with patience.
+                    Two Dogs form a deeply loyal and principled bond. Shared sensitivity and concern for what's "right" can either create a safe emotional home or amplify worry and overthinking. When both practice reassurance and avoid spiralling into worst-case scenarios, the match becomes protective and fulfilling. This pairing creates a strong emotional home when balanced with patience and perspective.
                   </p>
                 </div>
 

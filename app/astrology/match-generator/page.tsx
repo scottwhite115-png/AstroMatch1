@@ -244,7 +244,7 @@ export default function MatchGeneratorPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
+                AstroLab
               </span>
             </div>
           </div>

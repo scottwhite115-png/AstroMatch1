@@ -27,7 +27,7 @@ export default function SnakePage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -162,7 +162,7 @@ export default function SnakePage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Snake × Tiger — Six Damages / Harm (Liu Hai 六害)
+                    Snake × Tiger — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Impulse vs. calculation
@@ -186,19 +186,19 @@ export default function SnakePage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Snake × Dragon — Secret Friend (Liu He 六合)
+                    Snake × Dragon — Neutral
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Charisma and strategy
                   </p>
                   <p>
-                    Snake and Dragon form a Liu He (六合) harmony marked by intuition, strategy, and mutual understanding. Snake brings insight and psychological depth; Dragon adds strength and expressive confidence. The bond is calm yet intense, built on shared vision and trust. This connection feels steady, perceptive, and naturally aligned.
+                    Snake and Dragon create a bond marked by intuition, strategy, and mutual understanding. Snake brings insight and psychological depth; Dragon adds strength and expressive confidence. While they don't form a classical Liu He pair, their mix of depth and drive can feel quietly powerful when aligned. The connection feels calm, perceptive, and purpose-driven.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Snake × Snake — Same Sign (Self-Punishment 相刑)
+                    Snake × Snake — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Quiet intensity

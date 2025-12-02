@@ -9,7 +9,7 @@ const FourPointedStar = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default function ChineseSignsPage() {
+export default function ChineseZodiacPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
 
@@ -75,7 +75,7 @@ export default function ChineseSignsPage() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex-1 flex justify-start">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push('/astrology')}
                 className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
                 aria-label="Go back"
               >
@@ -93,7 +93,7 @@ export default function ChineseSignsPage() {
               </button>
             </div>
             <h1 className={`text-xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-              Chinese Signs
+              Chinese Zodiac
             </h1>
             <div className="flex-1"></div>
           </div>

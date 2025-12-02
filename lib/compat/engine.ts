@@ -365,6 +365,11 @@ export function computeMatch(
   let score = computeBaseScore(chinesePattern, westRelation);
   let label = baseLabelFromScore(score);
 
+  // Apply penalty multiplier for same Western sign (reduces mirror effect)
+  if (westRelation === 'same_sign') {
+    score = Math.round(score * 0.855); // ~14.5% reduction for same sign combinations
+  }
+
   const isHarmony = ['san_he','liu_he','same_animal','same_trine'].includes(chinesePattern);
   const isTension = ['liu_chong','liu_hai','xing','po'].includes(chinesePattern);
 
@@ -661,13 +666,12 @@ const LIU_CHONG_PAIRS: [ChineseAnimal, ChineseAnimal][] = [
 ];
 
 // Liu Hai 六害 (Six Harms)
-// NB: Monkey–Pig is normally here, but in AstroMatch we treat it as Po (破) instead.
 const LIU_HAI_PAIRS: [ChineseAnimal, ChineseAnimal][] = [
   ['rat', 'goat'],
   ['ox', 'horse'],
   ['tiger', 'snake'],
   ['rabbit', 'dragon'],
-  // ['monkey', 'pig'], // handled as Po in your system
+  ['monkey', 'pig'], // Monkey × Pig is Liu Hai (Six Harms)
   ['rooster', 'dog'],
 ];
 

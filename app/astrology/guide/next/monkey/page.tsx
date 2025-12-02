@@ -27,7 +27,7 @@ export default function MonkeyPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -162,13 +162,13 @@ export default function MonkeyPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Monkey × Tiger — Clash Pair (Liu Chong 六冲) + Punishment (Xing 刑)
+                    Monkey × Tiger — Clash Pair (Liu Chong 六冲)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Competitive spark
                   </p>
                   <p>
-                    Tiger and Monkey form a high-voltage clash where styles and instincts differ strongly. Tiger leads boldly and directly; Monkey moves through wit, agility, and quick shifts. The connection feels charged, memorable, and unpredictable. Success requires humour, patience, and genuine willingness to meet in the middle.
+                    Tiger and Monkey form a high-voltage clash where styles and instincts differ strongly. Tiger leads boldly and directly; Monkey moves through wit, agility, and quick shifts. In some traditions this pair also sits in a punishment (刑) group, adding extra edge and lesson-learning to the connection. The bond feels charged, memorable, and unpredictable. Success requires humour, patience, and a real willingness to meet in the middle.
                   </p>
                 </div>
 
@@ -210,13 +210,13 @@ export default function MonkeyPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Monkey × Horse — Break Pair (Po 破)
+                    Monkey × Horse — Neutral
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Action and antics
                   </p>
                   <p>
-                    Monkey's strategic mind meets Horse's instinctive momentum, creating a connection full of movement and unpredictability. Horse brings enthusiasm and decisiveness; Monkey brings creativity and flexibility. The bond is adventurous but inconsistent. Stability depends on shared goals and communication.
+                    Monkey's strategic mind meets Horse's instinctive momentum, creating a connection full of movement and unpredictability. Horse brings enthusiasm and decisiveness; Monkey brings creativity and flexibility. The bond is adventurous but inconsistent. Stability depends on shared goals and honest communication.
                   </p>
                 </div>
 
@@ -234,13 +234,13 @@ export default function MonkeyPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Monkey × Monkey — Same Sign (Self-Punishment 相刑)
+                    Monkey × Monkey — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Busy minds
                   </p>
                   <p>
-                    Two Monkeys create a clever, quick-moving, and intellectually vibrant pairing. But as a self-punishment Xing (相刑) match, restlessness or scattered focus can unsettle the bond. Shared curiosity and mutual encouragement make this dynamic inspiring. Consistency and emotional grounding help it thrive long-term.
+                    Two Monkeys create a clever, quick-moving, and intellectually vibrant pairing. Shared restlessness or scattered focus can unsettle the bond if there's no grounding, but curiosity and mutual encouragement make this dynamic inspiring. Consistency and emotional steadiness help it thrive long-term.
                   </p>
                 </div>
 
@@ -270,7 +270,7 @@ export default function MonkeyPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Monkey × Pig — Six Damages / Harm (Liu Hai 六害)
+                    Monkey × Pig — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Play and comfort

@@ -27,7 +27,7 @@ export default function RoosterPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -138,13 +138,13 @@ export default function RoosterPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rooster × Rat — Break Pair (Po 破)
+                    Rooster × Rat — Break (Po 破)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Details and tactics
                   </p>
                   <p>
-                    Rooster's precision contrasts with Rat's flexible, quick-thinking approach, creating a dynamic full of spark and tension. Rat brings adaptability and creativity; Rooster adds clarity and structure. This pairing feels mentally sharp but easily reactive. Respectful communication keeps the connection functional.
+                    Rooster's precision contrasts with Rat's flexible, quick-thinking approach. Rat brings adaptability and creativity; Rooster adds clarity and structure. As a Po (破) "Break" pairing, they tend to shake each other's routines and assumptions about presentation versus practicality. The dynamic feels mentally sharp but easily reactive, with real change triggered when their different priorities collide. Respectful communication keeps the connection functional.
                   </p>
                 </div>
 
@@ -258,7 +258,7 @@ export default function RoosterPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rooster × Dog — Six Damages / Harm (Liu Hai 六害)
+                    Rooster × Dog — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Rules and principles

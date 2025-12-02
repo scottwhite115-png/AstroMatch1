@@ -28,7 +28,7 @@ export default function RatPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -148,13 +148,13 @@ export default function RatPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rat × Rat — Same Sign (Self-Punishment 相刑)
+                    Rat × Rat — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Quick and calculating
                   </p>
                   <p>
-                    Two Rats form a quick-witted, perceptive bond full of sharp humour and intuitive recognition. As a self-punishment Xing (相刑) pairing, their shared intensity can turn inward, creating subtle competitiveness or overthinking. Yet the mental chemistry is strong and engaging. The connection feels lively, intelligent, and quietly charged.
+                    Two Rats form a quick-witted, perceptive bond full of sharp humour and intuitive recognition. Sharing the same instinctive style can create subtle competitiveness or overthinking, but the mental chemistry is strong and engaging. The connection feels lively, intelligent, and quietly charged.
                   </p>
                 </div>
 
@@ -184,13 +184,13 @@ export default function RatPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rat × Rabbit — Break (Po 破)
+                    Rat × Rabbit — Punishment (Xing 刑)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Fast and soft
                   </p>
                   <p>
-                    Rat's intensity contrasts with Rabbit's gentleness in a Po (破) "Break" pattern that creates emotional fragility. Rabbit brings sensitivity and calm; Rat brings structure and sharp perception. Their blend forms a quiet, thoughtful dynamic shaped by care and timing. The connection feels soft, delicate, and emotionally nuanced.
+                    Rat's intensity contrasts with Rabbit's gentleness in a Xing (刑) "Punishment" pattern that highlights manners, expectations, and emotional sensitivity. Rabbit brings softness and calm; Rat brings structure and sharp perception. Their blend forms a quiet, thoughtful dynamic that needs care around tone and respect. The connection feels soft, delicate, and emotionally nuanced.
                   </p>
                 </div>
 
@@ -256,13 +256,13 @@ export default function RatPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rat × Rooster — Neutral
+                    Rat × Rooster — Break (Po 破)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Details and tactics
+                    Details and disruption
                   </p>
                   <p>
-                    Rat's flexible thinking meets Rooster's precision and structured clarity. Rooster brings refinement and focus; Rat adds adaptability and inventive solutions. Their interplay blends detail with strategy in a subtle, complementary way. The dynamic feels sharp, organised, and quietly productive.
+                    Rat's flexible thinking meets Rooster's precision and structured clarity in a Po (破) "Break" pattern that can quietly crack routines or expectations. Rooster brings refinement and high standards; Rat adds adaptability and inventive solutions. When handled well, the tension between detail and strategy can push both out of ruts. The dynamic feels sharp, organised, and capable of shaking things up.
                   </p>
                 </div>
 

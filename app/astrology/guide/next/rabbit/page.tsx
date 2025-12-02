@@ -27,7 +27,7 @@ export default function RabbitPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -138,13 +138,13 @@ export default function RabbitPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rabbit × Rat — Break (Po 破)
+                    Rabbit × Rat — Punishment (Xing 刑)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Fast and soft
                   </p>
                   <p>
-                    Rabbit's sensitivity meets Rat's sharp, strategic nature, creating a connection shaped by contrast. Rat brings clarity and structure, while Rabbit adds emotional nuance and softness. The dynamic feels thoughtful and quietly complex, with a blend of calm intuition and quick insight. The connection moves at a gentle rhythm when both energies align.
+                    Rabbit's sensitivity meets Rat's sharp, strategic nature, creating a connection shaped by contrast. Rat brings clarity and structure, while Rabbit adds emotional nuance and softness. As a Xing (刑) "Punishment" pairing, unspoken frustrations or differences in style can quietly build if not addressed. The dynamic feels thoughtful and quietly complex, with a blend of calm intuition and quick insight when both stay open and respectful.
                   </p>
                 </div>
 
@@ -174,25 +174,25 @@ export default function RabbitPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rabbit × Rabbit — Same Sign (Self-Punishment 相刑)
+                    Rabbit × Rabbit — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Soft and cautious
                   </p>
                   <p>
-                    Two Rabbits form a deeply intuitive, emotionally attuned partnership. As a self-punishment Xing (相刑) match, shared sensitivity can create moments of withdrawal or over-reflection. Yet the connection is naturally tender and attentive. It feels soothing, empathetic, and quietly harmonious when emotional openness is shared.
+                    Two Rabbits form a deeply intuitive, emotionally attuned partnership. Sharing the same sensitivity can sometimes lead to withdrawal or over-reflection when feelings get overwhelming, yet the connection is naturally tender and attentive. It feels soothing, empathetic, and quietly harmonious when emotional openness is shared.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rabbit × Dragon — Six Damages / Harm (Liu Hai 六害)
+                    Rabbit × Dragon — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Quiet vs. bold
                   </p>
                   <p>
-                    Rabbit's caution contrasts with Dragon's bold, expansive nature. Dragon moves with force and ambition, while Rabbit prefers subtlety and emotional safety. The energies may collide in pace and expression but remain compelling in contrast. The dynamic feels dramatic, vivid, and shaped by temperament differences.
+                    Rabbit and Dragon sit in a Liu Hai (六害) "Six Harms" pattern, where caution meets bold ambition in ways that can feel mismatched. Dragon moves with force, confidence, and grand visions, while Rabbit prefers subtlety, emotional safety, and quiet rhythms. Misunderstandings and unmet expectations can build if needs aren't clearly expressed. The dynamic feels dramatic, vivid, and shaped by deep temperament differences.
                   </p>
                 </div>
 
@@ -246,13 +246,13 @@ export default function RabbitPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rabbit × Rooster — Break (Po 破)
+                    Rabbit × Rooster — Clash Pair (Liu Chong 六冲)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Delicate vs. direct
                   </p>
                   <p>
-                    Rabbit and Rooster communicate in contrasting ways: Rabbit with tact, Rooster with precision. Rabbit softens the edges; Rooster sharpens the details. The pairing reveals both friction and clarity through its differences. The connection feels crisp, candid, and shaped by communication style.
+                    Rabbit and Rooster communicate in contrasting ways: Rabbit with tact, Rooster with precision and blunt clarity. As a Liu Chong (六冲) opposition, their styles can easily rub against each other yet also reveal truths that might otherwise be missed. Rabbit softens the edges; Rooster sharpens the details. The connection feels crisp, candid, and strongly shaped by communication style and timing.
                   </p>
                 </div>
 

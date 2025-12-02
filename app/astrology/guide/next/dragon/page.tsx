@@ -27,7 +27,7 @@ export default function DragonPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -156,7 +156,7 @@ export default function DragonPage() {
                     Weight and flare
                   </p>
                   <p>
-                    Dragon's bold movement contrasts with Ox's steady, practical rhythm. Ox prefers measured progress, while Dragon charges forward with instinct and intensity. The pairing holds tension around pacing and priorities but also a quiet respect underneath. The connection feels firm, grounded, and shaped by contrasting styles.
+                    Dragon's bold movement contrasts with Ox's steady, practical rhythm. Ox prefers measured progress, while Dragon charges forward with instinct and intensity. As a Po (破) "Break" pairing, they tend to shake each other's routines and assumptions about pace and control. The connection feels firm, grounded, and shaped by contrasting styles, with real change triggered when they collide.
                   </p>
                 </div>
 
@@ -174,37 +174,37 @@ export default function DragonPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dragon × Rabbit — Six Damages / Harm (Liu Hai 六害)
+                    Dragon × Rabbit — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Quiet vs. bold
                   </p>
                   <p>
-                    Dragon's direct force meets Rabbit's gentle caution, creating a contrast in expression and emotional pace. Rabbit brings softness and quiet perception; Dragon offers protection and decisive strength. Differences in rhythm and temperament shape the interaction. The connection feels delicate, expressive, and sensitive to imbalance.
+                    Dragon and Rabbit sit in a Liu Hai (六害) "Six Harms" pattern, where bold ambition meets caution in ways that can feel mismatched. Dragon moves with force, confidence, and grand visions, while Rabbit prefers subtlety, emotional safety, and quiet rhythms. Misunderstandings and unmet expectations can build if needs aren't clearly expressed. The dynamic feels dramatic, vivid, and shaped by deep temperament differences.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dragon × Dragon — Same Sign (Self-Punishment 相刑)
+                    Dragon × Dragon — Same Sign (Self-Punishment Xing 相刑)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Big presence
                   </p>
                   <p>
-                    Two Dragons create a striking, high-energy partnership filled with charisma and ambition. Shared intensity can heighten both synergy and conflict, forming a dynamic that feels powerful yet demanding. The pairing radiates presence and determination. When emotions align, the connection feels magnetic, bold, and unmistakably strong.
+                    Two Dragons create a striking, high-energy partnership filled with charisma and ambition. As a self-punishment Xing (相刑) match, shared intensity can heighten both synergy and conflict, making the bond feel powerful yet demanding. The pairing radiates presence and determination. When emotions align, the connection feels magnetic, bold, and unmistakably strong.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dragon × Snake — Secret Friend (Liu He 六合)
+                    Dragon × Snake — Neutral
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Charisma and strategy
                   </p>
                   <p>
-                    Dragon and Snake form a Liu He (六合) secret-friend bond marked by quiet understanding and strategic depth. Snake brings insight and emotional nuance; Dragon contributes strength and direction. The relationship unfolds with calm intensity and intuitive trust. The bond feels composed, perceptive, and deeply supportive.
+                    Dragon and Snake create a bond marked by intuition, strategy, and mutual understanding. Dragon brings strength and expressive confidence; Snake adds insight and psychological depth. While they don't form a classical Liu He pair, their mix of drive and depth can feel quietly powerful when aligned. The connection feels calm, perceptive, and purpose-driven.
                   </p>
                 </div>
 
