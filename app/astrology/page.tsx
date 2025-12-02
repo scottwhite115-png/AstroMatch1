@@ -1,16 +1,11 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
-import { 
-  AriesSymbol, TaurusSymbol, GeminiSymbol, CancerSymbol, LeoSymbol, VirgoSymbol,
-  LibraSymbol, ScorpioSymbol, SagittariusSymbol, CapricornSymbol, AquariusSymbol, PiscesSymbol
-} from "@/components/western-zodiac-symbols"
-import { ConnectionBoxNew } from "@/components/ConnectionBoxNew"
-import { buildMatchResultForProfiles } from "@/lib/matchGlue"
-import { getWesternSignFromDate, getChineseAnimalFromDate, getWuXingElementFromDate } from "@/lib/zodiacHelpers"
-import type { WesternSign, ChineseAnimal, WuXingElement } from "@/lib/matchEngine"
+import { getChinesePattern } from "@/lib/chinesePatternSystem"
+import { patternDefinitions } from "@/lib/chinesePatternSystem"
+import type { ChinesePatternType } from "@/lib/chinesePatternSystem"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -19,16 +14,40 @@ const FourPointedStar = ({ className }: { className?: string }) => (
 )
 
 export default function AstrologySection() {
-  const [selectedWestern, setSelectedWestern] = useState<string | null>(null)
-  const [selectedChinese, setSelectedChinese] = useState<string | null>(null)
-  const [birthdate1, setBirthdate1] = useState<string>("")
-  const [birthdate2, setBirthdate2] = useState<string>("")
-  const [showMatchResult, setShowMatchResult] = useState(false)
-  const [matchData, setMatchData] = useState<any>(null)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const router = useRouter()
   const { theme, setTheme } = useTheme()
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const drawerRef = useRef<HTMLElement>(null)
+  const drawerButtonRef = useRef<HTMLButtonElement>(null)
+
+  // Close drawer when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!isDrawerOpen) return
+
+      const target = event.target as Node
+      
+      // Don't close if clicking on the drawer itself or the toggle button
+      if (
+        drawerRef.current?.contains(target) ||
+        drawerButtonRef.current?.contains(target)
+      ) {
+        return
+      }
+
+      // Close the drawer if clicking anywhere else
+      setIsDrawerOpen(false)
+    }
+
+    if (isDrawerOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isDrawerOpen])
 
   // Section menu items for the drawer
   const sectionItems = [
@@ -37,18 +56,19 @@ export default function AstrologySection() {
       label: 'Match Generator',
       description: 'Calculate compatibility between two birthdates',
       icon: '🧮',
-    },
-    {
-      id: 'what-shapes-score',
-      label: 'What Shapes Your Score',
-      description: 'How the match engine works',
-      icon: '⚙️',
+      path: '/astrology/match-generator',
     },
     {
       id: 'chinese-patterns',
       label: 'Chinese Pattern Ranking',
       description: 'Traditional Chinese zodiac compatibility patterns',
       icon: '📊',
+    },
+    {
+      id: 'what-shapes-score',
+      label: 'What Shapes Your Score',
+      description: 'How the match engine works',
+      icon: '⚙️',
     },
   ]
 
@@ -59,121 +79,24 @@ export default function AstrologySection() {
       label: 'Sign Combinations',
       description: 'Explore Western × Chinese zodiac matches',
       icon: '⭐',
-      path: '/astrology',
+      path: '/astrology/combinations',
     },
     {
       id: 'western-guide',
-      label: 'Western Zodiac Guide',
+      label: 'Sun Signs',
       description: 'Learn about the 12 sun signs',
       icon: '☀️',
-      path: '/astrology/guide',
+      path: '/astrology/sun-signs',
     },
     {
       id: 'chinese-guide',
-      label: 'Chinese Zodiac Guide',
+      label: 'Chinese Zodiac',
       description: 'Discover the 12 animals',
       icon: '🐉',
-      path: '/astrology/guide/next',
+      path: '/astrology/chinese-zodiac',
     },
   ]
 
-  const handleWesternClick = (sign: string) => {
-    const newWestern = sign
-    setSelectedWestern(newWestern)
-
-    if (selectedChinese) {
-      router.push(`/astrology/${newWestern}/${selectedChinese}`)
-    }
-  }
-
-  const handleChineseClick = (sign: string) => {
-    const newChinese = sign
-    setSelectedChinese(newChinese)
-
-    if (selectedWestern) {
-      router.push(`/astrology/${selectedWestern}/${newChinese}`)
-    }
-  }
-
-  const calculateMatch = () => {
-    if (!birthdate1 || !birthdate2) return
-
-    console.log('[Match Generator] Starting calculation...', { birthdate1, birthdate2 })
-
-    try {
-      const date1 = new Date(birthdate1)
-      const date2 = new Date(birthdate2)
-
-      console.log('[Match Generator] Dates parsed:', { date1, date2 })
-
-      // Get astro data for both people
-      const person1 = {
-        westernSign: getWesternSignFromDate(date1) as WesternSign,
-        chineseAnimal: getChineseAnimalFromDate(date1) as ChineseAnimal,
-        wuXingElement: getWuXingElementFromDate(date1) as WuXingElement,
-      }
-
-      const person2 = {
-        westernSign: getWesternSignFromDate(date2) as WesternSign,
-        chineseAnimal: getChineseAnimalFromDate(date2) as ChineseAnimal,
-        wuXingElement: getWuXingElementFromDate(date2) as WuXingElement,
-      }
-
-      console.log('[Match Generator] Person 1:', person1)
-      console.log('[Match Generator] Person 2:', person2)
-
-      // Build match result
-      const matchResult = buildMatchResultForProfiles(person1, person2)
-
-      console.log('[Match Generator] Match result:', matchResult)
-
-      // Create connection box data
-      const boxData = {
-        score: matchResult.score,
-        tier: "Neutral Match" as any, // This will be overridden by pattern colors
-        rankLabel: matchResult.patternShortLabelEn,
-        rank: matchResult.patternShortLabelEn,
-        pillLabel: matchResult.pillLabel,
-        pattern: matchResult.pattern,
-        patternFullLabel: matchResult.patternFullLabel,
-        baseTagline: matchResult.baseTagline,
-        patternEmoji: matchResult.patternEmoji,
-        chemistryStars: matchResult.chemistryStars,
-        stabilityStars: matchResult.stabilityStars,
-        a: {
-          west: person1.westernSign,
-          east: person1.chineseAnimal,
-          westGlyph: "",
-          eastGlyph: "",
-          chineseElement: person1.wuXingElement,
-        },
-        b: {
-          west: person2.westernSign,
-          east: person2.chineseAnimal,
-          westGlyph: "",
-          eastGlyph: "",
-          chineseElement: person2.wuXingElement,
-        },
-        east_relation: "",
-        east_summary: "",
-        west_relation: "",
-        west_summary: "",
-        chineseLine: `${person1.chineseAnimal} × ${person2.chineseAnimal}`,
-        westernLine: `${person1.westernSign} × ${person2.westernSign}`,
-        sunMatchBlurb: "Match generated from birthdates",
-      }
-
-      console.log('[Match Generator] Box data:', boxData)
-      console.log('[Match Generator] Setting showMatchResult to true')
-
-      setMatchData(boxData)
-      setShowMatchResult(true)
-    } catch (error) {
-      console.error("[Match Generator] Error calculating match:", error)
-    }
-  }
-
-  const buttonBaseClass = "zodiac-list-item astro-highlight-card"
 
   return (
     <div
@@ -190,6 +113,7 @@ export default function AstrologySection() {
           <div className="flex items-center gap-2">
             {/* Menu icon to toggle drawer */}
             <button
+              ref={drawerButtonRef}
               type="button"
               onClick={() => setIsDrawerOpen(!isDrawerOpen)}
               className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
@@ -224,7 +148,7 @@ export default function AstrologySection() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Astrology
+                AstroLibrary
               </span>
             </div>
           </div>
@@ -258,6 +182,7 @@ export default function AstrologySection() {
         {/* Left slide-in drawer */}
         {isDrawerOpen && (
           <aside 
+            ref={drawerRef}
             className={`fixed left-0 bottom-0 z-50 w-72 max-w-[80vw] shadow-xl border-r flex flex-col ${
               theme === "light"
                 ? "bg-white border-gray-200"
@@ -303,9 +228,9 @@ export default function AstrologySection() {
               {/* Divider */}
               <div className={`my-2 border-t ${theme === "light" ? "border-gray-200" : "border-slate-700"}`} />
 
-              {/* Section heading for Charts & Sections */}
+              {/* Section heading for Charts & Tables */}
               <div className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-gray-500" : "text-slate-500"}`}>
-                Charts & Sections
+                Charts & Tables
               </div>
 
               {sectionItems.map((section) => {
@@ -314,9 +239,15 @@ export default function AstrologySection() {
                     key={section.id}
                     type="button"
                     onClick={() => {
-                      const element = document.getElementById(section.id);
-                      if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      if (section.path) {
+                        // Navigate to page if it has a path
+                        router.push(section.path);
+                      } else {
+                        // Scroll to section if no path
+                        const element = document.getElementById(section.id);
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                       }
                       setIsDrawerOpen(false);
                     }}
@@ -344,413 +275,826 @@ export default function AstrologySection() {
         )}
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8" ref={scrollContainerRef}>
-          {/* Main Heading */}
-          <div className="relative flex items-center justify-center mb-6">
-            <h1 className={`text-xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-              Sign Combinations
-            </h1>
-            <button
-              onClick={() => {
-                router.push('/astrology/guide')
-              }}
-              className={`absolute right-0 p-2 rounded-lg transition-colors flex items-center justify-center ${
-                theme === "light" ? "hover:bg-gray-100 text-gray-700" : "hover:bg-white/10 text-white"
-              }`}
-              aria-label="Navigate to guide page"
-            >
-              <svg 
-                className="w-5 h-5" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
+          {/* Compatibility Guides Section */}
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
 
-          {/* Match Engine Generator */}
-          <div id="match-generator" className={`mb-6 p-4 rounded-2xl border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-            <h2 className={`text-lg font-bold mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-              Match Engine Generator
-            </h2>
-            <p className={`text-sm mb-4 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-              Enter two birthdates to see their compatibility
-            </p>
-            
-            <div className="space-y-3">
-              <div>
-                <label className={`block text-sm font-medium mb-1 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                  Person 1 Birthdate
-                </label>
-                <input
-                  type="date"
-                  value={birthdate1}
-                  onChange={(e) => setBirthdate1(e.target.value)}
-                  className={`w-full px-3 py-2 rounded-lg border ${theme === "light" ? "bg-white border-gray-300 text-gray-900" : "bg-slate-800 border-white/20 text-white"}`}
-                />
-              </div>
+          {/* Combined Chinese Pattern Ranking & Relationship Patterns */}
+          <div id="chinese-patterns" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Chinese Pattern Ranking & Meanings</h2>
               
-              <div>
-                <label className={`block text-sm font-medium mb-1 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                  Person 2 Birthdate
-                </label>
-                <input
-                  type="date"
-                  value={birthdate2}
-                  onChange={(e) => setBirthdate2(e.target.value)}
-                  className={`w-full px-3 py-2 rounded-lg border ${theme === "light" ? "bg-white border-gray-300 text-gray-900" : "bg-slate-800 border-white/20 text-white"}`}
-                />
+              <div className="mb-4">
+                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                  Understanding the traditional Chinese zodiac patterns, their score ranges, and how they're interpreted in the AstroMatch compatibility system.
+                </p>
               </div>
-              
-              <button
-                onClick={calculateMatch}
-                disabled={!birthdate1 || !birthdate2}
-                className={`w-full py-2 px-4 rounded-lg font-semibold transition-all ${
-                  birthdate1 && birthdate2
-                    ? "bg-gradient-to-r from-orange-500 to-red-500 text-white hover:opacity-90"
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                }`}
-              >
-                Calculate Match
-              </button>
-            </div>
-          </div>
 
-          {/* Match Result Popup */}
-          {showMatchResult && matchData && (
-            <>
-              {console.log('[Match Generator] Rendering popup', { showMatchResult, matchData })}
-              <div 
-                className="fixed inset-0 z-50 flex items-center justify-center p-4"
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
-                onClick={() => {
-                  console.log('[Match Generator] Overlay clicked, closing popup')
-                  setShowMatchResult(false)
-                }}
-              >
-                <div 
-                  className={`relative max-w-lg w-full max-h-[90vh] overflow-y-auto rounded-2xl ${theme === "light" ? "bg-white" : "bg-slate-900"}`}
-                  onClick={(e) => {
-                    console.log('[Match Generator] Modal content clicked')
-                    e.stopPropagation()
-                  }}
-                >
-                  {/* Close button */}
-                  <button
-                    onClick={() => {
-                      console.log('[Match Generator] Close button clicked')
-                      setShowMatchResult(false)
-                    }}
-                    className={`absolute top-4 right-4 z-10 p-2 rounded-full transition-colors ${theme === "light" ? "hover:bg-gray-100 text-gray-700" : "hover:bg-white/10 text-white"}`}
-                    aria-label="Close"
-                  >
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="m18 6-12 12" />
-                      <path d="m6 6 12 12" />
-                    </svg>
-                  </button>
+              {/* Combined Table - No scrolling, restructured layout */}
+              <div className="space-y-3">
+                {/* Triple Harmony - San He */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-yellow-50" : "bg-yellow-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-300"}`}>Triple Harmony</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>三合 (San He)</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-yellow-100 text-yellow-800" : "bg-yellow-900/30 text-yellow-300"}`}>
+                          Harmony
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>82-96%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Same trine family. Smooth teamwork, shared direction, and naturally supportive long-term flow.
+                    </div>
+                  </div>
+                </div>
 
-                  {/* Connection box */}
-                  <div className="p-4">
-                    <ConnectionBoxNew
-                      {...matchData}
-                      theme={theme}
-                      showElements={true}
-                      showProfile={false}
-                    />
+                {/* Secret Friends - Liu He */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-pink-50" : "bg-pink-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Secret Friends</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六合 (Liu He)</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-pink-100 text-pink-800" : "bg-pink-900/30 text-pink-400"}`}>
+                          Harmony
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>72-94%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Quiet allies. Each sign "has the other's back" and tends to protect, encourage, and stabilise the connection.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Same Sign */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-emerald-50" : "bg-emerald-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>Same Sign</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>同生肖</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-emerald-100 text-emerald-800" : "bg-emerald-900/30 text-emerald-400"}`}>
+                          Neutral +
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>58-68%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Double dose of one energy. Very familiar, similar instincts; medium harmony rather than super-destiny.
+                    </div>
+                  </div>
+                </div>
+
+                {/* No Major Pattern */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-blue-50" : "bg-blue-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-blue-600" : "text-blue-400"}`}>No Major Pattern</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>—</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-blue-100 text-blue-800" : "bg-blue-900/30 text-blue-400"}`}>
+                          Neutral
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>50-65%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      No big harmony or clash. How it feels depends more on Western signs and individual charts.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Six Conflicts */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-orange-50" : "bg-orange-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-orange-600" : "text-orange-400"}`}>Six Conflicts</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六冲 (Liu Chong)</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-orange-100 text-orange-800" : "bg-orange-900/30 text-orange-400"}`}>
+                          Conflict
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>38-72%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Opposite branches. Push–pull, strong reactions, on–off movement, and "magnetic but clashing" chemistry.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Six Harms */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-red-50" : "bg-red-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Six Harms</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六害 (Liu Hai)</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-400"}`}>
+                          Conflict
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>35-68%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Hidden annoyances. Little frictions, misunderstandings, or mismatched needs that can wear on the bond.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Punishment */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-rose-50" : "bg-rose-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-rose-600" : "text-rose-400"}`}>Punishment</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>刑 (Xing)</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-rose-100 text-rose-800" : "bg-rose-900/30 text-rose-400"}`}>
+                          Conflict
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>35-66%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Tense dynamics. Lessons around fairness, blame, emotional pressure, and how each person handles conflict.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Break */}
+                <div className={`border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                  <div className={`${theme === "light" ? "bg-red-50" : "bg-red-900/10"}`}>
+                    <div className="flex items-center justify-between p-3">
+                      <div className="flex items-center gap-3 flex-1">
+                        <span className={`font-semibold ${theme === "light" ? "text-red-700" : "text-red-300"}`}>Break</span>
+                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>破 (Po)</span>
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-300"}`}>
+                          Conflict
+                        </span>
+                      </div>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>32-64%</span>
+                    </div>
+                    <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                      Breakpoints. One or both people disrupt the other's routines or comfort zone, sometimes through drama.
+                    </div>
                   </div>
                 </div>
               </div>
-            </>
-          )}
-
-          <div className="grid grid-cols-2 gap-6 mb-4">
-            {/* Western Astrology Section */}
-            <div className="space-y-2">
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "aries" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "aries" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("aries")}
-              >
-                <AriesSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Aries</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "taurus" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "taurus" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("taurus")}
-              >
-                <TaurusSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Taurus</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "gemini" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "gemini" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("gemini")}
-              >
-                <GeminiSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Gemini</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "cancer" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "cancer" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("cancer")}
-              >
-                <CancerSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Cancer</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "leo" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "leo" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("leo")}
-              >
-                <LeoSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Leo</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "virgo" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "virgo" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("virgo")}
-              >
-                <VirgoSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Virgo</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "libra" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "libra" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("libra")}
-              >
-                <LibraSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Libra</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "scorpio" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "scorpio" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("scorpio")}
-              >
-                <ScorpioSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Scorpio</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "sagittarius" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "sagittarius" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("sagittarius")}
-              >
-                <SagittariusSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Sagittarius</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "capricorn" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "capricorn" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("capricorn")}
-              >
-                <CapricornSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Capricorn</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "aquarius" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "aquarius" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("aquarius")}
-              >
-                <AquariusSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Aquarius</span>
-                </div>
-              </button>
-
-              <button
-                type="button"
-                className={`${buttonBaseClass} western ${selectedWestern === "pisces" ? "border-2 border-amber-400" : ""}`}
-                style={selectedWestern === "pisces" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleWesternClick("pisces")}
-              >
-                <PiscesSymbol className="w-8 h-8 text-white" />
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Pisces</span>
-                </div>
-              </button>
-            </div>
-
-            {/* Eastern Astrology Section */}
-            <div className="space-y-2">
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "rat" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "rat" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("rat")}
-              >
-                <div className="text-2xl">🐭</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Rat</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "ox" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "ox" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("ox")}
-              >
-                <div className="text-2xl">🐂</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Ox</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "tiger" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "tiger" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("tiger")}
-              >
-                <div className="text-2xl">🐅</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Tiger</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "rabbit" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "rabbit" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("rabbit")}
-              >
-                <div className="text-2xl">🐰</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Rabbit</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "dragon" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "dragon" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("dragon")}
-              >
-                <div className="text-2xl">🐉</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Dragon</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "snake" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "snake" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("snake")}
-              >
-                <div className="text-2xl">🐍</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Snake</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "horse" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "horse" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("horse")}
-              >
-                <div className="text-2xl">🐎</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Horse</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "goat" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "goat" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("goat")}
-              >
-                <div className="text-2xl">🐐</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Goat</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "monkey" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "monkey" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("monkey")}
-              >
-                <div className="text-2xl">🐒</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Monkey</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "rooster" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "rooster" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("rooster")}
-              >
-                <div className="text-2xl">🐓</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Rooster</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "dog" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "dog" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("dog")}
-              >
-                <div className="text-2xl">🐕</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Dog</span>
-                </div>
-              </button>
-
-              <button
-                className={`${buttonBaseClass} chinese ${selectedChinese === "pig" ? "border-2 border-amber-400" : ""}`}
-                style={selectedChinese === "pig" ? { background: 'linear-gradient(135deg, #fbbf24 0%, #f97316 100%)' } : {}}
-                onClick={() => handleChineseClick("pig")}
-              >
-                <div className="text-2xl">🐷</div>
-                <div className="zodiac-info">
-                  <span className="zodiac-name-small text-white/95">Pig</span>
-                </div>
-              </button>
             </div>
           </div>
 
-          {/* Compatibility Guides Section */}
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
+          {/* Triple Harmony Trine Groups Table */}
+          <div id="triple-harmony-trines" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Triple Harmony · 三合 (San He) Trine Groups</h2>
+              
+              <div className="mb-4">
+                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                  These are the <strong>four trine families</strong>. Signs in the same group are your <strong>Triple Harmony</strong> connections.
+                </p>
+              </div>
+
+              {/* Scrollable Table Container */}
+              <div 
+                className="border rounded-lg overflow-x-auto" 
+                style={{ 
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                }}
+              >
+                <table className="text-sm border-collapse w-full">
+                  <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Trine Name</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Theme</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Signs in the Group</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Vibe in AstroMatch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Rat–Dragon–Monkey - Visionaries (Yellow/Amber - San He tier) */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Rat–Dragon–Monkey</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Visionaries</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                        <span className="font-medium">Rat (子), Dragon (辰), Monkey (申)</span>
+                      </td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Fast, clever, future-oriented. Great for ideas, risk-taking, and bold moves.
+                      </td>
+                    </tr>
+
+                    {/* Ox–Snake–Rooster - Strategists (Yellow/Amber - San He tier) */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Ox–Snake–Rooster</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Strategists</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                        <span className="font-medium">Ox (丑), Snake (巳), Rooster (酉)</span>
+                      </td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Planners and tacticians. Good with long-term plans, structure, and precision.
+                      </td>
+                    </tr>
+
+                    {/* Tiger–Horse–Dog - Adventurers (Yellow/Amber - San He tier) */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Tiger–Horse–Dog</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Adventurers</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                        <span className="font-medium">Tiger (寅), Horse (午), Dog (戌)</span>
+                      </td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Brave, active, loyal. Strong passion, action, and fight-for-what-matters energy.
+                      </td>
+                    </tr>
+
+                    {/* Rabbit–Goat–Pig - Artists (Yellow/Amber - San He tier) */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Rabbit–Goat–Pig</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Artists</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                        <span className="font-medium">Rabbit (卯), Goat (未), Pig (亥)</span>
+                      </td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Gentle, creative, emotional. Focus on care, aesthetics, and emotional connection.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {/* Secret Friends Table */}
+          <div id="secret-friends" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Secret Friends · 六合 (Liu He) Pairs</h2>
+              
+              <div className="mb-4">
+                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                  These are the classic <strong>Secret Friend</strong> pairs. They often feel like a quiet ally or hidden support.
+                </p>
+              </div>
+
+              {/* Scrollable Table Container */}
+              <div 
+                className="border rounded-lg overflow-x-auto" 
+                style={{ 
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                }}
+              >
+                <table className="text-sm border-collapse w-full">
+                  <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Pair</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Chinese</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Theme in AstroMatch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Rat × Ox - Pink colors for Liu He tier */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-pink-50" : "hover:bg-pink-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-pink-700" : "text-pink-400"}`}>Rat × Ox</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-pink-600" : "text-pink-300"}`}>子–丑</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Practical protector; Rat's ideas meet Ox's reliability.
+                      </td>
+                    </tr>
+
+                    {/* Tiger × Pig */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-pink-50" : "hover:bg-pink-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-pink-700" : "text-pink-400"}`}>Tiger × Pig</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-pink-600" : "text-pink-300"}`}>寅–亥</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Brave heart + big heart; loyal support in tough times.
+                      </td>
+                    </tr>
+
+                    {/* Rabbit × Dog */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-pink-50" : "hover:bg-pink-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-pink-700" : "text-pink-400"}`}>Rabbit × Dog</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-pink-600" : "text-pink-300"}`}>卯–戌</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Gentle dreamer + loyal guardian; emotional safety and shared ideals.
+                      </td>
+                    </tr>
+
+                    {/* Dragon × Rooster */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-pink-50" : "hover:bg-pink-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-pink-700" : "text-pink-400"}`}>Dragon × Rooster</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-pink-600" : "text-pink-300"}`}>辰–酉</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Charisma meets clarity; helping each other shine and stay grounded.
+                      </td>
+                    </tr>
+
+                    {/* Snake × Monkey */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-pink-50" : "hover:bg-pink-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-pink-700" : "text-pink-400"}`}>Snake × Monkey</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-pink-600" : "text-pink-300"}`}>巳–申</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Strategist + trickster; clever teamwork, problem-solving, and social wit.
+                      </td>
+                    </tr>
+
+                    {/* Horse × Goat */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-pink-50" : "hover:bg-pink-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-pink-700" : "text-pink-400"}`}>Horse × Goat</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-pink-600" : "text-pink-300"}`}>午–未</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Free spirit + gentle soul; warm, expressive, and mutually encouraging.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          {/* Same Sign Explanation */}
+          <div id="same-sign" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Same Sign · 同生肖</h2>
+              
+              <div className="mb-4">
+                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                  When both people share the <strong>same animal sign</strong>, AstroMatch shows:
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {/* Label and Tagline Card */}
+                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-emerald-50 border-emerald-200" : "bg-emerald-900/10 border-emerald-700/30"}`}>
+                  <div className="mb-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`text-base font-semibold ${theme === "light" ? "text-emerald-700" : "text-emerald-400"}`}>Label:</span>
+                      <span className={`text-base font-bold ${theme === "light" ? "text-emerald-800" : "text-emerald-300"}`}>Same Sign · 同生肖</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className={`text-base font-semibold ${theme === "light" ? "text-emerald-700" : "text-emerald-400"} whitespace-nowrap`}>Tagline:</span>
+                      <span className={`text-base ${theme === "light" ? "text-emerald-800" : "text-emerald-300"}`}>
+                        "Same sign – double dose of one energy; high familiarity, medium harmony."
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* What it Means */}
+                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
+                  <h3 className={`text-base font-semibold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                    What it means:
+                  </h3>
+                  <ul className={`space-y-2 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                    <li className="flex items-start gap-2">
+                      <span className={`mt-1 ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
+                      <span>Very similar instincts and timing</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className={`mt-1 ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
+                      <span>You understand each other's moods quickly</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className={`mt-1 ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
+                      <span>But it isn't automatically as "karmically special" as Triple Harmony or Secret Friends</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Six Conflicts Table */}
+          <div id="six-conflicts" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Six Conflicts · 六冲 (Liu Chong)</h2>
+              
+              {/* Scrollable Table Container */}
+              <div 
+                className="border rounded-lg overflow-x-auto mb-4" 
+                style={{ 
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                }}
+              >
+                <table className="text-sm border-collapse w-full">
+                  <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Pair</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Branches</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Theme in AstroMatch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Rat × Horse - Indigo/Purple colors for Liu Chong (Opposites Attract) tier */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-indigo-50" : "hover:bg-indigo-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-indigo-700" : "text-indigo-400"}`}>Rat × Horse</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-indigo-600" : "text-indigo-300"}`}>子 × 午</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Head vs heart; quick mind vs free spirit; strong push–pull.
+                      </td>
+                    </tr>
+
+                    {/* Ox × Goat */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-indigo-50" : "hover:bg-indigo-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-indigo-700" : "text-indigo-400"}`}>Ox × Goat</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-indigo-600" : "text-indigo-300"}`}>丑 × 未</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Duty vs feelings; stability clashes with sensitivity.
+                      </td>
+                    </tr>
+
+                    {/* Tiger × Monkey */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-indigo-50" : "hover:bg-indigo-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-indigo-700" : "text-indigo-400"}`}>Tiger × Monkey</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-indigo-600" : "text-indigo-300"}`}>寅 × 申</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Rebel vs trickster; bold moves vs clever mischief.
+                      </td>
+                    </tr>
+
+                    {/* Rabbit × Rooster */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-indigo-50" : "hover:bg-indigo-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-indigo-700" : "text-indigo-400"}`}>Rabbit × Rooster</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-indigo-600" : "text-indigo-300"}`}>卯 × 酉</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Soft idealist vs sharp critic; values and style clash.
+                      </td>
+                    </tr>
+
+                    {/* Dragon × Dog */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-indigo-50" : "hover:bg-indigo-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-indigo-700" : "text-indigo-400"}`}>Dragon × Dog</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-indigo-600" : "text-indigo-300"}`}>辰 × 戌</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Authority vs justice; big visions vs loyalty to truth.
+                      </td>
+                    </tr>
+
+                    {/* Snake × Pig */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-indigo-50" : "hover:bg-indigo-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-indigo-700" : "text-indigo-400"}`}>Snake × Pig</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-indigo-600" : "text-indigo-300"}`}>巳 × 亥</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Intensity vs ease; private depth vs open-hearted comfort.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Explanation */}
+              <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-indigo-50 border-indigo-200" : "bg-indigo-900/10 border-indigo-700/30"}`}>
+                <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-indigo-800" : "text-indigo-300"}`}>
+                  How it reads in AstroMatch:
+                </h3>
+                <p className={`text-sm ${theme === "light" ? "text-indigo-900" : "text-indigo-200"}`}>
+                  Liu Chong shows <strong>strong reactions and on–off movement</strong>. There's often real attraction, but it's high-maintenance unless both people are very self-aware.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Six Harms Table */}
+          <div id="six-harms" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Six Harms · 六害 (Liu Hai)</h2>
+              
+              {/* Scrollable Table Container */}
+              <div 
+                className="border rounded-lg overflow-x-auto mb-4" 
+                style={{ 
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                }}
+              >
+                <table className="text-sm border-collapse w-full">
+                  <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Pair</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Branches</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Theme in AstroMatch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Rat × Goat - Red colors for Liu Hai (Difficult) tier */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Rat × Goat</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>子 × 未</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Practical vs sensitive; small hurts and misunderstandings pile up.
+                      </td>
+                    </tr>
+
+                    {/* Ox × Horse */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Ox × Horse</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>丑 × 午</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Slow and steady vs restless and fast; timing rarely feels aligned.
+                      </td>
+                    </tr>
+
+                    {/* Tiger × Snake */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Tiger × Snake</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>寅 × 巳</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Direct fire vs subtle strategy; trust and motives easily questioned.
+                      </td>
+                    </tr>
+
+                    {/* Rabbit × Dragon */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Rabbit × Dragon</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>卯 × 辰</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Gentle heart vs big ego; one feels overlooked, the other feels restricted.
+                      </td>
+                    </tr>
+
+                    {/* Monkey × Pig */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Monkey × Pig</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>申 × 亥</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Sharp humour vs soft feelings; jokes or lifestyle can feel cutting or heavy.
+                      </td>
+                    </tr>
+
+                    {/* Rooster × Dog */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Rooster × Dog</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>酉 × 戌</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Proud perfectionist vs loyal realist; criticism and disappointment build up.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Explanation */}
+              <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-red-50 border-red-200" : "bg-red-900/10 border-red-700/30"}`}>
+                <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-red-800" : "text-red-300"}`}>
+                  How it reads in AstroMatch:
+                </h3>
+                <p className={`text-sm ${theme === "light" ? "text-red-900" : "text-red-200"}`}>
+                  Liu Hai is <strong>"hidden irritations"</strong> – less fireworks than Liu Chong, but more <strong>slow, subtle wear-and-tear</strong> on goodwill if people don't communicate well.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Punishment Table */}
+          <div id="punishment" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Punishment · 刑 (Xing)</h2>
+              
+              <div className="mb-4">
+                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                  Punishment groups (三刑 San Xing) create <strong>tense, corrective</strong> energy. They highlight lessons around <strong>fairness, boundaries, and emotional responsibility</strong>.
+                </p>
+              </div>
+
+              {/* 3 Punishment Groups */}
+              <div className="mb-6">
+                <h3 className={`text-base font-semibold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                  3 Punishment Groups
+                </h3>
+                
+                <div 
+                  className="border rounded-lg overflow-x-auto mb-4" 
+                  style={{ 
+                    WebkitOverflowScrolling: 'touch',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                  }}
+                >
+                  <table className="text-sm border-collapse w-full">
+                    <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                      <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                        <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Group</th>
+                        <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Branches</th>
+                        <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>How it tends to feel in relationships</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Rat × Rabbit - Rose colors for Xing (Punishment/Difficult) tier */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Rat × Rabbit</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>子 × 卯</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          "Impolite punishment" – misaligned habits, mutual irritation.
+                        </td>
+                      </tr>
+
+                      {/* Tiger × Snake × Monkey */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Tiger × Snake × Monkey</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>寅 × 巳 × 申</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          "Bullying punishment" – power struggles, control issues, pride.
+                        </td>
+                      </tr>
+
+                      {/* Goat × Ox × Dog */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Goat × Ox × Dog</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>未 × 丑 × 戌</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          "Ungrateful punishment" – duty, blame, and feeling unappreciated.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pair-wise note */}
+                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                  <p className={`text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                    <strong>For app logic,</strong> these are treated <strong>pair-wise</strong>: Rat × Rabbit • Tiger × Snake, Tiger × Monkey, Snake × Monkey • Goat × Ox, Goat × Dog, Ox × Dog
+                  </p>
+                </div>
+              </div>
+
+              {/* Self-Punishment Signs */}
+              <div className="mb-4">
+                <h3 className={`text-base font-semibold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
+                  Self-Punishment Signs (Zi Xing 自刑)
+                </h3>
+                
+                <p className={`text-sm mb-3 ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
+                  Some signs are said to "punish themselves" when doubled:
+                </p>
+
+                <div 
+                  className="border rounded-lg overflow-x-auto mb-4" 
+                  style={{ 
+                    WebkitOverflowScrolling: 'touch',
+                    scrollbarWidth: 'thin',
+                    scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                  }}
+                >
+                  <table className="text-sm border-collapse w-full">
+                    <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                      <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                        <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Sign</th>
+                        <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Branch</th>
+                        <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Note in AstroMatch</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {/* Dragon */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Dragon</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>辰</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          Can be hard on themselves; two Dragons may double the pressure.
+                        </td>
+                      </tr>
+
+                      {/* Horse */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Horse</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>午</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          Restless and self-demanding; double Horse can burn out fast.
+                        </td>
+                      </tr>
+
+                      {/* Rooster */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Rooster</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>酉</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          Self-critical; two Roosters may loop in judgement and worry.
+                        </td>
+                      </tr>
+
+                      {/* Pig */}
+                      <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-rose-50" : "hover:bg-rose-900/10"}`}>
+                        <td className={`p-3 font-semibold ${theme === "light" ? "text-rose-700" : "text-rose-400"}`}>Pig</td>
+                        <td className={`p-3 font-medium ${theme === "light" ? "text-rose-600" : "text-rose-300"}`}>亥</td>
+                        <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          Over-giving then resentful; double Pig may avoid hard truths.
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* Explanation */}
+              <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-rose-50 border-rose-200" : "bg-rose-900/10 border-rose-700/30"}`}>
+                <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-rose-800" : "text-rose-300"}`}>
+                  How it reads in AstroMatch:
+                </h3>
+                <p className={`text-sm ${theme === "light" ? "text-rose-900" : "text-rose-200"}`}>
+                  Xing shows <strong>tension that demands growth</strong>. It doesn't mean "bad", but it pushes topics like respect, fairness, and how each person handles conflict and responsibility.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Break Table */}
+          <div id="break-pattern" className="mb-6">
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-4">Break · 破 (Po)</h2>
+              
+              {/* Scrollable Table Container */}
+              <div 
+                className="border rounded-lg overflow-x-auto mb-4" 
+                style={{ 
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'thin',
+                  scrollbarColor: theme === "light" ? '#d1d5db #f3f4f6' : '#374151 #1f2937'
+                }}
+              >
+                <table className="text-sm border-collapse w-full">
+                  <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
+                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Pair</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Branches</th>
+                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Theme in AstroMatch</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Rat × Rooster - Deep red colors for Po (Break/Difficult) tier */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Rat × Rooster</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>子 × 酉</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Plans vs image; practical moves vs pride and presentation.
+                      </td>
+                    </tr>
+
+                    {/* Ox × Dragon */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Ox × Dragon</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>丑 × 辰</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Solid ground vs big change; security shaken by ambition or upheaval.
+                      </td>
+                    </tr>
+
+                    {/* Tiger × Pig */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Tiger × Pig</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>寅 × 亥</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Fierce drive vs soft comfort; one pushes, the other resists leaving the nest.
+                      </td>
+                    </tr>
+
+                    {/* Rabbit × Horse */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Rabbit × Horse</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>卯 × 午</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Quiet rhythm vs constant motion; routines get broken, sometimes abruptly.
+                      </td>
+                    </tr>
+
+                    {/* Snake × Monkey */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Snake × Monkey</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>巳 × 申</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Strategy vs spontaneity; schemes and experiments that overturn the usual.
+                      </td>
+                    </tr>
+
+                    {/* Goat × Dog */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-red-50" : "hover:bg-red-900/10"}`}>
+                      <td className={`p-3 font-semibold ${theme === "light" ? "text-red-700" : "text-red-400"}`}>Goat × Dog</td>
+                      <td className={`p-3 font-medium ${theme === "light" ? "text-red-600" : "text-red-300"}`}>未 × 戌</td>
+                      <td className={`p-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                        Feelings vs duty; emotional needs collide with rules or obligations.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Explanation */}
+              <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-red-50 border-red-200" : "bg-red-900/10 border-red-700/30"}`}>
+                <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-red-800" : "text-red-300"}`}>
+                  How it reads in AstroMatch:
+                </h3>
+                <p className={`text-sm ${theme === "light" ? "text-red-900" : "text-red-200"}`}>
+                  Po marks <strong>"breakpoints"</strong> – people who shake each other out of old patterns. It can show up as drama, but also as the relationship that <strong>forces change</strong>, for better or worse.
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* What Shapes Your Match Score Section */}
           <div id="what-shapes-score" className="mb-6">
@@ -796,181 +1140,6 @@ export default function AstrologySection() {
                   <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>
                     How your year elements (Wood, Fire, Earth, Metal, Water) interact through the generating and controlling cycles. Directly affects the Harmony score.
                   </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Match Engine Ranking - Chinese Pattern Based */}
-          <div id="chinese-patterns" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-4">Chinese Pattern Ranking</h2>
-              
-              {/* Compact card layout for mobile */}
-              <div className="space-y-3">
-                {/* San He - Triple Harmony */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #fbbf24, #f59e0b)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      🌟 San He 三合
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>82-96%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Triple Harmony</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Triple Harmony – easy flow and strong support. Classic trine alliance with natural alignment and long-term growth potential.</p>
-                </div>
-
-                {/* Liu He - Secret Friends */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #c084fc, #e879f9)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      💫 Liu He 六合
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>72-94%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Secret Friends</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Close one-to-one bond with a soft, quietly supportive tone. One-to-one pattern with personal bonding and stability.</p>
-                </div>
-
-                {/* Same Sign */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #2dd4bf, #14b8a6)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      🪞 Same Sign 同生肖
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>58-68%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Mirror Match</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Double dose of one energy; high familiarity, medium harmony. Deeply familiar mirror-style connection.</p>
-                </div>
-
-                {/* Neutral Pattern */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #60a5fa, #818cf8, #3b82f6)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      ◽ Neutral 中
-                    </h3>
-                    <span 
-                      className="text-xs px-2 py-0.5 rounded font-medium text-white" 
-                      style={{ background: "linear-gradient(to right, #60a5fa, #818cf8, #3b82f6)" }}
-                    >
-                      50-65%
-                    </span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>No Major Pattern</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>No big traditional pattern. Quality depends more on Western signs and elements. Open-ended dynamic.</p>
-                </div>
-
-                {/* Liu Chong - Six Conflicts */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #fb923c, #f97316)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      ⚠️ Liu Chong 六冲
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>38-72%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Six Conflicts</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Magnetic opposites – high spark, low long-term harmony. Opposing branches with dynamic tension.</p>
-                </div>
-
-                {/* Liu Hai - Six Harms */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #fb7185, #f43f5e)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      💔 Liu Hai 六害
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>35-68%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Six Harms</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Drains and misunderstandings; small hurts can build up over time. Needs gentle pacing and clear boundaries.</p>
-                </div>
-
-                {/* Xing - Punishment */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #f87171, #ef4444)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      🔥 Xing 刑
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>35-66%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Punishment Pattern</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Tension and sharp edges; situations can feel strict or demanding. Grinding tension that exposes differences.</p>
-                </div>
-
-                {/* Po - Break */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 
-                      className="text-sm font-semibold"
-                      style={{ 
-                        backgroundImage: "linear-gradient(to right, #f43f5e, #e11d48)", 
-                        WebkitBackgroundClip: "text", 
-                        WebkitTextFillColor: "transparent", 
-                        backgroundClip: "text" 
-                      }}
-                    >
-                      💥 Po 破
-                    </h3>
-                    <span className="text-xs px-2 py-0.5 rounded font-medium text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>32-64%</span>
-                  </div>
-                  <p className={`text-sm mb-1 font-medium ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>Break Pattern</p>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Breaks, instability and disruption in the flow of the relationship. Represents break-ups and disrupted flow.</p>
                 </div>
               </div>
             </div>
