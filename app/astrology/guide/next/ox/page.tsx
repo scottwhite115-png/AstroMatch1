@@ -28,7 +28,7 @@ export default function OxPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -151,13 +151,13 @@ export default function OxPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ox × Ox — Same Sign (Self-Punishment 相刑)
+                    Ox × Ox — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Slow and solid
                   </p>
                   <p>
-                    Two Oxen create a patient, principled pairing marked by loyalty, endurance, and shared values. As a self-punishment Xing (相刑) match, their similar rigidity can lead to long silences or emotional standstills. Yet the foundation is strong, grounded, and sincere. The dynamic feels steady, traditional, and quietly powerful when both allow room for flexibility.
+                    Two Oxen create a patient, principled pairing marked by loyalty, endurance, and shared values. Their similar rigidity can sometimes lead to standstills or long silences when neither wants to bend, yet the foundation is strong, grounded, and sincere. The dynamic feels steady, traditional, and quietly powerful when both allow room for flexibility and emotional expression.
                   </p>
                 </div>
 
@@ -259,13 +259,13 @@ export default function OxPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ox × Dog — Neutral
+                    Ox × Dog — Punishment (Xing 刑)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Duty and devotion
                   </p>
                   <p>
-                    Ox and Dog share sincerity, loyalty, and a deep respect for fairness. Dog brings intuition and emotional steadiness; Ox contributes patience and grounded reliability. Their partnership feels honest and quietly balanced. The connection is gentle, trustworthy, and mutually stabilising.
+                    Ox and Dog sit in a Xing (刑) punishment group, where shared duty and loyalty can tip into pressure or resentment if things feel unfair. Dog brings intuition and a strong sense of justice; Ox contributes patience and grounded reliability. Their partnership can feel honest and quietly stabilising when respect flows both ways, but rigidity versus idealism may trigger periodic clashes. The connection is serious, loyal, and growth-focused around boundaries and responsibility.
                   </p>
                 </div>
 

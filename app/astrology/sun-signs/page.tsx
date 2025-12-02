@@ -10,7 +10,7 @@ const FourPointedStar = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default function AstrologyGuidePage() {
+export default function SunSignsPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
@@ -137,7 +137,7 @@ export default function AstrologyGuidePage() {
           <div className="flex items-center justify-between mb-6">
             <div className="flex-1 flex justify-start">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push('/astrology')}
                 className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
                 aria-label="Go back"
               >

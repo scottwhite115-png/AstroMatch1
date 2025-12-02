@@ -693,27 +693,27 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
       {showElements && (
         <div 
           className={clsx(
-            "w-full max-w-xl rounded-2xl p-4 sm:p-5 backdrop-blur-md",
+            "w-full max-w-xl rounded-2xl p-4 sm:p-5 backdrop-blur-md flex flex-col",
             theme === "light" 
               ? "bg-white" 
               : "bg-slate-900/90"
           )}
           style={{ 
-            minHeight: showProfile ? 'auto' : '240px',
-            paddingBottom: showProfile ? undefined : '16px',
+            minHeight: '400px',
+            paddingBottom: '24px',
             border: `1.5px solid ${gradientColors.start}`,
           }}
         >
           {/* Pattern + sun sign + elements */}
-          <div className="space-y-4 text-xs sm:text-sm">
+          <div className="space-y-4 text-xs sm:text-sm flex-1">
             
             {/* Astrology sign combinations - at the very top */}
-            <div className="px-3 py-2 flex items-center justify-center overflow-visible">
-              {/* Center the entire line as one unit */}
-              <div className="flex items-center gap-1 justify-center">
+            <div className="px-3 py-2 flex items-center justify-center w-full overflow-hidden">
+              {/* Center the entire line as one unit with consistent smaller font */}
+              <div className="flex items-center gap-1 justify-center whitespace-nowrap">
                 {/* Left signs */}
                 <span className={clsx(
-                  "font-bold text-xl whitespace-nowrap",
+                  "font-bold text-base", // Smaller consistent size
                   theme === "light" ? "text-slate-700" : "text-slate-200"
                 )}>
                   {userALabel}
@@ -721,7 +721,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 
                 {/* Heart icon in the center */}
                 <span className={clsx(
-                  "text-xl flex-shrink-0",
+                  "text-base flex-shrink-0", // Matches text size
                   theme === "light" ? "text-pink-500" : "text-pink-400"
                 )}>
                   ♥
@@ -729,7 +729,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 
                 {/* Right signs */}
                 <span className={clsx(
-                  "font-bold text-xl whitespace-nowrap",
+                  "font-bold text-base", // Smaller consistent size
                   theme === "light" ? "text-slate-700" : "text-slate-200"
                 )}>
                   {userBLabel}

@@ -136,7 +136,7 @@ export function BottomNavigation() {
     },
     {
       icon: FourPointedStar,
-      label: "AstroLibrary",
+      label: "AstroLab",
       path: "/astrology",
     },
     {

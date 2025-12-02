@@ -8,15 +8,13 @@ import { useTheme } from "@/contexts/ThemeContext"
 import { getFusionArchetypeData, getArchetypeName } from "@/lib/fusionArchetypes"
 import ConnectionBoxSimple from "@/components/ConnectionBoxSimple"
 import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
-import { explainMatchAndScore } from "@/lib/matchExplainAndScore"
+import { ConnectionBoxNew } from "@/components/ConnectionBoxNew"
 import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
-import { INSIGHT_OVERRIDES, type OverrideKey } from "@/data/insight_overrides"
 import { saveSunSigns } from "@/lib/sunSignCalculator"
-import { computeMatchWithNewEngine } from "@/lib/matchEngineAdapter"
-import { type West, type East } from "@/lib/matchEngine"
-import { getCompleteLongformBlurb, getTierKeyFromScore, createPairId } from "@/data/longformBlurbsComplete"
-import { autoInsight } from "@/lib/insight"
-import { evaluateMatch } from "@/engine/astromatch-engine"
+import { buildConnectionBox } from "@/lib/compat/engine"
+import type { UserProfile } from "@/lib/compat/types"
+import { getWuXingYearElement } from "@/lib/matchEngine"
+import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
 
 interface ZodiacCombinationPageProps {
   params: {
@@ -1337,6 +1335,138 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     }
   }, [])
 
+  // Helper function to convert SimpleConnectionBox to ConnectionBoxData
+  const convertSimpleToConnectionBoxData = (
+    simpleBox: any, // SimpleConnectionBox type
+    userWest: string,
+    userEast: string,
+    profileWest: string,
+    profileEast: string,
+    userYearElement?: any,
+    profileYearElement?: any
+  ): ConnectionBoxData => {
+    // Map match label to rank key
+    const labelToRankKey: Record<string, string> = {
+      "Soulmate Match": "perfect",
+      "Twin Flame Match": "excellent",
+      "Excellent Match": "excellent",
+      "Harmonious Match": "excellent",
+      "Favourable Match": "good",
+      "Good Friends": "good",
+      "Good Friends Match": "good",
+      "Opposites Attract": "fair",
+      "Magnetic Opposites": "fair",
+      "Neutral Match": "fair",
+      "Difficult Match": "challenging",
+    };
+    
+    const rankKey = labelToRankKey[simpleBox.matchLabel] || "neutral";
+    
+    // Map label to tier
+    const labelToTier = (label: string): any => {
+      if (label === "Soulmate Match") return "Soulmate";
+      if (label === "Twin Flame Match") return "Twin Flame";
+      if (label === "Excellent Match" || label === "Harmonious Match") return "Excellent";
+      if (label === "Favourable Match") return "Favourable";
+      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
+      if (label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "Neutral Match") return "Neutral";
+      if (label === "Difficult Match") return "Difficult";
+      return "Neutral";
+    };
+    
+    // Extract emoji and color from label
+    const labelToEmoji: Record<string, string> = {
+      "Soulmate Match": "💫",
+      "Twin Flame Match": "🔥",
+      "Excellent Match": "✨",
+      "Harmonious Match": "✨",
+      "Favourable Match": "✨",
+      "Good Friends": "✨",
+      "Good Friends Match": "✨",
+      "Opposites Attract": "⚡",
+      "Magnetic Opposites": "⚡",
+      "Neutral Match": "✨",
+      "Difficult Match": "💔",
+    };
+    
+    const labelToColor: Record<string, string> = {
+      "Soulmate Match": "rgb(212, 175, 55)",
+      "Twin Flame Match": "rgb(255, 140, 0)",
+      "Excellent Match": "rgb(219, 39, 119)",
+      "Harmonious Match": "rgb(219, 39, 119)",
+      "Favourable Match": "rgb(219, 39, 119)",
+      "Good Friends": "rgb(34, 139, 34)",
+      "Good Friends Match": "rgb(34, 139, 34)",
+      "Opposites Attract": "rgb(239, 68, 68)",
+      "Magnetic Opposites": "rgb(239, 68, 68)",
+      "Neutral Match": "rgb(34, 139, 34)",
+      "Difficult Match": "rgb(239, 68, 68)",
+    };
+    
+    const tier = labelToTier(simpleBox.matchLabel);
+    
+    // Generate Western sun sign relationship blurb
+    const westernSignLine = getSunMatchBlurb(
+      userWest.toLowerCase() as WesternSign,
+      profileWest.toLowerCase() as WesternSign
+    );
+    
+    return {
+      score: simpleBox.score,
+      rank: simpleBox.matchLabel,
+      rankLabel: simpleBox.matchLabel,
+      rankKey: rankKey as any,
+      emoji: labelToEmoji[simpleBox.matchLabel] || "🌟",
+      colorRgb: labelToColor[simpleBox.matchLabel] || "rgb(34, 139, 34)",
+      connectionLabel: simpleBox.headingLine,
+      tagline: simpleBox.matchLabel,
+      east_tagline: simpleBox.chineseLine,
+      tags: [],
+      insight: simpleBox.overview || 'Compatibility information is being calculated.',
+      longformBody: simpleBox.overview || 'Compatibility information is being calculated.',
+      east_relation: simpleBox.chineseLine,
+      east_summary: simpleBox.chineseLine,
+      east_description: simpleBox.chineseDescription || '',
+      west_relation: simpleBox.westernLine,
+      west_summary: simpleBox.westernLine,
+      west_description: simpleBox.westernDescription || '',
+      westernSignLine: westernSignLine,
+      wuXingLine: simpleBox.wuXingLine,
+      a: {
+        west: userWest,
+        east: userEast,
+        westGlyph: getWesternSignGlyph(userWest),
+        eastGlyph: getChineseSignGlyph(userEast),
+        chineseElement: userYearElement
+      },
+      b: {
+        west: profileWest,
+        east: profileEast,
+        westGlyph: getWesternSignGlyph(profileWest),
+        eastGlyph: getChineseSignGlyph(profileEast),
+        chineseElement: profileYearElement
+      },
+      tier: tier as any,
+      // Pattern fields from SimpleConnectionBox
+      chinesePattern: simpleBox.chinesePattern,
+      westAspect: simpleBox.westAspect,
+      westElementRelation: simpleBox.westElementRelation,
+      isChineseOpposite: simpleBox.isChineseOpposite,
+      isLivelyPair: simpleBox.isLivelyPair,
+      wuXingA: userYearElement,
+      wuXingB: profileYearElement,
+      // Match engine result fields
+      pillLabel: simpleBox.pillLabel,
+      pattern: simpleBox.pattern,
+      patternFullLabel: simpleBox.patternFullLabel,
+      baseTagline: simpleBox.baseTagline,
+      patternEmoji: simpleBox.patternEmoji,
+      chemistryStars: simpleBox.chemistryStars,
+      stabilityStars: simpleBox.stabilityStars,
+    }
+  }
+
   // Build compatibility box when user signs are loaded
   useEffect(() => {
     console.log('[Astrology Page] useEffect TRIGGERED - userSigns:', userSigns, 'pageSigns:', pageSigns)
@@ -1346,137 +1476,71 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       return
     }
     
-    console.log('[Astrology Page] Starting compatibility calculation...')
+    console.log('[Astrology Page] Starting compatibility calculation with new match engine...')
     
     try {
-      // Get user gender from localStorage
-      const userGender = localStorage.getItem("userGender") || "unspecified"
-      
-      console.log('[Astrology Page] Input signs:', {
-        userWestern: userSigns.western,
-        userChinese: userSigns.chinese,
-        pageWestern: pageSigns.western,
-        pageChinese: pageSigns.chinese
-      })
-      
-      const capitalizeForEngine = (sign: string): string => {
-        return sign.charAt(0).toUpperCase() + sign.slice(1).toLowerCase();
+      // Create UserProfile objects for the new match engine
+      const userProfile: UserProfile = {
+        sunSign: userSigns.western.toLowerCase() as any,
+        animal: userSigns.chinese.toLowerCase() as any,
       }
       
-      const userWest = capitalizeForEngine(userSigns.western) as West
-      const userEast = capitalizeForEngine(userSigns.chinese) as East
-      const pageWest = capitalizeForEngine(pageSigns.western) as West
-      const pageEast = capitalizeForEngine(pageSigns.chinese) as East
-      
-      console.log('[Astrology Page] Using new engine with:', { userWest, userEast, pageWest, pageEast })
-      
-      const newEngineResult = computeMatchWithNewEngine(
-        userWest,
-        userEast,
-        pageWest,
-        pageEast
-      )
-
-      const astroMatch = evaluateMatch(
-        userWest,
-        userEast,
-        pageWest,
-        pageEast
-      )
-      
-      const legacyResult = explainMatchAndScore(
-        userWest,
-        userEast,
-        pageWest,
-        pageEast
-      )
-      
-      console.log('[Astrology Page] New engine result:', newEngineResult)
-      console.log('[Astrology Page] Legacy engine result:', legacyResult)
-      
-      if (!newEngineResult) {
-        throw new Error('computeMatchWithNewEngine returned an empty result')
+      const pageProfile: UserProfile = {
+        sunSign: pageSigns.western.toLowerCase() as any,
+        animal: pageSigns.chinese.toLowerCase() as any,
       }
       
-      const pairId = createPairId(userWest, userEast, pageWest, pageEast)
-      const tierKey = newEngineResult.tier ?? getTierKeyFromScore(newEngineResult.score)
-      const longformContent = getCompleteLongformBlurb(pairId, tierKey)
+      console.log('[Astrology Page] User profiles:', { userProfile, pageProfile })
       
-      const pairKey = `${userSigns.western.toLowerCase()}_${userSigns.chinese.toLowerCase()}__${pageSigns.western.toLowerCase()}_${pageSigns.chinese.toLowerCase()}` as OverrideKey
-      const override = INSIGHT_OVERRIDES[pairKey]
-      const useOverride = override && (override.rank === newEngineResult.rankKey)
-      const badgeTags = astroMatch.badges?.length ? astroMatch.badges : []
-      const combinedTags = Array.from(new Set([...(newEngineResult.tags ?? []), ...badgeTags]))
+      // Get year elements from localStorage if available, or use defaults
+      // Try to get user birthdate to calculate year element
+      const userBirthdate = localStorage.getItem("userBirthdate")
+      const pageBirthdate = null // Page signs don't have birthdates
       
-      let insight: string | undefined = longformContent?.body
-      if (!insight) {
-        if (useOverride) {
-          insight = override.insight
-        } else {
-          const insightInput = {
-            score: newEngineResult.score,
-            rankKey: newEngineResult.rankKey,
-            rankLabel: newEngineResult.rankLabel,
-            connectionLabel: newEngineResult.connectionLabel,
-            east_relation: newEngineResult.east_relation,
-            east_summary: newEngineResult.east_summary,
-            west_relation: newEngineResult.west_relation,
-            west_summary: newEngineResult.west_summary,
-            tags: combinedTags,
-            emoji: newEngineResult.emoji,
-            colorRgb: newEngineResult.colorRgb,
-            tier: newEngineResult.tier,
-          } as any
-          insight = autoInsight(insightInput)
+      let userYearElement: any = undefined
+      let pageYearElement: any = undefined
+      
+      if (userBirthdate) {
+        try {
+          const birthYear = new Date(userBirthdate).getFullYear()
+          userYearElement = getWuXingYearElement(birthYear)
+          console.log('[Astrology Page] User year element calculated:', userYearElement)
+        } catch (e) {
+          console.warn('[Astrology Page] Could not calculate user year element:', e)
         }
       }
       
-      const eastLabel = longformContent?.east_label || newEngineResult.east_relation
-      const eastText = longformContent?.east_text || newEngineResult.east_summary
-      const westLabel = longformContent?.west_label || newEngineResult.west_relation
-      const westText = longformContent?.west_text || newEngineResult.west_summary
-      const headline = longformContent?.headline || newEngineResult.connectionLabel
-      const eastTagline = longformContent?.east_tagline || newEngineResult.east_tagline || newEngineResult.tagline
-      const overallTagline = longformContent?.tagline || newEngineResult.tagline
-      const rankLabelDisplay = `${astroMatch.tier} Match`
+      // Use default year (1990) for page profile if needed
+      // In a real scenario, you might want to use a different default or make it configurable
+      pageYearElement = getWuXingYearElement(1990)
       
-      const boxData: ConnectionBoxData = {
-        score: astroMatch.score,
-        rank: rankLabelDisplay,
-        rankLabel: rankLabelDisplay,
-        rankKey: newEngineResult.rankKey,
-        emoji: newEngineResult.emoji,
-        colorRgb: newEngineResult.colorRgb || astroMatch.color,  // Use classifier color first
-        connectionLabel: headline,
-        tagline: overallTagline,
-        east_tagline: eastTagline,
-        tags: combinedTags,
-        insight,
-        longformBody: longformContent?.body,
-        hasOverride: legacyResult?.hasOverride,
-        hasLongform: !!longformContent,
-        east_relation: eastLabel,
-        east_summary: eastText,
-        west_relation: westLabel,
-        west_summary: westText,
-        tier: newEngineResult.tier,
-        astroMatch,
-        a: {
-          west: newEngineResult.a?.west || capitalizeSign(userSigns.western),
-          east: newEngineResult.a?.east || capitalizeSign(userSigns.chinese),
-          westGlyph: newEngineResult.a?.westGlyph || getWesternSignGlyph(userSigns.western),
-          eastGlyph: newEngineResult.a?.eastGlyph || getChineseSignGlyph(userSigns.chinese)
-        },
-        b: {
-          west: newEngineResult.b?.west || capitalizeSign(pageSigns.western),
-          east: newEngineResult.b?.east || capitalizeSign(pageSigns.chinese),
-          westGlyph: newEngineResult.b?.westGlyph || getWesternSignGlyph(pageSigns.western),
-          eastGlyph: newEngineResult.b?.eastGlyph || getChineseSignGlyph(pageSigns.chinese)
-        }
+      // Use the new match engine buildConnectionBox function
+      const simpleBox = buildConnectionBox(
+        userProfile,
+        pageProfile,
+        userYearElement,
+        pageYearElement
+      )
+      
+      console.log('[Astrology Page] SimpleConnectionBox from new engine:', simpleBox)
+      
+      if (!simpleBox) {
+        throw new Error('buildConnectionBox returned an empty result')
       }
+      
+      // Convert SimpleConnectionBox to ConnectionBoxData
+      const boxData = convertSimpleToConnectionBoxData(
+        simpleBox,
+        capitalizeSign(userSigns.western),
+        capitalizeSign(userSigns.chinese),
+        capitalizeSign(pageSigns.western),
+        capitalizeSign(pageSigns.chinese),
+        userYearElement,
+        pageYearElement
+      )
       
       setCompatBox(boxData)
-      console.log('[Astrology Page] ✅ Compat box set successfully!')
+      console.log('[Astrology Page] ✅ Compat box set successfully using new match engine!')
     } catch (error) {
       console.error("[Astrology Page] ❌ Error building compat box:", error)
       console.error("[Astrology Page] Error message:", error instanceof Error ? error.message : String(error))
@@ -1568,7 +1632,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
                 />
               </svg>
               <span className="font-bold text-base bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
 
@@ -1578,7 +1642,52 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
           {/* Match Engine Connection Box */}
           {compatBox && userSigns ? (
             <div className="mb-6">
-              <ConnectionBoxSimple data={compatBox} alwaysExpanded={true} />
+              {(() => {
+                // Map rankLabel to ConnectionBoxNew tier format
+                const mapTier = (label?: string): "Soulmate Match" | "Twin Flame Match" | "Excellent Match" | "Favourable Match" | "Neutral Match" | "Opposites Attract" | "Difficult Match" => {
+                  const l = (label || "").toLowerCase();
+                  if (l.includes("soulmate")) return "Soulmate Match";
+                  if (l.includes("twin flame")) return "Twin Flame Match";
+                  if (l.includes("excellent")) return "Excellent Match";
+                  if (l.includes("favourable") || l.includes("favorable")) return "Favourable Match";
+                  if (l.includes("opposites attract") || l.includes("magnetic opposites")) return "Opposites Attract";
+                  if (l.includes("difficult") || l.includes("challenging")) return "Difficult Match";
+                  return "Neutral Match";
+                };
+                
+                return (
+                  <ConnectionBoxNew
+                    tier={mapTier(compatBox.rankLabel || compatBox.rank) as any}
+                    score={compatBox.score}
+                    westA={compatBox.a?.west || ""}
+                    eastA={compatBox.a?.east || ""}
+                    westB={compatBox.b?.west || ""}
+                    eastB={compatBox.b?.east || ""}
+                    chineseLine={compatBox.east_relation || compatBox.east_summary || ""}
+                    sunMatchBlurb={compatBox.westernSignLine || ""}
+                    westernLine={compatBox.west_relation || compatBox.west_summary || ""}
+                    wuXingLine={compatBox.wuXingLine}
+                    connectionBlurb={compatBox.insight}
+                    theme={theme}
+                    chineseElementA={compatBox.a?.chineseElement}
+                    chineseElementB={compatBox.b?.chineseElement}
+                    chinesePattern={compatBox.chinesePattern as any}
+                    westAspect={compatBox.westAspect as any}
+                    westElementRelation={compatBox.westElementRelation as any}
+                    isChineseOpposite={compatBox.isChineseOpposite}
+                    isLivelyPair={compatBox.isLivelyPair}
+                    patternFullLabel={compatBox.patternFullLabel}
+                    pillLabel={compatBox.pillLabel}
+                    baseTagline={compatBox.baseTagline}
+                    patternEmoji={compatBox.patternEmoji}
+                    pattern={compatBox.pattern}
+                    chemistryStars={compatBox.chemistryStars}
+                    stabilityStars={compatBox.stabilityStars}
+                    showProfile={false}
+                    showElements={true}
+                  />
+                );
+              })()}
             </div>
           ) : userSigns && !compatBox ? (
             <div className="rounded-2xl border border-gray-200 dark:border-gray-700 mb-6">

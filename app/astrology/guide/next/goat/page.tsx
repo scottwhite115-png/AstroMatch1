@@ -27,7 +27,7 @@ export default function GoatPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -138,7 +138,7 @@ export default function GoatPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Goat × Rat — Six Damages / Harm (Liu Hai 六害)
+                    Goat × Rat — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Practical vs. tender
@@ -222,13 +222,13 @@ export default function GoatPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Goat × Goat — Same Sign (Self-Punishment 相刑)
+                    Goat × Goat — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Soft and moody
                   </p>
                   <p>
-                    Two Goats create a deeply intuitive and empathetic connection. But as a self-punishment Xing (相刑) pair, mirrored sensitivities can intensify emotional withdrawal or insecurity. When communication stays soft and open, the match becomes loving and nurturing. Reassurance and presence keep the bond strong.
+                    Two Goats create a deeply intuitive and empathetic connection. Mirrored sensitivities can intensify emotional withdrawal or insecurity if feelings go unspoken, but they also bring great compassion and shared understanding. When communication stays soft and open, the match becomes loving and nurturing. Reassurance and presence keep the bond strong.
                   </p>
                 </div>
 
@@ -258,13 +258,13 @@ export default function GoatPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Goat × Dog — Neutral
+                    Goat × Dog — Break (Po 破)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Caring and conscientious
                   </p>
                   <p>
-                    Goat and Dog share sincerity but different emotional rhythms. Dog offers protection and loyalty; Goat brings gentleness and emotional nuance. The bond feels honest and kind, though not instinctively harmonious. This pairing thrives when both value reassurance and consistency.
+                    Goat and Dog share sincerity but move through emotions in different ways. Dog offers protection, realism, and a strong sense of duty; Goat brings gentleness and emotional nuance. As a Po (破) "Break" pairing, they tend to shake each other's habits and expectations around care, work, and responsibility. The bond feels honest and kind, but it asks for ongoing adjustment to stay comfortable and stable.
                   </p>
                 </div>
 

@@ -27,7 +27,7 @@ export default function TigerPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
+                AstroLibrary
               </span>
             </div>
             
@@ -162,13 +162,13 @@ export default function TigerPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Tiger × Tiger — Same Sign (Self-Punishment 相刑)
+                    Tiger × Tiger — Same Sign (同生肖)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     High-voltage duo
                   </p>
                   <p>
-                    Two Tigers form a passionate, high-energy pairing marked by courage, charisma, and fierce independence. As a self-punishment Xing (相刑) match, shared intensity can amplify both conflict and chemistry. Yet when energy is channelled constructively, the bond feels unstoppable and inspiring. The connection is bold, dynamic, and emotionally electric.
+                    Two Tigers form a passionate, high-energy pairing marked by courage, charisma, and fierce independence. Sharing the same intense style can amplify both chemistry and conflict, especially when pride or control issues surface. Yet when that power is channelled constructively, the bond feels unstoppable and inspiring. The connection is bold, dynamic, and emotionally electric.
                   </p>
                 </div>
 
@@ -198,13 +198,13 @@ export default function TigerPage() {
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Tiger × Snake — Break (Po 破)
+                    Tiger × Snake — Six Harms (Liu Hai 六害)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
                     Impulse vs. calculation
                   </p>
                   <p>
-                    Tiger and Snake fall under the Po (破) Break pattern, where instinct and emotional style diverge. Tiger is open and direct; Snake is private and inwardly perceptive. Their energies often miss each other's emotional signals. The connection feels enigmatic, tense, and layered beneath the surface.
+                    Tiger and Snake sit in a Liu Hai (六害) "Six Harms" pattern, where instinct and emotional style often rub against each other. Tiger is open, direct, and fast-moving; Snake is private, measured, and inwardly perceptive. Misread signals and unspoken tensions can build if feelings aren't named. The connection feels enigmatic, magnetic, and quietly tense.
                   </p>
                 </div>
 
