@@ -7,7 +7,12 @@ export function LabelPill({ tier, label }: { tier: Tier; label?: string }) {
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ring-1 ${theme.bg} ${theme.text} ${theme.ring}`}
+      className="inline-flex items-center rounded-full border-2 px-2.5 py-1 text-xs font-medium"
+      style={{
+        color: 'inherit',
+        borderColor: theme.borderColor,
+        backgroundColor: 'transparent',
+      }}
       title={TIER_TOOLTIP[tier]}
       aria-label={`${text} — ${TIER_TOOLTIP[tier]}`}
     >

@@ -49,6 +49,16 @@ export default function AstrologySection() {
     }
   }, [isDrawerOpen])
 
+  // Scroll to Chinese Pattern Ranking on page load
+  useEffect(() => {
+    const element = document.getElementById('chinese-patterns')
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 100)
+    }
+  }, [])
+
   // Section menu items for the drawer
   const sectionItems = [
     {
@@ -94,6 +104,13 @@ export default function AstrologySection() {
       description: 'Discover the 12 animals',
       icon: '🐉',
       path: '/astrology/chinese-zodiac',
+    },
+    {
+      id: 'vedic-astrology',
+      label: 'Vedic Astrology',
+      description: 'Ancient Indian astrological wisdom',
+      icon: '🕉️',
+      path: '/astrology/vedic',
     },
   ]
 

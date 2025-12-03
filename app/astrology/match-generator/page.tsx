@@ -69,12 +69,14 @@ export default function MatchGeneratorPage() {
       label: 'Chinese Pattern Ranking',
       description: 'Traditional Chinese zodiac compatibility patterns',
       icon: '📊',
+      path: '/astrology#chinese-patterns',
     },
     {
       id: 'what-shapes-score',
       label: 'What Shapes Your Score',
       description: 'How the match engine works',
       icon: '⚙️',
+      path: '/astrology#what-shapes-score',
     },
   ]
 
@@ -100,6 +102,13 @@ export default function MatchGeneratorPage() {
       description: 'Discover the 12 animals',
       icon: '🐉',
       path: '/astrology/chinese-zodiac',
+    },
+    {
+      id: 'vedic-astrology',
+      label: 'Vedic Astrology',
+      description: 'Ancient Indian astrological wisdom',
+      icon: '🕉️',
+      path: '/astrology/vedic',
     },
   ]
 

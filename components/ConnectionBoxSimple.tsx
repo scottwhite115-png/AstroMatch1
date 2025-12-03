@@ -645,70 +645,36 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
               minHeight: '100%',
             }}
           >
-            {/* Pattern Header - NEW: Show pattern full label and tagline from match engine */}
+            {/* Pattern Header - Chinese pattern label pill */}
             {(data.patternFullLabel || data.pillLabel || data.pattern) && (
-              <div className="space-y-2 pb-4" style={{ borderBottom: `1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"}` }}>
-                {/* Display pattern heading - color-coded with the match rank color */}
-                {(data.patternFullLabel || (data.pattern && data.score)) && (() => {
-                  try {
-                    // Parse and reformat pattern label to be cleaner
-                    // Input: "🌟 San He 三合 · Triple Harmony · 92%" or "San He 三合 · Triple Harmony · 92%"
-                    // Output: "Triple Harmony (San He 三合) · 92%"
-                    let displayLabel = data.patternFullLabel || (data.pattern && data.score ? getPatternHeading(data.pattern as ChinesePattern, data.score) : '');
-                    
-                    // Remove emoji
-                    displayLabel = displayLabel.replace(/[🌟💫⚠️◽🪞✨]+/g, '').trim();
-                    
-                    // Extract parts: "San He 三合 · Triple Harmony · 92%"
-                    const parts = displayLabel.split('·').map(p => p.trim());
-                    
-                    if (parts.length >= 3) {
-                      // parts[0] = "San He 三合"
-                      // parts[1] = "Triple Harmony" or ""Triple Harmony""
-                      // parts[2] = "92%"
-                      const chinesePart = parts[0];
-                      const englishPart = parts[1].replace(/^[""]|[""]$/g, '');
-                      const scorePart = parts[2];
-                      
-                      // Reformat: "Triple Harmony (San He 三合) · 92%"
-                      displayLabel = `${englishPart} (${chinesePart}) · ${scorePart}`;
-                    }
-                    
-                    return (
-                      <h3 
-                        className="text-base font-bold" 
-                        style={{ 
-                          color: labelColorStyle, 
-                          WebkitTextFillColor: labelColorStyle,
-                        }}
-                      >
-                        {displayLabel}
-                      </h3>
-                    );
-                  } catch (error) {
-                    console.error('[ConnectionBoxSimple] Error parsing pattern label:', error);
-                    // Fallback: just display the raw label
-                    return (
-                      <h3 
-                        className="text-base font-bold" 
-                        style={{ 
-                          color: labelColorStyle, 
-                          WebkitTextFillColor: labelColorStyle,
-                        }}
-                      >
-                        {data.patternFullLabel || (data.pattern && data.score ? getPatternHeading(data.pattern as ChinesePattern, data.score) : '')}
-                      </h3>
-                    );
-                  }
-                })()}
-                
-                {/* Fallback: Show pillLabel if patternFullLabel is missing and no pattern/score */}
-                {!data.patternFullLabel && !data.pattern && data.pillLabel && (
-                  <h3 className="text-base font-bold" style={{ color: labelColorStyle, WebkitTextFillColor: labelColorStyle }}>
-                    {data.pillLabel}
-                  </h3>
+              <div className="space-y-2 pb-4 flex justify-center" style={{ borderBottom: `1px solid ${theme === "light" ? "rgba(0, 0, 0, 0.1)" : "rgba(255, 255, 255, 0.1)"}` }}>
+                {/* Chinese Pattern Label Pill */}
+                {(data.patternFullLabel || (data.pattern && data.score)) && (
+                  <div className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold" 
+                    style={{ 
+                      color: theme === "light" ? "#1f2937" : "#f3f4f6",
+                      border: `2px solid ${labelColorStyle}`,
+                      backgroundColor: 'transparent',
+                    }}
+                  >
+                    {data.patternFullLabel || (data.pattern && data.score ? getPatternHeading(data.pattern as ChinesePattern, data.score) : '')}
+                  </div>
                 )}
                 
+                {/* Fallback pill */}
+                {!data.patternFullLabel && !data.pattern && data.pillLabel && (
+                  <div className="inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold"
+                    style={{ 
+                      color: theme === "light" ? "#1f2937" : "#f3f4f6",
+                      border: `2px solid ${labelColorStyle}`,
+                      backgroundColor: 'transparent',
+                    }}
+                  >
+                    {data.pillLabel}
+                  </div>
+                )}
+                
+                {/* Base tagline */}
                 {data.baseTagline && (
                   <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
                     {data.baseTagline}

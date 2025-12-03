@@ -449,9 +449,9 @@ export default function ProfilePhotoCarouselWithRanking({
         {connectionBoxData && badgePosition === "top-right" && (
           <div className="absolute top-4 right-4 z-20">
             <div 
-              className="px-4 py-2 rounded-full backdrop-blur-sm flex items-center gap-2"
+              className="px-4 py-2 rounded-full flex items-center gap-2"
               style={{
-                backgroundColor: theme === "light" ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.7)',
+                backgroundColor: 'transparent',
                 borderWidth: '2px',
                 borderStyle: 'solid',
                 borderColor: getPatternColor(connectionBoxData.pattern),
