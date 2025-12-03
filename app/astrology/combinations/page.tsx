@@ -51,22 +51,6 @@ export default function SignCombinationsPage() {
     }
   }, [isDrawerOpen])
 
-  // Section menu items for the drawer
-  const sectionItems = [
-    {
-      id: 'what-shapes-score',
-      label: 'What Shapes Your Score',
-      description: 'How the match engine works',
-      icon: '⚙️',
-    },
-    {
-      id: 'chinese-patterns',
-      label: 'Chinese Pattern Ranking',
-      description: 'Traditional Chinese zodiac compatibility patterns',
-      icon: '📊',
-    },
-  ]
-
   // Astrology pages menu items
   const astrologyPages = [
     {
@@ -75,13 +59,6 @@ export default function SignCombinationsPage() {
       description: 'Explore Western × Chinese zodiac matches',
       icon: '⭐',
       path: '/astrology/combinations',
-    },
-    {
-      id: 'match-generator',
-      label: 'Match Generator',
-      description: 'Calculate compatibility between two birthdates',
-      icon: '🧮',
-      path: '/astrology/match-generator',
     },
     {
       id: 'western-guide',
@@ -96,6 +73,38 @@ export default function SignCombinationsPage() {
       description: 'Discover the 12 animals',
       icon: '🐉',
       path: '/astrology/chinese-zodiac',
+    },
+    {
+      id: 'vedic-astrology',
+      label: 'Vedic Astrology',
+      description: 'Explore Vedic astrology compatibility',
+      icon: '🕉️',
+      path: '/astrology/vedic',
+    },
+  ]
+
+  // Section menu items for the drawer
+  const sectionItems = [
+    {
+      id: 'match-generator',
+      label: 'Match Generator',
+      description: 'Calculate compatibility between two birthdates',
+      icon: '🧮',
+      path: '/astrology/match-generator',
+    },
+    {
+      id: 'chinese-patterns',
+      label: 'Chinese Pattern Ranking',
+      description: 'Traditional Chinese zodiac compatibility patterns',
+      icon: '📊',
+      path: '/astrology#chinese-patterns',
+    },
+    {
+      id: 'what-shapes-score',
+      label: 'What Shapes Your Score',
+      description: 'How the match engine works',
+      icon: '⚙️',
+      path: '/astrology#what-shapes-score',
     },
   ]
 
@@ -169,7 +178,7 @@ export default function SignCombinationsPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
+                AstroLab
               </span>
             </div>
           </div>
@@ -249,9 +258,9 @@ export default function SignCombinationsPage() {
               {/* Divider */}
               <div className={`my-2 border-t ${theme === "light" ? "border-gray-200" : "border-slate-700"}`} />
 
-              {/* Section heading for Charts & Sections */}
+              {/* Section heading for Charts & Tables */}
               <div className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-gray-500" : "text-slate-500"}`}>
-                Charts & Sections
+                Charts & Tables
               </div>
 
               {sectionItems.map((section) => {
@@ -260,7 +269,16 @@ export default function SignCombinationsPage() {
                     key={section.id}
                     type="button"
                     onClick={() => {
-                      router.push(`/astrology#${section.id}`);
+                      if (section.path) {
+                        // Navigate to page if it has a path
+                        router.push(section.path);
+                      } else {
+                        // Scroll to section if no path
+                        const element = document.getElementById(section.id);
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                      }
                       setIsDrawerOpen(false);
                     }}
                     className={[

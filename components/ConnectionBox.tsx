@@ -60,15 +60,15 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     string
   > = {
     green:
-      "bg-emerald-500/15 text-emerald-600 border-emerald-400/50 dark:text-emerald-200 dark:border-emerald-400/60",
+      "text-emerald-600 border-2 border-emerald-500 dark:text-emerald-300 dark:border-emerald-400",
     pink:
-      "bg-pink-500/15 text-pink-600 border-pink-400/50 dark:text-pink-200 dark:border-pink-400/60",
+      "text-pink-600 border-2 border-pink-500 dark:text-pink-300 dark:border-pink-400",
     gold:
-      "bg-amber-500/15 text-amber-600 border-amber-400/50 dark:text-amber-200 dark:border-amber-400/60",
+      "text-amber-600 border-2 border-amber-500 dark:text-amber-300 dark:border-amber-400",
     blue:
-      "bg-sky-500/15 text-sky-600 border-sky-400/50 dark:text-sky-200 dark:border-sky-400/60",
+      "text-sky-600 border-2 border-sky-500 dark:text-sky-300 dark:border-sky-400",
     red:
-      "bg-rose-500/15 text-rose-600 border-rose-400/50 dark:text-rose-200 dark:border-rose-400/60",
+      "text-rose-600 border-2 border-rose-500 dark:text-rose-300 dark:border-rose-400",
   };
 
   // Helper to get pattern-based gradient for buttons

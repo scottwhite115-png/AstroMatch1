@@ -20,14 +20,14 @@ export const TIER_TOOLTIP: Record<Tier, string> = {
   Difficult: "High friction; significant effort required.",
 };
 
-// optional UI tokens
-export const TIER_THEME: Record<Tier, { bg: string; text: string; ring: string }> = {
-  Soulmate: { bg: "bg-yellow-100", text: "text-yellow-900", ring: "ring-yellow-300" },
-  "Twin Flame": { bg: "bg-orange-100", text: "text-orange-900", ring: "ring-orange-300" },
-  Excellent: { bg: "bg-pink-100", text: "text-pink-900", ring: "ring-pink-300" },
-  Favourable: { bg: "bg-green-100", text: "text-green-900", ring: "ring-green-300" },
-  Neutral: { bg: "bg-cyan-100", text: "text-cyan-900", ring: "ring-cyan-300" },
-  "Magnetic Opposites": { bg: "bg-rose-100", text: "text-rose-900", ring: "ring-rose-300" },
-  Difficult: { bg: "bg-red-100", text: "text-red-900", ring: "ring-red-300" },
+// optional UI tokens - using inline style colors for guaranteed application
+export const TIER_THEME: Record<Tier, { textColor: string; borderColor: string }> = {
+  Soulmate: { textColor: "#ca8a04", borderColor: "#eab308" }, // yellow-600 / yellow-500
+  "Twin Flame": { textColor: "#ea580c", borderColor: "#f97316" }, // orange-600 / orange-500
+  Excellent: { textColor: "#db2777", borderColor: "#ec4899" }, // pink-600 / pink-500
+  Favourable: { textColor: "#16a34a", borderColor: "#22c55e" }, // green-600 / green-500
+  Neutral: { textColor: "#0891b2", borderColor: "#06b6d4" }, // cyan-600 / cyan-500
+  "Magnetic Opposites": { textColor: "#e11d48", borderColor: "#f43f5e" }, // rose-600 / rose-500
+  Difficult: { textColor: "#dc2626", borderColor: "#ef4444" }, // red-600 / red-500
 };
 
