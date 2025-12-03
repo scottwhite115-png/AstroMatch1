@@ -1,7 +1,6 @@
 {
-  "/astrology/guide/next/rabbit/page": "app/astrology/guide/next/rabbit/page.js",
-  "/astrology/guide/next/page": "app/astrology/guide/next/page.js",
-  "/astrology/guide/next/ox/page": "app/astrology/guide/next/ox/page.js",
-  "/astrology/guide/page": "app/astrology/guide/page.js",
-  "/astrology/page": "app/astrology/page.js"
+  "/messages/page": "app/messages/page.js",
+  "/profile/profile/page": "app/profile/profile/page.js",
+  "/matches/page": "app/matches/page.js",
+  "/messages/[id]/page": "app/messages/[id]/page.js"
 }

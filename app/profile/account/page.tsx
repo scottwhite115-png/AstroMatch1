@@ -401,38 +401,43 @@ export default function AccountPage({
         </div>
 
         {/* Horizontal Tabs Navigation */}
-        <div className="px-5 py-4">
+        <div className="px-5 py-4 border-b" style={{ 
+          borderColor: theme === "light" ? "#e5e7eb" : "rgba(255, 255, 255, 0.1)"
+        }}>
           <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent">
-            <div className="flex gap-2 min-w-max">
+            <div className="flex gap-1 min-w-max">
               <button
                 onClick={() => router.push("/profile/profile")}
-                className={`px-6 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    : "bg-slate-800/40 text-white/70 hover:bg-slate-800/60"
+                    ? "text-gray-600 hover:text-gray-900"
+                    : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 Profile
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
               </button>
               <button
                 onClick={() => router.push("/profile/account")}
-                className={`px-6 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "bg-purple-500 text-white shadow-md"
-                    : "bg-purple-600/90 text-white shadow-lg"
+                    ? "text-purple-600"
+                    : "text-purple-400"
                 }`}
               >
                 Account
+                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`} />
               </button>
               <button
                 onClick={() => router.push("/profile/safety-privacy")}
-                className={`px-6 py-2.5 rounded-lg font-medium transition-all whitespace-nowrap ${
+                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    : "bg-slate-800/40 text-white/70 hover:bg-slate-800/60"
+                    ? "text-gray-600 hover:text-gray-900"
+                    : "text-gray-400 hover:text-gray-200"
                 }`}
               >
                 Safety & Privacy
+                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
               </button>
             </div>
           </div>

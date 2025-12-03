@@ -302,10 +302,10 @@ export default function AstrologySection() {
                           Harmony
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>82-96%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>88-98%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Same trine family. Smooth teamwork, shared direction, and naturally supportive long-term flow.
+                      Same trine family. Smooth teamwork, shared direction, and naturally supportive long-term flow. Peaks at Soulmate/Twin Flame tier.
                     </div>
                   </div>
                 </div>
@@ -321,10 +321,10 @@ export default function AstrologySection() {
                           Harmony
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>72-94%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>82-91%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Quiet allies. Each sign "has the other's back" and tends to protect, encourage, and stabilise the connection.
+                      Quiet allies. Each sign "has the other's back" and tends to protect, encourage, and stabilise the connection. Reaches Twin Flame tier at peak.
                     </div>
                   </div>
                 </div>
@@ -340,10 +340,10 @@ export default function AstrologySection() {
                           Neutral +
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>58-68%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>60-70%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Double dose of one energy. Very familiar, similar instincts; medium harmony rather than super-destiny.
+                      Double dose of one energy. Very familiar, similar instincts. Most score 62-67%, reaching 68-70% only with strong Western support.
                     </div>
                   </div>
                 </div>
@@ -359,10 +359,10 @@ export default function AstrologySection() {
                           Neutral
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>50-65%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>52-68%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      No big harmony or clash. How it feels depends more on Western signs and individual charts.
+                      No big harmony or clash. Neutral pairs can climb with good Western aspects. How it feels depends on Western signs and individual charts.
                     </div>
                   </div>
                 </div>
@@ -378,10 +378,10 @@ export default function AstrologySection() {
                           Conflict
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>38-72%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>45-62%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Opposite branches. Push–pull, strong reactions, on–off movement, and "magnetic but clashing" chemistry.
+                      Opposite branches. Push–pull, strong reactions, magnetic "Opposites Attract" chemistry. Typical range 45-58%, best case 60-62%.
                     </div>
                   </div>
                 </div>
@@ -397,10 +397,10 @@ export default function AstrologySection() {
                           Conflict
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>35-68%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Hidden annoyances. Little frictions, misunderstandings, or mismatched needs that can wear on the bond.
+                      Hidden annoyances. Little frictions, misunderstandings, or mismatched needs. Can reach 54-60% with strong Western support.
                     </div>
                   </div>
                 </div>
@@ -416,10 +416,10 @@ export default function AstrologySection() {
                           Conflict
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>35-66%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Tense dynamics. Lessons around fairness, blame, emotional pressure, and how each person handles conflict.
+                      Tense dynamics. Lessons around fairness, blame, emotional pressure, and conflict handling. Can reach 54-60% with good Western aspects.
                     </div>
                   </div>
                 </div>
@@ -435,10 +435,10 @@ export default function AstrologySection() {
                           Conflict
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>32-64%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Breakpoints. One or both people disrupt the other's routines or comfort zone, sometimes through drama.
+                      Breakpoints. One or both people disrupt the other's routines or comfort zone. Can reach 54-60% with strong Western support.
                     </div>
                   </div>
                 </div>
