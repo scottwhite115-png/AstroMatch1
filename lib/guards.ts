@@ -1,4 +1,5 @@
 import { supabase } from "./supabaseClient";
+import { getProfile } from "./profiles";
 import { DESIGN_MODE } from "./design-mode";
 
 export type GuardResult = {
@@ -39,11 +40,7 @@ export async function requireLocation() {
   } = await supabase.auth.getUser();
   if (!user) return { allowed: false, reason: "not_signed_in" };
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("lat, lon")
-    .eq("id", user.id)
-    .single();
+  const profile = await getProfile(user.id);
 
   if (!profile || !profile.lat || !profile.lon) {
     return { allowed: false, reason: "location_required" };
@@ -60,11 +57,7 @@ export async function requireZodiac() {
   } = await supabase.auth.getUser();
   if (!user) return { allowed: false, reason: "not_signed_in" };
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("west_east")
-    .eq("id", user.id)
-    .single();
+  const profile = await getProfile(user.id);
 
   if (!profile || !profile.west_east) {
     return { allowed: false, reason: "zodiac_required" };
@@ -81,11 +74,7 @@ export async function requireOnboardingComplete() {
   } = await supabase.auth.getUser();
   if (!user) return { allowed: false, reason: "not_signed_in" };
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("onboarding_needed")
-    .eq("id", user.id)
-    .single();
+  const profile = await getProfile(user.id);
 
   if (!profile || profile.onboarding_needed) {
     return { allowed: false, reason: "onboarding_required" };
