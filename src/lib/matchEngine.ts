@@ -5,13 +5,13 @@ import { mapToChinesePatternId } from './compatibility/helpers';
 import type { WesternAspect as WesternAspectCompat } from './compatibility/types';
 import {
   ChineseAnimal as ChineseAnimalNew,
-  ChinesePatternTag,
+  type ChinesePatternTag,
   getPrimaryChinesePatternTag,
   patternTagToPatternId,
 } from './matchEngine/chinesePatterns';
 
 // Re-export for convenience
-export { ChinesePatternTag, getPrimaryChinesePatternTag } from './matchEngine/chinesePatterns';
+export { type ChinesePatternTag, getPrimaryChinesePatternTag } from './matchEngine/chinesePatterns';
 
 // ----------------- TYPES -----------------
 
@@ -280,6 +280,39 @@ const DIFFICULT_PATTERNS: ChinesePattern[] = [
   "po",
 ];
 
+// ----------------- DYNAMIC WEIGHTING -----------------
+
+interface WeightConfig {
+  chinese: number;
+  western: number;
+}
+
+/**
+ * Get Chinese/Western weight based on pattern strength
+ * Strong patterns: 70/30 (Chinese leads)
+ * Neutral patterns: 65/35 (Western has more influence)
+ */
+function getWeightForPattern(pattern: ChinesePattern): WeightConfig {
+  const strongPatterns: ChinesePattern[] = [
+    'san_he',
+    'liu_he',
+    'same_animal',
+    'liu_chong',
+    'liu_hai',
+    'xing',
+    'po',
+  ];
+
+  if (strongPatterns.includes(pattern)) {
+    // Strong Chinese pattern → Chinese should clearly lead
+    return { chinese: 0.7, western: 0.3 };
+  }
+
+  // Neutral / no big pattern → let Western breathe more (65/35)
+  // e.g. "none", "cross_trine", or "same_trine"
+  return { chinese: 0.65, western: 0.35 };
+}
+
 function getWuXingScoreBonus(
   pattern: ChinesePattern,
   elemA: WuXing,
@@ -347,19 +380,20 @@ function getBaseChineseScore(
   westElementRelation?: WestElementRelation,
   isLivelyPair?: boolean
 ): number {
-  // Same-sign scoring based on element relationships
+  // Same-sign scoring based on element relationships (60-70% base)
+  // Most combos land 62-67%, push to 68-70% only if Western is genuinely strong
   const sameSignScoreMap: Record<ElementRelationship, number> = {
-    same: 68,
-    compatible: 65,
-    semi: 62,
-    clash: 58,
+    same: 70,        // Peak same-sign with strong Western support
+    compatible: 67,  // Good same-sign
+    semi: 64,        // Moderate same-sign
+    clash: 60,       // Difficult same-sign
   };
 
   const selfPunishSameSignScoreMap: Record<ElementRelationship, number> = {
-    same: 64,
-    compatible: 61,
-    semi: 58,
-    clash: 54,
+    same: 66,        // Self-punishing but strong Western
+    compatible: 63,  // Self-punishing, moderate Western
+    semi: 60,        // Self-punishing, weak Western
+    clash: 56,       // Self-punishing with clash
   };
 
   // Handle same_animal pattern with element-based scoring using pattern tag
@@ -375,15 +409,17 @@ function getBaseChineseScore(
     return sameSignScoreMap[rel];
   }
 
-  // Start around 50 and nudge for other patterns
+  // Base score starting point
   let score = 50;
 
   switch (pattern) {
     case "san_he":
-      score += 25; // top-tier harmony
+      // 三合 (same trine) → 72-88% range (Soulmate/Twin Flame territory)
+      score += 53; // Base: ~103 before 70/30 blend → ~72-88% after adjustments
       break;
     case "liu_he":
-      score += 20;
+      // 六合 (secret friend) → 68-84% range
+      score += 47; // Base: ~97 before 70/30 blend → ~68-84% after adjustments
       break;
     case "same_trine":
       score += 15;
@@ -392,22 +428,28 @@ function getBaseChineseScore(
       score += 8; // fallback if westElementRelation not provided
       break;
     case "cross_trine":
+      // Neutral pairs → 52-68% range (can climb with good Western support)
       score += 0;
       break;
     case "liu_chong":
-      score -= 20;
+      // 六冲 (Opposites) → 40-62% base, typical 45-58%, max 60-62%
+      score -= 15; // Base: ~35 before 70/30 blend → ~40-62% after adjustments
       break;
     case "liu_hai":
-      score -= 15;
+      // 六害 (harm) → 38-60% range
+      score -= 20;
       break;
     case "xing":
-      score -= 15;
+      // 刑 (punishment) → 38-60% range
+      score -= 20;
       break;
     case "po":
-      score -= 12;
+      // 破 (break) → 38-60% range
+      score -= 17;
       break;
     case "none":
     default:
+      // Neutral pairs → 52-68% range
       score += 0;
       break;
   }
@@ -496,27 +538,28 @@ function getMatchTier(score: number, ctx: TierContext): MatchTier {
 
   const isDifficultPattern = DIFFICULT_PATTERNS.includes(chinesePattern);
 
-  // ⭐ Soulmate – very top
-  if (score >= 90 && isSuperHarmonious) return "Soulmate";
+  // ⭐ Soulmate – San He with strong Western → 88-98%
+  if (score >= 85 && isSuperHarmonious && chinesePattern === "san_he") return "Soulmate";
 
-  // 🔥 Twin Flame – intense, same trine + edgy West
-  if (score >= 84 && isTwinFlamey) return "Twin Flame";
+  // 🔥 Twin Flame – intense, same trine + edgy West or top Liu He → 82-91%
+  if (score >= 80 && (isTwinFlamey || (chinesePattern === "liu_he" && score >= 84))) return "Twin Flame";
 
-  // 💚 Harmonious Match – everything that basically "just works"
-  if (score >= 78) return "Harmonious Match";
+  // 💚 Harmonious Match – Liu He, San He without perfect West, same-sign peak → 72-84%
+  if (score >= 72) return "Harmonious Match";
 
-  // 💙 Dynamic Match – decent score, more friction/growth
-  if (score >= 64) return "Dynamic Match";
+  // 💙 Dynamic Match – good same-sign, decent patterns → 63-71%
+  if (score >= 63) return "Dynamic Match";
 
   // ❤️‍🔥 Opposites Attract – flagged by aspect/pattern and not in the gutter
-  if ((isChineseOpposite || westAspect === "opposition") && score >= 56) {
+  // Liu Chong max is 62%, so threshold at 48-62%
+  if ((isChineseOpposite || westAspect === "opposition") && score >= 48) {
     return "Opposites Attract";
   }
 
-  // ⚪ Neutral Match – middle of the road, no strong difficulty pattern
+  // ⚪ Neutral Match – middle of the road, no strong difficulty pattern → 52-62%
   if (score >= 52 && !isDifficultPattern) return "Neutral Match";
 
-  // 🔴 Difficult Match – low score or clear difficult Chinese pattern
+  // 🔴 Difficult Match – low score or clear difficult Chinese pattern → 38-51%
   return "Difficult Match";
 }
 
@@ -536,29 +579,33 @@ function calibrateScoreForLabel(
 
   switch (tier) {
     case "Soulmate": {
-      const min = hasWuXingHarmony ? 95 : 91;
-      const max = hasWuXingHarmony ? 98 : 95;
+      // San He with strong Western → 88-98% range (peak harmony)
+      const min = hasWuXingHarmony ? 92 : 88;
+      const max = hasWuXingHarmony ? 98 : 94;
       score = clamp(score, min, max);
       break;
     }
 
     case "Twin Flame": {
-      const min = hasWuXingHarmony ? 87 : 83;
+      // San He/Liu He top tier or same_trine with opposition → 82-91% range
+      const min = hasWuXingHarmony ? 86 : 82;
       const max = hasWuXingHarmony ? 91 : 87;
       score = clamp(score, min, max);
       break;
     }
 
     case "Harmonious Match": {
-      const min = hasWuXingHarmony ? 79 : 75;
-      const max = hasWuXingHarmony ? 83 : 79;
+      // Liu He and strong San He without perfect alignment → 72-84% range
+      const min = hasWuXingHarmony ? 78 : 72;
+      const max = hasWuXingHarmony ? 84 : 79;
       score = clamp(score, min, max);
       break;
     }
 
     case "Neutral Match": {
-      const min = hasWuXingHarmony ? 69 : 63;
-      const max = hasWuXingHarmony ? 75 : 69;
+      // Neutral pairs and cross-trine → 52-68% range
+      const min = hasWuXingHarmony ? 64 : 58;
+      const max = hasWuXingHarmony ? 68 : 64;
       score = clamp(score, min, max);
       break;
     }
@@ -566,37 +613,64 @@ function calibrateScoreForLabel(
     case "Opposites Attract": {
       if (chinesePattern === "liu_chong") {
         // True Chinese opposites (Rat–Horse, Tiger–Monkey, etc.)
+        // Liu Chong → 40-62% base, typical 45-58%, "best case" max 60-62%
 
         if (westElementRelation === "same" && hasWuXingHarmony) {
           // 🔥 Peak magnetic opposite: same West element + supportive Wu Xing
-          // → never above 70
-          score = clamp(score, 66, 70);
+          // → "best case" max 60-62%
+          score = clamp(score, 58, 62);
         } else if (
           (westElementRelation === "same" && !hasWuXingHarmony) ||
           (westElementRelation === "compatible" && hasWuXingHarmony)
         ) {
           // Very strong but not the absolute peak
-          score = clamp(score, 62, 68);
+          score = clamp(score, 54, 60);
         } else if (
           westElementRelation === "compatible" ||
           westElementRelation === "semi_compatible"
         ) {
           // Still attractive, more chaotic
-          score = clamp(score, 58, 64);
+          score = clamp(score, 50, 56);
         } else {
           // Clash/neutral elements: hot but rough
-          score = clamp(score, 52, 60);
+          score = clamp(score, 45, 52);
         }
       } else {
         // Non-Liu-Chong opposites (e.g. pure West opposition cases)
-        score = clamp(score, 58, 66);
+        score = clamp(score, 54, 62);
       }
       break;
     }
 
     case "Difficult Match":
     default: {
-      score = clamp(score, 0, 100);
+      // Other conflict patterns (Liu Hai, Xing, Po) → 38-60% depending on stack
+      const isDifficultPattern = DIFFICULT_PATTERNS.includes(chinesePattern);
+      
+      if (isDifficultPattern) {
+        if (westElementRelation === "same" && hasWuXingHarmony) {
+          // Best case for difficult patterns with good Western + Wu Xing support
+          score = clamp(score, 54, 60);
+        } else if (
+          (westElementRelation === "same" || westElementRelation === "compatible") &&
+          hasWuXingHarmony
+        ) {
+          // Good Western support helps a bit
+          score = clamp(score, 48, 56);
+        } else if (
+          westElementRelation === "compatible" ||
+          westElementRelation === "semi_compatible"
+        ) {
+          // Moderate support
+          score = clamp(score, 42, 50);
+        } else {
+          // Worst case: difficult pattern + poor Western + no Wu Xing help
+          score = clamp(score, 38, 46);
+        }
+      } else {
+        // Not a difficult pattern, just low score
+        score = clamp(score, 38, 100);
+      }
       break;
     }
   }
@@ -637,8 +711,9 @@ export function computeMatchScore(ctx: MatchContext): MatchScoreResult {
     westElementRelation
   );
 
-  // 2) 70/30 blend
-  let rawScore = 0.7 * baseChineseScore + 0.3 * baseWesternScore;
+  // 2) Dynamic weight based on pattern strength
+  const weights = getWeightForPattern(chinesePattern);
+  let rawScore = weights.chinese * baseChineseScore + weights.western * baseWesternScore;
 
   // 3) Wu Xing adjustment (year elements)
   const wuXingDelta = getWuXingScoreBonus(

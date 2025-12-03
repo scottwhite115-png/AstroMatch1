@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
+import prisma from "@/src/lib/prisma"
 import { NextResponse } from "next/server"
 
 export async function GET(request: Request) {
@@ -19,13 +20,22 @@ export async function GET(request: Request) {
     const { data: { user } } = await supabase.auth.getUser()
     
     if (user) {
-      // Update profile to mark email as verified
-      await supabase
-        .from("profiles")
-        .update({ email_verified: true })
-        .eq("id", user.id)
-      
-      console.log("Email verified for user:", user.id)
+      // ✨ PRISMA: Update profile to mark email as verified
+      try {
+        await prisma.profiles.update({
+          where: { id: user.id },
+          data: { email_verified: true }
+        })
+        console.log("Email verified for user (via Prisma):", user.id)
+      } catch (prismaError) {
+        console.error("Prisma update error:", prismaError)
+        // Fallback to Supabase if Prisma fails
+        await supabase
+          .from("profiles")
+          .update({ email_verified: true })
+          .eq("id", user.id)
+        console.log("Email verified for user (via Supabase fallback):", user.id)
+      }
     }
   }
 
