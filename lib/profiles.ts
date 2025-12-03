@@ -1,53 +1,27 @@
-import { supabase } from "./supabaseClient";
+import prisma from "@/src/lib/prisma";
 import type { Profile } from "./supabaseClient";
 
-// Get profile by user ID
-export async function getProfile(userId: string) {
-  return supabase.from("profiles").select("*").eq("id", userId).single();
+// Fetch a single profile by user id
+export async function getProfile(userId: string): Promise<Profile | null> {
+  const profile = await prisma.profiles.findUnique({
+    where: { id: userId },
+  });
+
+  // Cast the Prisma result to the existing Profile type so the rest
+  // of the app doesn't have to change yet.
+  return profile as unknown as Profile | null;
 }
 
-// Update profile
-export async function updateProfile(userId: string, updates: Partial<Profile>) {
-  return supabase.from("profiles").update(updates).eq("id", userId).select().single();
-}
+// Update a profile by user id
+export async function updateProfile(
+  userId: string,
+  data: Partial<Profile>,
+): Promise<Profile> {
+  const updated = await prisma.profiles.update({
+    where: { id: userId },
+    // Prisma's `data` type may not exactly match `Profile`, so we cast.
+    data: data as any,
+  });
 
-// Update location
-export async function updateLocation(userId: string, lat: number, lon: number) {
-  return updateProfile(userId, { lat, lon });
-}
-
-// Update zodiac signs
-export async function updateZodiac(userId: string, westEast: string) {
-  return updateProfile(userId, { west_east: westEast });
-}
-
-// Update display name
-export async function updateDisplayName(userId: string, displayName: string) {
-  return updateProfile(userId, { display_name: displayName });
-}
-
-// Update photo URL
-export async function updatePhoto(userId: string, photoUrl: string) {
-  return updateProfile(userId, { photo_url: photoUrl });
-}
-
-// Check if profile is complete
-export function isProfileComplete(profile: Profile): boolean {
-  return !!(profile.display_name && profile.west_east && profile.lat && profile.lon && profile.photo_url);
-}
-
-// Check if onboarding is needed
-export async function checkOnboardingNeeded(): Promise<boolean> {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return true;
-
-  const { data } = await supabase
-    .from("profiles")
-    .select("onboarding_needed")
-    .eq("id", user.id)
-    .single();
-
-  return data?.onboarding_needed ?? true;
+  return updated as unknown as Profile;
 }

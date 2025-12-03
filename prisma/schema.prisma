@@ -1,0 +1,47 @@
+// This is your Prisma schema file
+// Manually defined based on existing Supabase schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model profiles {
+  id             String    @id @db.Uuid
+  display_name   String?
+  west_east      String?
+  photo_url      String?
+  email          String?
+  phone          String?
+  email_verified Boolean   @default(false)
+  phone_verified Boolean   @default(false)
+  lat            Float?
+  lon            Float?
+  last_active    DateTime  @default(now())
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+}
+
+model preferences {
+  user_id    String   @id @db.Uuid
+  age_min    Int      @default(18)
+  age_max    Int      @default(99)
+  updated_at DateTime @default(now())
+}
+
+model conversations {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user1_id        String   @db.Uuid
+  user2_id        String   @db.Uuid
+  is_new_match    Boolean  @default(true)
+  last_message_at DateTime @default(now())
+  created_at      DateTime @default(now())
+
+  @@unique([user1_id, user2_id])
+  @@index([user1_id])
+  @@index([user2_id])
+  @@index([is_new_match])
+}

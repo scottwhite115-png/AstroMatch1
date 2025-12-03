@@ -196,13 +196,14 @@ export default function MessagesPage() {
     // Mark match as seen if it's a new match
     const chat = chats.find(c => c.userId === userId)
     if (chat?.isNewMatch) {
-      // Update in Supabase if authenticated
+      // Update in database if authenticated
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        await supabase
-          .from('conversations')
-          .update({ is_new_match: false })
-          .eq('id', chat.id)
+        await fetch('/api/conversations/mark-seen', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ conversationId: chat.id }),
+        })
       }
       
       // Update local state immediately
