@@ -54,7 +54,7 @@ export default function Discover() {
       {/* Discovery Card */}
       <div className="w-full max-w-sm mx-auto px-4 mt-6">
         <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-white">
-          <div className="relative h-[600px]">
+          <div className="relative h-[550px]">
             <Image
               src={photos[currentPhoto]}
               alt="Profile photo"
@@ -80,7 +80,6 @@ export default function Discover() {
             {/* Profile info */}
             <div className="absolute bottom-4 left-4">
               <h2 className="text-3xl font-bold text-white">Sarah, 28</h2>
-              <p className="font-medium text-white" style={{ color: '#ffffff' }}>Aries-Dragon</p>
               <div className="flex items-center space-x-1 mt-1 text-white">
                 <Star className="w-4 h-4 text-yellow-400" fill="currentColor" />
                 <span className="text-sm font-semibold">87% Match</span>

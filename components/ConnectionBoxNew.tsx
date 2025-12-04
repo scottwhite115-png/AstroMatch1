@@ -745,7 +745,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
             </div>
 
             {/* Astrology sign combinations - below match pill and description */}
-            <div className="px-3 py-2 flex items-center justify-center w-full overflow-hidden">
+            <div className="px-3 py-1 flex items-center justify-center w-full overflow-hidden">
               {/* Center the entire line as one unit with consistent smaller font */}
               <div className="flex items-center gap-1 justify-center whitespace-nowrap">
                 {/* Left signs */}
@@ -776,17 +776,17 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
 
             {/* ===== ASTROLOGY BREAKDOWN ===== */}
             {hasAnyElementInfo && (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 
                 {/* Chinese Connection */}
                 <div className={clsx(
-                  "rounded-xl px-3 py-2",
+                  "rounded-xl px-3 py-1.5",
                   theme === "light" 
                     ? "bg-slate-50 text-slate-700" 
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-1 text-sm sm:text-base leading-relaxed text-left",
+                    "space-y-0.5 text-sm sm:text-base leading-snug text-left",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Chinese zodiac signs on their own line */}
@@ -800,7 +800,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     {/* Chinese Year Elements - displayed under the Chinese connection */}
                     {(wuXingLine || elementsLineText) && (
                       <p className={clsx(
-                        "text-sm pt-1",
+                        "text-sm pt-0.5",
                         theme === "light" ? "text-slate-600" : "text-slate-300"
                       )}>
                         {wuXingLine || elementsLineText}
@@ -811,13 +811,13 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
 
                 {/* Western Connection */}
                 <div className={clsx(
-                  "rounded-xl px-3 py-2",
+                  "rounded-xl px-3 py-1.5",
                   theme === "light" 
                     ? "bg-slate-50 text-slate-700" 
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-1 text-sm sm:text-base leading-relaxed text-left",
+                    "space-y-0.5 text-sm sm:text-base leading-snug text-left",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Western zodiac signs on their own line */}
