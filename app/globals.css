@@ -477,7 +477,6 @@ body::-webkit-scrollbar {
 /* Message Profile Card Glow Effect */
 .message-profile-card {
   position: relative;
-  overflow: hidden;
   transition: all 0.3s ease;
 }
 

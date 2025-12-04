@@ -195,7 +195,12 @@ export default function MessagesPage() {
 
   const handleRemoveChat = (userId: string) => {
     deleteConversation(userId)
-    setChats(chats.filter((chat) => chat.userId !== userId))
+    const updatedChats = chats.filter((chat) => chat.userId !== userId)
+    setChats(updatedChats)
+    
+    // Save updated chats to localStorage
+    localStorage.setItem("conversations", JSON.stringify(updatedChats))
+    
     setSwipeOffset(0)
     setSwipedChatId(null)
   }
@@ -217,13 +222,19 @@ export default function MessagesPage() {
       }
       
       // Update local state immediately
-      setChats(chats.map((c) => 
+      const updatedChats = chats.map((c) => 
         c.userId === userId 
           ? { ...c, unread: 0, isNewMatch: false } 
           : c
-      ))
+      )
+      setChats(updatedChats)
+      
+      // Save updated chats to localStorage
+      localStorage.setItem("conversations", JSON.stringify(updatedChats))
     } else {
-      setChats(chats.map((c) => (c.userId === userId ? { ...c, unread: 0 } : c)))
+      const updatedChats = chats.map((c) => (c.userId === userId ? { ...c, unread: 0 } : c))
+      setChats(updatedChats)
+      localStorage.setItem("conversations", JSON.stringify(updatedChats))
     }
     
     router.push(`/messages/${userId}`)
@@ -334,24 +345,15 @@ export default function MessagesPage() {
             </div>
           ) : (
             chats.map((chat, index) => (
-              <div key={chat.userId} className="relative mb-2 overflow-hidden rounded-xl">
+              <div key={chat.userId} className="relative mb-2 rounded-xl">
                 {swipedChatId === chat.userId && swipeOffset > 0 && (
-                  <div className="absolute inset-0 bg-red-500/80 flex items-center justify-end px-6 rounded-xl">
+                  <div className="absolute inset-0 bg-red-500/80 flex items-center justify-end px-6 rounded-xl z-10">
                     <button
                       onClick={() => handleRemoveChat(chat.userId)}
                       className="!text-white/95 font-bold text-sm sm:text-base"
                     >
                       Remove
                     </button>
-                  </div>
-                )}
-
-                {/* New Match Badge - Top Right Corner (outside button for proper positioning) */}
-                {chat.isNewMatch && (
-                  <div className="absolute z-30" style={{ top: '8px', right: '8px' }}>
-                    <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide bg-gradient-to-r from-yellow-400 via-orange-400 to-orange-500 text-white rounded-full shadow-lg">
-                      New Match
-                    </span>
                   </div>
                 )}
 
@@ -372,7 +374,7 @@ export default function MessagesPage() {
                     transform: swipedChatId === chat.userId ? `translateX(-${swipeOffset}px)` : "translateX(0)",
                     transition: isDragging && swipedChatId === chat.userId ? "none" : "transform 0.3s ease",
                   }}
-                  className={`message-profile-card astro-highlight-card flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 sm:py-4 w-full rounded-xl relative z-10 ${theme === "light" ? "bg-white border border-black/20 shadow-lg" : "bg-slate-800/40 border border-indigo-500/20"} cursor-pointer transition-all`}
+                  className={`message-profile-card astro-highlight-card flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-3 sm:py-4 w-full rounded-xl relative z-20 ${theme === "light" ? "bg-white border border-black/20 shadow-lg" : "bg-slate-800/40 border border-indigo-500/20"} cursor-pointer transition-all`}
                 >
                   <div className="relative flex-shrink-0">
                     <img
@@ -397,6 +399,15 @@ export default function MessagesPage() {
                       {chat.lastMessage || "Start a conversation"}
                     </p>
                   </div>
+                  
+                  {/* New Match Badge - Top right corner, moves with swipe - AS LAST CHILD */}
+                  {chat.isNewMatch && (
+                    <div className="absolute z-30" style={{ top: '0.5rem', right: '0.5rem' }}>
+                      <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide bg-gradient-to-r from-yellow-400 via-orange-400 to-orange-500 text-white rounded-full shadow-lg whitespace-nowrap">
+                        New Match
+                      </span>
+                    </div>
+                  )}
                 </button>
               </div>
             ))

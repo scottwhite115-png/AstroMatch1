@@ -6,6 +6,7 @@ import { useTheme } from "@/contexts/ThemeContext"
 import { getChinesePattern } from "@/lib/chinesePatternSystem"
 import { patternDefinitions } from "@/lib/chinesePatternSystem"
 import type { ChinesePatternType } from "@/lib/chinesePatternSystem"
+import { getChineseSignGlyph } from "@/lib/zodiacHelpers"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
