@@ -488,7 +488,7 @@ export default function ChatPage() {
         >
           <span className={`relative z-10 text-base ${activeTab === "chat" ? (theme === "light" ? "text-gray-900" : "text-white") : (theme === "light" ? "text-gray-600" : "text-white/70")}`}>Chat</span>
           {activeTab === "chat" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-600" />
           )}
         </button>
         <button
@@ -501,7 +501,7 @@ export default function ChatPage() {
             Profile
           </span>
           {activeTab === "profile" && (
-            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-600" />
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-600" />
           )}
         </button>
       </div>
@@ -522,10 +522,10 @@ export default function ChatPage() {
                       className={`rounded-2xl ${msg.image || msg.gif ? "p-0 overflow-hidden" : "px-4 py-2"}`}
                       style={{
                         background: msg.sent 
-                          ? '#a855f7' 
+                          ? '#0891B2' 
                           : theme === "light" 
-                            ? 'rgba(233, 213, 255, 0.8)'
-                            : 'rgba(63, 63, 70, 0.6)'
+                            ? '#CFFAFE'
+                            : 'rgba(8, 145, 178, 0.2)'
                       }}
                     >
                       {msg.image ? (
@@ -533,7 +533,7 @@ export default function ChatPage() {
                       ) : msg.gif ? (
                         <img src={msg.gif} alt="GIF" className="max-w-full h-auto rounded-2xl" />
                       ) : (
-                        <p className={`text-sm sm:text-base ${msg.sent ? '!text-white' : theme === "light" ? '!text-purple-900' : '!text-white/90'}`}>{msg.text}</p>
+                        <p className={`text-base sm:text-lg ${msg.sent ? '!text-white' : theme === "light" ? '!text-gray-900' : '!text-white/90'}`}>{msg.text}</p>
                       )}
                     </div>
                   </div>
@@ -577,6 +577,7 @@ export default function ChatPage() {
                 onChange={(e) => setMessage(e.target.value)}
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Type a message..."
+                style={{ fontSize: '20px' }}
                 className={`w-full px-4 py-3 pr-14 outline-none ${theme === "light" ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 border-t border-gray-200" : "bg-slate-900/50 border border-indigo-400/20 text-white/95 placeholder:text-white/50 border-t"}`}
               />
               <Button

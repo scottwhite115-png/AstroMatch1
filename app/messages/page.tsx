@@ -150,21 +150,31 @@ export default function MessagesPage() {
     if (!isDragging || swipedChatId !== chatId) return
     const currentTouch = e.touches[0].clientX
     const diff = touchStart - currentTouch
+    // Allow both swipe left (positive) and swipe right (negative) to close
     if (diff > 0 && diff < 150) {
       setSwipeOffset(diff)
+    } else if (diff < 0 && swipeOffset > 0) {
+      // Swiping right to close
+      const newOffset = Math.max(0, swipeOffset + diff)
+      setSwipeOffset(newOffset)
     }
   }
 
   const handleMouseMove = (e: React.MouseEvent, chatId: string) => {
     if (!isDragging || swipedChatId !== chatId) return
     const diff = touchStart - e.clientX
+    // Allow both swipe left (positive) and swipe right (negative) to close
     if (diff > 0 && diff < 150) {
       setSwipeOffset(diff)
+    } else if (diff < 0 && swipeOffset > 0) {
+      // Swiping right to close
+      const newOffset = Math.max(0, swipeOffset + diff)
+      setSwipeOffset(newOffset)
     }
   }
 
   const handleTouchEnd = () => {
-    if (swipeOffset > 75) {
+    if (swipeOffset > 60) {
       setSwipeOffset(100)
     } else {
       setSwipeOffset(0)
@@ -174,7 +184,7 @@ export default function MessagesPage() {
   }
 
   const handleMouseUp = () => {
-    if (swipeOffset > 75) {
+    if (swipeOffset > 60) {
       setSwipeOffset(100)
     } else {
       setSwipeOffset(0)
@@ -232,7 +242,7 @@ export default function MessagesPage() {
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Messages
+                Connections
               </span>
             </div>
             
