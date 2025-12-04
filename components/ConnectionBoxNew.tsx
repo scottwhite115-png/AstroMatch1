@@ -21,6 +21,7 @@ import {
   type ChineseElement
 } from "@/lib/astrology/elementsLine";
 import { normalizeWesternSign, getWesternElement, getWesternModality, type WesternSign } from "@/lib/astrology/westMeta";
+import { getChineseSignGlyph } from "@/lib/zodiacHelpers";
 
 // Helper to remove "Match" from tier labels for display
 function formatTierLabel(tier: string): string {
@@ -663,8 +664,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
   }
 
   // Build formatted labels for connection overview
-  const userALabel = `${westA} / ${eastA}`;
-  const userBLabel = `${westB} / ${eastB}`;
+  const userALabel = `${westA} / ${eastA || ''}`;
+  const userBLabel = `${westB} / ${eastB || ''}`;
   
   // Build elements line if we have Chinese elements
   let elementsLineText: string | undefined;
@@ -707,36 +708,6 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
           {/* Pattern + sun sign + elements */}
           <div className="space-y-4 text-xs sm:text-sm flex-1">
             
-            {/* Astrology sign combinations - at the very top */}
-            <div className="px-3 py-2 flex items-center justify-center w-full overflow-hidden">
-              {/* Center the entire line as one unit with consistent smaller font */}
-              <div className="flex items-center gap-1 justify-center whitespace-nowrap">
-                {/* Left signs */}
-                <span className={clsx(
-                  "font-bold text-base", // Smaller consistent size
-                  theme === "light" ? "text-slate-700" : "text-slate-200"
-                )}>
-                  {userALabel}
-                </span>
-                
-                {/* Heart icon in the center */}
-                <span className={clsx(
-                  "text-base flex-shrink-0", // Matches text size
-                  theme === "light" ? "text-pink-500" : "text-pink-400"
-                )}>
-                  ♥
-                </span>
-                
-                {/* Right signs */}
-                <span className={clsx(
-                  "font-bold text-base", // Smaller consistent size
-                  theme === "light" ? "text-slate-700" : "text-slate-200"
-                )}>
-                  {userBLabel}
-                </span>
-              </div>
-            </div>
-
             {/* ===== TOP SECTION - NEW CLEANER FORMAT ===== */}
             <div className="mb-4">
               {/* Pattern header in a pill */}
@@ -773,6 +744,36 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
 
             </div>
 
+            {/* Astrology sign combinations - below match pill and description */}
+            <div className="px-3 py-2 flex items-center justify-center w-full overflow-hidden">
+              {/* Center the entire line as one unit with consistent smaller font */}
+              <div className="flex items-center gap-1 justify-center whitespace-nowrap">
+                {/* Left signs */}
+                <span className={clsx(
+                  "font-bold text-base", // Smaller consistent size
+                  theme === "light" ? "text-slate-700" : "text-slate-200"
+                )}>
+                  {userALabel}
+                </span>
+                
+                {/* Heart icon in the center */}
+                <span className={clsx(
+                  "text-base flex-shrink-0", // Matches text size
+                  theme === "light" ? "text-pink-500" : "text-pink-400"
+                )}>
+                  ♥
+                </span>
+                
+                {/* Right signs */}
+                <span className={clsx(
+                  "font-bold text-base", // Smaller consistent size
+                  theme === "light" ? "text-slate-700" : "text-slate-200"
+                )}>
+                  {userBLabel}
+                </span>
+              </div>
+            </div>
+
             {/* ===== ASTROLOGY BREAKDOWN ===== */}
             {hasAnyElementInfo && (
               <div className="space-y-3">
@@ -785,15 +786,15 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-1 text-sm sm:text-base leading-relaxed text-center",
+                    "space-y-1 text-sm sm:text-base leading-relaxed text-left",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Chinese zodiac signs on their own line */}
-                    <p className={`font-semibold text-xl whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{eastA} × {eastB}</p>
+                    <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{eastA || ''} × {eastB || ''}</p>
                     
                     {/* Rest of the Chinese line (pattern description) */}
                     {chineseLine && (
-                      <p className="text-base">{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
+                      <p className="text-sm">{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
                     )}
                     
                     {/* Chinese Year Elements - displayed under the Chinese connection */}
@@ -816,15 +817,15 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-1 text-sm sm:text-base leading-relaxed text-center",
+                    "space-y-1 text-sm sm:text-base leading-relaxed text-left",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Western zodiac signs on their own line */}
-                    <p className={`font-semibold text-xl whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{westA} × {westB}</p>
+                    <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{westA} × {westB}</p>
                     
                     {/* Sun sign description */}
                     {sunMatchBlurb && (
-                      <p className="text-base">{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
+                      <p className="text-sm">{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
                     )}
                     
                     {/* Element line - match Chinese elements styling */}
