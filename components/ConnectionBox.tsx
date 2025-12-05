@@ -117,7 +117,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   return (
     <section
       className="
-        mt-4 rounded-3xl border px-4 py-5 shadow-lg
+        mt-4 rounded-3xl border px-4 py-5 pb-8 shadow-lg
         bg-white/90 border-slate-200 text-slate-900
         dark:bg-gradient-to-br dark:from-[#1a1040] dark:via-[#0b0724] dark:to-[#150a3a]
         dark:border-slate-800 dark:text-slate-100
@@ -203,19 +203,23 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
       )}
 
       {/* Main connection line */}
-      <p className="mt-4 text-center text-sm text-slate-700 dark:text-slate-200">
-        {mainLine}
-      </p>
+      <div className="mt-4 min-h-[3rem] flex items-center justify-center">
+        <p className="text-center text-sm text-slate-700 dark:text-slate-200">
+          {mainLine}
+        </p>
+      </div>
 
       {/* Western pattern line */}
-      <p className="mt-4 text-center text-sm font-medium text-slate-800 dark:text-slate-50">
-        {westernLine}
-      </p>
-      {westernSubline && (
-        <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
-          {westernSubline}
+      <div className="mt-4 min-h-[2.5rem] flex flex-col items-center justify-start">
+        <p className="text-center text-sm font-medium text-slate-800 dark:text-slate-50">
+          {westernLine}
         </p>
-      )}
+        {westernSubline && (
+          <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
+            {westernSubline}
+          </p>
+        )}
+      </div>
 
       {/* Action Buttons Row */}
       <div className="mt-6 flex items-center justify-center gap-3">

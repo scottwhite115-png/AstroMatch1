@@ -3,12 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-
-const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-  </svg>
-)
+import AstroLabHeader from "@/components/AstroLabHeader"
 
 export default function SagittariusPage() {
   const router = useRouter()
@@ -19,41 +14,11 @@ export default function SagittariusPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
-              </span>
-            </div>
-            
-            {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
+        <AstroLabHeader 
+          theme={theme} 
+          setTheme={setTheme} 
+          onMenuClick={() => router.push("/astrology")} 
+        />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -150,10 +115,10 @@ export default function SagittariusPage() {
                     Sagittarius × Aries — Same Element (Fire + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Adventurous and bold
+                    Adventure fire
                   </p>
                   <p>
-                    Sagittarius and Aries connect instantly through movement, enthusiasm, and shared independence. Aries offers bold direction and decisive drive; Sagittarius brings optimism, curiosity, and broader perspective. Their energies amplify each other in a bright, forward-moving rhythm. The dynamic feels lively, spirited, and naturally energising.
+                    Both signs are bold, straightforward, and restless. Aries supplies raw drive; Sagittarius offers optimism and a bigger vision. The relationship often feels like a shared road trip—fun and energising, though someone must eventually handle logistics.
                   </p>
                 </div>
 
@@ -162,10 +127,10 @@ export default function SagittariusPage() {
                     Sagittarius × Taurus — Mismatch (Fire + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Comfort vs. freedom
+                    Wander vs. nest
                   </p>
                   <p>
-                    Sagittarius seeks exploration and freedom, while Taurus values consistency and measured pace. Taurus provides grounding and sensory richness; Sagittarius brings adventure and open horizons. Their interplay blends stability with expansion in a gentle contrast. The connection feels steady, warm, and quietly challenging.
+                    Sagittarius wants exploration and open horizons; Taurus wants a secure, predictable base. Each can see the other as limiting their freedom or safety. There's learning here, but everyday compatibility can be tricky.
                   </p>
                 </div>
 
@@ -174,10 +139,10 @@ export default function SagittariusPage() {
                     Sagittarius × Gemini — Opposites (Fire + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Opposite explorers
+                    Student and teacher, both ways
                   </p>
                   <p>
-                    A mentally electric polarity where Sagittarius seeks big truths and Gemini seeks broad possibilities. Gemini adds versatility and quick thinking; Sagittarius brings vision, wisdom, and experiential depth. Together they create a spacious, curious, and animated pairing. The dynamic feels open, expansive, and intellectually vibrant.
+                    Both are curious and freedom-loving, but Sagittarius seeks overarching meaning while Gemini collects facts and stories. They can be great travel or debate partners. The challenge is committing to a shared path instead of just sharing a phase.
                   </p>
                 </div>
 
@@ -186,10 +151,10 @@ export default function SagittariusPage() {
                     Sagittarius × Cancer — Mismatch (Fire + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Nest vs. open road
+                    Hearth vs. horizon
                   </p>
                   <p>
-                    Sagittarius moves freely toward experience, while Cancer moves inward toward emotional safety. Cancer brings warmth and care to Sagittarius' adventurous path; Sagittarius brings perspective and optimism to Cancer's emotional world. Their blend mixes exploration with nurturing in a subtle, contrasting way. The connection feels gentle, spacious, and emotionally varied.
+                    Cancer seeks emotional continuity and home; Sagittarius seeks growth through movement and change. Cancer may feel abandoned; Sagittarius may feel smothered. This pairing requires unusually high maturity to balance both needs.
                   </p>
                 </div>
 
@@ -198,10 +163,10 @@ export default function SagittariusPage() {
                     Sagittarius × Leo — Same Element (Fire + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Fire on fire
+                    Festival energy
                   </p>
                   <p>
-                    A charismatic, high-energy match full of passion, confidence, and shared inspiration. Leo radiates warmth and devotion; Sagittarius brings honesty, humour, and an open spirit. Their interaction feels uplifting and expressive, with both signs encouraging each other's shine. The dynamic feels bold, joyful, and naturally harmonious.
+                    Sagittarius and Leo share enthusiasm, warmth, and a taste for drama. Leo offers loyalty and heart; Sagittarius offers humour and adventure. The relationship often feels celebratory, but responsibilities can be pushed aside if no one grounds it.
                   </p>
                 </div>
 
@@ -210,10 +175,10 @@ export default function SagittariusPage() {
                     Sagittarius × Virgo — Mismatch (Fire + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Detail vs. big picture
+                    Story vs. spreadsheet
                   </p>
                   <p>
-                    Virgo values structure and precision, while Sagittarius embraces possibility and expansion. Virgo offers focus and grounded clarity; Sagittarius brings optimism and a wider horizon. Their blend mixes detail with vision in an intriguing contrast. The dynamic feels thoughtful, exploratory, and gently challenging.
+                    Virgo wants detail and precision; Sagittarius wants broad strokes and possibility. Virgo may see Sagittarius as careless; Sagittarius may see Virgo as nitpicky. Respect for each other's role is essential if this is going to work.
                   </p>
                 </div>
 
@@ -222,10 +187,10 @@ export default function SagittariusPage() {
                     Sagittarius × Libra — Compatible (Fire + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Light and open
+                    Light and bright
                   </p>
                   <p>
-                    Sagittarius and Libra share curiosity, openness, and a light-spirited approach to connection. Libra brings harmony and relational ease; Sagittarius adds adventure, honesty, and enthusiasm. Together they create a balanced, socially vibrant rhythm. The connection feels graceful, uplifting, and naturally warm.
+                    Both signs enjoy social life, ideas, and a measure of freedom. Libra brings charm and relational awareness; Sagittarius brings honesty and adventure. The connection feels upbeat and engaging, though deeper emotional work can be delayed.
                   </p>
                 </div>
 
@@ -234,10 +199,10 @@ export default function SagittariusPage() {
                     Sagittarius × Scorpio — Mismatch (Fire + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Edgy and honest
+                    Truth vs. control
                   </p>
                   <p>
-                    Sagittarius leads with freedom and expansion; Scorpio leads with emotional depth and intensity. Scorpio adds substance and introspection; Sagittarius brings perspective and movement. Their contrast creates a dynamic of deep questions and bold discovery. The connection feels potent, complex, and richly contrasting.
+                    Sagittarius is blunt and future-focused; Scorpio is guarded and past-aware. Scorpio may feel exposed by Sagittarius' openness; Sagittarius may feel trapped by Scorpio's intensity. Growth is possible, but it's rarely a "light" match.
                   </p>
                 </div>
 
@@ -246,10 +211,10 @@ export default function SagittariusPage() {
                     Sagittarius × Sagittarius — Same Element (Fire + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Wild at heart
+                    Two wild cards
                   </p>
                   <p>
-                    Two Sagittarians create a spirited, adventurous connection full of movement, ideas, and possibility. Each understands the other's need for independence and intellectual stimulation. The pairing grows through shared exploration and expansive thinking. The dynamic feels bright, open, and endlessly curious.
+                    Two Sagittarians create a high-energy, exploratory relationship. Shared humour, bluntness, and love of space abound. Commitment and consistency are the main challenges; this works when they choose each other as consciously as they choose freedom.
                   </p>
                 </div>
 
@@ -258,10 +223,10 @@ export default function SagittariusPage() {
                     Sagittarius × Capricorn — Semi-Compatible (Fire + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Risk and responsibility
+                    Vision and structure
                   </p>
                   <p>
-                    Sagittarius brings enthusiasm and vision, while Capricorn provides structure and long-term direction. Together they blend optimism with ambition in a productive, forward-focused way. Capricorn steadies the pace; Sagittarius widens the scope. The connection feels purposeful, grounded, and quietly dynamic.
+                    Sagittarius dreams big and pushes outward; Capricorn builds and contains. Together they can achieve a lot—Sagittarius opens doors, Capricorn keeps them stable. Friction appears around rules, timing, and how much risk is acceptable.
                   </p>
                 </div>
 
@@ -270,10 +235,10 @@ export default function SagittariusPage() {
                     Sagittarius × Aquarius — Compatible (Fire + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Open and future-minded
+                    Future friends
                   </p>
                   <p>
-                    A progressive, idea-driven match where independence and curiosity are mutually understood. Aquarius brings originality and insight; Sagittarius adds honesty, humour, and a sense of discovery. Their blend feels future-focused and mentally engaging. The dynamic is open, stimulating, and naturally expansive.
+                    Both signs look ahead, not back. Sagittarius brings enthusiasm and philosophical curiosity; Aquarius brings ideas about systems and change. The connection feels open, progressive, and relatively low-drama, though emotional depth must be chosen intentionally.
                   </p>
                 </div>
 
@@ -282,10 +247,10 @@ export default function SagittariusPage() {
                     Sagittarius × Pisces — Semi-Compatible (Fire + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Faith and feeling
+                    Faith and fantasy
                   </p>
                   <p>
-                    Pisces expresses through emotion and imagination; Sagittarius through movement and exploration. Pisces adds softness and intuition; Sagittarius offers clarity, optimism, and wider vision. Together they form a gentle, dreamy, and fluid connection. The dynamic feels atmospheric, hopeful, and subtly expressive.
+                    Both are idealistic and drawn to meaning beyond the material. Sagittarius seeks truth out there; Pisces feels it in here. The relationship can be inspiring and creative, but practical life and boundaries can blur if they're not careful.
                   </p>
                 </div>
               </div>

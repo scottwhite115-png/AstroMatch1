@@ -3,12 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-
-const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-  </svg>
-)
+import AstroLabHeader from "@/components/AstroLabHeader"
 
 export default function AquariusPage() {
   const router = useRouter()
@@ -19,41 +14,11 @@ export default function AquariusPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
-              </span>
-            </div>
-            
-            {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
+        <AstroLabHeader 
+          theme={theme} 
+          setTheme={setTheme} 
+          onMenuClick={() => router.push("/astrology")} 
+        />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -150,22 +115,22 @@ export default function AquariusPage() {
                     Aquarius × Aries — Compatible (Air + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rebel spark
+                    Rebel alliance
                   </p>
                   <p>
-                    A bold and future-oriented pairing built on independence and momentum. Aries brings courage and spark; Aquarius adds originality and inventive thought. Together they generate a lively, expressive dynamic full of movement and new ideas. The connection feels energising, forward-moving, and naturally inspiring.
+                    Aquarius and Aries both value independence and directness. Aries brings courage and immediate action; Aquarius brings strategy and long-range vision. The connection feels energising and future-focused, though they need to consciously show emotional care.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aquarius × Taurus — Mismatch (Air + Earth)
+                    Aquarius × Taurus — Semi-Compatible (Air + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Fixed vs. free
+                    Future vs. familiar
                   </p>
                   <p>
-                    Aquarius moves through innovation and possibility, while Taurus values steadiness and tangible progress. Taurus grounds Aquarius' concepts, and Aquarius widens Taurus' perspective. The blend creates a measured rhythm shaped by contrast and balance. The dynamic feels steady, slow-building, and quietly contrasting.
+                    Aquarius is drawn to the unconventional; Taurus to the tried-and-true. Aquarius opens doors to new ideas and lifestyles; Taurus anchors the pair in reality. The pairing can be rich and frustrating, often arguing about what "security" really means.
                   </p>
                 </div>
 
@@ -174,10 +139,10 @@ export default function AquariusPage() {
                     Aquarius × Gemini — Same Element (Air + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ideas and wit
+                    Ideas on ideas
                   </p>
                   <p>
-                    A bright, mentally active pairing defined by curiosity, humour, and conversation. Gemini brings versatility and wit; Aquarius brings vision and individuality. Ideas flow easily between them, creating a socially intuitive connection. The energy feels light, clever, and effortlessly stimulating.
+                    Both signs thrive on conversation and mental stimulation. Gemini offers flexibility and social variety; Aquarius offers perspective, eccentricity, and a cause-driven streak. The relationship feels lively and intellectually engaging, but can float if feelings aren't named.
                   </p>
                 </div>
 
@@ -186,10 +151,10 @@ export default function AquariusPage() {
                     Aquarius × Cancer — Mismatch (Air + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Feeling vs. distance
+                    Detachment vs. closeness
                   </p>
                   <p>
-                    Logic meets emotion in a pairing defined by sensitivity and contrast. Cancer offers warmth and intuition; Aquarius contributes clarity and perspective. Their differing inner rhythms create a reflective and emotionally textured dynamic. The connection feels atmospheric, delicate, and introspective.
+                    Cancer wants emotional reassurance and homey bonding; Aquarius wants space and connection through ideas or shared causes. Cancer may feel sidelined; Aquarius may feel smothered. This match requires conscious, ongoing translation between head and heart.
                   </p>
                 </div>
 
@@ -198,22 +163,22 @@ export default function AquariusPage() {
                     Aquarius × Leo — Opposites (Air + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Bold and unconventional
+                    Star and satellite
                   </p>
                   <p>
-                    A dramatic polarity where expressive warmth meets originality and intellect. Leo brings heart and radiance; Aquarius brings insight and innovation. Their contrast creates a bold, magnetic interchange of ideas and emotion. The energy feels vivid, charismatic, and charged with presence.
+                    Aquarius and Leo sit opposite each other. Leo brings personal passion and visibility; Aquarius brings group focus and objectivity. The connection can be magnetic and creative, but tension arises between individual drama and collective ideals.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aquarius × Virgo — Mismatch (Air + Earth)
+                    Aquarius × Virgo — Semi-Compatible (Air + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Systems and ideas
+                    Theory and method
                   </p>
                   <p>
-                    Virgo focuses on refinement and detail; Aquarius focuses on vision and innovation. Virgo grounds Aquarius' concepts into form, while Aquarius expands Virgo's scope. The pairing blends precision with imagination in a subtle, measured way. The connection feels thoughtful, analytical, and gently contrasting.
+                    Aquarius imagines new systems; Virgo refines existing ones. Virgo can help Aquarius implement ideas; Aquarius helps Virgo see beyond immediate flaws. The bond is mentally rich and useful, though emotional intimacy must be built consciously.
                   </p>
                 </div>
 
@@ -222,22 +187,22 @@ export default function AquariusPage() {
                     Aquarius × Libra — Same Element (Air + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Social and idealistic
+                    Diplomat and reformer
                   </p>
                   <p>
-                    A socially fluent, balanced connection rooted in shared ideals and intellectual chemistry. Libra adds charm and relational ease; Aquarius brings originality and depth. Together they express a modern, harmonious rhythm with natural understanding. The energy feels fluid, elegant, and quietly aligned.
+                    Both care about fairness and social dynamics. Libra handles one-on-one harmony; Aquarius looks at broader systems. Together they can be charming and principled, though they may postpone hard emotional talks in favour of discussion and ideals.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aquarius × Scorpio — Mismatch (Air + Water)
+                    Aquarius × Scorpio — Semi-Compatible (Air + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Intensity vs. detachment
+                    Fixed intensity
                   </p>
                   <p>
-                    Scorpio brings emotional intensity and depth; Aquarius offers distance, clarity, and insight. The pairing holds a complex blend of magnetism and contrast. Scorpio grounds the emotional tone; Aquarius illuminates the broader perspective. The dynamic feels deep, potent, and richly contrasting.
+                    Both are fixed and intense, but Aquarius channels it through ideas while Scorpio channels it through emotion. They can challenge each other profoundly. The relationship can feel like a long-running negotiation over control, truth, and freedom.
                   </p>
                 </div>
 
@@ -246,10 +211,10 @@ export default function AquariusPage() {
                     Aquarius × Sagittarius — Compatible (Air + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Open and future-minded
+                    Big sky thinkers
                   </p>
                   <p>
-                    A free-spirited, explorative pairing with shared love of ideas and open horizons. Sagittarius brings enthusiasm and candour; Aquarius adds originality and vision. Their energy moves fast and brightly, full of momentum and discovery. The connection feels inspiring, adventurous, and forward-looking.
+                    Aquarius and Sagittarius both look beyond the here-and-now. Sagittarius brings humour, adventure, and a quest for meaning; Aquarius brings innovation and concern for the bigger picture. The connection feels open, stimulating, and fairly low-drama.
                   </p>
                 </div>
 
@@ -258,10 +223,10 @@ export default function AquariusPage() {
                     Aquarius × Capricorn — Semi-Compatible (Air + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Structure and innovation
+                    System architects
                   </p>
                   <p>
-                    Capricorn provides structure and long-term focus; Aquarius brings invention and broader perspective. Together they create a blend of planning and possibility. Capricorn grounds the rhythm, while Aquarius expands the scope. The dynamic feels steady, strategic, and quietly progressive.
+                    Capricorn manages structures as they are; Aquarius wants to evolve them. Together they can build or reform institutions, projects, or shared plans. Personally, they need to work at emotional warmth, not just shared responsibility.
                   </p>
                 </div>
 
@@ -270,10 +235,10 @@ export default function AquariusPage() {
                     Aquarius × Aquarius — Same Element (Air + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Independent thinkers
+                    Echo chamber of ideas
                   </p>
                   <p>
-                    Two Aquarians form a cerebral, unconventional pairing rooted in shared values and independence. Both bring originality, curiosity, and a strong sense of individuality. The connection feels progressive, idealistic, and mentally open. The energy reads as airy, spacious, and naturally aligned.
+                    Two Aquarians create a mentally electric, unusual, and often friend-based bond. Shared values of autonomy and authenticity are strong. The risk is drifting into parallel lives with lots of theory and not enough emotional anchoring.
                   </p>
                 </div>
 
@@ -282,10 +247,10 @@ export default function AquariusPage() {
                     Aquarius × Pisces — Semi-Compatible (Air + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Vision and feeling
+                    Cosmos and ocean
                   </p>
                   <p>
-                    Aquarius expresses through insight and vision; Pisces moves through emotion and intuition. Together they create a soft, perceptive blend of thought and feeling. Pisces adds depth and atmosphere; Aquarius adds clarity and perspective. The dynamic feels gentle, imaginative, and subtly textured.
+                    Pisces feels into the collective; Aquarius thinks about it. Pisces brings compassion and softness; Aquarius brings clarity and distance. This can be a quietly spiritual match, but everyday life can feel vague unless someone grounds it.
                   </p>
                 </div>
               </div>

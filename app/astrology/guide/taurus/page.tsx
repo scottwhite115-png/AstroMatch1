@@ -3,12 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-
-const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-  </svg>
-)
+import AstroLabHeader from "@/components/AstroLabHeader"
 
 export default function TaurusPage() {
   const router = useRouter()
@@ -19,41 +14,11 @@ export default function TaurusPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
-              </span>
-            </div>
-            
-            {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
+        <AstroLabHeader 
+          theme={theme} 
+          setTheme={setTheme} 
+          onMenuClick={() => router.push('/astrology')} 
+        />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -147,10 +112,10 @@ export default function TaurusPage() {
                     Taurus × Aries — Semi-Compatible (Earth + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Drive meets stability
+                    Spark on soil
                   </p>
                   <p>
-                    Taurus moves with steadiness and intention, while Aries charges forward with speed and boldness. Aries brings spark and momentum to Taurus' grounded nature; Taurus adds calm, stability, and rhythm. Together they create a blend of movement and reliability. The dynamic feels solid, warm, and quietly energising.
+                    Aries shakes Taurus out of ruts; Taurus steadies Aries when life gets chaotic. The tension is around speed: Aries wants change now, Taurus wants time. The match is sensual and strong when they treat their different pace as complementary, not wrong.
                   </p>
                 </div>
 
@@ -159,22 +124,22 @@ export default function TaurusPage() {
                     Taurus × Taurus — Same Element (Earth + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Calm and steady
+                    Slow and sure
                   </p>
                   <p>
-                    Two Taurus partners form a calm, sensual connection built on loyalty, comfort, and shared values. Both bring patience, warmth, and a preference for consistency. The pairing deepens gradually, creating a strong sense of emotional security. The energy feels soft, steady, and deeply anchored.
+                    Two Taureans build a stable, comfort-focused life with strong loyalty and physical affection. The risk is stubborn stand-offs and getting fixed in routines. This pairing thrives when they keep some freshness and don't let comfort become stagnation.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Taurus × Gemini — Mismatch (Earth + Air)
+                    Taurus × Gemini — Semi-Compatible (Earth + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ground and air
+                    Body vs. buzz
                   </p>
                   <p>
-                    Taurus seeks constancy while Gemini thrives on variety, creating a contrast of stability and motion. Gemini brings curiosity and flexibility; Taurus contributes grounding and presence. Their different tempos shape a dynamic filled with subtle contrast. The connection feels measured, thoughtful, and gently balanced.
+                    Taurus seeks calm, tangible pleasures; Gemini seeks variety and mental stimulation. Gemini can lighten Taurus' world and bring new ideas; Taurus can turn some of Gemini's talk into reality. It works if Taurus accepts change and Gemini respects Taurus' need to slow down.
                   </p>
                 </div>
 
@@ -183,10 +148,10 @@ export default function TaurusPage() {
                     Taurus × Cancer — Compatible (Earth + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Cozy and caring
+                    Home-builders
                   </p>
                   <p>
-                    A tender and nurturing pairing where Taurus provides reliability and Cancer offers emotional depth. Both value safety, comfort, and small rituals of care. Cancer softens Taurus' world; Taurus steadies Cancer's emotional landscape. The bond feels warm, protective, and quietly intimate.
+                    Both value safety, loyalty, and emotional security. Cancer contributes nurturing and sensitivity; Taurus offers patience, reliability, and practical support. The connection tends to feel warm and protective, though they must avoid holding onto old hurts.
                   </p>
                 </div>
 
@@ -195,10 +160,10 @@ export default function TaurusPage() {
                     Taurus × Leo — Mismatch (Earth + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Fixed tastes
+                    Fixed pride
                   </p>
                   <p>
-                    Taurus moves with patience and consistency, while Leo radiates expression and boldness. Leo adds vitality and colour to Taurus' calm approach; Taurus provides grounding to Leo's flair. Their strong personalities create a notable contrast. The connection feels vivid, steady, and full of presence.
+                    Taurus wants peace and stability; Leo wants attention and creative expression. Loyalty is a shared strength, but lifestyle clashes can be big: spending, social life, and ego. This pairing can work, yet it rarely feels low-maintenance.
                   </p>
                 </div>
 
@@ -207,22 +172,22 @@ export default function TaurusPage() {
                     Taurus × Virgo — Same Element (Earth + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Practical and grounded
+                    Practical pair
                   </p>
                   <p>
-                    A practical, dependable match defined by shared values and steady emotional pacing. Virgo brings refinement and clarity; Taurus offers warmth and constancy. Both appreciate small routines and reliable gestures of care. The energy feels stable, sincere, and quietly harmonious.
+                    Taurus and Virgo share realism, persistence, and a preference for tangible results. Taurus brings patience, sensuality, and endurance; Virgo brings refinement, problem-solving, and careful thought. The relationship feels steady and competent, though Virgo's critique and Taurus' resistance to change need soft handling.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Taurus × Libra — Mismatch (Earth + Air)
+                    Taurus × Libra — Semi-Compatible (Earth + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Tasteful but indecisive
+                    Taste and tempo
                   </p>
                   <p>
-                    Both admire beauty and comfort, though they approach it from different angles. Libra brings elegance, charm, and social ease; Taurus adds grounding, warmth, and simplicity. Their interaction blends movement with stillness in a balanced, measured way. The connection feels gentle, refined, and subtly contrasting.
+                    Both are Venus-ruled and appreciate beauty, comfort, and good atmosphere. Taurus leans toward physical ease and staying put; Libra toward social flow and aesthetic balance. Their bond can be charming and visually appealing, but decision-making and pace often become sticking points.
                   </p>
                 </div>
 
@@ -231,10 +196,10 @@ export default function TaurusPage() {
                     Taurus × Scorpio — Opposites (Earth + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Deep and intense
+                    Magnet and stalemate
                   </p>
                   <p>
-                    A magnetic polarity where Taurus offers sensual stability and Scorpio brings emotional intensity. Their contrast creates depth, presence, and strong mutual fascination. Scorpio adds transformative depth; Taurus adds grounding and endurance. The dynamic feels powerful, intimate, and richly layered.
+                    This opposite pair often comes with strong attraction. Taurus is open about material wants; Scorpio is private about deeper emotional needs. The connection can feel fated and binding, but also heavy, pushing both into intense lessons around control, loyalty, and letting go.
                   </p>
                 </div>
 
@@ -243,10 +208,10 @@ export default function TaurusPage() {
                     Taurus × Sagittarius — Mismatch (Earth + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Comfort vs. freedom
+                    Anchor vs. arrow
                   </p>
                   <p>
-                    Taurus seeks predictability while Sagittarius seeks freedom and exploration. Sagittarius brings enthusiasm and fresh perspective; Taurus contributes solidity and emotional steadiness. Together they blend adventure with calm in an unexpected way. The energy feels bright, grounded, and subtly expansive.
+                    Taurus craves security and familiar comforts; Sagittarius wants exploration, growth, and room to roam. Each can feel the other is trying to change their basic nature. This pairing only works when both genuinely respect those differences instead of negotiating them away.
                   </p>
                 </div>
 
@@ -255,22 +220,22 @@ export default function TaurusPage() {
                     Taurus × Capricorn — Same Element (Earth + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Long-game builders
+                    Builders of empires
                   </p>
                   <p>
-                    A long-term oriented pairing rooted in shared values, loyalty, and practicality. Capricorn adds discipline and ambition; Taurus brings patience and consistent emotional presence. Together they create a solid, goal-focused rhythm. The connection feels stable, enduring, and deeply reliable.
+                    Capricorn shares Taurus' practicality but adds ambition and strategic focus. Taurus provides patience, sensual grounding, and loyalty; Capricorn provides direction and long-term structure. This can be a durable, productive match, as long as they remember joy isn't a luxury.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Taurus × Aquarius — Mismatch (Earth + Air)
+                    Taurus × Aquarius — Semi-Compatible (Earth + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Solid vs. disruptive
+                    Tradition vs. experiment
                   </p>
                   <p>
-                    Taurus approaches life through the tangible, while Aquarius navigates through ideas and innovation. Aquarius widens Taurus' horizons; Taurus offers grounding and emotional consistency. Their contrasting styles create a reflective, steady-paced dynamic. The bond feels thoughtful, spacious, and distinctly balanced.
+                    Taurus leans toward what's tried-and-true; Aquarius toward what's new and unconventional. Aquarius can open Taurus' world; Taurus can anchor Aquarius' ideas. The dynamic can be rich but tense, with ongoing negotiations between comfort and change.
                   </p>
                 </div>
 
@@ -279,10 +244,10 @@ export default function TaurusPage() {
                     Taurus × Pisces — Compatible (Earth + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Soft and supportive
+                    Dreams with roots
                   </p>
                   <p>
-                    A gentle, intuitive pairing shaped by emotional softness and shared serenity. Pisces brings imagination and empathy; Taurus offers grounding and warmth. Their energies blend smoothly, creating a calm, heartfelt tone. The connection feels compassionate, steady, and quietly resonant.
+                    Pisces brings imagination, empathy, and emotional tone; Taurus brings stability, patience, and practical support. Taurus can help Pisces' dreams take form, while Pisces softens Taurus' edges and keeps life from becoming too rigid. The match usually feels gentle and quietly secure.
                   </p>
                 </div>
               </div>

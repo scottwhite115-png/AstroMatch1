@@ -3,12 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-
-const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-  </svg>
-)
+import AstroLabHeader from "@/components/AstroLabHeader"
 
 export default function ScorpioPage() {
   const router = useRouter()
@@ -19,41 +14,11 @@ export default function ScorpioPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
-              </span>
-            </div>
-            
-            {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
+        <AstroLabHeader 
+          theme={theme} 
+          setTheme={setTheme} 
+          onMenuClick={() => router.push("/astrology")} 
+        />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -147,10 +112,10 @@ export default function ScorpioPage() {
                     Scorpio × Aries — Mismatch (Water + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Intense and uncompromising
+                    Depth vs. blaze
                   </p>
                   <p>
-                    Aries moves with instinct and immediacy, while Scorpio acts through depth, intention, and emotional strategy. Their energies create a charged dynamic full of honesty and momentum on one side, intensity and devotion on the other. Aries stirs Scorpio's boldness; Scorpio deepens Aries' emotional awareness. The connection feels magnetic, demanding, and powerfully transformative.
+                    Scorpio moves slowly and intensely; Aries moves quickly and openly. The attraction can be strong, but so are power struggles. Scorpio seeks emotional honesty; Aries seeks direct action, and they may clash over what "honest" really looks like.
                   </p>
                 </div>
 
@@ -159,10 +124,10 @@ export default function ScorpioPage() {
                     Scorpio × Taurus — Opposites (Water + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Deep and intense
+                    Possession and surrender
                   </p>
                   <p>
-                    Taurus offers steadiness, sensuality, and calm; Scorpio brings passion, depth, and emotional insight. Together they form a strong polarity rooted in loyalty, intensity, and grounded affection. Scorpio enriches Taurus' emotional world; Taurus stabilises Scorpio's powerful inner landscape. The dynamic feels enduring, magnetic, and deeply anchored.
+                    Both signs are fixed and focused on security, but in different realms. Taurus cares about material and bodily comfort; Scorpio about emotional and psychological bonds. This can be a deep, long-lasting match or a stubborn deadlock.
                   </p>
                 </div>
 
@@ -171,22 +136,22 @@ export default function ScorpioPage() {
                     Scorpio × Gemini — Mismatch (Water + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Light vs. depth
+                    X-ray vs. snapshot
                   </p>
                   <p>
-                    Scorpio seeks emotional depth and clear commitment, while Gemini thrives on movement, exploration, and variety. Gemini brings brightness and perspective to Scorpio's depth; Scorpio adds substance and meaning to Gemini's world. Their rhythms differ but can complement each other when understood. The connection feels curious, contrasting, and mentally engaging.
+                    Scorpio wants depth and consistency; Gemini wants movement and variety. Scorpio may see Gemini as slippery; Gemini may find Scorpio intense or suspicious. Fascination is possible, but so is mutual mistrust.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Scorpio × Cancer — Compatible (Water + Water)
+                    Scorpio × Cancer — Same Element (Water + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Intense and private
+                    Deep tide
                   </p>
                   <p>
-                    A natural emotional bond marked by intuition, loyalty, and shared depth. Cancer softens Scorpio's intensity with warmth and empathy; Scorpio strengthens Cancer's emotional confidence. Trust forms quickly in this pairing, creating a protective and resonant connection. The dynamic feels rich, heartfelt, and mutually grounding.
+                    Scorpio and Cancer both value emotional loyalty and privacy. Cancer offers care and softness; Scorpio offers depth and staying power. The bond can feel family-like and protective, but needs trust, not tests, to stay healthy.
                   </p>
                 </div>
 
@@ -195,10 +160,10 @@ export default function ScorpioPage() {
                     Scorpio × Leo — Mismatch (Water + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Intense and dramatic
+                    Power faces
                   </p>
                   <p>
-                    Leo expresses openly with warmth and charisma, while Scorpio moves more privately through emotion and intention. Leo brightens the dynamic with confidence; Scorpio adds depth, focus, and emotional clarity. Their contrast creates a strong but demanding interplay. The connection feels vivid, intense, and powerfully expressive.
+                    Leo wants to be seen; Scorpio wants to see what's hidden. Both have strong pride and dislike feeling controlled. The connection can be sexy and dramatic, but who holds power becomes a recurring theme.
                   </p>
                 </div>
 
@@ -207,22 +172,22 @@ export default function ScorpioPage() {
                     Scorpio × Virgo — Compatible (Water + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Strategic and serious
+                    Strategic support
                   </p>
                   <p>
-                    Virgo offers thoughtful support and quiet reliability; Scorpio brings emotional truth and unwavering commitment. Together they form a purposeful, grounded pairing shaped by clarity and resilience. Virgo steadies Scorpio's depth; Scorpio enriches Virgo's emotional landscape. The dynamic feels strong, intentional, and deeply loyal.
+                    Virgo and Scorpio both notice what others miss. Virgo brings analysis and practical solutions; Scorpio brings insight and emotional focus. Together they can tackle life's messes effectively, but they should avoid bonding only over problems.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Scorpio × Libra — Semi-Compatible (Water + Air)
+                    Scorpio × Libra — Mismatch (Water + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Smooth and intense
+                    Polite vs. piercing
                   </p>
                   <p>
-                    Libra approaches through balance and perspective, while Scorpio approaches through depth and emotional certainty. Libra softens Scorpio's intensity with calm communication; Scorpio deepens Libra's understanding with honesty and insight. Their energies contrast in a quietly complementary way. The connection feels layered, thoughtful, and subtly transformative.
+                    Scorpio seeks raw truth; Libra seeks balanced interaction. Scorpio may find Libra evasive; Libra may feel overwhelmed by Scorpio's intensity. This pair must decide whether they can meet in the middle or if they're always negotiating depth vs. comfort.
                   </p>
                 </div>
 
@@ -231,10 +196,10 @@ export default function ScorpioPage() {
                     Scorpio × Scorpio — Same Element (Water + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    All or nothing
+                    Intensity mirrored
                   </p>
                   <p>
-                    Two Scorpios create a bond marked by passion, loyalty, and profound emotional recognition. Both understand the other's depth, intuition, and protective instincts. The pairing carries immense emotional power and intensity. The dynamic feels magnetic, consuming, and deeply unspoken.
+                    Two Scorpios create a powerful, private, and emotionally charged relationship. They understand each other's need for depth and loyalty, but also share jealousy and a tendency to hold grudges. This can be transformative or toxic; it rarely feels neutral.
                   </p>
                 </div>
 
@@ -243,10 +208,10 @@ export default function ScorpioPage() {
                     Scorpio × Sagittarius — Mismatch (Water + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Edgy and honest
+                    Secrets vs. bluntness
                   </p>
                   <p>
-                    Scorpio moves through depth and focus; Sagittarius moves through freedom and discovery. Sagittarius opens Scorpio's perspective with optimism; Scorpio offers emotional richness and introspection. Their contrast creates a dynamic of growth and recalibration. The connection feels spirited, challenging, and full of contrast.
+                    Scorpio is private and strategic; Sagittarius is open and straightforward. Scorpio may see Sagittarius as careless; Sagittarius may see Scorpio as heavy or controlling. There's potential for growth, but it often feels like work.
                   </p>
                 </div>
 
@@ -255,22 +220,22 @@ export default function ScorpioPage() {
                     Scorpio × Capricorn — Compatible (Water + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Focused and formidable
+                    Serious alliance
                   </p>
                   <p>
-                    A strong, steady bond built on resilience, loyalty, and shared ambition. Capricorn contributes structure and long-term vision; Scorpio adds emotional insight and dedication. Together they form a powerful, goal-oriented partnership. The dynamic feels grounded, strategic, and deeply connected.
+                    Both signs are determined and future-oriented. Scorpio brings emotional depth and focus; Capricorn brings structure, ambition, and steadiness. The connection feels serious and committed, though they need room for softness to avoid life becoming all duty.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Scorpio × Aquarius — Mismatch (Water + Air)
+                    Scorpio × Aquarius — Semi-Compatible (Water + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Intensity vs. detachment
+                    Fixated minds
                   </p>
                   <p>
-                    Scorpio leads with emotional truth and intensity; Aquarius leads with ideals and forward-thinking clarity. Aquarius expands Scorpio's world intellectually; Scorpio deepens Aquarius' emotional awareness. Their differences are significant but compelling. The connection feels complex, spacious, and mentally stimulating.
+                    Both are fixed signs with strong opinions, but express it differently. Scorpio operates emotionally and instinctively; Aquarius intellectually and idealistically. They can bond over intensity and conviction, yet struggle when neither will shift their stance.
                   </p>
                 </div>
 
@@ -279,10 +244,10 @@ export default function ScorpioPage() {
                     Scorpio × Pisces — Same Element (Water + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Deep water connection
+                    Mystic waters
                   </p>
                   <p>
-                    A deeply intuitive pairing where emotional understanding flows freely. Pisces brings softness, imagination, and empathy; Scorpio brings protection, passion, and emotional depth. Together they form a soulful, enveloping bond. The dynamic feels mystical, heartfelt, and profoundly connective.
+                    Scorpio and Pisces both tune into the unseen. Pisces brings compassion and imagination; Scorpio brings focus and emotional courage. The bond can feel soulful and healing, but they must guard against shared escapism or martyrdom.
                   </p>
                 </div>
               </div>
