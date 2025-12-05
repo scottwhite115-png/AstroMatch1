@@ -3,12 +3,7 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-
-const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-  </svg>
-)
+import AstroLabHeader from "@/components/AstroLabHeader"
 
 export default function CapricornPage() {
   const router = useRouter()
@@ -19,41 +14,11 @@ export default function CapricornPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
-              </span>
-            </div>
-            
-            {/* Theme Toggle Button */}
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-              aria-label="Toggle theme"
-            >
-              {theme === "light" ? (
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                </svg>
-              ) : (
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="5" />
-                  <line x1="12" y1="1" x2="12" y2="3" />
-                  <line x1="12" y1="21" x2="12" y2="23" />
-                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                  <line x1="1" y1="12" x2="3" y2="12" />
-                  <line x1="21" y1="12" x2="23" y2="12" />
-                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
+        <AstroLabHeader 
+          theme={theme} 
+          setTheme={setTheme} 
+          onMenuClick={() => router.push("/astrology")} 
+        />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -147,13 +112,13 @@ export default function CapricornPage() {
               <div className="space-y-4">
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Capricorn × Aries — Semi-Compatible (Earth + Fire)
+                    Capricorn × Aries — Mismatch (Earth + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ambition with friction
+                    Plan vs. push
                   </p>
                   <p>
-                    Capricorn moves with intention and long-term focus, while Aries acts with immediacy and bold instinct. Aries introduces momentum and courage that expand Capricorn's pace; Capricorn provides clarity and stability that refine Aries' direction. Together they blend strategy with action in a dynamic, grounded rhythm. The connection feels steady, purposeful, and quietly energising.
+                    Capricorn prefers strategy and delayed gratification; Aries prefers action and fast results. Each can see the other as naïve or restrictive. They're strong as a team on shared goals, but romance can feel like constant negotiation.
                   </p>
                 </div>
 
@@ -162,10 +127,10 @@ export default function CapricornPage() {
                     Capricorn × Taurus — Same Element (Earth + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Solid and steady
+                    Slow build
                   </p>
                   <p>
-                    A loyal, consistent pairing rooted in practicality, shared values, and mutual reliability. Taurus brings warmth and patience; Capricorn adds structure, ambition, and long-range perspective. Together they build stability in both emotional and material life. The dynamic feels comforting, strong, and deeply dependable.
+                    Both signs value stability, loyalty, and tangible progress. Taurus offers patience and pleasure; Capricorn offers ambition and structure. The relationship can be solid and enduring, though they should guard against becoming too rigid or work-obsessed.
                   </p>
                 </div>
 
@@ -174,10 +139,10 @@ export default function CapricornPage() {
                     Capricorn × Gemini — Mismatch (Earth + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Serious vs. playful
+                    Results vs. options
                   </p>
                   <p>
-                    Gemini explores ideas freely, while Capricorn prefers clear plans and grounded structure. Capricorn offers steadiness and follow-through; Gemini introduces flexibility, curiosity, and fresh perspective. Their contrast creates a thoughtful mix of movement and form. The connection feels airy, structured, and quietly contrasting.
+                    Capricorn measures by outcomes; Gemini by experiences and connections. Capricorn may find Gemini scattered; Gemini may find Capricorn heavy. Respect can exist, but everyday rhythm and priorities often clash.
                   </p>
                 </div>
 
@@ -186,10 +151,10 @@ export default function CapricornPage() {
                     Capricorn × Cancer — Opposites (Earth + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Opposites that build
+                    Roof and roots
                   </p>
                   <p>
-                    Capricorn leads with discipline and practicality; Cancer leads with feeling and intuition — forming a classic balancing polarity. Cancer adds warmth and emotional depth to Capricorn's steady presence; Capricorn brings protection and reliability to Cancer's softness. Their interaction blends structure with tenderness in a stabilising way. The dynamic feels deeply anchoring, nurturing, and quietly resilient.
+                    Capricorn and Cancer mirror themes of work and home, public and private. Capricorn focuses on responsibility and achievement; Cancer on care and emotional safety. This can be a strong, interdependent bond if they don't use those differences as weapons.
                   </p>
                 </div>
 
@@ -198,10 +163,10 @@ export default function CapricornPage() {
                     Capricorn × Leo — Semi-Compatible (Earth + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pride and strategy
+                    Status and stage
                   </p>
                   <p>
-                    Leo expresses with warmth, creativity, and boldness; Capricorn acts with focus, discipline, and long-term vision. Their interplay combines passion with purpose, creating a strong sense of potential. Capricorn grounds the atmosphere; Leo brightens it. The connection feels ambitious, warm, and steadily expressive.
+                    Leo wants recognition and heart connection; Capricorn wants respect and tangible success. Together they can be a visible, effective pair. Tension appears when Capricorn dismisses Leo's emotional needs or Leo sees Capricorn as joyless.
                   </p>
                 </div>
 
@@ -210,22 +175,22 @@ export default function CapricornPage() {
                     Capricorn × Virgo — Same Element (Earth + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Quietly powerful
+                    Competent duo
                   </p>
                   <p>
-                    Capricorn and Virgo form a thoughtful, diligent match shaped by shared values and quiet devotion. Virgo contributes clarity, detail, and considerate care; Capricorn adds leadership, stability, and long-term commitment. Their teamwork is strong and naturally aligned. The dynamic feels grounded, intentional, and deeply reliable.
+                    Capricorn and Virgo both appreciate reliability and effort. Virgo handles details; Capricorn handles long-term direction. The relationship is capable and steady, but they must consciously cultivate lightness and intimacy, not just shared tasks.
                   </p>
                 </div>
 
                 <div>
                   <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Capricorn × Libra — Mismatch (Earth + Air)
+                    Capricorn × Libra — Semi-Compatible (Earth + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Style and structure
+                    Structure and style
                   </p>
                   <p>
-                    Capricorn focuses on goals and structure, while Libra prioritises connection and balance. Libra brings grace, perspective, and social ease; Capricorn offers steadiness, protection, and clear direction. Together they mix softness with structure in a careful blend. The connection feels refined, measured, and gently contrasting.
+                    Libra brings charm, diplomacy, and a sense of aesthetics; Capricorn brings authority and organisation. They can look like a power couple, but privately have to work hard on emotional honesty and vulnerability.
                   </p>
                 </div>
 
@@ -234,10 +199,10 @@ export default function CapricornPage() {
                     Capricorn × Scorpio — Compatible (Earth + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Focused and formidable
+                    Serious and deep
                   </p>
                   <p>
-                    A powerful, loyal pairing defined by depth, strength, and shared ambition. Scorpio offers emotional insight and intensity; Capricorn brings grounding, strategy, and persistence. Their bond is steady, protective, and uncompromising in loyalty. The dynamic feels profound, resilient, and purposefully aligned.
+                    Both signs are cautious about trust and serious about commitment. Scorpio offers emotional intensity; Capricorn offers stability and follow-through. The bond can feel powerful and purposeful, though they should make room for joy.
                   </p>
                 </div>
 
@@ -246,10 +211,10 @@ export default function CapricornPage() {
                     Capricorn × Sagittarius — Semi-Compatible (Earth + Fire)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Risk and responsibility
+                    Fence and field
                   </p>
                   <p>
-                    Sagittarius contributes movement, optimism, and a broader horizon; Capricorn provides stability, intention, and practical grounding. Together they merge expansion with structure in a balanced, forward-focused way. Each sign brings what the other lacks in a complementary contrast. The connection feels steady, open, and quietly dynamic.
+                    Sagittarius wants wide open space; Capricorn wants a fenced, managed field. Sagittarius pushes for exploration; Capricorn for consolidation. They can balance each other if they see it as teamwork instead of tug-of-war.
                   </p>
                 </div>
 
@@ -258,10 +223,10 @@ export default function CapricornPage() {
                     Capricorn × Capricorn — Same Element (Earth + Earth)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ambitious and serious
+                    Double duty
                   </p>
                   <p>
-                    Two Capricorns create a disciplined, determined partnership built on shared values and unwavering reliability. You understand each other's pace, ambition, and boundaries deeply. Emotional expression unfolds slowly but with sincerity. The dynamic feels solid, responsible, and quietly powerful.
+                    Two Capricorns create a highly responsible, goal-focused partnership. They respect each other's work ethic and resilience, but tenderness can fall to the bottom of the list. The relationship is strongest when they deliberately prioritise affection and rest.
                   </p>
                 </div>
 
@@ -270,10 +235,10 @@ export default function CapricornPage() {
                     Capricorn × Aquarius — Semi-Compatible (Earth + Air)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Structure and innovation
+                    Old rule, new rule
                   </p>
                   <p>
-                    Capricorn works through structure and consistency; Aquarius works through innovation and conceptual clarity. Aquarius opens Capricorn's world with originality; Capricorn grounds Aquarius with practicality and focus. Their blend creates a forward-thinking yet stable partnership. The connection feels modern, steady, and intellectually engaging.
+                    Capricorn embodies tradition and hierarchy; Aquarius challenges systems and norms. Together they can reform or reinforce structures, depending on their dynamic. Personally, this pairing is interesting but can feel emotionally cool unless both open up.
                   </p>
                 </div>
 
@@ -282,10 +247,10 @@ export default function CapricornPage() {
                     Capricorn × Pisces — Compatible (Earth + Water)
                   </h3>
                   <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dream and discipline
+                    Form and feeling
                   </p>
                   <p>
-                    Pisces brings imagination, empathy, and emotional richness; Capricorn offers grounding, protection, and long-term steadiness. Together they form a gentle, supportive dynamic where feeling meets structure. Pisces softens Capricorn's reserve; Capricorn strengthens Pisces' sense of security. The connection feels comforting, soulful, and deeply balanced.
+                    Pisces brings compassion, creativity, and emotional nuance; Capricorn brings containment, stability, and realism. Capricorn helps give Pisces' dreams shape; Pisces reminds Capricorn there's more to life than achievement. The match can be quietly powerful and supportive.
                   </p>
                 </div>
               </div>
