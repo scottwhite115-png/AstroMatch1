@@ -125,26 +125,31 @@ export function getPatternIcon(pattern: ChinesePattern): string {
  * Short educational tagline explaining the Chinese structure.
  * This sits directly under the % header.
  */
-export function getPatternTagline(pattern: ChinesePattern): string {
+export function getPatternTagline(pattern: ChinesePattern | "NO_PATTERN"): string {
+  // Handle NO_PATTERN as alias for NEUTRAL (from matchEngine)
+  if (pattern === "NO_PATTERN") {
+    pattern = "NEUTRAL";
+  }
+  
   switch (pattern) {
     case "SAN_HE":
-      return "Trine alliance with strong, long-term harmony.";
+      return "High natural harmony and shared rhythm; when you're aligned, this connection moves fast and far.";
     case "LIU_HE":
-      return "Close one-to-one bond with a soft, quietly supportive tone.";
+      return "Quietly strong bond that feels safe, loyal, and steady when you choose each other.";
     case "SAME_SIGN":
-      return "Same animal, same rhythm – big mirror effect for strengths and flaws.";
+      return "Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.";
     case "NEUTRAL":
-      return "No strong harmony or conflict in the Chinese system.";
+      return "No strong classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
     case "LIU_CHONG":
-      return "Opposing branches with on–off movement and repeated clashes.";
+      return "Magnetic opposites with sharp edges; big lessons, not automatic comfort.";
     case "LIU_HAI":
-      return "Subtle drain pattern with small frictions and energy leaks over time.";
+      return "Sensitive pattern where small misreads can snowball; this match needs extra patience and very clear communication.";
     case "XING":
-      return "Punishment entanglement that brings lessons around limits and consequences.";
+      return "Tension and sharp edges; situations can feel strict or demanding.";
     case "PO":
-      return "Break pattern linked to sudden shifts, endings or sharp changes of direction.";
+      return "This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.";
     default:
-      return "No strong harmony or conflict in the Chinese system.";
+      return "No strong classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
   }
 }
 

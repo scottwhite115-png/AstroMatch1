@@ -667,23 +667,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
   const userALabel = `${westA} / ${eastA || ''}`;
   const userBLabel = `${westB} / ${eastB || ''}`;
   
-  // Build elements line if we have Chinese elements
-  let elementsLineText: string | undefined;
-  if (chineseElementA && chineseElementB) {
-    try {
-      const westANormalized = normalizeWesternSign(westA);
-      const westBNormalized = normalizeWesternSign(westB);
-      const westAMod = getWesternModality(westANormalized);
-      const westAElem = getWesternElement(westANormalized);
-      const westBMod = getWesternModality(westBNormalized);
-      const westBElem = getWesternElement(westBNormalized);
-      
-      // Format: "Fixed Air / Metal × Mutable Air / Earth"
-      elementsLineText = `${westAMod} ${westAElem} / ${chineseElementA} × ${westBMod} ${westBElem} / ${chineseElementB}`;
-    } catch (error) {
-      console.error('[ConnectionBoxNew] Error building elements line:', error);
-    }
-  }
+  // Elements line removed - no longer displaying modality/element information
   
   // Use connectionBlurb or overviewText as the overview text
   const connectionOverviewText = overviewText;
@@ -778,58 +762,38 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
             {hasAnyElementInfo && (
               <div className="space-y-2">
                 
-                {/* Chinese Connection */}
+                {/* Combined Chinese and Western Connection in one grey box */}
                 <div className={clsx(
-                  "rounded-xl px-3 py-1.5",
+                  "rounded-xl px-3 py-3",
                   theme === "light" 
                     ? "bg-slate-50 text-slate-700" 
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-0.5 text-sm sm:text-base leading-snug text-left",
+                    "space-y-3 text-sm sm:text-base leading-snug text-left",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
-                    {/* Chinese zodiac signs on their own line */}
-                    <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{eastA || ''} × {eastB || ''}</p>
-                    
-                    {/* Rest of the Chinese line (pattern description) */}
-                    {chineseLine && (
-                      <p className="text-sm">{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
-                    )}
-                    
-                    {/* Chinese Year Elements - displayed under the Chinese connection */}
-                    {(wuXingLine || elementsLineText) && (
-                      <p className={clsx(
-                        "text-sm pt-0.5",
-                        theme === "light" ? "text-slate-600" : "text-slate-300"
-                      )}>
-                        {wuXingLine || elementsLineText}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                    {/* Chinese Connection Section */}
+                    <div className="space-y-0.5">
+                      {/* Chinese zodiac signs on their own line */}
+                      <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{eastA || ''} × {eastB || ''}</p>
+                      
+                      {/* Rest of the Chinese line (pattern description) */}
+                      {chineseLine && (
+                        <p className="text-sm">{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
+                      )}
+                    </div>
 
-                {/* Western Connection */}
-                <div className={clsx(
-                  "rounded-xl px-3 py-1.5",
-                  theme === "light" 
-                    ? "bg-slate-50 text-slate-700" 
-                    : "bg-slate-800/50 text-slate-200"
-                )}>
-                  <div className={clsx(
-                    "space-y-0.5 text-sm sm:text-base leading-snug text-left",
-                    theme === "light" ? "text-slate-600" : "text-slate-300"
-                  )}>
-                    {/* Western zodiac signs on their own line */}
-                    <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{westA} × {westB}</p>
-                    
-                    {/* Sun sign description */}
-                    {sunMatchBlurb && (
-                      <p className="text-sm">{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
-                    )}
-                    
-                    {/* Element line - match Chinese elements styling */}
-                    {westernLine && <p className="text-sm">{westernLine}</p>}
+                    {/* Western Connection Section */}
+                    <div className="space-y-0.5">
+                      {/* Western zodiac signs on their own line */}
+                      <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{westA} × {westB}</p>
+                      
+                      {/* Sun sign description */}
+                      {sunMatchBlurb && (
+                        <p className="text-sm">{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 

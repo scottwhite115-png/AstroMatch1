@@ -12,26 +12,30 @@ interface VedicSectionProps {
 
 // Match engine color scheme - permanent colors for each card
 const cardColors = {
-  'vedic-101': {
+  'vedic-origins': {
     light: { bg: 'bg-purple-50', bgInactive: 'bg-white', border: 'border-purple-400', text: 'text-purple-900', textInactive: 'text-gray-700' },
     dark: { bg: 'bg-gradient-to-r from-purple-500/20 to-fuchsia-500/20', bgInactive: 'bg-slate-900/60', border: 'border-purple-400', text: 'text-purple-100', textInactive: 'text-slate-200' },
   },
-  'vedic-big-three': {
+  'vedic-chart-structure': {
     light: { bg: 'bg-amber-50', bgInactive: 'bg-white', border: 'border-amber-400', text: 'text-amber-900', textInactive: 'text-gray-700' },
     dark: { bg: 'bg-gradient-to-r from-amber-500/20 to-yellow-500/20', bgInactive: 'bg-slate-900/60', border: 'border-amber-400', text: 'text-amber-100', textInactive: 'text-slate-200' },
   },
-  'vedic-love-compatibility': {
+  'vedic-love-synastry': {
     light: { bg: 'bg-pink-50', bgInactive: 'bg-white', border: 'border-pink-400', text: 'text-pink-900', textInactive: 'text-gray-700' },
     dark: { bg: 'bg-gradient-to-r from-pink-500/20 to-rose-500/20', bgInactive: 'bg-slate-900/60', border: 'border-pink-400', text: 'text-pink-100', textInactive: 'text-slate-200' },
   },
-  'vedic-timing-mahadashas': {
+  'vedic-timing': {
     light: { bg: 'bg-cyan-50', bgInactive: 'bg-white', border: 'border-cyan-400', text: 'text-cyan-900', textInactive: 'text-gray-700' },
     dark: { bg: 'bg-gradient-to-r from-cyan-500/20 to-sky-500/20', bgInactive: 'bg-slate-900/60', border: 'border-cyan-400', text: 'text-cyan-100', textInactive: 'text-slate-200' },
+  },
+  'vedic-faq': {
+    light: { bg: 'bg-indigo-50', bgInactive: 'bg-white', border: 'border-indigo-400', text: 'text-indigo-900', textInactive: 'text-gray-700' },
+    dark: { bg: 'bg-gradient-to-r from-indigo-500/20 to-blue-500/20', bgInactive: 'bg-slate-900/60', border: 'border-indigo-400', text: 'text-indigo-100', textInactive: 'text-slate-200' },
   },
 };
 
 export function VedicSection({ theme }: VedicSectionProps) {
-  const [activeId, setActiveId] = useState<VedicCard['id']>('vedic-101');
+  const [activeId, setActiveId] = useState<VedicCard['id']>('vedic-origins');
 
   const activeCard =
     VEDIC_CARDS.find((card) => card.id === activeId) ?? VEDIC_CARDS[0];
