@@ -25,8 +25,16 @@ export async function POST(request: NextRequest) {
       timezone: parseFloat(timezone),
     });
 
-    // Use the provided API key
-    const apiKey = '3v0LWZFfX74HJilJlVDiQauWeEYfUSR89sOn2KrE';
+    // Get API key from environment variable
+    const apiKey = process.env.FREE_ASTROLOGY_API_KEY;
+    
+    if (!apiKey) {
+      console.error('❌ FREE_ASTROLOGY_API_KEY not configured');
+      return NextResponse.json(
+        { error: 'API configuration error' },
+        { status: 500 }
+      );
+    }
 
     const requestBody = {
       year: parseInt(year),
