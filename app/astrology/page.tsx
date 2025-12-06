@@ -94,7 +94,7 @@ export default function AstrologySection() {
     },
     {
       id: 'western-guide',
-      label: 'Sun Signs',
+      label: 'Tropical Sun Signs',
       description: 'Learn about the 12 sun signs',
       icon: '☀️',
       path: '/astrology/sun-signs',

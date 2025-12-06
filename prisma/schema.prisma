@@ -45,3 +45,16 @@ model conversations {
   @@index([user2_id])
   @@index([is_new_match])
 }
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  topic     String     // e.g. "sun_signs", "chinese_zodiac", "vedic", "relationship", "qa"
+  authorId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([topic, createdAt])
+  @@index([authorId])
+}
