@@ -1,48 +1,46 @@
-import { redirect } from "next/navigation";
-import { CommunityTopicClient } from "./_components/CommunityTopicClient";
+import { COMMUNITY_TOPICS } from "../topics";
+import { notFound } from "next/navigation";
+import { PostList } from "../_components/PostList";
+import { NewPostButton } from "../_components/NewPostButton";
 
-type PageProps = {
-  params: Promise<{ topic: string }>;
-};
+export default async function TopicPage({ 
+  params 
+}: { 
+  params: Promise<{ topic: string }> 
+}) {
+  try {
+    const { topic: topicId } = await params;
+    const topic = COMMUNITY_TOPICS.find((t) => t.id === topicId);
+    if (!topic) return notFound();
 
-// Topic metadata mapping
-const TOPIC_METADATA: Record<string, { label: string; description: string; icon: string }> = {
-  relationship: {
-    label: "Relationship",
-    description: "Synastry, East × West patterns and how connections feel in real life.",
-    icon: "❌",
-  },
-  sun_signs: {
-    label: "Tropical Sun Signs",
-    description: "Posts about Western Sun signs, elements and aspects.",
-    icon: "☀️",
-  },
-  chinese_zodiac: {
-    label: "Chinese Zodiac",
-    description: "Animals, trines, San He / Liu He, elements and years.",
-    icon: "🐉",
-  },
-  vedic: {
-    label: "Vedic Astrology",
-    description: "Moon signs, dashas and Jyotiṣa techniques.",
-    icon: "🕉️",
-  },
-  qa: {
-    label: "Questions & Answers",
-    description: "Ask and answer specific astrology questions.",
-    icon: "❓",
-  },
-};
+    return (
+      <div className="mt-2 space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-50">
+              {topic.hashtag}
+            </h2>
+            <p className="text-xs text-slate-400">{topic.description}</p>
+          </div>
+          <NewPostButton topic={topic.id} />
+        </div>
 
-export default async function CommunityTopicPage({ params }: PageProps) {
-  const { topic } = await params;
-  
-  // Validate topic exists
-  if (!TOPIC_METADATA[topic]) {
-    redirect("/community/relationship");
+        <PostList topic={topic.id} />
+      </div>
+    );
+  } catch (error) {
+    console.error("[TopicPage] Error:", error);
+    return (
+      <div className="mt-4 rounded-xl border border-rose-800 bg-rose-950/20 p-4">
+        <p className="text-sm text-rose-400">
+          Error loading page. Please try refreshing.
+        </p>
+        {process.env.NODE_ENV === 'development' && (
+          <p className="mt-2 text-xs text-rose-300">
+            {error instanceof Error ? error.message : String(error)}
+          </p>
+        )}
+      </div>
+    );
   }
-
-  const metadata = TOPIC_METADATA[topic];
-
-  return <CommunityTopicClient topic={topic} metadata={metadata} />;
 }

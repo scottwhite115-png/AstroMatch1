@@ -1895,11 +1895,11 @@ export function buildSimpleConnectionBox(
     westernSignLine, // New: personality blurb
     westernLine, // Element + aspect info
     westernDescription,
-    wuXingLine,
+    wuXingLine: undefined, // Remove Wu Xing element information
     overview,
-    // Chinese year elements for elements line display
-    chineseElementA: yearElementA,
-    chineseElementB: yearElementB,
+    // Chinese year elements for elements line display - set to undefined to hide
+    chineseElementA: undefined,
+    chineseElementB: undefined,
     // Pattern fields for taglines and star ratings
     chinesePattern: newMatchContext.chinesePattern,
     westAspect: newMatchContext.westAspect,
@@ -2102,8 +2102,8 @@ export function buildConnectionBoxTop(userA: UserProfile, userB: UserProfile): C
     }
   }
 
-  // 7. Western line with element relationship/compatibility
-  // Format: "Aquarius × Sagittarius — Compatible (Air + Fire)"
+  // 7. Western line with relationship/compatibility (elements removed)
+  // Format: "Aquarius × Sagittarius — Compatible"
   const relationLabel = (() => {
     switch (western.relationKey) {
       case "same_element":
@@ -2120,7 +2120,7 @@ export function buildConnectionBoxTop(userA: UserProfile, userB: UserProfile): C
         return "Compatible";
     }
   })();
-  const westernLine = `${signALabel} × ${signBLabel} — ${relationLabel} (${western.elementA} + ${western.elementB})`;
+  const westernLine = `${signALabel} × ${signBLabel} — ${relationLabel}`;
 
   // 8. NEW ENGINE INTEGRATION - Compute using simplified matchEngineCore
   // Map old pattern to new pattern type

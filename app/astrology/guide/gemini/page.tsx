@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-import AstroLabHeader from "@/components/AstroLabHeader"
+import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
+import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
 
 export default function GeminiPage() {
   const router = useRouter()
@@ -14,10 +15,9 @@ export default function GeminiPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <AstroLabHeader 
+        <AstroLabNavigationHeader 
           theme={theme} 
-          setTheme={setTheme} 
-          onMenuClick={() => router.push("/astrology")} 
+          setTheme={setTheme}
         />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
@@ -102,156 +102,7 @@ export default function GeminiPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className={`text-xl font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                Compatibility with Other Signs
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Aries — Compatible (Air + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Quick and curious
-                  </p>
-                  <p>
-                    Both thrive on movement, novelty, and direct energy. Aries brings boldness and initiative; Gemini brings ideas, humour, and mental agility. The dynamic feels fast and playful, though it needs grounding to become more than an endless first date.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Taurus — Semi-Compatible (Air + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Wind over soil
-                  </p>
-                  <p>
-                    Gemini wants variety and conversation; Taurus wants calm and predictability. Taurus can steady Gemini and help ideas become real; Gemini keeps Taurus from getting stuck in routine. It works when they respect each other's pace instead of trying to "fix" it.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Gemini — Same Element (Air + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Mirror minds
-                  </p>
-                  <p>
-                    Two Geminis create a lively, talkative, and changeable bond. There's no shortage of topics, jokes, or social plans, but emotional grounding can be thin. This pairing shines when both commit to some follow-through instead of keeping every option open forever.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Cancer — Semi-Compatible (Air + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Head meets heart
-                  </p>
-                  <p>
-                    Gemini leads with words and ideas; Cancer leads with feelings and tone. Cancer can deepen Gemini's world beyond banter, while Gemini helps Cancer put emotions into perspective. Misunderstandings appear when Cancer takes everything to heart and Gemini treats emotion like just another topic.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Leo — Compatible (Air + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Playful and expressive
-                  </p>
-                  <p>
-                    Leo brings warmth, charisma, and loyalty; Gemini brings wit, adaptability, and social sparkle. The connection often feels bright and entertaining, especially in public. Trouble shows up if Gemini deflects serious issues with humour or Leo demands more focus than Gemini can give.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Virgo — Same Ruler (Mercury); Semi-Compatible (Air + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Analyst and juggler
-                  </p>
-                  <p>
-                    Both signs are Mercurial but use it differently: Gemini scatters and samples; Virgo refines and organises. They can be a clever, problem-solving duo, yet also critical and anxious. This match works best when they use their brains to support each other, not dissect each other.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Libra — Same Element (Air + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Social flow
-                  </p>
-                  <p>
-                    Gemini and Libra both enjoy conversation, ideas, and people. Libra adds charm, tact, and a feel for balance; Gemini adds speed, humour, and flexibility. The pairing is usually easy and stylish, though decisions and deeper commitments can drift if no one takes the lead.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Scorpio — Mismatch (Air + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Surface vs. depth
-                  </p>
-                  <p>
-                    Gemini moves quickly from topic to topic; Scorpio wants sustained focus and emotional honesty. Scorpio may see Gemini as evasive or shallow; Gemini may feel scrutinised or weighed down. The connection can be fascinating but often intense and draining over time.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Sagittarius — Opposites (Air + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Restless axis
-                  </p>
-                  <p>
-                    Gemini collects bits of information; Sagittarius looks for meaning and big-picture truth. Both are curious and freedom-loving, but in opposite directions. The chemistry is real and often fun, yet the relationship constantly asks them to balance scattered interests with shared direction.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Capricorn — Mismatch (Air + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Talk vs. track record
-                  </p>
-                  <p>
-                    Capricorn focuses on structure, responsibility, and results; Gemini on options, links, and ideas. Capricorn may see Gemini as unreliable; Gemini may see Capricorn as rigid. They can respect each other, but in romance it usually feels like different languages.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Aquarius — Compatible (Air + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Ideas on ideas
-                  </p>
-                  <p>
-                    Both live strongly in the mental realm and value independence. Gemini brings improvisation and social variety; Aquarius brings perspective, originality, and a cause-driven streak. The connection feels stimulating and future-facing, but needs conscious emotional warmth to avoid staying in "interesting conversation" mode.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Gemini × Pisces — Semi-Compatible (Air + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Words and waves
-                  </p>
-                  <p>
-                    Pisces relates through feeling and atmosphere; Gemini through words and analysis. Pisces can add compassion and imagination to Gemini's life; Gemini offers perspective and humour. It's a poetic but slippery mix that needs clear boundaries and honest check-ins.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CompatibilitySection currentSign="gemini" type="western" theme={theme} />
 
             <SunSignCompatibilityTable sign="Gemini" />
           </div>
@@ -260,4 +111,3 @@ export default function GeminiPage() {
     </div>
   )
 }
-

@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-import AstroLabHeader from "@/components/AstroLabHeader"
+import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
+import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 
 export default function LibraPage() {
   const router = useRouter()
@@ -14,11 +15,7 @@ export default function LibraPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <AstroLabHeader 
-          theme={theme} 
-          setTheme={setTheme} 
-          onMenuClick={() => router.push("/astrology")} 
-        />
+        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -102,156 +99,7 @@ export default function LibraPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className={`text-xl font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                Compatibility with Other Signs
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Aries — Opposites (Air + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Me and we
-                  </p>
-                  <p>
-                    Libra seeks partnership and fairness; Aries seeks autonomy and direct action. The attraction is strong but so is the polarity. It works when Libra stops over-pleasing and Aries learns that compromise isn't defeat.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Taurus — Semi-Compatible (Air + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Venus in two modes
-                  </p>
-                  <p>
-                    Both signs are Venus-ruled and enjoy beauty, comfort, and relationships. Taurus leans into sensual stability; Libra into charm and social harmony. The connection can feel pleasant and aesthetically pleasing, but can stall if decisions are avoided.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Gemini — Same Element (Air + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Social flow
-                  </p>
-                  <p>
-                    Libra and Gemini easily fill space with conversation and ideas. Gemini brings humour and variety; Libra brings tact and a feel for balance. The pairing is light and engaging, though it needs emotional depth and clear choices to stay meaningful.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Cancer — Semi-Compatible (Air + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Manners and mood
-                  </p>
-                  <p>
-                    Libra reads the room; Cancer feels the room. Cancer can find Libra too detached or people-pleasing; Libra can find Cancer too moody or personal. Still, this can be a tender, supportive match when they talk openly about needs.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Leo — Compatible (Air + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Charming and social
-                  </p>
-                  <p>
-                    Both enjoy romance, beauty, and social life. Leo brings warmth and theatrical flair; Libra adds elegance and a talent for smoothing edges. The connection often feels bright and attractive, with occasional friction over decision-making and attention.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Virgo — Semi-Compatible (Air + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Curator and critic
-                  </p>
-                  <p>
-                    Libra wants harmony and aesthetics; Virgo wants functionality and improvement. Virgo can help Libra get practical; Libra helps Virgo soften and see the bigger picture. The match is workable but requires both to tolerate critique.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Libra — Same Element (Air + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Mirror of charm
-                  </p>
-                  <p>
-                    Two Libras usually get along smoothly and share a taste for beauty, fairness, and partnership. The downside is indecision and conflict avoidance, with issues swept under the rug. The relationship matures when one or both commit to genuine honesty over niceness.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Scorpio — Mismatch (Air + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Smooth vs. intense
-                  </p>
-                  <p>
-                    Libra prefers diplomacy; Scorpio prefers emotional truth, even if it's messy. Scorpio may see Libra as superficial; Libra may see Scorpio as heavy or controlling. Attraction can be high, but the emotional cost often is too.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Sagittarius — Compatible (Air + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Light and bright
-                  </p>
-                  <p>
-                    Libra and Sagittarius typically enjoy each other's company. Sagittarius brings honesty and adventurous energy; Libra contributes charm and social intelligence. The pairing feels lively and optimistic, but they need to anchor things in real commitments eventually.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Capricorn — Semi-Compatible (Air + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Image and structure
-                  </p>
-                  <p>
-                    Capricorn focuses on status and responsibility; Libra on relationships and presentation. Together they can form a capable, outwardly polished duo. Underneath, they must work at emotional transparency, not just looking like they have it together.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Aquarius — Same Element (Air + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Idealistic allies
-                  </p>
-                  <p>
-                    Both care about justice, ideas, and people. Libra handles one-on-one dynamics; Aquarius looks at systems and groups. The connection feels mentally rich and socially aware, though emotional intimacy can lag if they stay in theory.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Libra × Pisces — Semi-Compatible (Air + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Romantic haze
-                  </p>
-                  <p>
-                    Pisces brings sensitivity and imagination; Libra brings charm and a love of partnership. The relationship can feel poetic and gentle, but it risks indecision and avoidance. It works when someone is willing to name reality and hold boundaries.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CompatibilitySection currentSign="libra" type="western" theme={theme} />
 
             <SunSignCompatibilityTable sign="Libra" />
           </div>
@@ -260,4 +108,3 @@ export default function LibraPage() {
     </div>
   )
 }
-

@@ -236,67 +236,15 @@ export function getWesternSignLine(ctx: ConnectionContext): string {
 }
 
 export function getWesternElementLine(ctx: ConnectionContext): string {
-  const { westA, westB, westAspect } = ctx;
+  const { westA, westB } = ctx;
   
-  // Get modality from context or derive it
-  let modalityA = westA.modality;
-  let modalityB = westB.modality;
-  
-  if (!modalityA || !modalityB) {
-    try {
-      const signANorm = normalizeWesternSign(westA.sign);
-      const signBNorm = normalizeWesternSign(westB.sign);
-      modalityA = getWesternModality(signANorm);
-      modalityB = getWesternModality(signBNorm);
-    } catch (error) {
-      console.error('[getWesternElementLine] Error getting modality:', error);
-      // Fallback to empty string
-      modalityA = modalityA || '';
-      modalityB = modalityB || '';
-    }
-  }
-  
-  const phrase = baseElementPhrase(westA.element, westB.element);
-  const aspect = aspectDescription(westAspect);
-
-  // Format: "Fire (Fixed) × Air (Mutable), sextile aspect – light, social and stimulating"
-  if (aspect.name && aspect.description) {
-    return `${westA.element} (${modalityA}) × ${westB.element} (${modalityB}), ${aspect.name} – ${aspect.description}.`;
-  }
-
-  // No aspect (rare)
-  return `${westA.element} (${modalityA}) × ${westB.element} (${modalityB}) – ${phrase}.`;
+  // Return minimal information - just the sign names without aspect details
+  return `${westA.sign} × ${westB.sign}`;
 }
 
 export function getWuXingLine(ctx: ConnectionContext): string | null {
-  const { chineseA, chineseB } = ctx;
-  const elemA = chineseA.yearElement;
-  const elemB = chineseB.yearElement;
-
-  if (!elemA || !elemB) return null;
-
-  const relation = computeWuXingRelation(elemA, elemB);
-  const pairLabel = `${elemA} ${chineseA.animal} × ${elemB} ${chineseB.animal}`;
-
-  switch (relation) {
-    case 'supportive': {
-      // Determine which element generates which
-      let generationText = '';
-      if (wuXingGenerating[elemA] === elemB) {
-        generationText = `${elemA} generates ${elemB}`;
-      } else if (wuXingGenerating[elemB] === elemA) {
-        generationText = `${elemB} generates ${elemA}`;
-      }
-      return `${pairLabel} — Elemental harmony: Supportive (${generationText}).`;
-    }
-    case 'same':
-      return `${pairLabel} — Elemental harmony: Same element, double ${elemA}.`;
-    case 'clashing':
-      return `${pairLabel} — Elemental tension: Clashing elements, extra patience needed.`;
-    case 'neutral':
-    default:
-      return `${pairLabel} — Elemental overlay: Neutral influence, neither strongly supportive nor clashing.`;
-  }
+  // Disabled: Wu Xing element information removed from connection box
+  return null;
 }
 
 // ---- MAIN API ----

@@ -759,746 +759,746 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
 export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedCompatDescription>> = {
   "aries": {
     "aries": {
-      "heading": "Aries × Aries— Same Element (Fire + Fire)",
-      "tagline": "All gas, no brakes",
-      "description": "Two Aries create a bold, high-energy dynamic driven by passion, momentum, and spontaneity. Both bring courage, initiative, and a strong instinct for action. The connection feels fast-moving and intensely expressive, full of shared excitement and challenge. Their mirrored fire energy forms a bright, competitive, and exhilarating bond."
+      "heading": "Aries × Aries — Same Element (Fire + Fire)",
+      "tagline": "Double spark",
+      "description": "Two Aries create a bold, fast-moving connection built on excitement, initiative, and honesty. You energise each other to take risks and chase what you want. The challenge is learning when to slow down and listen so passion doesn't turn into constant battles."
     },
     "taurus": {
-      "heading": "Aries × Taurus— Semi-Compatible (Fire + Earth)",
-      "tagline": "Drive meets stability",
-      "description": "Aries pushes forward quickly while Taurus holds steady, creating a rhythm of movement and grounded presence. Taurus offers stability and consistency; Aries brings spark and motivation. Together they blend momentum with patience in a natural balancing act. The dynamic feels steady, structured, and quietly resilient."
+      "heading": "Aries × Taurus — Semi-Compatible (Fire + Earth)",
+      "tagline": "Speed vs stability",
+      "description": "Aries wants action and change; Taurus wants security and steady progress. This can feel like accelerator versus handbrake, but also creates a powerful builder–starter duo. It works best when Aries respects Taurus' pacing and Taurus gives Aries room to move."
     },
     "gemini": {
-      "heading": "Aries × Gemini— Compatible (Fire + Air)",
-      "tagline": "Fast and curious",
-      "description": "A lively, mentally stimulating pairing full of curiosity and bright interaction. Gemini contributes ideas and flexibility; Aries adds direction and drive. The connection moves quickly, with both signs feeding each other's independence and creativity. The energy feels playful, clever, and naturally uplifting."
+      "heading": "Aries × Gemini — Compatible Elements (Fire + Air)",
+      "tagline": "Instant chemistry",
+      "description": "Aries brings drive and courage; Gemini brings ideas and playful curiosity. Together you create a lively, impulsive, and mentally stimulating bond with lots of movement. You'll need some grounding to follow through on plans instead of just chasing the next shiny thing."
     },
     "cancer": {
-      "heading": "Aries × Cancer— Mismatch (Fire + Water)",
-      "tagline": "Fire and feeling",
-      "description": "Aries leads with action and instinct; Cancer responds with emotion and intuition. Their contrasting rhythms create a dynamic that is both sensitive and bold. Cancer brings warmth and emotional depth; Aries adds clarity and forward motion. The connection feels atmospheric, expressive, and delicately balanced between heart and fire."
+      "heading": "Aries × Cancer — Clashing Elements (Fire + Water)",
+      "tagline": "Heat and tides",
+      "description": "Aries is direct and fiery; Cancer is protective and emotionally attuned. Attraction can be strong, but emotional triggers and defensiveness flare quickly. Clear reassurance and compassion on both sides are essential if this pairing is going to feel safe, not exhausting."
     },
     "leo": {
-      "heading": "Aries × Leo— Same Element (Fire + Fire)",
-      "tagline": "Big energy",
-      "description": "A charismatic, radiant pairing where enthusiasm and passion meet head-on. Leo brings warmth and presence; Aries brings courage and initiative. Together they amplify each other's confidence and creative force. The bond feels vibrant, expressive, and full of mutual admiration."
+      "heading": "Aries × Leo — Same Element (Fire + Fire)",
+      "tagline": "Royal flames",
+      "description": "Aries and Leo share confidence, passion, and a love of big gestures. This is a fiery, charismatic pairing that attracts attention and thrives on shared adventures. Learning to share leadership and apologise when ego gets in the way keeps the connection golden."
     },
     "virgo": {
-      "heading": "Aries × Virgo— Semi-Compatible (Fire + Earth)",
-      "tagline": "Action and analysis",
-      "description": "Virgo brings refinement, precision, and thoughtful structure to Aries' dynamic momentum. Aries introduces spontaneity and boldness, widening Virgo's perspective. The connection blends detail with drive in a measured, grounded way. The energy feels practical, steady, and subtly complementary."
+      "heading": "Aries × Virgo — Semi-Compatible (Fire + Earth)",
+      "tagline": "Impulse meets precision",
+      "description": "Aries acts first and refines later; Virgo prefers to analyse and plan before moving. This can be frustrating or incredibly effective, depending on respect levels. When you value each other's strengths, you become a problem-solving team that actually gets things done."
     },
     "libra": {
-      "heading": "Aries × Libra— Opposites (Fire + Air)",
-      "tagline": "Opposites in balance",
-      "description": "A clear polarity where Aries' directness meets Libra's grace and balance. Libra softens the emotional tone, while Aries brings clarity and decisive energy. The dynamic highlights contrast and mutual fascination. The connection feels magnetic, expressive, and rich with mirrored growth."
+      "heading": "Aries × Libra — Compatible Elements (Fire + Air), Opposites",
+      "tagline": "Opposites in orbit",
+      "description": "Aries brings raw initiative; Libra brings balance and awareness of others. As true opposites, you constantly negotiate independence versus partnership. When you see each other as complements rather than adversaries, the relationship becomes dynamic, exciting, and surprisingly educational."
     },
     "scorpio": {
-      "heading": "Aries × Scorpio— Mismatch (Fire + Water)",
+      "heading": "Aries × Scorpio — Clashing Elements (Fire + Water)",
       "tagline": "Intense and uncompromising",
-      "description": "Two strong-willed signs meet in a pairing full of intensity and emotional depth. Scorpio offers focus and profound feeling; Aries contributes momentum and boldness. Their energies collide in a dramatic mix of passion and power. The dynamic feels deep, potent, and transformative."
+      "description": "Both signs are strong-willed and allergic to weakness, but Aries burns openly while Scorpio moves in deeper emotional currents. Power struggles and jealousy can flare if trust isn't rock solid. With honesty and mutual respect, the chemistry is potent but never lightweight."
     },
     "sagittarius": {
-      "heading": "Aries × Sagittarius— Same Element (Fire + Fire)",
-      "tagline": "Adventurous and bold",
-      "description": "A free-spirited, adventurous match full of movement and optimism. Sagittarius brings perspective and humour; Aries adds drive and immediacy. Both value independence and excitement, creating an effortless rapport. The energy feels bright, open, and forward-moving."
+      "heading": "Aries × Sagittarius — Same Element (Fire + Fire)",
+      "tagline": "Adventure buddies",
+      "description": "Aries and Sagittarius both crave freedom, exploration, and new experiences. This pairing is fun, upbeat, and great for travel, projects, or big life changes. The key is adding a bit of structure so everything doesn't stay in \"just vibes\" mode."
     },
     "capricorn": {
-      "heading": "Aries × Capricorn— Semi-Compatible (Fire + Earth)",
-      "tagline": "Ambition with friction",
-      "description": "Aries supplies initiative and spark, while Capricorn provides discipline and strategic focus. Together they balance bold action with long-range planning. Capricorn steadies the pace; Aries pushes momentum. The connection feels grounded, ambitious, and quietly powerful."
+      "heading": "Aries × Capricorn — Semi-Compatible (Fire + Earth)",
+      "tagline": "Drive meets discipline",
+      "description": "Aries wants fast wins; Capricorn wants long-term results. You're both ambitious but differ in patience and style. When you align on shared goals, this becomes a powerful builder–initiator combination that can move mountains."
     },
     "aquarius": {
-      "heading": "Aries × Aquarius— Compatible (Fire + Air)",
-      "tagline": "Rebel spark",
-      "description": "Aries and Aquarius form a progressive, idea-driven pairing with shared independence. Aquarius contributes originality and insight; Aries adds passion and immediacy. The dynamic is bright, creative, and future-focused. The energy feels expansive, exciting, and mentally stimulating."
+      "heading": "Aries × Aquarius — Compatible Elements (Fire + Air)",
+      "tagline": "Rebels in sync",
+      "description": "Aries supplies courage and raw momentum; Aquarius supplies vision and a bigger picture. You understand each other's need for independence and doing life differently. The bond feels progressive, energetic, and future-focused when you allow space and avoid control games."
     },
     "pisces": {
-      "heading": "Aries × Pisces— Mismatch (Fire + Water)",
-      "tagline": "Action and empathy",
-      "description": "Aries moves with instinct and speed; Pisces moves with emotion and sensitivity. Pisces brings intuition and empathy; Aries brings direction and strength. The dynamic blends fire with water in a soft yet expressive contrast. The energy feels gentle, atmospheric, and quietly complementary."
+      "heading": "Aries × Pisces — Clashing Elements (Fire + Water)",
+      "tagline": "Action vs sensitivity",
+      "description": "Aries is blunt and fast; Pisces is gentle, intuitive, and easily overwhelmed. You can inspire each other—Aries helps Pisces act, Pisces helps Aries feel—but missteps sting. Clear boundaries and kindness are required so neither feels trampled or burdened."
     }
   },
   "taurus": {
     "aries": {
-      "heading": "Taurus × Aries— Semi-Compatible (Earth + Fire)",
-      "tagline": "Drive meets stability",
-      "description": "Taurus moves with steadiness and intention, while Aries charges forward with speed and boldness. Aries brings spark and momentum to Taurus' grounded nature; Taurus adds calm, stability, and rhythm. Together they create a blend of movement and reliability. The dynamic feels solid, warm, and quietly energising."
+      "heading": "Taurus × Aries — Semi-Compatible (Earth + Fire)",
+      "tagline": "Speed vs stability",
+      "description": "Aries wants action and change; Taurus wants security and steady progress. This can feel like accelerator versus handbrake, but also creates a powerful builder–starter duo. It works best when Aries respects Taurus' pacing and Taurus gives Aries room to move."
     },
     "taurus": {
-      "heading": "Taurus × Taurus— Same Element (Earth + Earth)",
-      "tagline": "Calm and steady",
-      "description": "Two Taurus partners form a calm, sensual connection built on loyalty, comfort, and shared values. Both bring patience, warmth, and a preference for consistency. The pairing deepens gradually, creating a strong sense of emotional security. The energy feels soft, steady, and deeply anchored."
+      "heading": "Taurus × Taurus — Same Element (Earth + Earth)",
+      "tagline": "Solid ground",
+      "description": "Two Taureans form a steady, sensual pairing rooted in loyalty, comfort, and shared routines. You understand each other's need for stability and simple pleasures. The work is to avoid getting stuck in stubborn stand-offs or letting life become too predictable."
     },
     "gemini": {
-      "heading": "Taurus × Gemini— Mismatch (Earth + Air)",
-      "tagline": "Ground and air",
-      "description": "Taurus seeks constancy while Gemini thrives on variety, creating a contrast of stability and motion. Gemini brings curiosity and flexibility; Taurus contributes grounding and presence. Their different tempos shape a dynamic filled with subtle contrast. The connection feels measured, thoughtful, and gently balanced."
+      "heading": "Taurus × Gemini — Semi-Compatible (Earth + Air)",
+      "tagline": "Stillness vs scatter",
+      "description": "Taurus loves consistency; Gemini needs variety and mental stimulation. You can either balance each other or feel permanently out of sync. Simple shared rituals plus freedom to roam mentally keep this pairing feeling fresh but safe."
     },
     "cancer": {
-      "heading": "Taurus × Cancer— Compatible (Earth + Water)",
-      "tagline": "Cozy and caring",
-      "description": "A tender and nurturing pairing where Taurus provides reliability and Cancer offers emotional depth. Both value safety, comfort, and small rituals of care. Cancer softens Taurus' world; Taurus steadies Cancer's emotional landscape. The bond feels warm, protective, and quietly intimate."
+      "heading": "Taurus × Cancer — Compatible Elements (Earth + Water)",
+      "tagline": "Home builders",
+      "description": "Taurus and Cancer both crave security, closeness, and a sense of home. Taurus offers reliability and practical support; Cancer brings emotional care and intuition. The connection is naturally nurturing and long-term, as long as you talk about needs rather than expecting mind-reading."
     },
     "leo": {
-      "heading": "Taurus × Leo— Mismatch (Earth + Fire)",
-      "tagline": "Fixed tastes",
-      "description": "Taurus moves with patience and consistency, while Leo radiates expression and boldness. Leo adds vitality and colour to Taurus' calm approach; Taurus provides grounding to Leo's flair. Their strong personalities create a notable contrast. The connection feels vivid, steady, and full of presence."
+      "heading": "Taurus × Leo — Clashing Elements (Earth + Fire)",
+      "tagline": "Fixed vs flashy",
+      "description": "Taurus wants comfort and stability; Leo wants expression, drama, and recognition. You're both fixed signs, so once you clash, nobody wants to budge. Mutual admiration and shared creative or financial goals help you feel like a power couple instead of opponents."
     },
     "virgo": {
-      "heading": "Taurus × Virgo— Same Element (Earth + Earth)",
-      "tagline": "Practical and grounded",
-      "description": "A practical, dependable match defined by shared values and steady emotional pacing. Virgo brings refinement and clarity; Taurus offers warmth and constancy. Both appreciate small routines and reliable gestures of care. The energy feels stable, sincere, and quietly harmonious."
+      "heading": "Taurus × Virgo — Same Element (Earth + Earth)",
+      "tagline": "Practical harmony",
+      "description": "Taurus and Virgo both value reliability, quality, and tangible progress. Taurus brings patience and sensuality; Virgo brings refinement and attention to detail. The connection feels grounded and competent, though you'll want to schedule fun so life isn't all chores."
     },
     "libra": {
-      "heading": "Taurus × Libra— Mismatch (Earth + Air)",
-      "tagline": "Tasteful but indecisive",
-      "description": "Both admire beauty and comfort, though they approach it from different angles. Libra brings elegance, charm, and social ease; Taurus adds grounding, warmth, and simplicity. Their interaction blends movement with stillness in a balanced, measured way. The connection feels gentle, refined, and subtly contrasting."
+      "heading": "Taurus × Libra — Semi-Compatible (Earth + Air)",
+      "tagline": "Beauty and balance",
+      "description": "Both appreciate aesthetics and comfort, but Taurus is more physical and fixed, while Libra is more social and flexible. Taurus wants clear commitments; Libra wants options and diplomacy. Open talks about expectations transform this into a graceful, stylish, and cooperative match."
     },
     "scorpio": {
-      "heading": "Taurus × Scorpio— Opposites (Earth + Water)",
-      "tagline": "Deep and intense",
-      "description": "A magnetic polarity where Taurus offers sensual stability and Scorpio brings emotional intensity. Their contrast creates depth, presence, and strong mutual fascination. Scorpio adds transformative depth; Taurus adds grounding and endurance. The dynamic feels powerful, intimate, and richly layered."
+      "heading": "Taurus × Scorpio — Compatible Elements (Earth + Water), Opposites",
+      "tagline": "Possessive polarity",
+      "description": "Taurus and Scorpio are opposite signs who both like depth, loyalty, and staying power. Taurus focuses on material and sensual security; Scorpio focuses on emotional and psychological intensity. When trust is high, this feels like a powerful, all-in bond—with a strong need for honesty and boundaries."
     },
     "sagittarius": {
-      "heading": "Taurus × Sagittarius— Mismatch (Earth + Fire)",
-      "tagline": "Comfort vs. freedom",
-      "description": "Taurus seeks predictability while Sagittarius seeks freedom and exploration. Sagittarius brings enthusiasm and fresh perspective; Taurus contributes solidity and emotional steadiness. Together they blend adventure with calm in an unexpected way. The energy feels bright, grounded, and subtly expansive."
+      "heading": "Taurus × Sagittarius — Clashing Elements (Earth + Fire)",
+      "tagline": "Roots vs wings",
+      "description": "Taurus seeks calm, routine, and tangible results; Sagittarius seeks adventure, growth, and open horizons. This can feel like you're pulling in different directions. It works best when you create a stable base together and explore from there, rather than living in extremes."
     },
     "capricorn": {
-      "heading": "Taurus × Capricorn— Same Element (Earth + Earth)",
-      "tagline": "Long-game builders",
-      "description": "A long-term oriented pairing rooted in shared values, loyalty, and practicality. Capricorn adds discipline and ambition; Taurus brings patience and consistent emotional presence. Together they create a solid, goal-focused rhythm. The connection feels stable, enduring, and deeply reliable."
+      "heading": "Taurus × Capricorn — Same Element (Earth + Earth)",
+      "tagline": "Power builders",
+      "description": "Taurus and Capricorn share a strong work ethic and desire for long-term stability. Taurus adds patience and enjoyment; Capricorn adds ambition and structure. The relationship feels serious and reliable, especially when you remember to celebrate and rest, not just grind."
     },
     "aquarius": {
-      "heading": "Taurus × Aquarius— Mismatch (Earth + Air)",
-      "tagline": "Solid vs. disruptive",
-      "description": "Taurus approaches life through the tangible, while Aquarius navigates through ideas and innovation. Aquarius widens Taurus' horizons; Taurus offers grounding and emotional consistency. Their contrasting styles create a reflective, steady-paced dynamic. The bond feels thoughtful, spacious, and distinctly balanced."
+      "heading": "Taurus × Aquarius — Semi-Compatible (Earth + Air)",
+      "tagline": "Traditional vs radical",
+      "description": "Taurus often prefers tried-and-true methods; Aquarius likes innovation and shaking things up. You might frustrate each other's pace and priorities. Respecting each other's values can create a dynamic where Taurus stabilises Aquarius' visions and Aquarius opens Taurus to new possibilities."
     },
     "pisces": {
-      "heading": "Taurus × Pisces— Compatible (Earth + Water)",
-      "tagline": "Soft and supportive",
-      "description": "A gentle, intuitive pairing shaped by emotional softness and shared serenity. Pisces brings imagination and empathy; Taurus offers grounding and warmth. Their energies blend smoothly, creating a calm, heartfelt tone. The connection feels compassionate, steady, and quietly resonant."
+      "heading": "Taurus × Pisces — Compatible Elements (Earth + Water)",
+      "tagline": "Soft landing",
+      "description": "Taurus brings grounding and physical comfort; Pisces brings imagination and emotional sensitivity. Together you create a soothing, romantic, and creative atmosphere. Clear boundaries around money and responsibilities help this dreamy combo stay practical enough to work."
     }
   },
   "gemini": {
     "aries": {
-      "heading": "Gemini × Aries— Compatible (Air + Fire)",
-      "tagline": "Fast and curious",
-      "description": "Gemini and Aries form a lively, spontaneous connection full of movement and bright ideas. Aries brings direction and boldness; Gemini contributes flexibility, wit, and curiosity. Together they energise the atmosphere with quick decisions and fresh perspectives. The dynamic feels active, engaging, and naturally uplifting."
+      "heading": "Gemini × Aries — Compatible Elements (Air + Fire)",
+      "tagline": "Instant chemistry",
+      "description": "Aries brings drive and courage; Gemini brings ideas and playful curiosity. Together you create a lively, impulsive, and mentally stimulating bond with lots of movement. You'll need some grounding to follow through on plans instead of just chasing the next shiny thing."
     },
     "taurus": {
-      "heading": "Gemini × Taurus— Mismatch (Air + Earth)",
-      "tagline": "Ground and air",
-      "description": "Taurus offers steadiness and grounded presence, while Gemini brings motion and mental variety. Gemini widens Taurus' perspective through ideas and exploration; Taurus calms Gemini's pace with consistency. Their contrasting styles create a measured and thoughtful rhythm. The connection feels balanced, slow-building, and subtly complementary."
+      "heading": "Gemini × Taurus — Semi-Compatible (Air + Earth)",
+      "tagline": "Stillness vs scatter",
+      "description": "Taurus loves consistency; Gemini needs variety and mental stimulation. You can either balance each other or feel permanently out of sync. Simple shared rituals plus freedom to roam mentally keep this pairing feeling fresh but safe."
     },
     "gemini": {
-      "heading": "Gemini × Gemini— Same Element (Air + Air)",
-      "tagline": "Words and motion",
-      "description": "Two Geminis create a quick, mentally electric pairing full of humour, conversation, and shifting ideas. Both thrive on movement, curiosity, and constant stimulation. The connection unfolds through shared thought and lively interaction. The energy feels bright, restless, and mentally expansive."
+      "heading": "Gemini × Gemini — Same Element (Air + Air)",
+      "tagline": "Talking in stereo",
+      "description": "Two Geminis create a lively, mentally stimulating bond full of conversation, ideas, and playful banter. You \"get\" each other's curiosity, humour, and need for variety. To keep things satisfying long-term, you'll need intention around emotional depth, not just endless chatter."
     },
     "cancer": {
-      "heading": "Gemini × Cancer— Semi-Compatible (Air + Water)",
-      "tagline": "Mind and mood",
-      "description": "Cancer leads with emotion and intuition; Gemini leads with thought and adaptability. Cancer softens the emotional tone; Gemini lightens the atmosphere with perspective and playfulness. Together they blend reflection with movement in a gentle, understated way. The dynamic feels tender, thoughtful, and delicately balanced."
+      "heading": "Gemini × Cancer — Semi-Compatible (Air + Water)",
+      "tagline": "Head vs heart",
+      "description": "Gemini leads with thoughts; Cancer leads with feelings. This can be beautifully complementary or a source of mutual frustration. Regular check-ins about emotional needs and communication style are essential if this pairing is going to feel secure rather than confused."
     },
     "leo": {
-      "heading": "Gemini × Leo— Compatible (Air + Fire)",
-      "tagline": "Playful and expressive",
-      "description": "A warm, expressive pairing filled with creativity, playfulness, and shared enthusiasm. Leo brings charisma and heart; Gemini contributes wit and versatility. Their energy flows brightly, stimulating both socially and mentally. The connection feels vibrant, lively, and confident."
+      "heading": "Gemini × Leo — Compatible Elements (Air + Fire)",
+      "tagline": "Party duo",
+      "description": "Gemini and Leo both love fun, drama, and self-expression. Gemini brings witty commentary and flexibility; Leo brings warmth, flair, and confidence. The relationship feels bright and social, thriving on shared adventures and creative projects."
     },
     "virgo": {
-      "heading": "Gemini × Virgo— Semi-Compatible (Both Mercury-ruled)",
-      "tagline": "Thinking in detail",
-      "description": "A mentally focused pairing where Gemini explores widely and Virgo refines deeply. Virgo offers structure and clarity; Gemini provides movement and fresh perspective. Conversation becomes a central thread between them, rich with detail and curiosity. The dynamic feels analytical, stimulating, and subtly intricate."
+      "heading": "Gemini × Virgo — Semi-Compatible (Air + Earth)",
+      "tagline": "Mental mechanics",
+      "description": "Both ruled by Mercury, Gemini and Virgo share sharp minds but different priorities. Gemini likes breadth and variety; Virgo likes depth and precision. When you respect that difference, you become an excellent problem-solving pair—chatty but effective."
     },
     "libra": {
-      "heading": "Gemini × Libra— Same Element (Air + Air)",
-      "tagline": "Social and smooth",
-      "description": "This is a harmonious, socially intuitive pairing shaped by shared curiosity and ease of communication. Libra brings balance, grace, and aesthetic awareness; Gemini brings movement, ideas, and humour. Both value freedom and variety within connection. The bond feels light, elegant, and naturally aligned."
+      "heading": "Gemini × Libra — Same Element (Air + Air)",
+      "tagline": "Social symphony",
+      "description": "Gemini and Libra both thrive on conversation, ideas, and connection. Gemini brings curiosity and speed; Libra brings grace, diplomacy, and a sense of fairness. The bond feels easy, light, and charming, as long as someone is willing to make firm decisions when needed."
     },
     "scorpio": {
-      "heading": "Gemini × Scorpio— Mismatch (Air + Water)",
-      "tagline": "Light vs. depth",
-      "description": "Scorpio expresses through intensity and depth; Gemini moves through thought and adaptability. Their contrast creates a vivid blend of mental quickness and emotional force. Scorpio adds focus and presence; Gemini introduces flexibility and perspective. The connection feels potent, layered, and dramatically contrasting."
+      "heading": "Gemini × Scorpio — Clashing Elements (Air + Water)",
+      "tagline": "Mind vs mystery",
+      "description": "Gemini wants openness and options; Scorpio wants depth, loyalty, and emotional truth. You fascinate each other but may struggle with trust and consistency. Honest boundaries and real vulnerability are needed if this pairing is going to move beyond cat-and-mouse."
     },
     "sagittarius": {
-      "heading": "Gemini × Sagittarius— Opposites (Air + Fire)",
-      "tagline": "Opposite explorers",
-      "description": "A bright, expansive polarity rooted in shared freedom, curiosity, and movement. Sagittarius brings big-picture vision and honesty; Gemini offers versatility and playful intelligence. Both value exploration and wide horizons. The pairing feels adventurous, open, and dynamically alive."
+      "heading": "Gemini × Sagittarius — Compatible Elements (Air + Fire), Opposites",
+      "tagline": "Wandering minds",
+      "description": "Gemini and Sagittarius are opposite signs that both love learning and movement. Gemini gathers information; Sagittarius seeks big-picture meaning. The connection feels adventurous, philosophical, and fun, but it needs some shared structure to last."
     },
     "capricorn": {
-      "heading": "Gemini × Capricorn— Mismatch (Air + Earth)",
-      "tagline": "Ideas and structure",
-      "description": "Capricorn seeks structure and long-term clarity, while Gemini prefers multiple pathways and flexible thought. Capricorn grounds the rhythm; Gemini lightens the tone with fresh ideas and spontaneity. Their contrast forms a steady yet mentally stimulating interplay. The dynamic feels measured, spacious, and quietly reflective."
+      "heading": "Gemini × Capricorn — Clashing Elements (Air + Earth)",
+      "tagline": "Ideas vs execution",
+      "description": "Gemini brings flexibility and curiosity; Capricorn brings focus and long-term planning. At times you feel like you're on different timelines. When you sync up, Gemini opens doors and Capricorn walks through them—making this a surprisingly effective partnership."
     },
     "aquarius": {
-      "heading": "Gemini × Aquarius— Same Element (Air + Air)",
-      "tagline": "Mental spark",
-      "description": "A natural mental connection defined by originality, independence, and shared intellect. Aquarius brings vision and depth; Gemini brings curiosity and adaptable movement. Together they generate innovative, thought-provoking dialogue. The energy feels bright, progressive, and mentally expansive."
+      "heading": "Gemini × Aquarius — Same Element (Air + Air)",
+      "tagline": "Future talkers",
+      "description": "Gemini and Aquarius both live in the realm of ideas and possibilities. Gemini loves questions; Aquarius loves vision and principle. The relationship feels mentally electric and socially active, though you'll need deliberate emotional presence so it doesn't stay purely in the head."
     },
     "pisces": {
-      "heading": "Gemini × Pisces— Semi-Compatible (Air + Water)",
-      "tagline": "Imagination and spin",
-      "description": "Pisces feels through intuition and imagination; Gemini interprets through thought and language. Pisces adds atmosphere and depth; Gemini adds clarity and lightness. Their blend creates a soft and dreamy intellectual-emotional mix. The connection feels gentle, imaginative, and subtly luminous."
+      "heading": "Gemini × Pisces — Semi-Compatible (Air + Water)",
+      "tagline": "Dreamy debates",
+      "description": "Gemini processes verbally; Pisces processes emotionally and intuitively. You can either enchant or confuse each other. Gentle communication and patience with different realities keep this pairing magical instead of messy."
     }
   },
   "cancer": {
     "aries": {
-      "heading": "Cancer × Aries— Mismatch (Water + Fire)",
-      "tagline": "Fire and feeling",
-      "description": "Cancer feels through emotion while Aries moves through instinct, creating a vivid contrast in rhythm. Aries brings momentum and courage that brighten Cancer's world; Cancer brings warmth and sensitivity that soften Aries' edges. Their different approaches create a dynamic filled with contrast and intuitive depth. The connection feels expressive, protective, and delicately balanced."
+      "heading": "Cancer × Aries — Clashing Elements (Fire + Water)",
+      "tagline": "Heat and tides",
+      "description": "Aries is direct and fiery; Cancer is protective and emotionally attuned. Attraction can be strong, but emotional triggers and defensiveness flare quickly. Clear reassurance and compassion on both sides are essential if this pairing is going to feel safe, not exhausting."
     },
     "taurus": {
-      "heading": "Cancer × Taurus— Compatible (Water + Earth)",
-      "tagline": "Cozy and caring",
-      "description": "A gentle, comforting pairing shaped by loyalty, tenderness, and emotional steadiness. Taurus provides grounding and security; Cancer adds warmth, intuition, and a deep sense of care. Their shared love of closeness and stability creates a slow-growing, heartfelt bond. The energy feels nurturing, calm, and quietly enduring."
+      "heading": "Cancer × Taurus — Compatible Elements (Earth + Water)",
+      "tagline": "Home builders",
+      "description": "Taurus and Cancer both crave security, closeness, and a sense of home. Taurus offers reliability and practical support; Cancer brings emotional care and intuition. The connection is naturally nurturing and long-term, as long as you talk about needs rather than expecting mind-reading."
     },
     "gemini": {
-      "heading": "Cancer × Gemini— Semi-Compatible (Water + Air)",
-      "tagline": "Mind and mood",
-      "description": "Cancer leads with emotion while Gemini leads with thought, forming a soft blend of feeling and curiosity. Gemini brings movement and mental brightness; Cancer offers sincerity and emotional grounding. Together they create a connection marked by contrast and gentle adaptability. The dynamic feels thoughtful, tender, and lightly textured."
+      "heading": "Cancer × Gemini — Semi-Compatible (Water + Air)",
+      "tagline": "Head vs heart",
+      "description": "Gemini leads with thoughts; Cancer leads with feelings. This can be beautifully complementary or a source of mutual frustration. Regular check-ins about emotional needs and communication style are essential if this pairing is going to feel secure rather than confused."
     },
     "cancer": {
-      "heading": "Cancer × Cancer— Same Element (Water + Water)",
-      "tagline": "Deep water",
-      "description": "Two Cancers form an intuitive, deeply emotional bond with a natural flow of empathy and understanding. Both value safety, reassurance, and heartfelt connection. Feelings run strong, giving the relationship a soulful, protective tone. The energy feels intimate, reflective, and richly attuned."
+      "heading": "Cancer × Cancer — Same Element (Water + Water)",
+      "tagline": "Hearts on sleeves",
+      "description": "Two Cancers form an emotionally rich, nurturing connection with a strong sense of home and loyalty. You intuit each other's moods quickly and often care for one another without words. The key is setting boundaries so you don't drown in worry, nostalgia, or unspoken hurt."
     },
     "leo": {
-      "heading": "Cancer × Leo— Semi-Compatible (Water + Fire)",
-      "tagline": "Heart and show",
-      "description": "Cancer expresses through sensitivity; Leo expresses through warmth and presence. Leo lifts the emotional tone with confidence and light; Cancer brings depth and authentic feeling. Their interaction blends nurturing emotion with expressive fire. The connection feels affectionate, vivid, and gently contrasting."
+      "heading": "Cancer × Leo — Semi-Compatible (Water + Fire)",
+      "tagline": "Warm and protective",
+      "description": "Cancer craves security and emotional reassurance; Leo craves appreciation and creative expression. At best, this combo is cosy and affectionate, like a protective sun around a safe home. Honest conversations about attention and reassurance keep it from slipping into drama or sulking."
     },
     "virgo": {
-      "heading": "Cancer × Virgo— Compatible (Water + Earth)",
-      "tagline": "Caring in practice",
-      "description": "A thoughtful, caring match grounded in trust, sincerity, and mutual support. Virgo offers structure, clarity, and reliability; Cancer adds warmth, intuition, and emotional depth. Together they create a quiet, steady rhythm of understanding. The dynamic feels nurturing, stable, and deeply considerate."
+      "heading": "Cancer × Virgo — Compatible Elements (Water + Earth)",
+      "tagline": "Quiet caretakers",
+      "description": "Cancer and Virgo both like to be useful to the people they love. Cancer offers emotional warmth; Virgo offers practical support and problem-solving. The bond feels steady and modest on the surface, but deeply caring beneath it."
     },
     "libra": {
-      "heading": "Cancer × Libra— Semi-Compatible (Water + Air)",
-      "tagline": "Harmony and home",
-      "description": "Cancer moves through emotion, while Libra moves through balance and perspective. Libra brings calm communication and soft refinement; Cancer brings sincerity and emotional presence. Their blend forms a delicate interplay of feeling and harmony. The connection feels graceful, gentle, and subtly expressive."
+      "heading": "Cancer × Libra — Semi-Compatible (Water + Air)",
+      "tagline": "Feelings and finesse",
+      "description": "Cancer is intuitive and mood-driven; Libra is social and harmony-seeking. You both care about relationships but approach them differently. When you respect each other's way of keeping the peace, this combo becomes graceful, artistic, and emotionally nuanced."
     },
     "scorpio": {
-      "heading": "Cancer × Scorpio— Compatible (Water + Water)",
-      "tagline": "Intense and private",
-      "description": "A powerful emotional pairing marked by loyalty, intuition, and depth. Scorpio brings intensity and focus; Cancer offers warmth and emotional safety. Their energies merge naturally, creating profound emotional resonance. The dynamic feels deep, magnetic, and transformative."
+      "heading": "Cancer × Scorpio — Same Element (Water + Water)",
+      "tagline": "Emotional depth",
+      "description": "Cancer and Scorpio form one of the most intense emotional pairings. Cancer brings softness and care; Scorpio brings depth, focus, and passion. The relationship feels powerful and transformative, but it needs trust and openness so secrets don't poison the well."
     },
     "sagittarius": {
-      "heading": "Cancer × Sagittarius— Mismatch (Water + Fire)",
-      "tagline": "Nest vs. open road",
-      "description": "Cancer seeks closeness and emotional continuity; Sagittarius seeks freedom and wide horizons. Sagittarius introduces optimism and movement; Cancer adds warmth and heartfelt presence. Their contrasting styles create a vivid, expansive dynamic. The energy feels expressive, exploratory, and full of contrast."
+      "heading": "Cancer × Sagittarius — Clashing Elements (Water + Fire)",
+      "tagline": "Safe harbour vs open sea",
+      "description": "Cancer wants a secure emotional base; Sagittarius wants exploration and freedom. You may feel like you're living in different worlds unless you consciously blend home and adventure. When you do, this becomes a combo of growth, wisdom, and real-hearted care."
     },
     "capricorn": {
-      "heading": "Cancer × Capricorn— Opposites (Water + Earth)",
-      "tagline": "Opposites that build",
-      "description": "Cancer leads with heart and intuition; Capricorn leads with structure and long-range vision. Capricorn grounds Cancer's emotional tides; Cancer softens Capricorn's restraint. Their differences create a stabilising, purposeful polarity. The connection feels steady, complementary, and quietly powerful."
+      "heading": "Cancer × Capricorn — Compatible Elements (Water + Earth), Opposites",
+      "tagline": "Roots and structure",
+      "description": "Cancer and Capricorn are opposites who meet around family, responsibility, and legacy. Cancer focuses on emotional foundations; Capricorn focuses on material and social structures. Together you can build something solid and meaningful, as long as feelings and duty get equal airtime."
     },
     "aquarius": {
-      "heading": "Cancer × Aquarius— Mismatch (Water + Air)",
-      "tagline": "Feeling vs. distance",
-      "description": "Aquarius approaches life through ideas and independence; Cancer approaches through emotion and closeness. Aquarius brings perspective and clarity; Cancer adds warmth and intuitive depth. Their contrasting rhythms shape a thoughtful, spacious dynamic. The energy feels reflective, airy, and emotionally nuanced."
+      "heading": "Cancer × Aquarius — Semi-Compatible (Water + Air)",
+      "tagline": "Sensitive vs detached",
+      "description": "Cancer feels deeply and personally; Aquarius steps back to see the big picture. That difference can feel either enlightening or invalidating. Honest conversations about emotional needs and space help this pairing feel supportive rather than cold."
     },
     "pisces": {
-      "heading": "Cancer × Pisces— Same Element (Water + Water)",
-      "tagline": "Soft and intuitive",
-      "description": "Cancer and Pisces form an empathetic, intuitive bond rich with imagination and emotional resonance. Pisces brings creativity and compassion; Cancer brings steadiness and protective warmth. The connection flows naturally with shared emotional language. The dynamic feels gentle, soulful, and deeply connected."
+      "heading": "Cancer × Pisces — Same Element (Water + Water)",
+      "tagline": "Shared tides",
+      "description": "Cancer and Pisces both swim in emotional and intuitive waters. Cancer builds a safe container; Pisces fills it with imagination and compassion. The relationship feels romantic, spiritual, and soothing, but it benefits from some Earth energy (routines, money talk) to stay grounded."
     }
   },
   "leo": {
     "aries": {
-      "heading": "Leo × Aries— Same Element (Fire + Fire)",
-      "tagline": "Big energy",
-      "description": "Leo and Aries spark quickly with shared boldness, passion, and forward momentum. Aries brings raw drive and initiative; Leo adds warmth, charisma, and creative presence. Their energies amplify each other in a bright, expressive way. The dynamic feels confident, lively, and full of mutual excitement."
+      "heading": "Leo × Aries — Same Element (Fire + Fire)",
+      "tagline": "Royal flames",
+      "description": "Leo and Aries share confidence, passion, and a love of big gestures. This is a fiery, charismatic pairing that thrives on shared adventures and bold moves. Learning to share leadership and apologise when ego gets in the way keeps the connection golden."
     },
     "taurus": {
-      "heading": "Leo × Taurus— Mismatch (Fire + Earth)",
-      "tagline": "Fixed tastes",
-      "description": "Leo seeks expression and recognition, while Taurus values consistency and calm. Taurus grounds Leo's enthusiasm with steady loyalty; Leo adds colour, warmth, and movement to Taurus' world. Together they blend stillness with flair in a rich contrast of style. The connection feels warm, firm, and quietly vibrant."
+      "heading": "Leo × Taurus — Clashing Elements (Fire + Earth)",
+      "tagline": "Fixed vs comfy",
+      "description": "Leo wants expression and recognition; Taurus wants comfort and stability. You're both stubborn, which can create power struggles over lifestyle and money. When you admire instead of resist each other's strength, the bond feels robust, sensual, and loyal."
     },
     "gemini": {
-      "heading": "Leo × Gemini— Compatible (Fire + Air)",
-      "tagline": "Playful and expressive",
-      "description": "A lively and mentally stimulating pairing full of humour, playfulness, and bright ideas. Gemini brings agility and curiosity; Leo brings warmth, creativity, and heart. They energise each other socially and expressively. The dynamic feels fun, engaging, and effortlessly uplifting."
+      "heading": "Leo × Gemini — Compatible Elements (Fire + Air)",
+      "tagline": "Sunny and witty",
+      "description": "Leo brings warmth and drama; Gemini brings humour, ideas, and social sparkle. Together you create a playful, extroverted vibe with lots of stories and adventures. A bit of emotional depth and follow-through helps this combo grow beyond pure entertainment."
     },
     "cancer": {
-      "heading": "Leo × Cancer— Semi-Compatible (Fire + Water)",
-      "tagline": "Heart and show",
-      "description": "Leo expresses openly with confidence, while Cancer leads with emotion and sensitivity. Cancer deepens Leo's emotional world; Leo brightens Cancer's with warmth and optimism. Their blend mixes nurturing with radiance in a soft, expressive way. The energy feels affectionate, heartfelt, and gently contrasting."
+      "heading": "Leo × Cancer — Semi-Compatible (Fire + Water)",
+      "tagline": "Warm and protective",
+      "description": "Leo shines outwardly; Cancer nurtures behind the scenes. You can create a cosy, devoted home base if Leo respects feelings and Cancer appreciates Leo's need to shine. Honest talks about attention, affection, and alone-time keep things from tilting into drama or sulking."
     },
     "leo": {
-      "heading": "Leo × Leo— Same Element (Fire + Fire)",
-      "tagline": "Big personalities",
-      "description": "Two Leos create a radiant, expressive bond filled with passion, generosity, and creative spirit. Both bring charisma, warmth, and a desire to feel valued. Their mirrored energies create a dynamic of shared confidence and emotional richness. The connection feels bright, affectionate, and dramatically alive."
+      "heading": "Leo × Leo — Same Element (Fire + Fire)",
+      "tagline": "Double royalty",
+      "description": "Two Leos create a generous, glamorous, and affectionate pairing with strong chemistry. You both love to celebrate, create, and be appreciated. The growth edge is learning to listen, share the spotlight, and apologise when pride gets in the way."
     },
     "virgo": {
-      "heading": "Leo × Virgo— Semi-Compatible (Fire + Earth)",
+      "heading": "Leo × Virgo — Semi-Compatible (Fire + Earth)",
       "tagline": "Show and service",
-      "description": "Leo leads with heart and expression; Virgo leads with practicality and intention. Virgo provides thoughtful grounding; Leo brings warmth, encouragement, and boldness. Together they combine passion with precision in a balanced, productive way. The dynamic feels steady, refined, and quietly expressive."
+      "description": "Leo wants bold experiences and recognition; Virgo wants usefulness, order, and improvement. When you respect each other's roles, Leo inspires and Virgo refines. The relationship works best when appreciation flows both ways and criticism is softened with warmth."
     },
     "libra": {
-      "heading": "Leo × Libra— Compatible (Fire + Air)",
-      "tagline": "Charming and social",
-      "description": "A graceful, socially intuitive pairing shaped by charm, warmth, and shared appreciation for beauty. Libra offers elegance and harmony; Leo brings generosity and creative energy. Their interaction flows naturally with balanced affection and social ease. The connection feels bright, stylish, and warmly harmonious."
+      "heading": "Leo × Libra — Compatible Elements (Fire + Air)",
+      "tagline": "Charm and theatre",
+      "description": "Leo and Libra both enjoy romance, aesthetics, and social connection. Leo provides heart and drama; Libra brings grace, harmony, and perspective. This pairing feels easy and attractive, as long as you're honest about needs instead of hiding irritation to keep the peace."
     },
     "scorpio": {
-      "heading": "Leo × Scorpio— Mismatch (Fire + Water)",
-      "tagline": "Intense and dramatic",
-      "description": "Both signs are loyal and intense, but Leo expresses outwardly while Scorpio moves through depth and introspection. Scorpio brings emotional richness; Leo adds warmth, courage, and expressive clarity. Their contrast creates a potent blend of passion and power. The dynamic feels deep, magnetic, and emotionally charged."
+      "heading": "Leo × Scorpio — Clashing Elements (Fire + Water)",
+      "tagline": "Intensity squared",
+      "description": "Leo seeks open expression; Scorpio seeks emotional control and depth. Attraction is strong but so are power struggles and jealousy if trust isn't solid. When you both choose vulnerability over games, the bond can be fiercely loyal and transformative."
     },
     "sagittarius": {
-      "heading": "Leo × Sagittarius— Same Element (Fire + Fire)",
-      "tagline": "Fire on fire",
-      "description": "A spirited, adventurous match full of movement, optimism, and shared enthusiasm. Sagittarius contributes honesty and expansive perspective; Leo brings devotion, warmth, and creative flair. Together they create an uplifting, vibrant rhythm. The connection feels bold, free-spirited, and naturally compatible."
+      "heading": "Leo × Sagittarius — Same Element (Fire + Fire)",
+      "tagline": "Big life energy",
+      "description": "Leo and Sagittarius share optimism, enthusiasm, and a love of adventure. You encourage each other to dream bigger and live more fully. A bit of shared structure around money, health, or commitments keeps this from burning too hot and fast."
     },
     "capricorn": {
-      "heading": "Leo × Capricorn— Semi-Compatible (Fire + Earth)",
-      "tagline": "Pride and strategy",
-      "description": "Capricorn provides structure, strategy, and long-term vision; Leo brings warmth, vitality, and expressive courage. Their energies combine into a strong, purposeful pairing when aligned. Capricorn steadies the pace; Leo brightens the atmosphere. The dynamic feels ambitious, grounded, and quietly powerful."
+      "heading": "Leo × Capricorn — Semi-Compatible (Fire + Earth)",
+      "tagline": "Status and structure",
+      "description": "Leo wants recognition and creative expression; Capricorn wants achievement and long-term security. You both care about success, just in different languages. When you line up your goals, this becomes a strong, respectable \"power couple\" dynamic."
     },
     "aquarius": {
-      "heading": "Leo × Aquarius— Opposites (Fire + Air)",
-      "tagline": "Bold and unconventional",
-      "description": "A striking polarity where Leo brings heart and presence while Aquarius brings vision and independence. Their contrast creates a bold interplay of emotion and intellect. Aquarius widens the horizon; Leo strengthens the emotional tone. The connection feels magnetic, innovative, and dynamically balanced."
+      "heading": "Leo × Aquarius — Compatible Elements (Fire + Air), Opposites",
+      "tagline": "Star and satellite",
+      "description": "Leo and Aquarius are opposites: Leo focuses on personal creativity; Aquarius on collective vision. The connection mixes heart and head, individuality and the bigger picture. When you respect each other's role, the relationship feels progressive, electric, and impactful."
     },
     "pisces": {
-      "heading": "Leo × Pisces— Mismatch (Fire + Water)",
-      "tagline": "Drama and dream",
-      "description": "Pisces expresses through intuition and softness; Leo expresses through warmth and boldness. Pisces brings imagination and empathy; Leo brings protection and radiant confidence. Together they form a gentle yet vivid emotional blend. The dynamic feels dreamy, expressive, and quietly inspiring."
+      "heading": "Leo × Pisces — Clashing Elements (Fire + Water)",
+      "tagline": "Drama and dreams",
+      "description": "Leo lives loudly; Pisces lives in a rich inner world. You can inspire each other—Leo gives Pisces backbone, Pisces gives Leo empathy—but misunderstandings are easy. Clear reassurance and shared creative outlets help this pairing feel magical rather than confusing."
     }
   },
   "virgo": {
     "aries": {
-      "heading": "Virgo × Aries— Semi-Compatible (Earth + Fire)",
-      "tagline": "Action and analysis",
-      "description": "Virgo brings structure and thoughtful precision, while Aries adds momentum and bold initiative. Aries widens Virgo's world with spontaneity; Virgo refines Aries' direction with clarity and detail. Together they blend form with movement in a balanced, practical rhythm. The dynamic feels steady, focused, and quietly energised."
+      "heading": "Virgo × Aries — Semi-Compatible (Earth + Fire)",
+      "tagline": "Plan vs impulse",
+      "description": "Virgo prefers careful planning; Aries likes to jump in and adjust later. This can be frustrating or highly effective depending on respect. When you use Aries' courage and Virgo's precision together, you become a strong problem-solving team."
     },
     "taurus": {
-      "heading": "Virgo × Taurus— Same Element (Earth + Earth)",
-      "tagline": "Practical and grounded",
-      "description": "A loyal, grounded pairing marked by patience, reliability, and shared values. Taurus offers warmth and steadiness; Virgo contributes care, clarity, and intention. Their rhythm is calm and deliberate, building trust through consistent gestures. The connection feels stable, sincere, and deeply dependable."
+      "heading": "Virgo × Taurus — Same Element (Earth + Earth)",
+      "tagline": "Practical harmony",
+      "description": "Virgo and Taurus both value reliability, quality, and tangible results. Taurus brings patience and sensuality; Virgo brings refinement and attention to detail. The connection feels grounded and supportive, especially when you remember to schedule pleasure, not just work."
     },
     "gemini": {
-      "heading": "Virgo × Gemini— Semi-Compatible (Both Mercury-ruled)",
-      "tagline": "Thinking in detail",
-      "description": "Both are mentally active and curious, but they move differently: Gemini explores widely while Virgo refines deeply. Gemini brings movement and fresh perspective; Virgo adds structure and thoughtful insight. Their conversations are lively, analytical, and varied. The energy feels clever, flexible, and subtly intricate."
+      "heading": "Virgo × Gemini — Semi-Compatible (Earth + Air)",
+      "tagline": "Mental mechanics",
+      "description": "Both ruled by Mercury, Virgo and Gemini share quick minds but different priorities. Gemini seeks variety and breadth, while Virgo seeks depth and usefulness. You work best when you appreciate each other's style instead of arguing about who's \"right\"."
     },
     "cancer": {
-      "heading": "Virgo × Cancer— Compatible (Earth + Water)",
-      "tagline": "Caring in practice",
-      "description": "A caring, steady match shaped by emotional awareness and quiet devotion. Cancer offers intuition and warmth; Virgo offers reliability and thoughtful support. Together they form a rhythm grounded in trust and shared understanding. The dynamic feels nurturing, gentle, and deeply loyal."
+      "heading": "Virgo × Cancer — Compatible Elements (Earth + Water)",
+      "tagline": "Quiet caretakers",
+      "description": "Virgo and Cancer are both service-oriented and attentive to loved ones. Cancer offers emotional warmth; Virgo offers practical help and organisation. This pairing feels modest on the surface but deeply caring underneath."
     },
     "leo": {
-      "heading": "Virgo × Leo— Semi-Compatible (Earth + Fire)",
-      "tagline": "Show and service",
-      "description": "Virgo prefers subtle expression; Leo shines with warmth and boldness. Leo adds colour and confidence to Virgo's understated approach; Virgo brings grounding and thoughtful balance. Their interplay mixes practicality with expressive fire. The connection feels steady, warm, and mutually illuminating."
+      "heading": "Virgo × Leo — Semi-Compatible (Earth + Fire)",
+      "tagline": "Backstage and spotlight",
+      "description": "Leo enjoys performing and being seen; Virgo focuses on what happens behind the scenes. Virgo can help Leo polish their talents; Leo can help Virgo relax and enjoy life. Mutual respect—without constant critique—is key."
     },
     "virgo": {
-      "heading": "Virgo × Virgo— Same Element (Earth + Earth)",
-      "tagline": "Refined and particular",
-      "description": "Two Virgos form a considerate, responsible partnership built on shared values and quiet stability. Both bring care, diligence, and a desire to improve their shared life. Emotional expression unfolds gradually through consistent presence. The energy feels organised, sincere, and deeply attentive."
+      "heading": "Virgo × Virgo — Same Element (Earth + Earth)",
+      "tagline": "Perfecting together",
+      "description": "Two Virgos form a thoughtful, helpful partnership focused on improvement and health. You admire each other's reliability and competence. The main challenge is keeping criticism constructive and remembering to celebrate what's already working."
     },
     "libra": {
-      "heading": "Virgo × Libra— Semi-Compatible (Earth + Air)",
-      "tagline": "Considerate but indecisive",
-      "description": "Virgo leads with structure and discernment; Libra leads with balance and aesthetic refinement. Libra softens Virgo's edges with harmony and perspective; Virgo grounds Libra with clarity and practicality. Their interaction blends movement with steadiness in a gentle way. The dynamic feels graceful, measured, and lightly sophisticated."
+      "heading": "Virgo × Libra — Semi-Compatible (Earth + Air)",
+      "tagline": "Order and aesthetics",
+      "description": "Virgo wants systems and efficiency; Libra wants grace, balance, and connection. You can create something beautiful and functional together when you value both form and function. The relationship thrives on gentle feedback and shared refinement."
     },
     "scorpio": {
-      "heading": "Virgo × Scorpio— Compatible (Earth + Water)",
-      "tagline": "Strategic and serious",
-      "description": "A deep, purposeful pairing marked by loyalty, emotional insight, and mutual respect. Scorpio brings intensity and truth; Virgo offers steadiness and thoughtful care. Together they create a connection rooted in depth and quiet strength. The energy feels powerful, grounded, and transformative."
+      "heading": "Virgo × Scorpio — Compatible Elements (Earth + Water)",
+      "tagline": "Quiet intensity",
+      "description": "Virgo and Scorpio both notice what others miss. Virgo analyses details; Scorpio probes emotional and psychological depths. The bond feels serious, private, and transformative, especially when you share a purpose or project."
     },
     "sagittarius": {
-      "heading": "Virgo × Sagittarius— Mismatch (Earth + Fire)",
-      "tagline": "Detail vs. big picture",
-      "description": "Virgo seeks order and consistency, while Sagittarius moves with freedom and expansion. Sagittarius brightens Virgo's world with openness; Virgo offers focus and grounded intention. Their contrast creates a dynamic of discovery and recalibration. The connection feels spacious, thoughtful, and gently contrasting."
+      "heading": "Virgo × Sagittarius — Clashing Elements (Earth + Fire)",
+      "tagline": "Details vs horizon",
+      "description": "Virgo focuses on specifics and day-to-day responsibilities; Sagittarius focuses on big ideas and future possibilities. You can feel like you're living at different scales. Honest agreements about who handles what keep this pairing productive instead of polarised."
     },
     "capricorn": {
-      "heading": "Virgo × Capricorn— Same Element (Earth + Earth)",
-      "tagline": "Quietly powerful",
-      "description": "A practical, long-term pairing grounded in ambition, reliability, and shared purpose. Capricorn contributes vision and discipline; Virgo adds organisation and supportive detail. Together they manifest goals with steady effort and mutual respect. The dynamic feels strong, purposeful, and highly cohesive."
+      "heading": "Virgo × Capricorn — Same Element (Earth + Earth)",
+      "tagline": "Work in progress",
+      "description": "Virgo and Capricorn share discipline, realism, and a strong sense of duty. Virgo refines the process; Capricorn climbs the mountain. Together you're excellent at building long-term stability, as long as you don't forget to actually enjoy the view."
     },
     "aquarius": {
-      "heading": "Virgo × Aquarius— Mismatch (Earth + Air)",
-      "tagline": "Systems and ideas",
-      "description": "Virgo moves through detail and refinement; Aquarius moves through ideas and innovation. Aquarius opens new conceptual paths for Virgo; Virgo helps Aquarius anchor ideas in reality. Their interplay mixes precision with imagination in a structured yet spacious way. The connection feels thoughtful, curious, and intellectually stimulating."
+      "heading": "Virgo × Aquarius — Clashing Elements (Earth + Air)",
+      "tagline": "Utility vs theory",
+      "description": "Virgo likes practical solutions; Aquarius likes big-picture concepts and experiments. You can inspire each other or constantly criticise. When you meet in the middle—Virgo grounding ideas and Aquarius opening perspectives—the bond feels innovative and useful."
     },
     "pisces": {
-      "heading": "Virgo × Pisces— Opposites (Earth + Water)",
-      "tagline": "Opposite healers",
-      "description": "A compelling polarity where Virgo offers structure and clarity while Pisces offers intuition and emotional depth. Pisces brings imagination and soulful insight; Virgo brings grounding and steady presence. Together they form a subtle balance of logic and feeling. The dynamic feels gentle, reflective, and quietly transformative."
+      "heading": "Virgo × Pisces — Compatible Elements (Earth + Water), Opposites",
+      "tagline": "Sacred service",
+      "description": "Virgo and Pisces are opposites who meet around healing, service, and compassion. Virgo manages the practical side; Pisces holds the emotional and spiritual side. This pairing feels tender and meaningful when boundaries are respected and martyrdom is avoided."
     }
   },
   "libra": {
     "aries": {
-      "heading": "Libra × Aries— Opposites (Air + Fire)",
-      "tagline": "Opposites in balance",
-      "description": "Libra seeks harmony and measured pacing, while Aries moves with direct instinct and bold momentum. Aries brings courage and clarity that energise Libra; Libra adds refinement, diplomacy, and emotional balance. Their contrast creates a vibrant push-pull dynamic full of mutual growth. The connection feels lively, magnetic, and boldly complementary."
+      "heading": "Libra × Aries — Compatible Elements (Air + Fire), Opposites",
+      "tagline": "Opposites in orbit",
+      "description": "Libra and Aries stand across the zodiac, balancing \"me\" and \"we.\" Libra brings diplomacy and perspective; Aries brings courage and directness. When you work as a team, the relationship feels dynamic, romantic, and growth-oriented."
     },
     "taurus": {
-      "heading": "Libra × Taurus— Mismatch (Air + Earth)",
-      "tagline": "Tasteful but indecisive",
-      "description": "Both signs appreciate comfort and aesthetic beauty, yet approach the world differently. Taurus expresses through steadiness and the senses; Libra expresses through thoughtfulness and relational flow. Taurus grounds Libra with calm presence, while Libra softens Taurus with charm and grace. The dynamic feels warm, steady, and quietly contrasting."
+      "heading": "Libra × Taurus — Semi-Compatible (Air + Earth)",
+      "tagline": "Beauty and comfort",
+      "description": "Both signs appreciate aesthetics and ease, but Libra is more social and verbal while Taurus is more physical and steady. You can create a pleasing life together if you manage money and values openly. The challenge is moving from \"nice\" to truly honest."
     },
     "gemini": {
-      "heading": "Libra × Gemini— Same Element (Air + Air)",
-      "tagline": "Social and smooth",
-      "description": "A smooth, conversational pairing full of shared curiosity, social ease, and mental agility. Gemini brings movement and ideas; Libra brings balance, intention, and emotional understanding. Their connection flows naturally with lightness and intellectual spark. The energy feels effortless, sociable, and mentally alive."
+      "heading": "Libra × Gemini — Same Element (Air + Air)",
+      "tagline": "Social symphony",
+      "description": "Libra and Gemini both love conversation, ideas, and connection. Gemini brings curiosity and speed; Libra brings grace and a sense of fairness. The bond feels light and mentally engaging, though you'll need clear decisions to avoid endless dithering."
     },
     "cancer": {
-      "heading": "Libra × Cancer— Semi-Compatible (Air + Water)",
-      "tagline": "Harmony and home",
-      "description": "Cancer leads with emotion and intuition; Libra leads with perspective and gentle clarity. Libra helps guide Cancer toward understanding; Cancer deepens Libra's emotional awareness. Together they blend softness with thoughtfulness in a careful, expressive rhythm. The dynamic feels tender, reflective, and delicately attuned."
+      "heading": "Libra × Cancer — Semi-Compatible (Air + Water)",
+      "tagline": "Heart and polish",
+      "description": "Cancer is emotional and protective; Libra is diplomatic and image-aware. You both care about relationships but handle conflict differently. With patience, you can blend real feelings and refined presentation into something very appealing."
     },
     "leo": {
-      "heading": "Libra × Leo— Compatible (Air + Fire)",
-      "tagline": "Charming and social",
-      "description": "Leo offers warmth, confidence, and creative flair; Libra contributes harmony, grace, and social intelligence. Their energies uplift each other naturally in a bright, expressive way. The pairing mixes passion with elegance, forming a charming and vibrant rhythm. The connection feels warm, playful, and irresistibly magnetic."
+      "heading": "Libra × Leo — Compatible Elements (Air + Fire)",
+      "tagline": "Charm and theatre",
+      "description": "Libra enjoys elegance and harmony; Leo enjoys expression and adoration. Together you create a warm, romantic vibe that looks and feels good. Honesty about needs beneath the glamour keeps the connection real."
     },
     "virgo": {
-      "heading": "Libra × Virgo— Semi-Compatible (Air + Earth)",
-      "tagline": "Considerate but indecisive",
-      "description": "Libra looks for balance and emotional resonance, while Virgo focuses on structure and refinement. Virgo provides thoughtful grounding; Libra offers perspective and relational ease. Their interaction blends precision with harmony in a subtle, complementary mix. The dynamic feels careful, measured, and quietly supportive."
+      "heading": "Libra × Virgo — Semi-Compatible (Air + Earth)",
+      "tagline": "Refined adjustments",
+      "description": "Libra sees the social picture; Virgo sees the practical details. You're both inclined to fix things, just in different arenas. When you collaborate instead of critique, the relationship becomes quietly effective and well-balanced."
     },
     "libra": {
-      "heading": "Libra × Libra— Same Element (Air + Air)",
-      "tagline": "Charming mirrors",
-      "description": "Two Libras form an intuitive, graceful bond built on mutual understanding and shared values. Both bring charm, fairness, and a natural sensitivity to emotional tone. Their mirrored energy creates harmony and a refined sense of partnership. The connection feels elegant, balanced, and deeply familiar."
+      "heading": "Libra × Libra — Same Element (Air + Air)",
+      "tagline": "Refined mirrors",
+      "description": "Two Libras form a charming, aesthetically aware pairing that values harmony and partnership. You instinctively consider each other's needs, which feels lovely but can delay tough decisions. Learning to tolerate conflict makes this match much stronger."
     },
     "scorpio": {
-      "heading": "Libra × Scorpio— Mismatch (Air + Water)",
-      "tagline": "Smooth and intense",
-      "description": "Libra navigates through diplomacy and equilibrium, while Scorpio moves with depth, focus, and emotional intensity. Scorpio adds substance and passion to Libra's world; Libra brings calm and clarity to Scorpio's emotional landscape. Their contrast forms a magnetic yet demanding rhythm. The connection feels potent, layered, and deeply transformative."
+      "heading": "Libra × Scorpio — Semi-Compatible (Air + Water)",
+      "tagline": "Light and shadow",
+      "description": "Libra prefers balance and openness; Scorpio prefers intensity and depth. You can be fascinated by each other but wary of rocking the boat. Honest, gradual deepening helps this pairing feel soulful instead of scary."
     },
     "sagittarius": {
-      "heading": "Libra × Sagittarius— Compatible (Air + Fire)",
-      "tagline": "Light and open",
-      "description": "A lively, upbeat pairing full of curiosity, movement, and shared ideals. Sagittarius brings exploration and honesty; Libra brings harmony and aesthetic warmth. Together they create a free-spirited, socially vibrant dynamic. The connection feels optimistic, open, and naturally energising."
+      "heading": "Libra × Sagittarius — Compatible Elements (Air + Fire)",
+      "tagline": "Bright horizons",
+      "description": "Libra and Sagittarius both enjoy social life, ideas, and exploration. Libra brings charm and tact; Sagittarius brings blunt truth and a sense of adventure. Together the connection feels optimistic, expansive, and ideal for learning and travel."
     },
     "capricorn": {
-      "heading": "Libra × Capricorn— Mismatch (Air + Earth)",
-      "tagline": "Style and structure",
-      "description": "Libra seeks connection and balance; Capricorn seeks structure and long-term purpose. Capricorn provides stability and clear direction; Libra adds relational softness and social refinement. Their blend combines order with grace in a steady, slow-building rhythm. The dynamic feels grounded, composed, and carefully aligned."
+      "heading": "Libra × Capricorn — Clashing Elements (Air + Earth)",
+      "tagline": "Diplomacy vs duty",
+      "description": "Libra focuses on relationships and perception; Capricorn focuses on work and results. You may initially judge each other's priorities. When you find shared goals, Libra opens doors and Capricorn keeps them stable, making this a subtle power duo."
     },
     "aquarius": {
-      "heading": "Libra × Aquarius— Same Element (Air + Air)",
-      "tagline": "Social and idealistic",
-      "description": "Both value ideas, independence, and a forward-thinking approach to relationships. Aquarius brings vision and originality; Libra brings warmth, balance, and relational clarity. Their connection flows with ease and mutual understanding. The energy feels modern, intellectually rich, and naturally coherent."
+      "heading": "Libra × Aquarius — Same Element (Air + Air)",
+      "tagline": "Kindred minds",
+      "description": "Libra and Aquarius both value fairness, ideas, and perspective. Libra cares about one-to-one harmony; Aquarius cares about the bigger pattern. The bond feels forward-thinking and mentally rich, though it benefits from deliberate emotional check-ins."
     },
     "pisces": {
-      "heading": "Libra × Pisces— Semi-Compatible (Air + Water)",
-      "tagline": "Soft and romantic",
-      "description": "Pisces moves through emotion and intuition; Libra moves through thought and gentle expression. Pisces adds imagination and empathy to Libra's world; Libra offers balance and clear perspective. Together they create a soft, artistic, and atmospheric blend. The connection feels dreamy, tender, and quietly expressive."
+      "heading": "Libra × Pisces — Semi-Compatible (Air + Water)",
+      "tagline": "Dreamy diplomacy",
+      "description": "Pisces brings sensitivity and imagination; Libra brings grace and relational skill. You're both idealistic about love, sometimes to a fault. Clear boundaries and grounded routines help this romantic pairing stay functional."
     }
   },
   "scorpio": {
     "aries": {
-      "heading": "Scorpio × Aries— Mismatch (Water + Fire)",
-      "tagline": "Intense and uncompromising",
-      "description": "Aries moves with instinct and immediacy, while Scorpio acts through depth, intention, and emotional strategy. Their energies create a charged dynamic full of honesty and momentum on one side, intensity and devotion on the other. Aries stirs Scorpio's boldness; Scorpio deepens Aries' emotional awareness. The connection feels magnetic, demanding, and powerfully transformative."
+      "heading": "Scorpio × Aries — Clashing Elements (Water + Fire)",
+      "tagline": "Raw intensity",
+      "description": "Both Scorpio and Aries are strong-willed and allergic to half-measures. Aries is openly fiery; Scorpio is emotionally volcanic underneath. The chemistry is powerful, but success depends on trust, honesty, and mutual respect for boundaries."
     },
     "taurus": {
-      "heading": "Scorpio × Taurus— Opposites (Water + Earth)",
-      "tagline": "Deep and intense",
-      "description": "Taurus offers steadiness, sensuality, and calm; Scorpio brings passion, depth, and emotional insight. Together they form a strong polarity rooted in loyalty, intensity, and grounded affection. Scorpio enriches Taurus' emotional world; Taurus stabilises Scorpio's powerful inner landscape. The dynamic feels enduring, magnetic, and deeply anchored."
+      "heading": "Scorpio × Taurus — Compatible Elements (Water + Earth), Opposites",
+      "tagline": "Deep roots",
+      "description": "Scorpio and Taurus are opposites who both crave loyalty, security, and lasting bonds. Taurus anchors the material and sensual side; Scorpio anchors the emotional and psychological side. This pairing can feel fated and intensely binding when trust is high."
     },
     "gemini": {
-      "heading": "Scorpio × Gemini— Mismatch (Water + Air)",
-      "tagline": "Light vs. depth",
-      "description": "Scorpio seeks emotional depth and clear commitment, while Gemini thrives on movement, exploration, and variety. Gemini brings brightness and perspective to Scorpio's depth; Scorpio adds substance and meaning to Gemini's world. Their rhythms differ but can complement each other when understood. The connection feels curious, contrasting, and mentally engaging."
+      "heading": "Scorpio × Gemini — Clashing Elements (Water + Air)",
+      "tagline": "Secrets vs stories",
+      "description": "Gemini flits between topics and perspectives; Scorpio dives deep and remembers everything. You may intrigue each other at first but clash over depth and consistency. Clear expectations and genuine vulnerability are needed to avoid suspicion and mixed signals."
     },
     "cancer": {
-      "heading": "Scorpio × Cancer— Compatible (Water + Water)",
-      "tagline": "Intense and private",
-      "description": "A natural emotional bond marked by intuition, loyalty, and shared depth. Cancer softens Scorpio's intensity with warmth and empathy; Scorpio strengthens Cancer's emotional confidence. Trust forms quickly in this pairing, creating a protective and resonant connection. The dynamic feels rich, heartfelt, and mutually grounding."
+      "heading": "Scorpio × Cancer — Same Element (Water + Water)",
+      "tagline": "Soul-deep",
+      "description": "Scorpio and Cancer both take emotions seriously and value real intimacy. Cancer offers care and softness; Scorpio offers focus and passion. The relationship can feel like a sanctuary, but it needs open communication so resentment doesn't build in silence."
     },
     "leo": {
-      "heading": "Scorpio × Leo— Mismatch (Water + Fire)",
-      "tagline": "Intense and dramatic",
-      "description": "Leo expresses openly with warmth and charisma, while Scorpio moves more privately through emotion and intention. Leo brightens the dynamic with confidence; Scorpio adds depth, focus, and emotional clarity. Their contrast creates a strong but demanding interplay. The connection feels vivid, intense, and powerfully expressive."
+      "heading": "Scorpio × Leo — Clashing Elements (Water + Fire)",
+      "tagline": "Power and pride",
+      "description": "Leo wants visible affection and admiration; Scorpio wants emotional control and depth. Power dynamics and pride can dominate if you're not careful. When you choose honesty over games, the connection is intense, loyal, and unforgettable."
     },
     "virgo": {
-      "heading": "Scorpio × Virgo— Compatible (Water + Earth)",
-      "tagline": "Strategic and serious",
-      "description": "Virgo offers thoughtful support and quiet reliability; Scorpio brings emotional truth and unwavering commitment. Together they form a purposeful, grounded pairing shaped by clarity and resilience. Virgo steadies Scorpio's depth; Scorpio enriches Virgo's emotional landscape. The dynamic feels strong, intentional, and deeply loyal."
+      "heading": "Scorpio × Virgo — Compatible Elements (Water + Earth)",
+      "tagline": "Forensic team",
+      "description": "Virgo and Scorpio both notice subtle details and patterns. Virgo analyses and organises; Scorpio probes and transforms. Together you're excellent at solving problems and growing through them, as long as criticism is balanced with appreciation."
     },
     "libra": {
-      "heading": "Scorpio × Libra— Semi-Compatible (Water + Air)",
-      "tagline": "Smooth and intense",
-      "description": "Libra approaches through balance and perspective, while Scorpio approaches through depth and emotional certainty. Libra softens Scorpio's intensity with calm communication; Scorpio deepens Libra's understanding with honesty and insight. Their energies contrast in a quietly complementary way. The connection feels layered, thoughtful, and subtly transformative."
+      "heading": "Scorpio × Libra — Semi-Compatible (Water + Air)",
+      "tagline": "Charm vs depth",
+      "description": "Libra smooths rough edges; Scorpio digs under the surface. You can feel alternately soothed and provoked by each other. Gradual deepening and honest emotional talks help this pairing feel rich instead of destabilising."
     },
     "scorpio": {
-      "heading": "Scorpio × Scorpio— Same Element (Water + Water)",
-      "tagline": "All or nothing",
-      "description": "Two Scorpios create a bond marked by passion, loyalty, and profound emotional recognition. Both understand the other's depth, intuition, and protective instincts. The pairing carries immense emotional power and intensity. The dynamic feels magnetic, consuming, and deeply unspoken."
+      "heading": "Scorpio × Scorpio — Same Element (Water + Water)",
+      "tagline": "Mirror of intensity",
+      "description": "Two Scorpios together create a potent, all-or-nothing bond. You understand each other's desire for depth, loyalty, and truth—but you can also trigger each other's fears and control issues. Healthy boundaries and shared healing work are vital."
     },
     "sagittarius": {
-      "heading": "Scorpio × Sagittarius— Mismatch (Water + Fire)",
-      "tagline": "Edgy and honest",
-      "description": "Scorpio moves through depth and focus; Sagittarius moves through freedom and discovery. Sagittarius opens Scorpio's perspective with optimism; Scorpio offers emotional richness and introspection. Their contrast creates a dynamic of growth and recalibration. The connection feels spirited, challenging, and full of contrast."
+      "heading": "Scorpio × Sagittarius — Clashing Elements (Water + Fire)",
+      "tagline": "Depth vs freedom",
+      "description": "Scorpio wants focus and emotional commitment; Sagittarius wants exploration and open possibilities. You may feel intrigued yet suspicious of each other's style. When you agree on shared principles, this becomes a passionate but challenging growth relationship."
     },
     "capricorn": {
-      "heading": "Scorpio × Capricorn— Compatible (Water + Earth)",
-      "tagline": "Focused and formidable",
-      "description": "A strong, steady bond built on resilience, loyalty, and shared ambition. Capricorn contributes structure and long-term vision; Scorpio adds emotional insight and dedication. Together they form a powerful, goal-oriented partnership. The dynamic feels grounded, strategic, and deeply connected."
+      "heading": "Scorpio × Capricorn — Compatible Elements (Water + Earth)",
+      "tagline": "Strategic builders",
+      "description": "Scorpio and Capricorn are both serious, determined, and future-focused. Scorpio brings emotional insight and persistence; Capricorn brings structure and long-term planning. The bond feels powerful, private, and geared toward building something substantial."
     },
     "aquarius": {
-      "heading": "Scorpio × Aquarius— Mismatch (Water + Air)",
-      "tagline": "Intensity vs. detachment",
-      "description": "Scorpio leads with emotional truth and intensity; Aquarius leads with ideals and forward-thinking clarity. Aquarius expands Scorpio's world intellectually; Scorpio deepens Aquarius' emotional awareness. Their differences are significant but compelling. The connection feels complex, spacious, and mentally stimulating."
+      "heading": "Scorpio × Aquarius — Clashing Elements (Water + Air)",
+      "tagline": "Emotion vs detachment",
+      "description": "Scorpio seeks intensity and emotional merging; Aquarius seeks perspective and mental freedom. You can teach each other a lot about boundaries and connection. Honest, non-defensive communication is crucial if this is going to feel liberating rather than alienating."
     },
     "pisces": {
-      "heading": "Scorpio × Pisces— Same Element (Water + Water)",
-      "tagline": "Deep water connection",
-      "description": "A deeply intuitive pairing where emotional understanding flows freely. Pisces brings softness, imagination, and empathy; Scorpio brings protection, passion, and emotional depth. Together they form a soulful, enveloping bond. The dynamic feels mystical, heartfelt, and profoundly connective."
+      "heading": "Scorpio × Pisces — Same Element (Water + Water)",
+      "tagline": "Mystic waters",
+      "description": "Scorpio and Pisces share sensitivity and intuition, but express it differently. Scorpio focuses it like a laser; Pisces lets it float and flow. The relationship can feel spiritual, creative, and deeply healing when grounded in reality."
     }
   },
   "sagittarius": {
     "aries": {
-      "heading": "Sagittarius × Aries— Same Element (Fire + Fire)",
-      "tagline": "Adventurous and bold",
-      "description": "Sagittarius and Aries connect instantly through movement, enthusiasm, and shared independence. Aries offers bold direction and decisive drive; Sagittarius brings optimism, curiosity, and broader perspective. Their energies amplify each other in a bright, forward-moving rhythm. The dynamic feels lively, spirited, and naturally energising."
+      "heading": "Sagittarius × Aries — Same Element (Fire + Fire)",
+      "tagline": "Adventure buddies",
+      "description": "Sagittarius and Aries both crave movement, experience, and challenge. Aries brings initiative; Sagittarius brings vision and humour. The bond feels energetic and optimistic, but benefits from shared responsibilities so life isn't just a string of escapes."
     },
     "taurus": {
-      "heading": "Sagittarius × Taurus— Mismatch (Fire + Earth)",
-      "tagline": "Comfort vs. freedom",
-      "description": "Sagittarius seeks exploration and freedom, while Taurus values consistency and measured pace. Taurus provides grounding and sensory richness; Sagittarius brings adventure and open horizons. Their interplay blends stability with expansion in a gentle contrast. The connection feels steady, warm, and quietly challenging."
+      "heading": "Sagittarius × Taurus — Clashing Elements (Fire + Earth)",
+      "tagline": "Wanderer vs settler",
+      "description": "Sagittarius is restless and future-focused; Taurus values stability and present comforts. You may feel like you're pulling each other in opposite directions. Agreeing on a core base and planned adventures helps this pairing feel complementary rather than conflicting."
     },
     "gemini": {
-      "heading": "Sagittarius × Gemini— Opposites (Fire + Air)",
-      "tagline": "Opposite explorers",
-      "description": "A mentally electric polarity where Sagittarius seeks big truths and Gemini seeks broad possibilities. Gemini adds versatility and quick thinking; Sagittarius brings vision, wisdom, and experiential depth. Together they create a spacious, curious, and animated pairing. The dynamic feels open, expansive, and intellectually vibrant."
+      "heading": "Sagittarius × Gemini — Compatible Elements (Fire + Air), Opposites",
+      "tagline": "Curious explorers",
+      "description": "Sagittarius and Gemini are opposite signs that both love learning and variety. Gemini gathers facts; Sagittarius searches for meaning. The connection feels lively, conversational, and expansive, as long as you honour commitments as well as possibilities."
     },
     "cancer": {
-      "heading": "Sagittarius × Cancer— Mismatch (Fire + Water)",
-      "tagline": "Nest vs. open road",
-      "description": "Sagittarius moves freely toward experience, while Cancer moves inward toward emotional safety. Cancer brings warmth and care to Sagittarius' adventurous path; Sagittarius brings perspective and optimism to Cancer's emotional world. Their blend mixes exploration with nurturing in a subtle, contrasting way. The connection feels gentle, spacious, and emotionally varied."
+      "heading": "Sagittarius × Cancer — Clashing Elements (Fire + Water)",
+      "tagline": "Quest vs nest",
+      "description": "Sagittarius wants to roam and explore; Cancer wants to nest and protect. Misunderstandings arise when freedom needs and emotional needs aren't voiced. With honest reassurance and planned together-time, this combo can blend growth with genuine care."
     },
     "leo": {
-      "heading": "Sagittarius × Leo— Same Element (Fire + Fire)",
-      "tagline": "Fire on fire",
-      "description": "A charismatic, high-energy match full of passion, confidence, and shared inspiration. Leo radiates warmth and devotion; Sagittarius brings honesty, humour, and an open spirit. Their interaction feels uplifting and expressive, with both signs encouraging each other's shine. The dynamic feels bold, joyful, and naturally harmonious."
+      "heading": "Sagittarius × Leo — Same Element (Fire + Fire)",
+      "tagline": "Big-hearted duo",
+      "description": "Sagittarius and Leo share warmth, enthusiasm, and a love of joyful experiences. Leo brings loyalty and creative flair; Sagittarius brings honesty and a sense of adventure. The relationship feels bright and generous, but needs some grounding to handle practical life."
     },
     "virgo": {
-      "heading": "Sagittarius × Virgo— Mismatch (Fire + Earth)",
-      "tagline": "Detail vs. big picture",
-      "description": "Virgo values structure and precision, while Sagittarius embraces possibility and expansion. Virgo offers focus and grounded clarity; Sagittarius brings optimism and a wider horizon. Their blend mixes detail with vision in an intriguing contrast. The dynamic feels thoughtful, exploratory, and gently challenging."
+      "heading": "Sagittarius × Virgo — Clashing Elements (Fire + Earth)",
+      "tagline": "Spontaneity vs systems",
+      "description": "Sagittarius prefers flexibility and broad strokes; Virgo prefers routines and specifics. You can feel irritated by each other's priorities. When you consciously divide roles—one handles the vision, the other the details—you become more powerful together than apart."
     },
     "libra": {
-      "heading": "Sagittarius × Libra— Compatible (Fire + Air)",
-      "tagline": "Light and open",
-      "description": "Sagittarius and Libra share curiosity, openness, and a light-spirited approach to connection. Libra brings harmony and relational ease; Sagittarius adds adventure, honesty, and enthusiasm. Together they create a balanced, socially vibrant rhythm. The connection feels graceful, uplifting, and naturally warm."
+      "heading": "Sagittarius × Libra — Compatible Elements (Fire + Air)",
+      "tagline": "Light and lively",
+      "description": "Sagittarius and Libra both enjoy people, culture, and ideas. Libra brings social finesse and tact; Sagittarius brings blunt truth and big-picture thinking. The connection feels sociable, optimistic, and ideal for travel or shared projects."
     },
     "scorpio": {
-      "heading": "Sagittarius × Scorpio— Mismatch (Fire + Water)",
-      "tagline": "Edgy and honest",
-      "description": "Sagittarius leads with freedom and expansion; Scorpio leads with emotional depth and intensity. Scorpio adds substance and introspection; Sagittarius brings perspective and movement. Their contrast creates a dynamic of deep questions and bold discovery. The connection feels potent, complex, and richly contrasting."
+      "heading": "Sagittarius × Scorpio — Clashing Elements (Fire + Water)",
+      "tagline": "Truth vs secrecy",
+      "description": "Sagittarius prefers direct, open honesty; Scorpio sometimes prefers controlled revelation. Differences around trust, freedom, and emotional intensity are highlighted. With mutual respect, this combo can be deeply transformative—but not especially calm."
     },
     "sagittarius": {
-      "heading": "Sagittarius × Sagittarius— Same Element (Fire + Fire)",
-      "tagline": "Wild at heart",
-      "description": "Two Sagittarians create a spirited, adventurous connection full of movement, ideas, and possibility. Each understands the other's need for independence and intellectual stimulation. The pairing grows through shared exploration and expansive thinking. The dynamic feels bright, open, and endlessly curious."
+      "heading": "Sagittarius × Sagittarius — Same Element (Fire + Fire)",
+      "tagline": "Double wanderer",
+      "description": "Two Sagittarians create a relationship full of movement, learning, and humour. You encourage each other to grow and explore, which can feel exhilarating but unstable. Shared commitments, even small ones, help anchor this connection."
     },
     "capricorn": {
-      "heading": "Sagittarius × Capricorn— Semi-Compatible (Fire + Earth)",
-      "tagline": "Risk and responsibility",
-      "description": "Sagittarius brings enthusiasm and vision, while Capricorn provides structure and long-term direction. Together they blend optimism with ambition in a productive, forward-focused way. Capricorn steadies the pace; Sagittarius widens the scope. The connection feels purposeful, grounded, and quietly dynamic."
+      "heading": "Sagittarius × Capricorn — Semi-Compatible (Fire + Earth)",
+      "tagline": "Vision and grind",
+      "description": "Sagittarius looks far ahead; Capricorn climbs step by step. You both care about growth, but one focuses on wisdom and experience while the other focuses on achievement. When you combine big-picture thinking with practical strategy, this becomes a formidable pair."
     },
     "aquarius": {
-      "heading": "Sagittarius × Aquarius— Compatible (Fire + Air)",
-      "tagline": "Open and future-minded",
-      "description": "A progressive, idea-driven match where independence and curiosity are mutually understood. Aquarius brings originality and insight; Sagittarius adds honesty, humour, and a sense of discovery. Their blend feels future-focused and mentally engaging. The dynamic is open, stimulating, and naturally expansive."
+      "heading": "Sagittarius × Aquarius — Compatible Elements (Fire + Air)",
+      "tagline": "Future-focused",
+      "description": "Sagittarius and Aquarius both love ideas, freedom, and seeing beyond the status quo. Sagittarius brings philosophy and adventure; Aquarius brings innovation and social vision. The relationship feels progressive, stimulating, and well-suited to unconventional lifestyles."
     },
     "pisces": {
-      "heading": "Sagittarius × Pisces— Semi-Compatible (Fire + Water)",
-      "tagline": "Faith and feeling",
-      "description": "Pisces expresses through emotion and imagination; Sagittarius through movement and exploration. Pisces adds softness and intuition; Sagittarius offers clarity, optimism, and wider vision. Together they form a gentle, dreamy, and fluid connection. The dynamic feels atmospheric, hopeful, and subtly expressive."
+      "heading": "Sagittarius × Pisces — Semi-Compatible (Fire + Water)",
+      "tagline": "Dreaming wide",
+      "description": "Sagittarius seeks meaning; Pisces seeks unity and compassion. You share idealism, but one is more fiery and blunt while the other is gentle and impressionable. Clear boundaries and shared creative or spiritual pursuits make this pairing feel inspiring rather than confusing."
     }
   },
   "capricorn": {
     "aries": {
-      "heading": "Capricorn × Aries— Semi-Compatible (Earth + Fire)",
-      "tagline": "Ambition with friction",
-      "description": "Capricorn moves with intention and long-term focus, while Aries acts with immediacy and bold instinct. Aries introduces momentum and courage that expand Capricorn's pace; Capricorn provides clarity and stability that refine Aries' direction. Together they blend strategy with action in a dynamic, grounded rhythm. The connection feels steady, purposeful, and quietly energising."
+      "heading": "Capricorn × Aries — Semi-Compatible (Earth + Fire)",
+      "tagline": "Drive meets discipline",
+      "description": "Capricorn and Aries are both ambitious but differ in timing and risk tolerance. Aries rushes in; Capricorn plans and persists. When you align on goals, Aries sparks and Capricorn sustains, making this a strong achievement-focused combo."
     },
     "taurus": {
-      "heading": "Capricorn × Taurus— Same Element (Earth + Earth)",
-      "tagline": "Solid and steady",
-      "description": "A loyal, consistent pairing rooted in practicality, shared values, and mutual reliability. Taurus brings warmth and patience; Capricorn adds structure, ambition, and long-range perspective. Together they build stability in both emotional and material life. The dynamic feels comforting, strong, and deeply dependable."
+      "heading": "Capricorn × Taurus — Same Element (Earth + Earth)",
+      "tagline": "Solid foundations",
+      "description": "Capricorn and Taurus both value stability, loyalty, and tangible results. Taurus brings sensual enjoyment and patience; Capricorn brings strategy and long-term ambition. The bond feels secure and grounded, especially when you remember to play, not just work."
     },
     "gemini": {
-      "heading": "Capricorn × Gemini— Mismatch (Earth + Air)",
-      "tagline": "Serious vs. playful",
-      "description": "Gemini explores ideas freely, while Capricorn prefers clear plans and grounded structure. Capricorn offers steadiness and follow-through; Gemini introduces flexibility, curiosity, and fresh perspective. Their contrast creates a thoughtful mix of movement and form. The connection feels airy, structured, and quietly contrasting."
+      "heading": "Capricorn × Gemini — Clashing Elements (Earth + Air)",
+      "tagline": "Plan vs pivot",
+      "description": "Capricorn prefers structure and predictability; Gemini prefers flexibility and options. You may feel like you're constantly adjusting to each other. Mutual respect lets Gemini bring fresh ideas while Capricorn turns them into something real."
     },
     "cancer": {
-      "heading": "Capricorn × Cancer— Opposites (Earth + Water)",
-      "tagline": "Opposites that build",
-      "description": "Capricorn leads with discipline and practicality; Cancer leads with feeling and intuition — forming a classic balancing polarity. Cancer adds warmth and emotional depth to Capricorn's steady presence; Capricorn brings protection and reliability to Cancer's softness. Their interaction blends structure with tenderness in a stabilising way. The dynamic feels deeply anchoring, nurturing, and quietly resilient."
+      "heading": "Capricorn × Cancer — Compatible Elements (Earth + Water), Opposites",
+      "tagline": "Structure and soul",
+      "description": "Capricorn and Cancer are opposites who meet around family, security, and legacy. Capricorn builds frameworks; Cancer fills them with emotional life. When duties and feelings are both honoured, this pairing can be profoundly stabilising."
     },
     "leo": {
-      "heading": "Capricorn × Leo— Semi-Compatible (Earth + Fire)",
-      "tagline": "Pride and strategy",
-      "description": "Leo expresses with warmth, creativity, and boldness; Capricorn acts with focus, discipline, and long-term vision. Their interplay combines passion with purpose, creating a strong sense of potential. Capricorn grounds the atmosphere; Leo brightens it. The connection feels ambitious, warm, and steadily expressive."
+      "heading": "Capricorn × Leo — Clashing Elements (Earth + Fire)",
+      "tagline": "Prestige and pride",
+      "description": "Capricorn wants respect through achievement; Leo wants recognition through self-expression. You can become a power couple or rivals. Cooperation and shared long-term projects help this connection feel strong instead of competitive."
     },
     "virgo": {
-      "heading": "Capricorn × Virgo— Same Element (Earth + Earth)",
-      "tagline": "Quietly powerful",
-      "description": "Capricorn and Virgo form a thoughtful, diligent match shaped by shared values and quiet devotion. Virgo contributes clarity, detail, and considerate care; Capricorn adds leadership, stability, and long-term commitment. Their teamwork is strong and naturally aligned. The dynamic feels grounded, intentional, and deeply reliable."
+      "heading": "Capricorn × Virgo — Same Element (Earth + Earth)",
+      "tagline": "Work partners",
+      "description": "Capricorn and Virgo share practicality, realism, and a desire to be useful. Virgo refines processes and details; Capricorn organises resources and direction. The relationship feels efficient and dependable, though you'll want to consciously invite in romance and rest."
     },
     "libra": {
-      "heading": "Capricorn × Libra— Mismatch (Earth + Air)",
-      "tagline": "Style and structure",
-      "description": "Capricorn focuses on goals and structure, while Libra prioritises connection and balance. Libra brings grace, perspective, and social ease; Capricorn offers steadiness, protection, and clear direction. Together they mix softness with structure in a careful blend. The connection feels refined, measured, and gently contrasting."
+      "heading": "Capricorn × Libra — Clashing Elements (Earth + Air)",
+      "tagline": "Pragmatism vs presentation",
+      "description": "Capricorn focuses on results; Libra focuses on relationships and perception. You can at first misjudge each other's priorities. When you blend Capricorn's staying power with Libra's social intelligence, the pairing becomes quietly influential."
     },
     "scorpio": {
-      "heading": "Capricorn × Scorpio— Compatible (Earth + Water)",
-      "tagline": "Focused and formidable",
-      "description": "A powerful, loyal pairing defined by depth, strength, and shared ambition. Scorpio offers emotional insight and intensity; Capricorn brings grounding, strategy, and persistence. Their bond is steady, protective, and uncompromising in loyalty. The dynamic feels profound, resilient, and purposefully aligned."
+      "heading": "Capricorn × Scorpio — Compatible Elements (Earth + Water)",
+      "tagline": "Strategic depth",
+      "description": "Capricorn and Scorpio both take life seriously and think long-term. Scorpio brings emotional insight and intensity; Capricorn brings structure and resilience. Together you're capable of building something powerful, whether that's a business, family, or shared mission."
     },
     "sagittarius": {
-      "heading": "Capricorn × Sagittarius— Semi-Compatible (Earth + Fire)",
-      "tagline": "Risk and responsibility",
-      "description": "Sagittarius contributes movement, optimism, and a broader horizon; Capricorn provides stability, intention, and practical grounding. Together they merge expansion with structure in a balanced, forward-focused way. Each sign brings what the other lacks in a complementary contrast. The connection feels steady, open, and quietly dynamic."
+      "heading": "Capricorn × Sagittarius — Semi-Compatible (Earth + Fire)",
+      "tagline": "Growth in focus",
+      "description": "Sagittarius wants freedom and exploration; Capricorn wants mastery and status. You're both growth-oriented but measure success differently. When you trade cynicism for curiosity on both sides, this pairing becomes surprisingly enriching."
     },
     "capricorn": {
-      "heading": "Capricorn × Capricorn— Same Element (Earth + Earth)",
-      "tagline": "Ambitious and serious",
-      "description": "Two Capricorns create a disciplined, determined partnership built on shared values and unwavering reliability. You understand each other's pace, ambition, and boundaries deeply. Emotional expression unfolds slowly but with sincerity. The dynamic feels solid, responsible, and quietly powerful."
+      "heading": "Capricorn × Capricorn — Same Element (Earth + Earth)",
+      "tagline": "Power duo",
+      "description": "Two Capricorns create a relationship built on ambition, work ethic, and mutual respect. You understand each other's need for goals and progress. The challenge is remembering that closeness and fun are achievements too."
     },
     "aquarius": {
-      "heading": "Capricorn × Aquarius— Semi-Compatible (Earth + Air)",
-      "tagline": "Structure and innovation",
-      "description": "Capricorn works through structure and consistency; Aquarius works through innovation and conceptual clarity. Aquarius opens Capricorn's world with originality; Capricorn grounds Aquarius with practicality and focus. Their blend creates a forward-thinking yet stable partnership. The connection feels modern, steady, and intellectually engaging."
+      "heading": "Capricorn × Aquarius — Semi-Compatible (Earth + Air)",
+      "tagline": "Old and new",
+      "description": "Capricorn honours tradition and structure; Aquarius honours change and innovation. You may clash over rules and risks, but there's also a shared seriousness and determination. When you align around a cause, this pairing can reshape your world."
     },
     "pisces": {
-      "heading": "Capricorn × Pisces— Compatible (Earth + Water)",
-      "tagline": "Dream and discipline",
-      "description": "Pisces brings imagination, empathy, and emotional richness; Capricorn offers grounding, protection, and long-term steadiness. Together they form a gentle, supportive dynamic where feeling meets structure. Pisces softens Capricorn's reserve; Capricorn strengthens Pisces' sense of security. The connection feels comforting, soulful, and deeply balanced."
+      "heading": "Capricorn × Pisces — Compatible Elements (Earth + Water)",
+      "tagline": "Grounded dreamers",
+      "description": "Capricorn brings practicality and containment; Pisces brings imagination and compassion. You can turn ideals into reality when you trust each other's role. The relationship feels gentle and purposeful, especially with clear boundaries and shared routines."
     }
   },
   "aquarius": {
     "aries": {
-      "heading": "Aquarius × Aries— Compatible (Air + Fire)",
-      "tagline": "Rebel spark",
-      "description": "A bold and future-oriented pairing built on independence and momentum. Aries brings courage and spark; Aquarius adds originality and inventive thought. Together they generate a lively, expressive dynamic full of movement and new ideas. The connection feels energising, forward-moving, and naturally inspiring."
+      "heading": "Aquarius × Aries — Compatible Elements (Air + Fire)",
+      "tagline": "Rebel allies",
+      "description": "Aquarius and Aries both value independence and doing life their own way. Aries brings courage and momentum; Aquarius brings vision and long-range thinking. The bond feels energetic, pioneering, and future-focused when neither tries to dominate the other's path."
     },
     "taurus": {
-      "heading": "Aquarius × Taurus— Mismatch (Air + Earth)",
-      "tagline": "Fixed vs. free",
-      "description": "Aquarius moves through innovation and possibility, while Taurus values steadiness and tangible progress. Taurus grounds Aquarius' concepts, and Aquarius widens Taurus' perspective. The blend creates a measured rhythm shaped by contrast and balance. The dynamic feels steady, slow-building, and quietly contrasting."
+      "heading": "Aquarius × Taurus — Semi-Compatible (Air + Earth)",
+      "tagline": "Change vs comfort",
+      "description": "Aquarius prefers innovation and flexibility; Taurus prefers stability and familiar pleasures. You can each feel like the other is \"too much\" or \"too stuck.\" With compromise, Aquarius brings fresh ideas and Taurus turns them into something lasting."
     },
     "gemini": {
-      "heading": "Aquarius × Gemini— Same Element (Air + Air)",
-      "tagline": "Ideas and wit",
-      "description": "A bright, mentally active pairing defined by curiosity, humour, and conversation. Gemini brings versatility and wit; Aquarius brings vision and individuality. Ideas flow easily between them, creating a socially intuitive connection. The energy feels light, clever, and effortlessly stimulating."
+      "heading": "Aquarius × Gemini — Same Element (Air + Air)",
+      "tagline": "Ideas on loop",
+      "description": "Aquarius and Gemini both live in the mental and social realm. Gemini brings questions and variety; Aquarius brings concepts and principles. The connection feels bright and talkative, though you'll need deliberate emotional sharing to avoid staying purely in your heads."
     },
     "cancer": {
-      "heading": "Aquarius × Cancer— Mismatch (Air + Water)",
-      "tagline": "Feeling vs. distance",
-      "description": "Logic meets emotion in a pairing defined by sensitivity and contrast. Cancer offers warmth and intuition; Aquarius contributes clarity and perspective. Their differing inner rhythms create a reflective and emotionally textured dynamic. The connection feels atmospheric, delicate, and introspective."
+      "heading": "Aquarius × Cancer — Semi-Compatible (Air + Water)",
+      "tagline": "Distance and depth",
+      "description": "Cancer needs emotional closeness and security; Aquarius needs space and perspective. You can help each other grow—a wider world for Cancer, more heart for Aquarius. Honest conversations about space and reassurance keep this from feeling cold or clingy."
     },
     "leo": {
-      "heading": "Aquarius × Leo— Opposites (Air + Fire)",
-      "tagline": "Bold and unconventional",
-      "description": "A dramatic polarity where expressive warmth meets originality and intellect. Leo brings heart and radiance; Aquarius brings insight and innovation. Their contrast creates a bold, magnetic interchange of ideas and emotion. The energy feels vivid, charismatic, and charged with presence."
+      "heading": "Aquarius × Leo — Compatible Elements (Air + Fire), Opposites",
+      "tagline": "Heart and horizon",
+      "description": "Aquarius and Leo are opposites combining individual flair with collective vision. Leo personalises and warms things; Aquarius zooms out and future-plans. When you support rather than compete with each other, the relationship feels vivid, creative, and impactful."
     },
     "virgo": {
-      "heading": "Aquarius × Virgo— Mismatch (Air + Earth)",
-      "tagline": "Systems and ideas",
-      "description": "Virgo focuses on refinement and detail; Aquarius focuses on vision and innovation. Virgo grounds Aquarius' concepts into form, while Aquarius expands Virgo's scope. The pairing blends precision with imagination in a subtle, measured way. The connection feels thoughtful, analytical, and gently contrasting."
+      "heading": "Aquarius × Virgo — Clashing Elements (Air + Earth)",
+      "tagline": "Systems vs theories",
+      "description": "Virgo focuses on details and tangible outcomes; Aquarius focuses on systems and possibilities. You can either feel endlessly corrected or endlessly challenged. At your best, Virgo refines Aquarius' innovations and Aquarius prevents Virgo from getting lost in minutiae."
     },
     "libra": {
-      "heading": "Aquarius × Libra— Same Element (Air + Air)",
-      "tagline": "Social and idealistic",
-      "description": "A socially fluent, balanced connection rooted in shared ideals and intellectual chemistry. Libra adds charm and relational ease; Aquarius brings originality and depth. Together they express a modern, harmonious rhythm with natural understanding. The energy feels fluid, elegant, and quietly aligned."
+      "heading": "Aquarius × Libra — Same Element (Air + Air)",
+      "tagline": "Kindred minds",
+      "description": "Aquarius and Libra both care about fairness, perspective, and human connection. Libra focuses on one-to-one harmony; Aquarius focuses on groups and ideals. The bond feels socially rich and intellectually stimulating, especially if you make time for raw, unpolished feelings too."
     },
     "scorpio": {
-      "heading": "Aquarius × Scorpio— Mismatch (Air + Water)",
-      "tagline": "Intensity vs. detachment",
-      "description": "Scorpio brings emotional intensity and depth; Aquarius offers distance, clarity, and insight. The pairing holds a complex blend of magnetism and contrast. Scorpio grounds the emotional tone; Aquarius illuminates the broader perspective. The dynamic feels deep, potent, and richly contrasting."
+      "heading": "Aquarius × Scorpio — Clashing Elements (Air + Water)",
+      "tagline": "Detached vs intense",
+      "description": "Scorpio seeks emotional fusion; Aquarius seeks mental freedom. You may fascinate each other but struggle with control and trust. Clear agreements and respect for privacy are crucial if this pairing is going to work."
     },
     "sagittarius": {
-      "heading": "Aquarius × Sagittarius— Compatible (Air + Fire)",
-      "tagline": "Open and future-minded",
-      "description": "A free-spirited, explorative pairing with shared love of ideas and open horizons. Sagittarius brings enthusiasm and candour; Aquarius adds originality and vision. Their energy moves fast and brightly, full of momentum and discovery. The connection feels inspiring, adventurous, and forward-looking."
+      "heading": "Aquarius × Sagittarius — Compatible Elements (Air + Fire)",
+      "tagline": "Big thinkers",
+      "description": "Aquarius and Sagittarius both love ideas, growth, and pushing beyond limits. Sagittarius brings enthusiasm and philosophy; Aquarius brings innovation and a sense of the collective. The relationship feels adventurous, mentally alive, and well-suited to unconventional paths."
     },
     "capricorn": {
-      "heading": "Aquarius × Capricorn— Semi-Compatible (Air + Earth)",
-      "tagline": "Structure and innovation",
-      "description": "Capricorn provides structure and long-term focus; Aquarius brings invention and broader perspective. Together they create a blend of planning and possibility. Capricorn grounds the rhythm, while Aquarius expands the scope. The dynamic feels steady, strategic, and quietly progressive."
+      "heading": "Aquarius × Capricorn — Semi-Compatible (Air + Earth)",
+      "tagline": "Reformers",
+      "description": "Capricorn builds within systems; Aquarius wants to update or disrupt them. You can clash over pace and risk, yet share a serious, long-term mindset. When aligned, this combo is excellent for reshaping careers, communities, or life structures."
     },
     "aquarius": {
-      "heading": "Aquarius × Aquarius— Same Element (Air + Air)",
+      "heading": "Aquarius × Aquarius — Same Element (Air + Air)",
       "tagline": "Independent thinkers",
-      "description": "Two Aquarians form a cerebral, unconventional pairing rooted in shared values and independence. Both bring originality, curiosity, and a strong sense of individuality. The connection feels progressive, idealistic, and mentally open. The energy reads as airy, spacious, and naturally aligned."
+      "description": "Two Aquarians create a cerebral, unconventional pairing rooted in shared ideals and independence. You both bring originality, curiosity, and a strong sense of individuality. The connection feels progressive, spacious, and mentally open, as long as you remember to show real feelings too."
     },
     "pisces": {
-      "heading": "Aquarius × Pisces— Semi-Compatible (Air + Water)",
-      "tagline": "Vision and feeling",
-      "description": "Aquarius expresses through insight and vision; Pisces moves through emotion and intuition. Together they create a soft, perceptive blend of thought and feeling. Pisces adds depth and atmosphere; Aquarius adds clarity and perspective. The dynamic feels gentle, imaginative, and subtly textured."
+      "heading": "Aquarius × Pisces — Semi-Compatible (Air + Water)",
+      "tagline": "Head meets heart",
+      "description": "Aquarius leads with concepts; Pisces leads with compassion and intuition. You can broaden each other's world if you stay patient with different processing speeds. Clear communication about emotions versus ideas keeps this pairing from feeling like a mismatch."
     }
   },
   "pisces": {
     "aries": {
-      "heading": "Pisces × Aries— Mismatch (Water + Fire)",
-      "tagline": "Action and empathy",
-      "description": "Pisces experiences the world through intuition and feeling, while Aries moves through instinct and action. Aries adds direction and protective energy; Pisces brings imagination, empathy, and emotional nuance. Together they blend softness with boldness in a delicate contrast. The connection feels spirited, sensitive, and quietly transformative."
+      "heading": "Pisces × Aries — Clashing Elements (Water + Fire)",
+      "tagline": "Dreams and drive",
+      "description": "Pisces is sensitive and imaginative; Aries is direct and impulsive. You can motivate each other—Aries helps Pisces act, Pisces helps Aries empathise—but miscommunications are easy. Strong boundaries and kindness help this duo feel inspiring instead of draining."
     },
     "taurus": {
-      "heading": "Pisces × Taurus— Compatible (Water + Earth)",
+      "heading": "Pisces × Taurus — Compatible Elements (Water + Earth)",
       "tagline": "Soft and steady",
-      "description": "Taurus offers stability, warmth, and grounded presence; Pisces brings compassion, creativity, and emotional depth. Their energies form a nurturing, gentle rhythm where both feel understood. Pisces enriches Taurus' inner world with softness; Taurus helps Pisces feel secure and steady. The dynamic feels calm, affectionate, and deeply soothing."
+      "description": "Pisces brings compassion and creativity; Taurus brings stability and practical care. Together you create a soothing, romantic, and comfortable atmosphere. The relationship thrives when you talk openly about money, responsibilities, and rest."
     },
     "gemini": {
-      "heading": "Pisces × Gemini— Semi-Compatible (Water + Air)",
-      "tagline": "Dreamy and curious",
-      "description": "Gemini engages through ideas; Pisces through emotion and intuition — creating a fluid, intriguing contrast. Gemini brings clarity and movement; Pisces adds empathy, atmosphere, and inner richness. Their interplay mixes thought with feeling in a light yet meaningful way. The connection feels airy, expressive, and delicately balanced."
+      "heading": "Pisces × Gemini — Semi-Compatible (Water + Air)",
+      "tagline": "Waves and words",
+      "description": "Pisces feels through situations; Gemini talks through them. You can spark each other's imagination but also misread intentions. Gentle explanations and patience with mood shifts turn this into a curious, creative pairing."
     },
     "cancer": {
-      "heading": "Pisces × Cancer— Same Element (Water + Water)",
-      "tagline": "Soft and intuitive",
-      "description": "Pisces and Cancer share intuitive understanding, emotional depth, and a natural sense of comfort. Cancer offers protection and stability; Pisces brings imagination and soulful sensitivity. Their connection flows with ease and heartfelt resonance. The dynamic feels warm, enveloping, and deeply intuitive."
+      "heading": "Pisces × Cancer — Same Element (Water + Water)",
+      "tagline": "Safe harbour",
+      "description": "Pisces and Cancer both value emotional connection, home, and loyalty. Cancer builds the container; Pisces fills it with empathy and dreams. The bond feels caring and intuitive, though you'll want grounding habits so you don't both spiral into worry."
     },
     "leo": {
-      "heading": "Pisces × Leo— Mismatch (Water + Fire)",
-      "tagline": "Drama and dream",
-      "description": "Leo expresses with boldness and warmth; Pisces expresses with softness and emotional subtlety. Pisces opens Leo's heart to vulnerability; Leo helps Pisces feel seen and uplifted. Their interaction blends courage with compassion in a vivid contrast. The connection feels tender, colourful, and emotionally expansive."
+      "heading": "Pisces × Leo — Clashing Elements (Water + Fire)",
+      "tagline": "Stage and soul",
+      "description": "Leo seeks recognition and creative expression; Pisces seeks transcendence and emotional merging. You can inspire each other artistically but also hurt each other unintentionally. Honest reassurance and shared creative outlets keep this from feeling like a constant mismatch."
     },
     "virgo": {
-      "heading": "Pisces × Virgo— Opposites (Water + Earth)",
-      "tagline": "Opposite healers",
-      "description": "Pisces moves through intuition and feeling; Virgo through analysis and structure — creating a classic, complementary polarity. Virgo brings clarity, grounding, and thoughtful intention; Pisces brings imagination, empathy, and emotional insight. Together they balance logic with intuition in a deeply meaningful way. The dynamic feels reflective, healing, and quietly transformative."
+      "heading": "Pisces × Virgo — Compatible Elements (Water + Earth), Opposites",
+      "tagline": "Healing axis",
+      "description": "Pisces and Virgo are opposites who meet around healing, service, and making life better. Virgo manages details and routines; Pisces manages emotional and spiritual tone. The relationship feels meaningful when neither over-sacrifices and you respect each other's limits."
     },
     "libra": {
-      "heading": "Pisces × Libra— Semi-Compatible (Water + Air)",
-      "tagline": "Soft and romantic",
-      "description": "Libra approaches through harmony and gentle reason; Pisces through emotion and imagination. Pisces adds depth and creativity; Libra adds calmness and aesthetic balance. Together they form an airy, artistic, and peaceful blend. The connection feels soft, graceful, and atmospherically warm."
+      "heading": "Pisces × Libra — Semi-Compatible (Water + Air)",
+      "tagline": "Romantic idealists",
+      "description": "Libra seeks harmony and partnership; Pisces seeks unconditional love and soul-level connection. You share a dreamy, romantic streak that can be beautiful but unrealistic if ungrounded. Clear agreements and practical planning make this pairing feel enchanted and workable."
     },
     "scorpio": {
-      "heading": "Pisces × Scorpio— Same Element (Water + Water)",
-      "tagline": "Deep water connection",
-      "description": "A powerful emotional pairing marked by depth, intuition, and a strong unspoken bond. Scorpio provides protection and emotional intensity; Pisces brings empathy, softness, and spiritual warmth. Their connection holds profound emotional resonance. The dynamic feels soulful, enveloping, and transformational."
+      "heading": "Pisces × Scorpio — Same Element (Water + Water)",
+      "tagline": "Deep currents",
+      "description": "Pisces and Scorpio share emotional depth and strong intuition. Pisces brings softness and forgiveness; Scorpio brings intensity and focus. The relationship feels powerful and transformative when trust is high and control issues are addressed."
     },
     "sagittarius": {
-      "heading": "Pisces × Sagittarius— Semi-Compatible (Water + Fire)",
-      "tagline": "Faith and feeling",
-      "description": "Pisces expresses through emotion and inner sensitivity; Sagittarius through exploration and optimism. Sagittarius introduces perspective and openness; Pisces adds imagination and emotional presence. Their energies blend movement with feeling in a gentle, wide-ranging rhythm. The connection feels hopeful, fluid, and quietly uplifting."
+      "heading": "Pisces × Sagittarius — Semi-Compatible (Water + Fire)",
+      "tagline": "Faith and freedom",
+      "description": "Pisces and Sagittarius are both idealistic and oriented toward meaning. Sagittarius seeks truth through experience; Pisces seeks it through feeling and connection. With respect for each other's style, this becomes a spiritually rich, growth-heavy combo."
     },
     "capricorn": {
-      "heading": "Pisces × Capricorn— Compatible (Water + Earth)",
-      "tagline": "Dream and discipline",
-      "description": "Capricorn provides grounding, stability, and long-term vision; Pisces brings empathy, intuition, and emotional richness. Together they form a connection where structure meets depth and protection meets softness. Pisces softens Capricorn's reserve; Capricorn steadies Pisces' emotional world. The dynamic feels secure, tender, and deeply supportive."
+      "heading": "Pisces × Capricorn — Compatible Elements (Water + Earth)",
+      "tagline": "Grounded mystics",
+      "description": "Capricorn offers structure and practical support; Pisces offers empathy and imaginative vision. You can help each other turn dreams into reality. The bond feels gentle, purposeful, and quietly stabilising when both commit."
     },
     "aquarius": {
-      "heading": "Pisces × Aquarius— Semi-Compatible (Water + Air)",
-      "tagline": "Vision and feeling",
-      "description": "Aquarius moves through ideals and insight; Pisces moves through emotion and spiritual sensitivity. Aquarius widens Pisces' perspective; Pisces deepens Aquarius' emotional awareness. Their blend forms a thoughtful, unusual connection with quiet complexity. The dynamic feels airy, reflective, and subtly intuitive."
+      "heading": "Pisces × Aquarius — Semi-Compatible (Water + Air)",
+      "tagline": "Empath and analyst",
+      "description": "Pisces absorbs feelings; Aquarius analyses patterns. You may sometimes feel unheard or overwhelmed by each other's approach. Naming those differences and valuing both intuition and insight allows this pairing to feel wise rather than weird."
     },
     "pisces": {
-      "heading": "Pisces × Pisces— Same Element (Water + Water)",
-      "tagline": "Dreamy and deep",
-      "description": "Two Pisces create a dreamy, intuitive, and deeply empathetic bond. Both understand each other's softness, imagination, and need for emotional sanctuary. The pairing feels soulful, atmospheric, and spiritually resonant. The connection flows with depth, creativity, and shared emotional vision."
+      "heading": "Pisces × Pisces — Same Element (Water + Water)",
+      "tagline": "Shared dreamworld",
+      "description": "Two Pisceans form a gentle, imaginative, and empathic connection with powerful intuitive rapport. You easily slip into each other's moods and fantasies. To keep things healthy, you'll need grounding, boundaries, and practical plans so you don't float off or absorb too much pain."
     }
   }
 };

@@ -1,4 +1,11 @@
 import React from "react";
+import { getChineseDetailedCompat, getWesternDetailedCompat } from "@/data/detailedCompatDescriptions";
+
+type DetailedCompatDescription = {
+  heading: string;
+  tagline: string;
+  description: string;
+};
 
 type ConnectionBoxProps = {
   // Basic label + score (optional)
@@ -22,6 +29,10 @@ type ConnectionBoxProps = {
   chineseSubline?: string;      // optional softer line
   westernLine: string;          // e.g. "Gemini × Gemini — Same Element: Air × Air"
   westernSubline?: string;      // optional softer line
+  
+  // Detailed compatibility descriptions (optional - will be fetched if not provided)
+  chineseDetailedCompat?: DetailedCompatDescription | null;
+  westernDetailedCompat?: DetailedCompatDescription | null;
   
   // Action button callbacks
   onPass?: () => void;
@@ -49,12 +60,37 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   chineseSubline,
   westernLine,
   westernSubline,
+  chineseDetailedCompat,
+  westernDetailedCompat,
   onPass,
   onLike,
   onMessageClick,
   onViewProfile,
   pattern,
 }) => {
+  // Fetch detailed compatibility if not provided
+  // Convert to lowercase for lookup (data uses lowercase keys)
+  const chineseCompatRaw = chineseDetailedCompat ?? getChineseDetailedCompat(
+    leftChineseLabel.toLowerCase().trim(),
+    rightChineseLabel.toLowerCase().trim()
+  );
+  const westernCompatRaw = westernDetailedCompat ?? getWesternDetailedCompat(
+    leftSunLabel.toLowerCase().trim(),
+    rightSunLabel.toLowerCase().trim()
+  );
+
+  // Filter out specific combinations that should not be shown in connection boxes
+  const shouldExcludeChinese = chineseCompatRaw && (
+    chineseCompatRaw.heading.includes("Monkey × Rooster") ||
+    chineseCompatRaw.heading.includes("Rooster × Monkey")
+  );
+  const shouldExcludeWestern = westernCompatRaw && (
+    westernCompatRaw.heading.includes("Aquarius × Aries") ||
+    westernCompatRaw.heading.includes("Aries × Aquarius")
+  );
+
+  const chineseCompat = shouldExcludeChinese ? null : chineseCompatRaw;
+  const westernCompat = shouldExcludeWestern ? null : westernCompatRaw;
   const matchColorClasses: Record<
     NonNullable<ConnectionBoxProps["matchLabelColor"]>,
     string
@@ -218,6 +254,57 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
             {westernSubline}
           </p>
+        )}
+      </div>
+
+      {/* Detailed Compatibility Sections */}
+      <div className="mt-6 space-y-4">
+        {/* Chinese Overview Section */}
+        {chineseCompat && (
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4">
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2">
+              Chinese Overview
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-start justify-between gap-2">
+                <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1">
+                  {chineseCompat.heading}
+                </h4>
+              </div>
+              {chineseCompat.tagline && (
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  {chineseCompat.tagline}
+                </p>
+              )}
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {chineseCompat.description}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {/* Western Overview Section */}
+        {westernCompat && (
+          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4">
+            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2">
+              Western Overview
+            </h3>
+            <div className="space-y-2">
+              <div className="flex items-start justify-between gap-2">
+                <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1">
+                  {westernCompat.heading}
+                </h4>
+              </div>
+              {westernCompat.tagline && (
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
+                  {westernCompat.tagline}
+                </p>
+              )}
+              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                {westernCompat.description}
+              </p>
+            </div>
+          </div>
         )}
       </div>
 

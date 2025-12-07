@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/src/lib/prisma";
+import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth-server";
 
 export async function GET(req: Request) {
@@ -11,6 +11,14 @@ export async function GET(req: Request) {
       where: topic ? { topic } : {},
       orderBy: { createdAt: "desc" },
       take: 50,
+      include: {
+        _count: {
+          select: {
+            comments: true,
+            likes: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(posts);

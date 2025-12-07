@@ -857,6 +857,83 @@ export default function MatchesPage() {
     }
   }, [showSettingsDropdown])
 
+  // Helper function to create a fallback connection box when errors occur
+  const createFallbackConnectionBox = (
+    profile: any,
+    userWest: string,
+    userEast: string,
+    profileWest: string,
+    profileEast: string,
+    errorMessage?: string
+  ): ConnectionBoxData => {
+    console.warn(`[⚠️ Fallback] Creating fallback connection box for profile ${profile.id} (${profile.name})${errorMessage ? `: ${errorMessage}` : ''}`);
+    
+    return {
+      score: 50,
+      rank: "Neutral Match",
+      rankLabel: "Neutral Match",
+      rankKey: "neutral",
+      emoji: "✨",
+      colorRgb: "rgb(34, 139, 34)",
+      connectionLabel: "Neutral Match · 50%",
+      tagline: "Neutral Match",
+      east_tagline: `${profileEast} × ${userEast} — Neutral Pattern`,
+      tags: [],
+      insight: 'Compatibility information is being calculated. Please refresh the page.',
+      longformBody: 'Compatibility information is being calculated. Please refresh the page.',
+      east_relation: `${profileEast} × ${userEast} — Neutral Pattern`,
+      east_summary: `${profileEast} × ${userEast} — Neutral Pattern`,
+      east_description: '',
+      west_relation: `${profileWest} × ${userWest} — Mixed Elements`,
+      west_summary: `${profileWest} × ${userWest} — Mixed Elements`,
+      west_description: '',
+      westernSignLine: getSunMatchBlurb(profileWest as WesternSign, userWest as WesternSign),
+      wuXingLine: '',
+      a: {
+        west: userWest,
+        east: userEast,
+        westGlyph: getWesternSignGlyph(userWest),
+        eastGlyph: getChineseSignGlyph(userEast),
+        chineseElement: undefined
+      },
+      b: {
+        west: profileWest,
+        east: profileEast,
+        westGlyph: getWesternSignGlyph(profileWest),
+        eastGlyph: getChineseSignGlyph(profileEast),
+        chineseElement: undefined
+      },
+      tier: "Neutral",
+      aboutMeText: profile.aboutMe || profile.aboutMeText,
+      age: profile.age,
+      occupation: profile.occupation,
+      city: profile.city,
+      distance: profile.distance,
+      height: profile.height,
+      children: profile.children,
+      religion: profile.religion,
+      selectedDeepPrompts: profile.prompts?.map((p: any) => p.question),
+      deepPromptAnswers: profile.prompts?.reduce((acc: any, p: any) => {
+        acc[p.question] = p.answer;
+        return acc;
+      }, {}),
+      chinesePattern: undefined,
+      westAspect: undefined,
+      westElementRelation: undefined,
+      isChineseOpposite: false,
+      isLivelyPair: false,
+      wuXingA: undefined,
+      wuXingB: undefined,
+      pillLabel: "NEUTRAL",
+      pattern: undefined,
+      patternFullLabel: "Neutral Pattern",
+      baseTagline: "Neutral Match",
+      patternEmoji: "✨",
+      chemistryStars: 2.5,
+      stabilityStars: 2.5,
+    };
+  };
+
   // Helper function to convert SimpleConnectionBox to ConnectionBoxData
   const convertSimpleToConnectionBoxData = (
     simpleBox: SimpleConnectionBox,
@@ -1159,12 +1236,41 @@ export default function MatchesPage() {
           const errorMessage = error instanceof Error ? error.message : error instanceof Event ? 'Event error' : String(error);
           const errorStack = error instanceof Error ? error.stack : '';
           console.error(`[✗] Error in buildConnectionBox for ${profile.name}:`, errorMessage, errorStack || error);
-          // Skip this profile if there's an error
+          // Calculate display west sign for fallback
+          const profileDisplayWest = sunSignSystem === "sidereal"
+            ? (profile.siderealWesternSign || profile.westernSign)
+            : (profile.tropicalWesternSign || profile.westernSign)
+          const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
+          // Create fallback connection box instead of skipping
+          const fallbackBox = createFallbackConnectionBox(
+            profile,
+            userWest,
+            userEast,
+            profileDisplayWestCapitalized,
+            profileEast,
+            `buildConnectionBox error: ${errorMessage}`
+          );
+          boxes[profile.id] = fallbackBox;
           continue;
         }
         
         if (!simpleBox) {
           console.error(`[✗] buildConnectionBox returned undefined for ${profile.name}`);
+          // Calculate display west sign for fallback
+          const profileDisplayWest = sunSignSystem === "sidereal"
+            ? (profile.siderealWesternSign || profile.westernSign)
+            : (profile.tropicalWesternSign || profile.westernSign)
+          const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
+          // Create fallback connection box instead of skipping
+          const fallbackBox = createFallbackConnectionBox(
+            profile,
+            userWest,
+            userEast,
+            profileDisplayWestCapitalized,
+            profileEast,
+            'buildConnectionBox returned undefined'
+          );
+          boxes[profile.id] = fallbackBox;
           continue;
         }
         
@@ -1190,11 +1296,31 @@ export default function MatchesPage() {
           const errorMessage = error instanceof Error ? error.message : error instanceof Event ? 'Event error' : String(error);
           const errorStack = error instanceof Error ? error.stack : '';
           console.error(`[✗] Error in convertSimpleToConnectionBoxData for ${profile.name}:`, errorMessage, errorStack || error);
+          // Create fallback connection box instead of skipping
+          const fallbackBox = createFallbackConnectionBox(
+            profile,
+            userWest,
+            userEast,
+            profileDisplayWestCapitalized,
+            profileEast,
+            `convertSimpleToConnectionBoxData error: ${errorMessage}`
+          );
+          boxes[profile.id] = fallbackBox;
           continue;
         }
         
         if (!boxData) {
           console.error(`[✗] convertSimpleToConnectionBoxData returned undefined for ${profile.name}`);
+          // Create fallback connection box instead of skipping
+          const fallbackBox = createFallbackConnectionBox(
+            profile,
+            userWest,
+            userEast,
+            profileDisplayWestCapitalized,
+            profileEast,
+            'convertSimpleToConnectionBoxData returned undefined'
+          );
+          boxes[profile.id] = fallbackBox;
           continue;
         }
         
@@ -1749,8 +1875,17 @@ export default function MatchesPage() {
     }
     
     // After processing all profiles, set the boxes
+    const processedIds = Object.keys(boxes).map(id => parseInt(id)).sort((a, b) => a - b)
+    const allProfileIds = enrichedProfiles.map(p => p.id).sort((a, b) => a - b)
+    const missingIds = allProfileIds.filter(id => !processedIds.includes(id))
+    
     console.log('[Match Engine] Finished. Total boxes:', Object.keys(boxes).length)
-      setCompatBoxes(boxes)
+    console.log('[Match Engine] Processed profile IDs:', processedIds.join(', '))
+    if (missingIds.length > 0) {
+      console.warn('[Match Engine] ⚠️ Missing connection box data for profile IDs:', missingIds.join(', '))
+    }
+    
+    setCompatBoxes(boxes)
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : error instanceof Event ? 'Event error' : String(error);
       const errorStack = error instanceof Error ? error.stack : '';

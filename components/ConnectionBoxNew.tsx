@@ -22,6 +22,7 @@ import {
 } from "@/lib/astrology/elementsLine";
 import { normalizeWesternSign, getWesternElement, getWesternModality, type WesternSign } from "@/lib/astrology/westMeta";
 import { getChineseSignGlyph } from "@/lib/zodiacHelpers";
+import { getChineseDetailedCompat, getWesternDetailedCompat } from "@/data/detailedCompatDescriptions";
 
 // Helper to remove "Match" from tier labels for display
 function formatTierLabel(tier: string): string {
@@ -534,8 +535,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
       return { start: "#2dd4bf", end: "#22d3ee" }; // teal-400 to cyan-400
     }
     
-    // No Pattern (Blue)
-    if (patternUpper.includes('NO_PATTERN') || patternUpper.includes('NO MAJOR')) {
+    // No Pattern / Neutral (Blue)
+    if (patternUpper.includes('NO_PATTERN') || patternUpper.includes('NO MAJOR') || patternUpper === 'NEUTRAL') {
       return { start: "#60a5fa", end: "#818cf8" }; // blue-400 to indigo-400
     }
     
@@ -707,7 +708,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               </div>
 
               {/* One-line pattern description */}
-              {patternTaglineNew && pattern !== "NO_PATTERN" && (
+              {patternTaglineNew && pattern !== "NO_PATTERN" && pattern !== "NEUTRAL" && (
                 <p className={clsx(
                   "mt-1 text-base text-center",
                   theme === "light" ? "text-gray-600" : "text-slate-400"
@@ -716,13 +717,13 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 </p>
               )}
 
-              {/* Special neutral line for No Major Pattern */}
-              {pattern === "NO_PATTERN" && (
+              {/* Special neutral line for No Major Pattern / Neutral */}
+              {(pattern === "NO_PATTERN" || pattern === "NEUTRAL") && (
                 <p className={clsx(
                   "mt-1 text-base text-center",
                   theme === "light" ? "text-gray-600" : "text-slate-400"
                 )}>
-                  Neutral in Chinese astrology; no strong harmony or conflict pattern.
+                  {patternTaglineNew || "Neutral in Chinese astrology; no strong harmony or conflict pattern."}
                 </p>
               )}
 
@@ -770,29 +771,95 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     : "bg-slate-800/50 text-slate-200"
                 )}>
                   <div className={clsx(
-                    "space-y-3 text-sm sm:text-base leading-snug text-left",
+                    "space-y-4 text-sm sm:text-base leading-snug text-left",
                     theme === "light" ? "text-slate-600" : "text-slate-300"
                   )}>
                     {/* Chinese Connection Section */}
-                    <div className="space-y-0.5">
-                      {/* Chinese zodiac signs on their own line */}
-                      <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{eastA || ''} × {eastB || ''}</p>
-                      
-                      {/* Rest of the Chinese line (pattern description) */}
-                      {chineseLine && (
-                        <p className="text-sm">{chineseLine.replace(/^[^—]*—\s*/, '')}</p>
-                      )}
+                    <div className="space-y-2">
+                      {/* Detailed Chinese Compatibility */}
+                      {(() => {
+                        const chineseCompatRaw = getChineseDetailedCompat(
+                          (eastA || '').toLowerCase().trim(),
+                          (eastB || '').toLowerCase().trim()
+                        );
+                        // Filter out Monkey × Rooster combinations
+                        const shouldExclude = chineseCompatRaw && (
+                          chineseCompatRaw.heading.includes("Monkey × Rooster") ||
+                          chineseCompatRaw.heading.includes("Rooster × Monkey")
+                        );
+                        const chineseCompat = shouldExclude ? null : chineseCompatRaw;
+                        if (chineseCompat) {
+                          return (
+                            <div>
+                              <h4 className={clsx(
+                                "text-xs font-semibold mb-1",
+                                theme === "light" ? "text-slate-800" : "text-slate-200"
+                              )}>
+                                {chineseCompat.heading}
+                              </h4>
+                              {chineseCompat.tagline && (
+                                <p className={clsx(
+                                  "text-xs font-medium mb-1",
+                                  theme === "light" ? "text-slate-700" : "text-slate-300"
+                                )}>
+                                  {chineseCompat.tagline}
+                                </p>
+                              )}
+                              <p className={clsx(
+                                "text-xs leading-relaxed",
+                                theme === "light" ? "text-slate-600" : "text-slate-400"
+                              )}>
+                                {chineseCompat.description}
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
                     </div>
 
                     {/* Western Connection Section */}
-                    <div className="space-y-0.5">
-                      {/* Western zodiac signs on their own line */}
-                      <p className={`font-semibold text-sm whitespace-nowrap ${theme === "light" ? "text-black" : "text-white"}`}>{westA} × {westB}</p>
-                      
-                      {/* Sun sign description */}
-                      {sunMatchBlurb && (
-                        <p className="text-sm">{sunMatchBlurb.replace(/^[^—]*—\s*/, '')}</p>
-                      )}
+                    <div className="space-y-2">
+                      {/* Detailed Western Compatibility */}
+                      {(() => {
+                        const westernCompatRaw = getWesternDetailedCompat(
+                          westA.toLowerCase().trim(),
+                          westB.toLowerCase().trim()
+                        );
+                        // Filter out Aquarius × Aries combinations
+                        const shouldExclude = westernCompatRaw && (
+                          westernCompatRaw.heading.includes("Aquarius × Aries") ||
+                          westernCompatRaw.heading.includes("Aries × Aquarius")
+                        );
+                        const westernCompat = shouldExclude ? null : westernCompatRaw;
+                        if (westernCompat) {
+                          return (
+                            <div>
+                              <h4 className={clsx(
+                                "text-xs font-semibold mb-1",
+                                theme === "light" ? "text-slate-800" : "text-slate-200"
+                              )}>
+                                {westernCompat.heading}
+                              </h4>
+                              {westernCompat.tagline && (
+                                <p className={clsx(
+                                  "text-xs font-medium mb-1",
+                                  theme === "light" ? "text-slate-700" : "text-slate-300"
+                                )}>
+                                  {westernCompat.tagline}
+                                </p>
+                              )}
+                              <p className={clsx(
+                                "text-xs leading-relaxed",
+                                theme === "light" ? "text-slate-600" : "text-slate-400"
+                              )}>
+                                {westernCompat.description}
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
                     </div>
                   </div>
                 </div>

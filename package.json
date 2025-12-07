@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
-    "@prisma/client": "^7.0.1",
+    "@neondatabase/serverless": "^1.0.2",
+    "@prisma/adapter-neon": "^7.1.0",
+    "@prisma/client": "^7.1.0",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
     "@radix-ui/react-aspect-ratio": "latest",
@@ -58,12 +60,14 @@
     "react-day-picker": "latest",
     "react-dom": "^19",
     "react-hook-form": "latest",
+    "react-markdown": "^10.1.0",
     "react-resizable-panels": "latest",
     "recharts": "latest",
     "sonner": "latest",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "latest",
+    "ws": "^8.18.3",
     "zod": "3.25.76"
   },
   "devDependencies": {

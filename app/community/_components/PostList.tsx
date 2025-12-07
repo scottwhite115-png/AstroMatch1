@@ -1,77 +1,69 @@
-"use client";
-
-import { useEffect, useState, useImperativeHandle, forwardRef } from "react";
-
-type Post = {
-  id: string;
-  title: string;
-  content: string;
-  topic: string;
-  authorId: string;
-  createdAt: string;
-  updatedAt: string;
-};
+import prisma from "@/lib/prisma";
+import { PostCardClient } from "./PostCardClient";
+import { getCurrentUserProfile } from "@/lib/currentProfile";
 
 type PostListProps = {
   topic: string;
-  refreshKey?: number;
 };
 
-export type PostListRef = {
-  refresh: () => void;
-};
+export async function PostList({ topic }: PostListProps) {
+  try {
+    const [currentUserProfile, posts] = await Promise.all([
+      getCurrentUserProfile().catch(() => null),
+      prisma.post.findMany({
+        where: { topic },
+        orderBy: { createdAt: "desc" },
+        take: 50,
+      }),
+    ]);
 
-export const PostList = forwardRef<PostListRef, PostListProps>(
-  ({ topic, refreshKey }, ref) => {
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    const fetchPosts = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await fetch(`/api/community/posts?topic=${encodeURIComponent(topic)}`);
-        
-        if (!res.ok) {
-          throw new Error("Failed to fetch posts");
+    // Fetch authors separately to avoid relation issues
+    const postsWithAuthors = await Promise.all(
+      posts.map(async (post) => {
+        try {
+          const author = await prisma.profiles.findUnique({
+            where: { id: post.authorId },
+            select: {
+              id: true,
+              display_name: true,
+              western_sign: true,
+              chinese_sign: true,
+              east_west_code: true,
+            },
+          });
+          return { ...post, author };
+        } catch (error) {
+          console.error(`[PostList] Error fetching author for post ${post.id}:`, error);
+          return {
+            ...post,
+            author: {
+              id: post.authorId,
+              display_name: null,
+              western_sign: null,
+              chinese_sign: null,
+              east_west_code: null,
+            },
+          };
         }
-        
-        const data = await res.json();
-        setPosts(data);
-      } catch (err: any) {
-        console.error(err);
-        setError(err.message ?? "Failed to load posts");
-      } finally {
-        setLoading(false);
-      }
-    };
+      })
+    );
 
-    useImperativeHandle(ref, () => ({
-      refresh: fetchPosts,
+    // Map posts with author data
+    const formattedPosts = postsWithAuthors.map((post: any) => ({
+      ...post,
+      author: {
+        id: post.author?.id || post.authorId,
+        displayName: post.author?.display_name ?? "Anonymous",
+        westSign: post.author?.western_sign ?? "",
+        chineseSign: post.author?.chinese_sign ?? "",
+        eastWestCode: post.author?.east_west_code ?? 
+          (post.author?.western_sign && post.author?.chinese_sign 
+            ? `${post.author.western_sign} ${post.author.chinese_sign}`.trim()
+            : ""),
+      },
     }));
 
-    useEffect(() => {
-      fetchPosts();
-    }, [topic, refreshKey]);
-
-    if (loading) {
-      return (
-        <p className="mt-4 text-sm text-slate-400">
-          Loading posts...
-        </p>
-      );
-    }
-
-    if (error) {
-      return (
-        <p className="mt-4 text-sm text-rose-400">
-          {error}
-        </p>
-      );
-    }
-
-    if (posts.length === 0) {
+    if (formattedPosts.length === 0) {
       return (
         <p className="mt-4 text-sm text-slate-400">
           No posts yet. Be the first to start the conversation.
@@ -81,30 +73,45 @@ export const PostList = forwardRef<PostListRef, PostListProps>(
 
     return (
       <div className="mt-4 space-y-3">
-        {posts.map((post) => (
-          <article
+        {formattedPosts.map((post) => (
+          <PostCardClient
             key={post.id}
-            className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 shadow-sm hover:border-slate-700 transition-colors"
-          >
-            <h3 className="text-sm font-semibold text-slate-50">
-              {post.title}
-            </h3>
-            <p className="mt-1 text-xs text-slate-300 whitespace-pre-wrap">
-              {post.content}
-            </p>
-            <div className="mt-2 flex items-center justify-between text-[11px] text-slate-500">
-              <span>
-                by {post.authorId.slice(0, 8)}...
-              </span>
-              <span>
-                {new Date(post.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-          </article>
+            post={{
+              id: post.id,
+              title: post.title,
+              content: post.content,
+              createdAt: post.createdAt.toISOString(),
+              topic: post.topic,
+              author: post.author,
+            }}
+            currentUserProfile={
+              currentUserProfile
+                ? {
+                    id: currentUserProfile.id,
+                    displayName: currentUserProfile.displayName ?? "You",
+                    westSign: currentUserProfile.westSign ?? "",
+                    chineseSign: currentUserProfile.chineseSign ?? "",
+                    eastWestCode: currentUserProfile.eastWestCode ?? `${currentUserProfile.westSign ?? ""} ${currentUserProfile.chineseSign ?? ""}`.trim() || "",
+                  }
+                : null
+            }
+          />
         ))}
       </div>
     );
+  } catch (error) {
+    console.error("[PostList] Error:", error);
+    return (
+      <div className="mt-4 rounded-xl border border-rose-800 bg-rose-950/20 p-4">
+        <p className="text-sm text-rose-400">
+          Error loading posts. Please try refreshing the page.
+        </p>
+        {process.env.NODE_ENV === 'development' && (
+          <p className="mt-2 text-xs text-rose-300">
+            {error instanceof Error ? error.message : String(error)}
+          </p>
+        )}
+      </div>
+    );
   }
-);
-
-PostList.displayName = "PostList";
+}

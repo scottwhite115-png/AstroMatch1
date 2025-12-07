@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-import AstroLabHeader from "@/components/AstroLabHeader"
+import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
+import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 
 export default function LeoPage() {
   const router = useRouter()
@@ -14,11 +15,7 @@ export default function LeoPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <AstroLabHeader 
-          theme={theme} 
-          setTheme={setTheme} 
-          onMenuClick={() => router.push("/astrology")} 
-        />
+        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -102,156 +99,7 @@ export default function LeoPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className={`text-xl font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                Compatibility with Other Signs
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Aries — Same Element (Fire + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Big energy
-                  </p>
-                  <p>
-                    Leo and Aries share boldness, passion, and forward momentum. Aries brings raw drive and initiative; Leo adds warmth, charisma, and creative presence. The connection feels confident and lively, though clashes around ego and control are part of the package.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Taurus — Mismatch (Fire + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Fixed tastes
-                  </p>
-                  <p>
-                    Leo wants expression and recognition; Taurus wants calm and consistency. Taurus grounds Leo's enthusiasm with steady loyalty; Leo adds colour and drama to Taurus' world. It can be affectionate but stubborn, with neither quick to compromise.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Gemini — Compatible (Fire + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Playful and expressive
-                  </p>
-                  <p>
-                    This pairing is socially bright and mentally stimulating. Gemini adds wit and variety; Leo adds heart and theatrical flair. The dynamic feels fun and uplifting, though Leo may want more depth and Gemini may want more flexibility around focus.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Cancer — Semi-Compatible (Fire + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Heart and show
-                  </p>
-                  <p>
-                    Leo expresses feelings openly; Cancer protects their softer side. Cancer deepens Leo's emotional world; Leo brings optimism and courage to Cancer. The connection can be warm and devoted, but prone to drama if Leo feels unappreciated and Cancer feels unsafe.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Leo — Same Element (Fire + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Big personalities
-                  </p>
-                  <p>
-                    Two Leos create a radiant, dramatic bond with strong loyalty and pride. There's plenty of warmth and mutual encouragement, but also potential for ego contests. The relationship works well when they genuinely celebrate each other instead of silently keeping score.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Virgo — Semi-Compatible (Fire + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Show and service
-                  </p>
-                  <p>
-                    Leo leads with heart and creativity; Virgo with practicality and refinement. Virgo can support Leo's visions in concrete ways; Leo can remind Virgo life isn't only about fixing problems. The bond is quietly strong when appreciation flows both ways.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Libra — Compatible (Fire + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Charming and social
-                  </p>
-                  <p>
-                    Both enjoy beauty, romance, and social settings. Libra brings grace and relational awareness; Leo brings warmth, generosity, and flair. The connection tends to feel bright and harmonious, though decisions may be delayed if neither wants to break the pleasant mood.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Scorpio — Mismatch (Fire + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Intensity squared
-                  </p>
-                  <p>
-                    Leo is outwardly expressive; Scorpio is inwardly intense. Both are loyal and proud but handle power differently. The pairing can be magnetic and passionate, yet prone to stand-offs and control battles if vulnerability is treated as weakness.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Sagittarius — Same Element (Fire + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Fire on fire
-                  </p>
-                  <p>
-                    Leo and Sagittarius share enthusiasm, courage, and a desire for a big life. Sagittarius offers honesty and adventure; Leo offers devotion and heart. The relationship usually feels uplifting and inspiring, though their combined fire can overlook practical realities.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Capricorn — Semi-Compatible (Fire + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pride and strategy
-                  </p>
-                  <p>
-                    Capricorn focuses on goals and status; Leo on self-expression and recognition. Together they can be a strong power couple, with Capricorn setting long-term plans and Leo handling warmth and visibility. The risk is slipping into roles and forgetting emotional nuance.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Aquarius — Opposites (Fire + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Bold and unconventional
-                  </p>
-                  <p>
-                    Leo brings heart, presence, and personal passion; Aquarius brings vision, objectivity, and a group-focused outlook. Their polarity is striking and often fascinating. The connection feels innovative and charged, but tensions arise between personal drama and impersonal ideals.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Leo × Pisces — Mismatch (Fire + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Drama and dream
-                  </p>
-                  <p>
-                    Pisces moves through softness and intuition; Leo through boldness and performance. Pisces offers imagination and empathy; Leo offers protection and confidence. The dynamic can be tender and visually romantic, yet also confusing if expectations stay unspoken.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CompatibilitySection currentSign="leo" type="western" theme={theme} />
 
             <SunSignCompatibilityTable sign="Leo" />
           </div>
@@ -260,4 +108,3 @@ export default function LeoPage() {
     </div>
   )
 }
-

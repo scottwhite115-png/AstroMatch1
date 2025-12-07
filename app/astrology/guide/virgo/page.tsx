@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-import AstroLabHeader from "@/components/AstroLabHeader"
+import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
+import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 
 export default function VirgoPage() {
   const router = useRouter()
@@ -14,11 +15,7 @@ export default function VirgoPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <AstroLabHeader 
-          theme={theme} 
-          setTheme={setTheme} 
-          onMenuClick={() => router.push("/astrology")} 
-        />
+        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -102,156 +99,7 @@ export default function VirgoPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className={`text-xl font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                Compatibility with Other Signs
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Aries — Semi-Compatible (Earth + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Plan vs. impulse
-                  </p>
-                  <p>
-                    Virgo wants to analyse and improve; Aries wants to act now. Aries can help Virgo take bolder steps; Virgo can help Aries refine their moves. The pairing is useful and productive when criticism and defensiveness are kept in check.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Taurus — Same Element (Earth + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Practical builders
-                  </p>
-                  <p>
-                    Virgo and Taurus share a love of the tangible and reliable. Taurus provides patience and stability; Virgo provides refinement and problem-solving. The relationship feels grounded and functional, though they must consciously add play and spontaneity.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Gemini — Semi-Compatible (Both Mercury-ruled)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Thinking in detail
-                  </p>
-                  <p>
-                    Both are mentally active and curious, but they move differently: Gemini explores widely while Virgo refines deeply. Gemini brings movement and fresh perspective; Virgo adds structure and thoughtful insight. Their conversations are lively, analytical, and varied. The energy feels clever, flexible, and subtly intricate.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Cancer — Compatible (Earth + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Caring in practice
-                  </p>
-                  <p>
-                    A caring, steady match shaped by emotional awareness and quiet devotion. Cancer offers intuition and warmth; Virgo offers reliability and thoughtful support. Together they form a rhythm grounded in trust and shared understanding. The dynamic feels nurturing, gentle, and deeply loyal.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Leo — Semi-Compatible (Earth + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Show and service
-                  </p>
-                  <p>
-                    Virgo prefers subtle expression; Leo shines with warmth and boldness. Leo adds colour and confidence to Virgo's understated approach; Virgo brings grounding and thoughtful balance. Their interplay mixes practicality with expressive fire. The connection feels steady, warm, and mutually illuminating.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Virgo — Same Element (Earth + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Refined and particular
-                  </p>
-                  <p>
-                    Two Virgos form a considerate, responsible partnership built on shared values and quiet stability. Both bring care, diligence, and a desire to improve their shared life. Emotional expression unfolds gradually through consistent presence. The energy feels organised, sincere, and deeply attentive.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Libra — Semi-Compatible (Earth + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Considerate but indecisive
-                  </p>
-                  <p>
-                    Virgo leads with structure and discernment; Libra leads with balance and aesthetic refinement. Libra softens Virgo's edges with harmony and perspective; Virgo grounds Libra with clarity and practicality. Their interaction blends movement with steadiness in a gentle way. The dynamic feels graceful, measured, and lightly sophisticated.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Scorpio — Compatible (Earth + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Strategic and serious
-                  </p>
-                  <p>
-                    A deep, purposeful pairing marked by loyalty, emotional insight, and mutual respect. Scorpio brings intensity and truth; Virgo offers steadiness and thoughtful care. Together they create a connection rooted in depth and quiet strength. The energy feels powerful, grounded, and transformative.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Sagittarius — Mismatch (Earth + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Detail vs. big picture
-                  </p>
-                  <p>
-                    Virgo seeks order and consistency, while Sagittarius moves with freedom and expansion. Sagittarius brightens Virgo's world with openness; Virgo offers focus and grounded intention. Their contrast creates a dynamic of discovery and recalibration. The connection feels spacious, thoughtful, and gently contrasting.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Capricorn — Same Element (Earth + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Quietly powerful
-                  </p>
-                  <p>
-                    A practical, long-term pairing grounded in ambition, reliability, and shared purpose. Capricorn contributes vision and discipline; Virgo adds organisation and supportive detail. Together they manifest goals with steady effort and mutual respect. The dynamic feels strong, purposeful, and highly cohesive.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Aquarius — Mismatch (Earth + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Systems and ideas
-                  </p>
-                  <p>
-                    Virgo moves through detail and refinement; Aquarius moves through ideas and innovation. Aquarius opens new conceptual paths for Virgo; Virgo helps Aquarius anchor ideas in reality. Their interplay mixes precision with imagination in a structured yet spacious way. The connection feels thoughtful, curious, and intellectually stimulating.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Virgo × Pisces — Opposites (Earth + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Opposite healers
-                  </p>
-                  <p>
-                    A compelling polarity where Virgo offers structure and clarity while Pisces offers intuition and emotional depth. Pisces brings imagination and soulful insight; Virgo brings grounding and steady presence. Together they form a subtle balance of logic and feeling. The dynamic feels gentle, reflective, and quietly transformative.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CompatibilitySection currentSign="virgo" type="western" theme={theme} />
 
             <SunSignCompatibilityTable sign="Virgo" />
           </div>
@@ -260,4 +108,3 @@ export default function VirgoPage() {
     </div>
   )
 }
-

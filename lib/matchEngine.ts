@@ -81,7 +81,7 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "🌟",
     labelEn: "Triple Harmony",
     labelFull: "San He 三合 · Triple Harmony",
-    tagline: "Triple Harmony – easy flow and strong support.",
+    tagline: "High natural harmony and shared rhythm; when you're aligned, this connection moves fast and far.",
     min: 72,
     max: 98,
     highStart: 88,
@@ -92,7 +92,7 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "💫",
     labelEn: "Secret Friends",
     labelFull: "Liu He 六合 · Secret Friends",
-    tagline: "Close one-to-one bond with a soft, quietly supportive tone.",
+    tagline: "Quietly strong bond that feels safe, loyal, and steady when you choose each other.",
     min: 68,
     max: 91,
     highStart: 82,
@@ -103,18 +103,18 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "🪞",
     labelEn: "Same Sign",
     labelFull: "Same Sign 同生肖",
-    tagline: "Double dose of one energy; high familiarity, medium harmony.",
-    min: 60,
-    max: 70,
-    highStart: 68,
-    midStart: 64,
+    tagline: "Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.",
+    min: 68,
+    max: 82,
+    highStart: 78,
+    midStart: 72,
   },
   NO_PATTERN: {
     id: "NO_PATTERN",
     emoji: "◽",
     labelEn: "Neutral",
     labelFull: "Neutral 中",
-    tagline: "No big traditional pattern. Quality depends more on Western signs and elements.",
+    tagline: "No strong classical pattern; the vibe depends more on personal charts, timing, and your Western signs.",
     min: 52,
     max: 68,
     highStart: 64,
@@ -125,7 +125,7 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "⚠️",
     labelEn: "Six Conflicts",
     labelFull: "Liu Chong 六冲 · Six Conflicts",
-    tagline: "Magnetic opposites – high spark, low long-term harmony.",
+    tagline: "Magnetic opposites with sharp edges; big lessons, not automatic comfort.",
     min: 45,
     max: 62,
     highStart: 60,
@@ -136,7 +136,7 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "💔",
     labelEn: "Six Harms",
     labelFull: "Liu Hai 六害 · Six Harms",
-    tagline: "Drains and misunderstandings; small hurts can build up over time.",
+    tagline: "Sensitive pattern where small misreads can snowball; this match needs extra patience and very clear communication.",
     min: 38,
     max: 60,
     highStart: 54,
@@ -158,7 +158,7 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "💥",
     labelEn: "Break Pattern",
     labelFull: "Po 破 · Break Pattern",
-    tagline: "Breaks, instability and disruption in the flow of the relationship.",
+    tagline: "This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.",
     min: 38,
     max: 60,
     highStart: 54,
@@ -191,10 +191,10 @@ function getChineseBaseScore(
 ): number {
   // Same Sign
   if (pattern === 'SAME_SIGN') {
-    if (elementRelation === 'same') return 68;         // Same animal + same element
-    if (elementRelation === 'compatible') return 65;   // Same animal + compatible elements
-    if (elementRelation === 'semi') return 62;         // Same animal + semi-compatible
-    return 58;                                         // Same animal + clashing elements
+    if (elementRelation === 'same') return 76;         // Same animal + same element
+    if (elementRelation === 'compatible') return 74;   // Same animal + compatible elements
+    if (elementRelation === 'semi') return 72;         // Same animal + semi-compatible
+    return 70;                                         // Same animal + clashing elements
   }
 
   // San He trines (NO same sign)
@@ -261,7 +261,7 @@ function getChineseBaseScore(
 const PATTERN_BASE_SCORE: Record<ChinesePattern, number> = {
   SAN_HE: 82,
   LIU_HE: 80,
-  SAME_SIGN: 62,
+  SAME_SIGN: 72,
   NO_PATTERN: 60,
   LIU_CHONG: 52,
   LIU_HAI: 50,

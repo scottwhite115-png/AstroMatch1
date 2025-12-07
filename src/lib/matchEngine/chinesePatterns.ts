@@ -98,13 +98,15 @@ const XING_PAIRS: [ChineseAnimal, ChineseAnimal][] = [
 ];
 
 // Break (Po 破) pairs
+// NOTE: Goat-Dog is now treated as Neutral (not Po) per latest specs
+// NOTE: Snake-Monkey is Liu He (not Po), so it's excluded here
+// NOTE: Tiger-Pig is Liu He (not Po), so it's excluded here
 const PO_PAIRS: [ChineseAnimal, ChineseAnimal][] = [
   ["Rat", "Rooster"],
   ["Ox", "Dragon"],
-  ["Tiger", "Pig"],
+  // ["Tiger", "Pig"],   // Tiger-Pig is Liu He, not Po
   ["Rabbit", "Horse"],
-  ["Snake", "Monkey"],
-  ["Goat", "Dog"],
+  // ["Goat", "Dog"],     // Goat-Dog is now Neutral, not Po
 ];
 
 function isInPairList(

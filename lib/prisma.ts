@@ -1,2 +1,30 @@
-// Re-export the existing Prisma client from src/lib/prisma
-export { default as prisma } from "@/src/lib/prisma";
+import { PrismaClient } from '@prisma/client'
+import { Pool, neonConfig } from '@neondatabase/serverless'
+import { PrismaNeon } from '@prisma/adapter-neon'
+import ws from 'ws'
+
+// Configure neon WebSocket for Node.js environment
+if (typeof WebSocket === 'undefined') {
+  neonConfig.webSocketConstructor = ws
+}
+
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined
+}
+
+export const prisma =
+  globalForPrisma.prisma ??
+  (() => {
+    const connectionString = process.env.DATABASE_URL!
+    const pool = new Pool({ connectionString })
+    const adapter = new PrismaNeon(pool)
+    
+    return new PrismaClient({
+      adapter,
+      log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+    })
+  })()
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+
+export default prisma

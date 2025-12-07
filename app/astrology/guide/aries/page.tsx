@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-import AstroLabHeader from "@/components/AstroLabHeader"
+import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
+import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
 
 export default function AriesPage() {
   const router = useRouter()
@@ -14,11 +15,7 @@ export default function AriesPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <AstroLabHeader 
-          theme={theme} 
-          setTheme={setTheme} 
-          onMenuClick={() => router.push('/astrology')} 
-        />
+        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -102,156 +99,7 @@ export default function AriesPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className={`text-xl font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                Compatibility with Other Signs
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Aries — Same Element (Fire + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    All gas, no brakes
-                  </p>
-                  <p>
-                    Two Aries light up fast with passion, honesty, and instinct. There's big chemistry and a low tolerance for boredom, but also ego clashes and impulsive decisions. This works best when both learn to pause, apologise, and share the steering wheel.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Taurus — Semi-Compatible (Fire + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Spark meets stillness
-                  </p>
-                  <p>
-                    Aries wants speed and change; Taurus wants calm and security. Taurus can ground Aries and make life more stable, while Aries pushes Taurus to move and take risks. It works when they respect each other's pace instead of treating it as a flaw.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Gemini — Compatible (Fire + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Quick and curious
-                  </p>
-                  <p>
-                    Both signs thrive on movement and novelty. Aries brings drive and blunt courage; Gemini brings ideas, humour, and mental agility. The energy feels light, fast, and playful, though they need some grounding or things stay at the "fun but unfinished" stage.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Cancer — Mismatch (Fire + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Heat and shell
-                  </p>
-                  <p>
-                    Aries is direct and confrontational; Cancer is protective and sensitive. Aries can accidentally trample Cancer's feelings, while Cancer's indirect moods frustrate Aries. There's care here, but it demands extra patience and emotional skill to avoid constant misunderstandings.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Leo — Same Element (Fire + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Big, bright energy
-                  </p>
-                  <p>
-                    Strong attraction, shared confidence, and a love of drama. Aries pushes for new experiences; Leo brings loyalty, warmth, and pride. The match feels bold and romantic, as long as they cheer each other on instead of competing over who's the star.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Virgo — Semi-Compatible (Fire + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Impulse and precision
-                  </p>
-                  <p>
-                    Aries jumps in; Virgo fine-tunes. Virgo can turn Aries' raw push into something effective, while Aries stops Virgo from overthinking. This pairing can be productive, but criticism and impatience need to be managed carefully or resentment builds.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Libra — Opposites (Fire + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Me vs. we
-                  </p>
-                  <p>
-                    Aries is self-led and blunt; Libra is partnership-focused and diplomatic. The polarity is attractive and often sexy, but there's a constant tug-of-war between independence and harmony. It works when both engage honestly instead of framing the other as "selfish" or "needy."
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Scorpio — Mismatch (Fire + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Flash vs. depth
-                  </p>
-                  <p>
-                    Both are intense and ruled by Mars themes, yet in different ways. Aries burns hot and fast; Scorpio digs deep and moves slowly. The connection can be powerful and magnetic, but emotional power struggles and trust issues are common if neither softens.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Sagittarius — Same Element (Fire + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Adventure allies
-                  </p>
-                  <p>
-                    Aries and Sagittarius both love freedom, honesty, and action. Aries brings initiative and immediate drive; Sagittarius brings optimism, humour, and big-picture vision. The relationship feels like a shared quest, though someone has to remember practical details.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Capricorn — Mismatch (Fire + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Impulse vs. strategy
-                  </p>
-                  <p>
-                    Capricorn plays the long game; Aries wants fast results. Capricorn may see Aries as reckless; Aries may see Capricorn as controlling or pessimistic. They're powerful as a team on shared goals, but personally it often feels like brakes versus accelerator.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Aquarius — Compatible (Fire + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Rebel team-up
-                  </p>
-                  <p>
-                    Both signs value independence, candour, and doing things differently. Aries supplies raw courage and push; Aquarius contributes perspective, originality, and a cooler head. The bond feels progressive and energising, but they must remember emotional presence, not just plans and ideas.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Aries × Pisces — Semi-Compatible (Fire + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Blade and mist
-                  </p>
-                  <p>
-                    Pisces moves through feeling and nuance; Aries through clarity and action. Aries can protect and activate Pisces; Pisces can soften Aries and add empathy. It's a delicate mix that works only if Aries slows down and Pisces doesn't vanish into avoidance.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CompatibilitySection currentSign="aries" type="western" theme={theme} />
 
             <SunSignCompatibilityTable sign="Aries" />
           </div>
@@ -260,4 +108,3 @@ export default function AriesPage() {
     </div>
   )
 }
-

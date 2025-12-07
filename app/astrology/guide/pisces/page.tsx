@@ -3,7 +3,8 @@
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
-import AstroLabHeader from "@/components/AstroLabHeader"
+import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
+import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 
 export default function PiscesPage() {
   const router = useRouter()
@@ -14,11 +15,7 @@ export default function PiscesPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <AstroLabHeader 
-          theme={theme} 
-          setTheme={setTheme} 
-          onMenuClick={() => router.push("/astrology")} 
-        />
+        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
           {/* Header with Back Button */}
@@ -102,156 +99,7 @@ export default function PiscesPage() {
               </div>
             </div>
 
-            <div>
-              <h2 className={`text-xl font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                Compatibility with Other Signs
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Aries — Semi-Compatible (Water + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dream and drive
-                  </p>
-                  <p>
-                    Pisces moves through intuition and emotion; Aries through direct action. Aries can protect and energise Pisces; Pisces can soften Aries and add empathy. The mix is touching but delicate, requiring honest communication and good boundaries.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Taurus — Compatible (Water + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Dreams with soil
-                  </p>
-                  <p>
-                    Taurus offers stability and practical care; Pisces offers imagination, sensitivity, and emotional colour. Taurus helps give Pisces' visions a solid base; Pisces keeps Taurus from becoming too rigid. The relationship often feels gentle and quietly secure.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Gemini — Semi-Compatible (Water + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Waves and words
-                  </p>
-                  <p>
-                    Pisces senses, Gemini explains. Gemini can help Pisces sort and name feelings; Pisces helps Gemini feel beyond the rational. The connection can be creative and confusing, needing extra clarity to prevent crossed wires.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Cancer — Same Element (Water + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Safe tide
-                  </p>
-                  <p>
-                    Both are compassionate and emotionally tuned-in. Cancer brings protection and memory; Pisces brings imagination and spiritual or artistic depth. The match can be deeply nurturing, but must guard against shared avoidance and over-attachment.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Leo — Mismatch (Water + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Stage and dream
-                  </p>
-                  <p>
-                    Leo wants visible expression and clear recognition; Pisces wants subtle emotional and imaginative connection. Leo can offer protection and warmth; Pisces offers inspiration and empathy. The dynamic is romantic but can be ungrounded without practical agreements.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Virgo — Opposites (Water + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Chaos and order
-                  </p>
-                  <p>
-                    Pisces and Virgo mirror each other's blind spots and strengths. Virgo brings analysis, boundaries, and practicality; Pisces brings compassion, intuition, and surrender. It can be a healing match or a frustrating one, depending on how kindly they view each other's differences.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Libra — Semi-Compatible (Water + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Soft focus romance
-                  </p>
-                  <p>
-                    Libra seeks harmony and aesthetic balance; Pisces seeks emotional and spiritual connection. Together they can create a charming, romantic atmosphere. But decision-making and boundaries can blur unless someone chooses to lead clearly.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Scorpio — Same Element (Water + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Mystic depth
-                  </p>
-                  <p>
-                    Scorpio offers intensity, focus, and emotional courage; Pisces offers empathy, forgiveness, and imagination. The bond can feel soulful, even fated. The challenge is avoiding co-dependence and drama disguised as destiny.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Sagittarius — Semi-Compatible (Water + Fire)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Faith and freedom
-                  </p>
-                  <p>
-                    Both are idealistic and oriented toward something larger than themselves. Sagittarius looks for truth in exploration; Pisces finds it in feeling and symbolism. The relationship can be inspiring, yet everyday routines and practicalities can easily slip.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Capricorn — Compatible (Water + Earth)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Vision anchored
-                  </p>
-                  <p>
-                    Capricorn gives Pisces structure, protection, and a container for their dreams. Pisces softens Capricorn's edges and reminds them of the inner life. The match can be quietly strong, as long as Capricorn doesn't dismiss feelings and Pisces doesn't disappear into fantasy.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Aquarius — Semi-Compatible (Water + Air)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Cloud and current
-                  </p>
-                  <p>
-                    Aquarius thinks about humanity; Pisces feels it. Aquarius offers perspective and detachment; Pisces offers compassion and emotional nuance. The connection can be subtly profound, but they must work to stay grounded and present.
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Pisces × Pisces — Same Element (Water + Water)
-                  </h3>
-                  <p className={`text-base font-semibold mb-2 ${theme === "light" ? "text-gray-800" : "text-white/90"}`}>
-                    Double dream
-                  </p>
-                  <p>
-                    Two Pisceans create a sensitive, intuitive, and often otherworldly bond. The empathy is deep, but so is the temptation to escape reality together. This pairing needs clear boundaries, routines, and honesty to turn shared dreams into something livable.
-                  </p>
-                </div>
-              </div>
-            </div>
+            <CompatibilitySection currentSign="pisces" type="western" theme={theme} />
 
             <SunSignCompatibilityTable sign="Pisces" />
           </div>
@@ -260,4 +108,3 @@ export default function PiscesPage() {
     </div>
   )
 }
-
