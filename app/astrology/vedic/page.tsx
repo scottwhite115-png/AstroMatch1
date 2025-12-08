@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { VedicSection } from "@/components/astrolab/VedicSection"
@@ -9,7 +9,68 @@ import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 export default function VedicPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
-        // Close drawer when clicking outside
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const drawerRef = useRef<HTMLElement>(null)
+  const drawerButtonRef = useRef<HTMLButtonElement>(null)
+
+  // Astrology pages menu items
+  const astrologyPages = [
+    {
+      id: 'combinations',
+      label: 'Sign Combinations',
+      description: 'Explore Western × Chinese zodiac matches',
+      icon: '⭐',
+      path: '/astrology/combinations',
+    },
+    {
+      id: 'western-guide',
+      label: 'Sun Signs',
+      description: 'Learn about the 12 sun signs',
+      icon: '☀️',
+      path: '/astrology/sun-signs',
+    },
+    {
+      id: 'chinese-guide',
+      label: 'Chinese Zodiac',
+      description: 'Discover the 12 animals',
+      icon: '🐉',
+      path: '/astrology/chinese-zodiac',
+    },
+    {
+      id: 'vedic-astrology',
+      label: 'Vedic Astrology',
+      description: 'Ancient Indian astrological wisdom',
+      icon: '🕉️',
+      path: '/astrology/vedic',
+    },
+  ]
+
+  // Section menu items for the drawer
+  const sectionItems = [
+    {
+      id: 'match-generator',
+      label: 'Match Generator',
+      description: 'Calculate compatibility between two birthdates',
+      icon: '🧮',
+      path: '/astrology/match-generator',
+    },
+    {
+      id: 'chinese-patterns',
+      label: 'Chinese Pattern Ranking',
+      description: 'Traditional Chinese zodiac compatibility patterns',
+      icon: '📊',
+      path: '/astrology#chinese-patterns',
+    },
+    {
+      id: 'what-shapes-score',
+      label: 'What Shapes Your Score',
+      description: 'How the match engine works',
+      icon: '⚙️',
+      path: '/astrology#what-shapes-score',
+    },
+  ]
+
+  // Close drawer when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!isDrawerOpen) return
@@ -35,7 +96,7 @@ export default function VedicPage() {
     }
   }, [isDrawerOpen])
 
-      return (
+  return (
     <div
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
@@ -140,14 +201,11 @@ export default function VedicPage() {
 
         <div className="px-4 pt-6 pb-3 sm:px-6 lg:px-8">
           {/* Page Title */}
-          <div className="mb-6 text-center">
-            <h1 className={`text-2xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-              Vedic Astrology
-            </h1>
-            <p className={`mt-2 text-sm max-w-2xl mx-auto ${theme === "light" ? "text-gray-600" : "text-slate-300"}`}>
-              A simple Vedic "lite" section focused on your Vedic Big Three, relationship themes and timing – designed to stay clear, modern and not overwhelming.
-            </p>
-          </div>
+              <div className="mb-6 text-center">
+                <h1 className={`text-2xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+                  Vedic Astrology
+                </h1>
+              </div>
 
           {/* Vedic Section Component */}
           <VedicSection theme={theme} />

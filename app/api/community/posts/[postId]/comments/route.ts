@@ -4,10 +4,10 @@ import { getCurrentUser } from "@/lib/auth-server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) {
   try {
-    const { postId } = params;
+    const { postId } = await params;
 
     // Get all top-level comments (no parentId) and their replies
     const comments = await prisma.comment.findMany({
@@ -17,21 +17,65 @@ export async function GET(
       },
       orderBy: { createdAt: "asc" },
       include: {
+        author: {
+          select: {
+            id: true,
+            display_name: true,
+            western_sign: true,
+            chinese_sign: true,
+            east_west_code: true,
+          },
+        },
         replies: {
           orderBy: { createdAt: "asc" },
           include: {
-            _count: {
-              select: { likes: true },
+            author: {
+              select: {
+                id: true,
+                display_name: true,
+                western_sign: true,
+                chinese_sign: true,
+                east_west_code: true,
+              },
             },
           },
-        },
-        _count: {
-          select: { likes: true },
         },
       },
     });
 
-    return NextResponse.json(comments);
+    // Format with author info
+    const formattedComments = comments.map((comment) => ({
+      id: comment.id,
+      content: comment.content,
+      createdAt: comment.createdAt.toISOString(),
+      authorId: comment.authorId,
+      parentId: comment.parentId,
+      likeCount: comment.likeCount,
+      author: {
+        id: comment.author?.id || comment.authorId,
+        displayName: comment.author?.display_name || "Anonymous",
+        westSign: comment.author?.western_sign || "",
+        chineseSign: comment.author?.chinese_sign || "",
+        eastWestCode: comment.author?.east_west_code || "",
+      },
+      replies: comment.replies.map((reply) => ({
+        id: reply.id,
+        content: reply.content,
+        createdAt: reply.createdAt.toISOString(),
+        authorId: reply.authorId,
+        parentId: reply.parentId,
+        likeCount: reply.likeCount,
+        author: {
+          id: reply.author?.id || reply.authorId,
+          displayName: reply.author?.display_name || "Anonymous",
+          westSign: reply.author?.western_sign || "",
+          chineseSign: reply.author?.chinese_sign || "",
+          eastWestCode: reply.author?.east_west_code || "",
+        },
+      })),
+    }));
+
+    return NextResponse.json(formattedComments);
   } catch (err) {
     console.error("[GET /api/community/posts/[postId]/comments]", err);
     return new NextResponse("Internal error", { status: 500 });
@@ -40,7 +84,7 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -49,7 +93,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { postId } = params;
+    const { postId } = await params;
     const body = await req.json();
     const { content, parentId } = body as {
       content?: string;
@@ -80,19 +124,39 @@ export async function POST(
       }
     }
 
-    // Create the comment
-    const comment = await prisma.comment.create({
-      data: {
-        postId,
-        parentId: parentId || null,
-        authorId: user.id,
-        content: content.trim(),
-      },
-      include: {
-        _count: {
-          select: { likes: true },
+    // Create the comment and increment post comment count in a transaction
+    const comment = await prisma.$transaction(async (tx) => {
+      const newComment = await tx.comment.create({
+        data: {
+          postId,
+          parentId: parentId || null,
+          authorId: user.id,
+          content: content.trim(),
         },
-      },
+        include: {
+          author: {
+            select: {
+              id: true,
+              display_name: true,
+              western_sign: true,
+              chinese_sign: true,
+              east_west_code: true,
+            },
+          },
+        },
+      });
+
+      // Increment post comment count
+      await tx.post.update({
+        where: { id: postId },
+        data: {
+          commentCount: {
+            increment: 1,
+          },
+        },
+      });
+
+      return newComment;
     });
 
     // Create notification
@@ -134,7 +198,23 @@ export async function POST(
       console.error("[Notification creation error]", notifErr);
     }
 
-    return NextResponse.json(comment, { status: 201 });
+    // Format response
+    const formattedComment = {
+      id: comment.id,
+      content: comment.content,
+      createdAt: comment.createdAt.toISOString(),
+      parentId: comment.parentId,
+      likeCount: comment.likeCount,
+      author: {
+        id: comment.author?.id || comment.authorId,
+        displayName: comment.author?.display_name || "Anonymous",
+        westSign: comment.author?.western_sign || "",
+        chineseSign: comment.author?.chinese_sign || "",
+        eastWestCode: comment.author?.east_west_code || "",
+      },
+    };
+
+    return NextResponse.json(formattedComment, { status: 201 });
   } catch (err) {
     console.error("[POST /api/community/posts/[postId]/comments]", err);
     return new NextResponse("Internal error", { status: 500 });

@@ -28,6 +28,7 @@ import { matchLabelTaglines } from "@/data/matchLabels";
 import type { MatchLabel } from "@/data/matchLabels";
 import { MATCH_LABEL_COLOR_CLASSES } from "@/data/matchLabelStyles";
 import { StarRating } from "@/components/StarRating";
+import { getChineseDetailedCompat, getWesternDetailedCompat } from "@/data/detailedCompatDescriptions";
 
 const labelOverrides: Record<string, string> = {
   "Soulmate Connection": "Soulmate Match",
@@ -456,8 +457,78 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   } else {
     console.log('[ConnectionBox] Using FALLBACK West data:', { heading: westHeading, description: westDescription });
   }
-  const hasChineseSection = Boolean(chineseHeading || chineseDescription);
-  const hasWesternSection = Boolean(westHeading || westDescription);
+  
+  // Get detailed compatibility descriptions from Astrolab pages (same as CompatibilitySection)
+  const chineseDetailedCompat = data.a?.east && data.b?.east
+    ? getChineseDetailedCompat(
+        data.a.east.toLowerCase().trim(),
+        data.b.east.toLowerCase().trim()
+      )
+    : null;
+  
+  const westernDetailedCompat = data.a?.west && data.b?.west
+    ? getWesternDetailedCompat(
+        data.a.west.toLowerCase().trim(),
+        data.b.west.toLowerCase().trim()
+      )
+    : null;
+  
+  // Filter out specific combinations that should not be shown (same exclusions as ConnectionBox)
+  const shouldExcludeChinese = chineseDetailedCompat && (
+    chineseDetailedCompat.heading.includes("Monkey × Rooster") ||
+    chineseDetailedCompat.heading.includes("Rooster × Monkey")
+  );
+  const shouldExcludeWestern = westernDetailedCompat && (
+    westernDetailedCompat.heading.includes("Aquarius × Aries") ||
+    westernDetailedCompat.heading.includes("Aries × Aquarius")
+  );
+  
+  const finalChineseDetailedCompat = shouldExcludeChinese ? null : chineseDetailedCompat;
+  const finalWesternDetailedCompat = shouldExcludeWestern ? null : westernDetailedCompat;
+  
+  // Use detailed compat descriptions if available, otherwise fall back to existing descriptions
+  // Parse Chinese heading to extract sign pair and pattern
+  const chineseOverviewParsed = finalChineseDetailedCompat ? (() => {
+    const headingParts = finalChineseDetailedCompat.heading.split(/[—–]/);
+    return {
+      signPair: headingParts[0]?.trim() || '',
+      patternInfo: headingParts[1]?.trim() || '',
+      tagline: finalChineseDetailedCompat.tagline || null,
+      description: finalChineseDetailedCompat.description || chineseDescription
+    };
+  })() : {
+    signPair: chineseHeading || '',
+    patternInfo: null,
+    tagline: null,
+    description: chineseDescription
+  };
+  
+  // Parse Western heading to extract sign pair and element info
+  const westernOverviewParsed = finalWesternDetailedCompat ? (() => {
+    const headingParts = finalWesternDetailedCompat.heading.split(/[—–]/);
+    return {
+      signPair: headingParts[0]?.trim() || '',
+      elementInfo: headingParts[1]?.trim() || '',
+      tagline: finalWesternDetailedCompat.tagline || null,
+      description: finalWesternDetailedCompat.description || westDescription
+    };
+  })() : {
+    signPair: westHeading || '',
+    elementInfo: null,
+    tagline: null,
+    description: westDescription
+  };
+  
+  const chineseOverviewHeading = chineseOverviewParsed.signPair + (chineseOverviewParsed.tagline ? `— ${chineseOverviewParsed.tagline}` : '');
+  const chineseOverviewPattern = chineseOverviewParsed.patternInfo;
+  const chineseOverviewDescription = chineseOverviewParsed.description;
+  
+  const westernOverviewHeading = westernOverviewParsed.signPair + (westernOverviewParsed.tagline ? ` — ${westernOverviewParsed.tagline}` : '');
+  const westernOverviewElement = westernOverviewParsed.elementInfo;
+  const westernOverviewDescription = westernOverviewParsed.description;
+  
+  const hasChineseSection = Boolean(chineseOverviewHeading || chineseOverviewDescription);
+  const hasWesternSection = Boolean(westernOverviewHeading || westernOverviewDescription);
   // Use tier color from classifier, but override for specific match labels
   // Always prioritize data.colorRgb (from classifier) over astroMatch.color to avoid old colors
   const isMagneticOppositesCheck = astroMatch?.chinese.relation === "opposite" || 
@@ -749,28 +820,32 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
               {/* Chinese Compatibility Section */}
               {hasChineseSection && (() => {
-                // Don't combine element heading into main heading - show it separately
-                
                 return (
-                  <div className="space-y-2">
-                    <h4 className={`text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-slate-500" : "text-slate-400"}`}>
-                      Chinese Zodiac
-                    </h4>
-                    {chineseHeading && (
-                      <div className={`text-base font-semibold leading-relaxed ${theme === "light" ? "text-black" : "text-white"}`}>
-                        {makeChinesePatternsBold(chineseHeading)}
+                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2">
+                    <h3 className={`text-base font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
+                      Chinese Overview
+                    </h3>
+                    {chineseOverviewHeading && (
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className={`text-sm font-semibold ${theme === "light" ? "text-slate-700" : "text-slate-300"} flex-1`}>
+                          {makeChinesePatternsBold(chineseOverviewHeading)}
+                        </h4>
                       </div>
                     )}
-
-                    {chineseDescription && (
-                      <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                        {makeChinesePatternsBold(chineseDescription)}
+                    {chineseOverviewPattern && (
+                      <p className={`text-sm font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
+                        {makeChinesePatternsBold(chineseOverviewPattern)}
+                      </p>
+                    )}
+                    {chineseOverviewDescription && (
+                      <p className={`text-sm ${theme === "light" ? "text-slate-600" : "text-slate-400"} leading-relaxed`}>
+                        {makeChinesePatternsBold(chineseOverviewDescription)}
                       </p>
                     )}
                     
                     {/* Chinese Year Elements - displayed under the Chinese connection */}
                     {chineseElementPair && (
-                      <p className={`text-sm ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <p className={`text-sm mt-2 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
                         {chineseElementPair.heading}
                       </p>
                     )}
@@ -780,28 +855,26 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
               {/* Western Compatibility Section */}
               {hasWesternSection && (() => {
-                // Only combine heading and element label if we're NOT using westSummary
-                // (because westSummary.heading already includes the element label)
-                const combinedWestHeading = westSummary
-                  ? westHeading // westSummary.heading already includes element label
-                  : (westHeading && westElementLabel
-                      ? `${westHeading}, ${westElementLabel}`
-                      : westHeading);
-                
                 return (
-                  <div className="space-y-2">
-                    <h4 className={`text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-slate-500" : "text-slate-400"}`}>
-                      Western Zodiac
-                    </h4>
-                    {combinedWestHeading && (
-                      <div className={`text-base font-semibold leading-relaxed ${theme === "light" ? "text-black" : "text-white"}`}>
-                        {combinedWestHeading}
+                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2">
+                    <h3 className={`text-base font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
+                      Western Overview
+                    </h3>
+                    {westernOverviewHeading && (
+                      <div className="flex items-start justify-between gap-2">
+                        <h4 className={`text-sm font-semibold ${theme === "light" ? "text-slate-700" : "text-slate-300"} flex-1`}>
+                          {westernOverviewHeading}
+                        </h4>
                       </div>
                     )}
-
-                    {westDescription && (
-                      <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                        {westDescription}
+                    {westernOverviewElement && (
+                      <p className={`text-sm font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
+                        {westernOverviewElement}
+                      </p>
+                    )}
+                    {westernOverviewDescription && (
+                      <p className={`text-sm ${theme === "light" ? "text-slate-600" : "text-slate-400"} leading-relaxed`}>
+                        {westernOverviewDescription}
                       </p>
                     )}
 

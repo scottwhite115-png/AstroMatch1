@@ -4,7 +4,7 @@ import { getCurrentUser } from "@/lib/auth-server";
 
 export async function POST(
   req: Request,
-  { params }: { params: { commentId: string } }
+  { params }: { params: Promise<{ commentId: string }> }
 ) {
   try {
     const user = await getCurrentUser();
@@ -13,7 +13,7 @@ export async function POST(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { commentId } = params;
+    const { commentId } = await params;
 
     // Verify comment exists
     const comment = await prisma.comment.findUnique({
@@ -34,34 +34,55 @@ export async function POST(
       },
     });
 
+    let liked: boolean;
+    let likeCount: number;
+
     if (existingLike) {
-      // Remove like
-      await prisma.commentLike.delete({
-        where: {
-          id: existingLike.id,
-        },
+      // Remove like and decrement count in a transaction
+      await prisma.$transaction(async (tx) => {
+        await tx.commentLike.delete({
+          where: {
+            id: existingLike.id,
+          },
+        });
+
+        await tx.comment.update({
+          where: { id: commentId },
+          data: {
+            likeCount: {
+              decrement: 1,
+            },
+          },
+        });
       });
 
-      const count = await prisma.commentLike.count({
-        where: { commentId },
-      });
-
-      return NextResponse.json({ liked: false, count });
+      liked = false;
+      likeCount = Math.max(0, comment.likeCount - 1);
     } else {
-      // Add like
-      await prisma.commentLike.create({
-        data: {
-          commentId,
-          userId: user.id,
-        },
+      // Add like and increment count in a transaction
+      await prisma.$transaction(async (tx) => {
+        await tx.commentLike.create({
+          data: {
+            commentId,
+            userId: user.id,
+          },
+        });
+
+        await tx.comment.update({
+          where: { id: commentId },
+          data: {
+            likeCount: {
+              increment: 1,
+            },
+          },
+        });
       });
 
-      const count = await prisma.commentLike.count({
-        where: { commentId },
-      });
-
-      return NextResponse.json({ liked: true, count });
+      liked = true;
+      likeCount = comment.likeCount + 1;
     }
+
+    return NextResponse.json({ liked, likeCount });
   } catch (err) {
     console.error("[POST /api/community/comments/[commentId]/like]", err);
     return new NextResponse("Internal error", { status: 500 });

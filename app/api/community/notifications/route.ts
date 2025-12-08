@@ -16,7 +16,7 @@ export async function GET(req: Request) {
         userId: user.id,
       },
       orderBy: [
-        { readAt: "asc" }, // nulls first (unread)
+        { isRead: "asc" }, // false first (unread)
         { createdAt: "desc" },
       ],
       take: 20,

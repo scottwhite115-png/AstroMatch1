@@ -4,6 +4,13 @@ import Link from "next/link";
 import { useTheme } from "@/contexts/ThemeContext";
 import { COMMUNITY_TOPICS } from "./topics";
 
+// Four-pointed star icon for AstroMatch branding
+const FourPointedStar = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+);
+
 export default function CommunityLayout({
   children,
 }: {
@@ -17,20 +24,14 @@ export default function CommunityLayout({
     }`}>
       <div className="mx-auto max-w-4xl px-4 py-4">
       <header className="mb-4">
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div className="flex-1">
-            <h1 className={`text-lg font-semibold ${
-              theme === "light" ? "text-gray-900" : "text-slate-50"
-            }`}>
+        <div className="px-3 pt-2 pb-4 flex items-center justify-between">
+          <div className="flex items-center gap-0.5">
+            <FourPointedStar className="w-4 h-4 text-orange-500" />
+            <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
               Community
-            </h1>
-            <p className={`text-xs ${
-              theme === "light" ? "text-gray-600" : "text-slate-400"
-            }`}>
-              Talk astrology, compare charts, and share AstroMatch experiences.
-            </p>
+            </span>
           </div>
-
+          
           {/* Theme Toggle Button - Top Right */}
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}

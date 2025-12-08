@@ -210,106 +210,15 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
       {/* Divider line */}
       <div className="mt-5 h-px w-full bg-gradient-to-r from-transparent via-slate-300 to-transparent dark:via-slate-700" />
 
-      {/* Sign combination at the very top - extracted from Chinese line */}
+      {/* Sign combination at the very top */}
       <div className="mt-4 text-center">
         <p className="text-lg font-bold text-slate-800 dark:text-slate-50">
-          {chineseLine.split('—')[0]?.trim() || chineseLine.split('–')[0]?.trim() || chineseLine}
+          {leftSunLabel} / {leftChineseLabel} ♥ {rightSunLabel} / {rightChineseLabel}
         </p>
       </div>
 
-      {/* Match label pill with pattern */}
-      <div className="mt-3 flex justify-center">
-        <span
-          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${matchColorClasses[matchLabelColor]}`}
-        >
-          {matchLabel}
-        </span>
-      </div>
-
-      {/* Chinese pattern name below the pill */}
-      {(chineseLine.includes('—') || chineseLine.includes('–')) && (
-        <p className="mt-2 text-center text-sm text-slate-600 dark:text-slate-300">
-          {chineseLine.split(/[—–]/)[1]?.trim() || ''}
-        </p>
-      )}
-      {chineseSubline && (
-        <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
-          {chineseSubline}
-        </p>
-      )}
-
-      {/* Main connection line */}
-      <div className="mt-4 min-h-[3rem] flex items-center justify-center">
-        <p className="text-center text-sm text-slate-700 dark:text-slate-200">
-          {mainLine}
-        </p>
-      </div>
-
-      {/* Western pattern line */}
-      <div className="mt-4 min-h-[2.5rem] flex flex-col items-center justify-start">
-        <p className="text-center text-sm font-medium text-slate-800 dark:text-slate-50">
-          {westernLine}
-        </p>
-        {westernSubline && (
-          <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
-            {westernSubline}
-          </p>
-        )}
-      </div>
-
-      {/* Detailed Compatibility Sections */}
-      <div className="mt-6 space-y-4">
-        {/* Chinese Overview Section */}
-        {chineseCompat && (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4">
-            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2">
-              Chinese Overview
-            </h3>
-            <div className="space-y-2">
-              <div className="flex items-start justify-between gap-2">
-                <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1">
-                  {chineseCompat.heading}
-                </h4>
-              </div>
-              {chineseCompat.tagline && (
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                  {chineseCompat.tagline}
-                </p>
-              )}
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {chineseCompat.description}
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Western Overview Section */}
-        {westernCompat && (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4">
-            <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200 mb-2">
-              Western Overview
-            </h3>
-            <div className="space-y-2">
-              <div className="flex items-start justify-between gap-2">
-                <h4 className="text-xs font-semibold text-slate-700 dark:text-slate-300 flex-1">
-                  {westernCompat.heading}
-                </h4>
-              </div>
-              {westernCompat.tagline && (
-                <p className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                  {westernCompat.tagline}
-                </p>
-              )}
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                {westernCompat.description}
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* Action Buttons Row */}
-      <div className="mt-6 flex items-center justify-center gap-3">
+      {/* Action Buttons Row - Right after sign combinations */}
+      <div className="mt-4 flex items-center justify-center gap-3">
         {/* Pass Button */}
         {onPass && (
           <button
@@ -396,6 +305,118 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           </button>
         )}
       </div>
+
+      {/* Match label pill with pattern */}
+      <div className="mt-3 flex justify-center">
+        <span
+          className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${matchColorClasses[matchLabelColor]}`}
+        >
+          {matchLabel}
+        </span>
+      </div>
+
+      {/* Chinese pattern name below the pill */}
+      {(chineseLine.includes('—') || chineseLine.includes('–')) && (
+        <p className="mt-2 text-center text-sm text-slate-600 dark:text-slate-300">
+          {chineseLine.split(/[—–]/)[1]?.trim() || ''}
+        </p>
+      )}
+      {chineseSubline && (
+        <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
+          {chineseSubline}
+        </p>
+      )}
+
+      {/* Main connection line */}
+      <div className="mt-4 min-h-[3rem] flex items-center justify-center">
+        <p className="text-center text-sm text-slate-700 dark:text-slate-200">
+          {mainLine}
+        </p>
+      </div>
+
+      {/* Western pattern line */}
+      <div className="mt-4 min-h-[2.5rem] flex flex-col items-center justify-start">
+        <p className="text-center text-sm font-medium text-slate-800 dark:text-slate-50">
+          {westernLine}
+        </p>
+        {westernSubline && (
+          <p className="mt-1 text-center text-xs italic text-slate-500 dark:text-slate-300">
+            {westernSubline}
+          </p>
+        )}
+      </div>
+
+      {/* Detailed Compatibility Sections */}
+      <div className="mt-6 space-y-4">
+        {/* Chinese Overview Section */}
+        {chineseCompat && (() => {
+          // Parse heading: "Rat × Ox— Secret Friend (Liu He 六合)"
+          // Extract sign pair and pattern
+          const headingParts = chineseCompat.heading.split(/[—–]/);
+          const signPair = headingParts[0]?.trim() || '';
+          const patternInfo = headingParts[1]?.trim() || '';
+          
+          return (
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-2">
+                Chinese Overview
+              </h3>
+              <div className="space-y-2">
+                {/* First line: Sign pair + Tagline */}
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex-1">
+                    {signPair}{chineseCompat.tagline ? `— ${chineseCompat.tagline}` : ''}
+                  </h4>
+                </div>
+                {/* Second line: Pattern info */}
+                {patternInfo && (
+                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    {patternInfo}
+                  </p>
+                )}
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {chineseCompat.description}
+                </p>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Western Overview Section */}
+        {westernCompat && (() => {
+          // Parse heading: "Aries × Taurus — Semi-Compatible (Fire + Earth)"
+          // Extract sign pair and element/compatibility info
+          const headingParts = westernCompat.heading.split(/[—–]/);
+          const signPair = headingParts[0]?.trim() || '';
+          const elementInfo = headingParts[1]?.trim() || '';
+          
+          return (
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4">
+              <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-2">
+                Western Overview
+              </h3>
+              <div className="space-y-2">
+                {/* First line: Sign pair + Tagline */}
+                <div className="flex items-start justify-between gap-2">
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex-1">
+                    {signPair}{westernCompat.tagline ? ` — ${westernCompat.tagline}` : ''}
+                  </h4>
+                </div>
+                {/* Second line: Element/Compatibility info */}
+                {elementInfo && (
+                  <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+                    {elementInfo}
+                  </p>
+                )}
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {westernCompat.description}
+                </p>
+              </div>
+            </div>
+          );
+        })()}
+      </div>
+
     </section>
   );
 };

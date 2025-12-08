@@ -654,6 +654,7 @@ export default function MatchesPage() {
   const [friendFinderEnabled, setFriendFinderEnabled] = useState(false)
   const [allowInstantMessages, setAllowInstantMessages] = useState(true) // Default ON
   const [filteredProfiles, setFilteredProfiles] = useState(enrichedProfiles)
+  const [activeTab, setActiveTab] = useState<'matches' | 'astrolab'>('matches')
   const [isUserInteracting, setIsUserInteracting] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(() => {
     if (typeof window === 'undefined') return false
@@ -2438,7 +2439,7 @@ export default function MatchesPage() {
         minHeight: '100dvh',
         position: 'relative',
         paddingBottom: '90px',
-        paddingTop: '16px',
+        paddingTop: '0px',
       }
     : {
         WebkitOverflowScrolling: 'auto',
@@ -2447,7 +2448,7 @@ export default function MatchesPage() {
         minHeight: '100vh',
         position: 'relative',
         paddingBottom: '120px',
-        paddingTop: '24px',
+        paddingTop: '0px',
       }
 
   return (
@@ -2585,18 +2586,64 @@ export default function MatchesPage() {
       
       <div className="relative z-10 max-w-sm mx-auto overflow-visible">
         {/* Header */}
-        <div className="px-3 pt-2 pb-2">
-          <div className="flex items-center justify-between">
-            {/* Logo */}
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                Discover
-              </span>
-            </div>
-            
-            {/* Right side: Back button, Settings and Theme toggle */}
-            <div className="flex items-center gap-2">
+        <header className={`sticky top-0 z-50 border-b ${
+          theme === "light"
+            ? "bg-white/80 backdrop-blur-sm border-gray-200"
+            : "bg-slate-900/80 backdrop-blur-sm border-slate-800"
+        }`}>
+          <div className="px-4 pt-3 pb-2">
+            {/* Tabs: Matches | AstroLab */}
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex-1 -ml-4">
+                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+                  <div className="flex gap-0.5 min-w-max">
+                    <button
+                      onClick={() => setActiveTab('matches')}
+                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                        activeTab === 'matches'
+                          ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                          : theme === "light"
+                            ? "text-gray-600 hover:text-gray-900"
+                            : "text-gray-400 hover:text-gray-200"
+                      }`}
+                    >
+                      AstroMatch
+                      <div 
+                        className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
+                          activeTab === 'matches' 
+                            ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
+                            : "opacity-0"
+                        }`}
+                      />
+                    </button>
+                    <button
+                      onClick={() => {
+                        setActiveTab('astrolab')
+                        router.push('/astrology')
+                      }}
+                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                        activeTab === 'astrolab'
+                          ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                          : theme === "light"
+                            ? "text-gray-600 hover:text-gray-900"
+                            : "text-gray-400 hover:text-gray-200"
+                      }`}
+                    >
+                      AstroLab
+                      <div 
+                        className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
+                          activeTab === 'astrolab' 
+                            ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
+                            : "opacity-0"
+                        }`}
+                      />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right side: Back button, Settings and Theme toggle */}
+              <div className="flex items-center gap-2 ml-2">
               {/* Back button */}
               <button
                 onClick={handlePrevProfile}
@@ -2627,8 +2674,8 @@ export default function MatchesPage() {
                   <Settings className={`w-5 h-5 ${theme === "light" ? "text-gray-600" : "text-white/70"}`} />
                 </button>
                 
-                {showSettingsDropdown && (
-                  <div className={`absolute right-0 top-10 w-80 backdrop-blur-sm rounded-lg shadow-xl p-4 z-50 ${theme === "light" ? "bg-white border border-gray-200" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}>
+                  {showSettingsDropdown && (
+                    <div className={`absolute right-0 top-10 w-80 rounded-lg shadow-xl p-4 z-50 ${theme === "light" ? "bg-white border border-gray-200 backdrop-blur-sm" : "bg-slate-800 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}>
                     <h3 className={`text-lg font-bold mb-4 ${theme === "light" ? "text-black" : "text-white"}`}>Search Settings</h3>
                     
                     {/* Western Sign Filter */}
@@ -2859,9 +2906,10 @@ export default function MatchesPage() {
                   </svg>
                 )}
               </button>
+              </div>
             </div>
           </div>
-        </div>
+        </header>
 
         {/* Profile Card Stack */}
         {currentProfile ? (

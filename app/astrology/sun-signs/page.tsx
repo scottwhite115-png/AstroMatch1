@@ -1,6 +1,5 @@
 "use client"
 
-import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { useSunSignSystem } from "@/lib/hooks/useSunSign"
@@ -86,116 +85,15 @@ export default function SunSignsPage() {
     },
   ]
 
-  // Close drawer when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!isDrawerOpen) return
-
-      const target = event.target as Node
-      
-      if (
-        drawerRef.current?.contains(target) ||
-        drawerButtonRef.current?.contains(target)
-      ) {
-        return
-      }
-
-      setIsDrawerOpen(false)
-    }
-
-    if (isDrawerOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isDrawerOpen])
-
-    // Close drawer when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (!isDrawerOpen) return
-
-      const target = event.target as Node
-      
-      if (
-        drawerRef.current?.contains(target) ||
-        drawerButtonRef.current?.contains(target)
-      ) {
-        return
-      }
-
-      setIsDrawerOpen(false)
-    }
-
-    if (isDrawerOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [isDrawerOpen])
-
-    return (
+  return (
     <div
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        {/* Header with drawer button */}
-        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />}
+        {/* Header */}
+        <AstroLabNavigationHeader theme={theme} setTheme={setTheme} />
 
-                {/* Divider */}
-                <div className={`my-2 border-t ${theme === "light" ? "border-gray-200" : "border-slate-700"}`} />
-
-                {/* Section heading for Charts & Tables */}
-                <div className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-gray-500" : "text-slate-500"}`}>
-                  Charts & Tables
-                </div>
-
-              {sectionItems.map((section) => {
-                return (
-                  <button
-                    key={section.id}
-                    type="button"
-                    onClick={() => {
-                      if (section.path) {
-                        // Navigate to page if it has a path
-                        router.push(section.path);
-                      } else {
-                        // Scroll to section if no path
-                        const element = document.getElementById(section.id);
-                        if (element) {
-                          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                      }
-                      setIsDrawerOpen(false);
-                    }}
-                    className={[
-                      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
-                      theme === "light"
-                        ? "text-gray-600 hover:bg-gray-100"
-                        : "text-slate-400 hover:bg-slate-800",
-                    ].join(" ")}
-                  >
-                    <span className="mt-[1px] text-base">{section.icon}</span>
-                    <span className="flex flex-col">
-                      <span className="font-medium">{section.label}</span>
-                      <span className={`text-xs ${
-                        theme === "light" ? "text-gray-500" : "text-slate-500"
-                      }`}>
-                        {section.description}
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-              </nav>
-            </aside>
-          )}
-
-          <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
+        <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8">
             {/* Page Title */}
             <div className="text-center mb-6">
               <h1 className={`text-xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>

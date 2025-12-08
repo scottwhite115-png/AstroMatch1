@@ -1,7 +1,8 @@
 import { COMMUNITY_TOPICS } from "../topics";
 import { notFound } from "next/navigation";
 import { PostList } from "../_components/PostList";
-import { NewPostButton } from "../_components/NewPostButton";
+import { TopicHeading } from "./_components/TopicHeading";
+import { Suspense } from "react";
 
 export default async function TopicPage({ 
   params 
@@ -15,17 +16,18 @@ export default async function TopicPage({
 
     return (
       <div className="mt-2 space-y-3">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h2 className="text-sm font-semibold text-slate-50">
-              {topic.hashtag}
-            </h2>
-            <p className="text-xs text-slate-400">{topic.description}</p>
-          </div>
-          <NewPostButton topic={topic.id} />
+        <div className="min-w-0">
+          <TopicHeading topic={topic} />
         </div>
 
-        <PostList topic={topic.id} />
+        <Suspense fallback={
+          <div className="mt-4 text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-slate-300"></div>
+            <p className="mt-2 text-sm text-slate-400">Loading posts...</p>
+          </div>
+        }>
+          <PostList topic={topic.id} />
+        </Suspense>
       </div>
     );
   } catch (error) {

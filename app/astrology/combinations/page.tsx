@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { 
@@ -8,6 +8,12 @@ import {
   LibraSymbol, ScorpioSymbol, SagittariusSymbol, CapricornSymbol, AquariusSymbol, PiscesSymbol
 } from "@/components/western-zodiac-symbols"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
+
+const FourPointedStar = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+)
 
 export default function SignCombinationsPage() {
   const [selectedWestern, setSelectedWestern] = useState<string | null>(null)

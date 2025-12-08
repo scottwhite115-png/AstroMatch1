@@ -22,10 +22,10 @@ export async function POST(req: Request) {
       where: {
         id: { in: ids },
         userId: user.id,
-        readAt: null, // Only mark unread ones
+        isRead: false, // Only mark unread ones
       },
       data: {
-        readAt: new Date(),
+        isRead: true,
       },
     });
 

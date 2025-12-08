@@ -60,31 +60,30 @@ export default function DiscoveryMatchesPage({
 
       <div className="relative z-10">
         {/* Header */}
-        <div className="px-5 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 flex justify-start">
-              <button
-                onClick={onNavigatePrev}
-                className="hover:opacity-70 transition-opacity"
-                disabled={pageIndex === 0}
-              >
-                {pageIndex > 0 && <ChevronLeft className="w-7 h-7 text-gray-400 hover:text-white transition-colors" />}
-              </button>
-            </div>
-            <h1
-              className={`font-semibold text-lg whitespace-nowrap ${theme === "starlight" ? "bg-gradient-to-r from-pink-500 via-rose-500 to-red-400 bg-clip-text text-transparent" : "bg-gradient-to-r from-pink-600 via-rose-600 to-red-500 bg-clip-text text-transparent"}`}
+        <div className="px-3 pt-2 pb-4 flex items-center justify-between">
+          <div className="flex items-center gap-0.5">
+            <FourPointedStar className="w-4 h-4 text-orange-500" />
+            <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+              Discover
+            </span>
+          </div>
+          
+          {/* Right side: Navigation buttons */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onNavigatePrev}
+              className="hover:opacity-70 transition-opacity"
+              disabled={pageIndex === 0}
             >
-              Discovery & Matches
-            </h1>
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={onNavigateNext}
-                className="hover:opacity-70 transition-opacity"
-                disabled={pageIndex >= totalPages - 1}
-              >
-                <ChevronRight className="w-7 h-7 text-gray-400 hover:text-white transition-colors" />
-              </button>
-            </div>
+              {pageIndex > 0 && <ChevronLeft className="w-7 h-7 text-gray-400 hover:text-white transition-colors" />}
+            </button>
+            <button
+              onClick={onNavigateNext}
+              className="hover:opacity-70 transition-opacity"
+              disabled={pageIndex >= totalPages - 1}
+            >
+              <ChevronRight className="w-7 h-7 text-gray-400 hover:text-white transition-colors" />
+            </button>
           </div>
         </div>
 

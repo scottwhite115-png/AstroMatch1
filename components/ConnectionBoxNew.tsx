@@ -698,7 +698,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               {/* Pattern header in a pill */}
               <div className="flex items-center justify-center">
                 <div 
-                  className="inline-flex items-center rounded-full px-4 py-2 text-base font-semibold shadow-lg whitespace-nowrap text-white"
+                  className="inline-flex items-center rounded-full px-4 py-2 text-base font-bold shadow-lg whitespace-nowrap text-white"
                   style={{
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
                   }}
@@ -710,8 +710,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               {/* One-line pattern description */}
               {patternTaglineNew && pattern !== "NO_PATTERN" && pattern !== "NEUTRAL" && (
                 <p className={clsx(
-                  "mt-1 text-base text-center",
-                  theme === "light" ? "text-gray-600" : "text-slate-400"
+                  "mt-1 text-base font-bold text-center",
+                  theme === "light" ? "text-black" : "text-white"
                 )}>
                   {patternTaglineNew}
                 </p>
@@ -720,8 +720,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               {/* Special neutral line for No Major Pattern / Neutral */}
               {(pattern === "NO_PATTERN" || pattern === "NEUTRAL") && (
                 <p className={clsx(
-                  "mt-1 text-base text-center",
-                  theme === "light" ? "text-gray-600" : "text-slate-400"
+                  "mt-1 text-base font-bold text-center",
+                  theme === "light" ? "text-black" : "text-white"
                 )}>
                   {patternTaglineNew || "Neutral in Chinese astrology; no strong harmony or conflict pattern."}
                 </p>
@@ -735,7 +735,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               <div className="flex items-center gap-1 justify-center whitespace-nowrap">
                 {/* Left signs */}
                 <span className={clsx(
-                  "font-bold text-base", // Smaller consistent size
+                  "font-bold text-lg", // Increased size
                   theme === "light" ? "text-slate-700" : "text-slate-200"
                 )}>
                   {userALabel}
@@ -743,7 +743,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 
                 {/* Heart icon in the center */}
                 <span className={clsx(
-                  "text-base flex-shrink-0", // Matches text size
+                  "text-lg flex-shrink-0", // Increased size to match
                   theme === "light" ? "text-pink-500" : "text-pink-400"
                 )}>
                   ♥
@@ -751,7 +751,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 
                 {/* Right signs */}
                 <span className={clsx(
-                  "font-bold text-base", // Smaller consistent size
+                  "font-bold text-lg", // Increased size
                   theme === "light" ? "text-slate-700" : "text-slate-200"
                 )}>
                   {userBLabel}
@@ -759,116 +759,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               </div>
             </div>
 
-            {/* ===== ASTROLOGY BREAKDOWN ===== */}
-            {hasAnyElementInfo && (
-              <div className="space-y-2">
-                
-                {/* Combined Chinese and Western Connection in one grey box */}
-                <div className={clsx(
-                  "rounded-xl px-3 py-3",
-                  theme === "light" 
-                    ? "bg-slate-50 text-slate-700" 
-                    : "bg-slate-800/50 text-slate-200"
-                )}>
-                  <div className={clsx(
-                    "space-y-4 text-sm sm:text-base leading-snug text-left",
-                    theme === "light" ? "text-slate-600" : "text-slate-300"
-                  )}>
-                    {/* Chinese Connection Section */}
-                    <div className="space-y-2">
-                      {/* Detailed Chinese Compatibility */}
-                      {(() => {
-                        const chineseCompatRaw = getChineseDetailedCompat(
-                          (eastA || '').toLowerCase().trim(),
-                          (eastB || '').toLowerCase().trim()
-                        );
-                        // Filter out Monkey × Rooster combinations
-                        const shouldExclude = chineseCompatRaw && (
-                          chineseCompatRaw.heading.includes("Monkey × Rooster") ||
-                          chineseCompatRaw.heading.includes("Rooster × Monkey")
-                        );
-                        const chineseCompat = shouldExclude ? null : chineseCompatRaw;
-                        if (chineseCompat) {
-                          return (
-                            <div>
-                              <h4 className={clsx(
-                                "text-xs font-semibold mb-1",
-                                theme === "light" ? "text-slate-800" : "text-slate-200"
-                              )}>
-                                {chineseCompat.heading}
-                              </h4>
-                              {chineseCompat.tagline && (
-                                <p className={clsx(
-                                  "text-xs font-medium mb-1",
-                                  theme === "light" ? "text-slate-700" : "text-slate-300"
-                                )}>
-                                  {chineseCompat.tagline}
-                                </p>
-                              )}
-                              <p className={clsx(
-                                "text-xs leading-relaxed",
-                                theme === "light" ? "text-slate-600" : "text-slate-400"
-                              )}>
-                                {chineseCompat.description}
-                              </p>
-                            </div>
-                          );
-                        }
-                        return null;
-                      })()}
-                    </div>
-
-                    {/* Western Connection Section */}
-                    <div className="space-y-2">
-                      {/* Detailed Western Compatibility */}
-                      {(() => {
-                        const westernCompatRaw = getWesternDetailedCompat(
-                          westA.toLowerCase().trim(),
-                          westB.toLowerCase().trim()
-                        );
-                        // Filter out Aquarius × Aries combinations
-                        const shouldExclude = westernCompatRaw && (
-                          westernCompatRaw.heading.includes("Aquarius × Aries") ||
-                          westernCompatRaw.heading.includes("Aries × Aquarius")
-                        );
-                        const westernCompat = shouldExclude ? null : westernCompatRaw;
-                        if (westernCompat) {
-                          return (
-                            <div>
-                              <h4 className={clsx(
-                                "text-xs font-semibold mb-1",
-                                theme === "light" ? "text-slate-800" : "text-slate-200"
-                              )}>
-                                {westernCompat.heading}
-                              </h4>
-                              {westernCompat.tagline && (
-                                <p className={clsx(
-                                  "text-xs font-medium mb-1",
-                                  theme === "light" ? "text-slate-700" : "text-slate-300"
-                                )}>
-                                  {westernCompat.tagline}
-                                </p>
-                              )}
-                              <p className={clsx(
-                                "text-xs leading-relaxed",
-                                theme === "light" ? "text-slate-600" : "text-slate-400"
-                              )}>
-                                {westernCompat.description}
-                              </p>
-                            </div>
-                          );
-                        }
-                        return null;
-                      })()}
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            )}
-
-            {/* Action Buttons Row - Inside connection box, after Western connection */}
-            <div className="mt-4 pt-4 border-t border-white/10">
+            {/* Action Buttons Row - Right after sign combinations */}
+            <div className="mt-1">
               <div className="grid grid-cols-4 gap-2">
                 {/* Pass Button */}
                 <button
@@ -904,8 +796,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                     background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`
                   }}
                 >
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
                   </svg>
                 </button>
 
@@ -925,6 +817,283 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               </div>
             </div>
 
+            {/* Profile Details - Drop down from under buttons */}
+            {hasProfileDetails && showProfile && (
+              <div className="mt-3">
+                <div 
+                  className={clsx(
+                    "w-full rounded-2xl border p-4 sm:p-5 backdrop-blur-md",
+                    theme === "light" 
+                      ? "bg-white border-gray-200" 
+                      : "bg-slate-900/90 border-white/10"
+                  )}
+                >
+                  {/* About me section */}
+                  {aboutMe && (
+                    <div className={clsx(aboutMe && (age || city || occupation || height || children || religion) ? "mb-4" : "")}>
+                      <div className="mb-3">
+                        <div
+                          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
+                          style={{
+                            background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
+                          }}
+                        >
+                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
+                          About Me
+                        </div>
+                      </div>
+                      <p className={clsx(
+                        "text-sm leading-relaxed",
+                        theme === "light" ? "text-gray-700" : "text-white/90"
+                      )}>
+                        {aboutMe}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Divider between About Me and Essentials */}
+                  {aboutMe && (age || city || occupation || height || children || religion) && (
+                    <div className={clsx(
+                      "my-4 h-px w-full bg-gradient-to-r from-transparent to-transparent",
+                      theme === "light" ? "via-gray-300/50" : "via-slate-500/50"
+                    )} />
+                  )}
+
+                  {/* Essentials section */}
+                  {(age || city || occupation || height || children || religion) && (
+                    <div>
+                      <div className="mb-3">
+                        <div
+                          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
+                          style={{
+                            background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
+                          }}
+                        >
+                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
+                          Essentials
+                        </div>
+                      </div>
+                      <div className="space-y-2 text-base">
+                        {age && (
+                          <div className={clsx(
+                            "flex items-center gap-2 font-medium",
+                            theme === "light" ? "text-gray-700" : "text-gray-100"
+                          )}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                              <path d="M16 2v4M8 2v4M3 10h18"/>
+                            </svg>
+                            <span>{age} years old</span>
+                          </div>
+                        )}
+                        {city && (
+                          <div className={clsx(
+                            "flex items-center gap-2 font-medium",
+                            theme === "light" ? "text-gray-700" : "text-gray-100"
+                          )}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
+                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            <span>{city}</span>
+                          </div>
+                        )}
+                        {occupation && (
+                          <div className={clsx(
+                            "flex items-center gap-2 font-medium",
+                            theme === "light" ? "text-gray-700" : "text-gray-100"
+                          )}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
+                              <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
+                            </svg>
+                            <span>{occupation}</span>
+                          </div>
+                        )}
+                        {height && (
+                          <div className={clsx(
+                            "flex items-center gap-2 font-medium",
+                            theme === "light" ? "text-gray-700" : "text-gray-100"
+                          )}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
+                              <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
+                            </svg>
+                            <span>{height}</span>
+                          </div>
+                        )}
+                        {children && (
+                          <div className={clsx(
+                            "flex items-center gap-2 font-medium",
+                            theme === "light" ? "text-gray-700" : "text-gray-100"
+                          )}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
+                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            <span>{children}</span>
+                          </div>
+                        )}
+                        {religion && (
+                          <div className={clsx(
+                            "flex items-center gap-2 font-medium",
+                            theme === "light" ? "text-gray-700" : "text-gray-100"
+                          )}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
+                              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                            <span>{religion}</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* ===== ASTROLOGY BREAKDOWN ===== */}
+            {(() => {
+              // Check if we have Chinese or Western compatibility data to show
+              const hasChineseCompat = Boolean(
+                getChineseDetailedCompat(
+                  (eastA || '').toLowerCase().trim(),
+                  (eastB || '').toLowerCase().trim()
+                )
+              );
+              const hasWesternCompat = Boolean(
+                getWesternDetailedCompat(
+                  (westA || '').toLowerCase().trim(),
+                  (westB || '').toLowerCase().trim()
+                )
+              );
+              const shouldShowCompat = hasChineseCompat || hasWesternCompat || hasAnyElementInfo;
+              
+              if (!shouldShowCompat) return null;
+              
+              return (
+                <div className="space-y-2">
+                  {/* Combined Chinese and Western Connection */}
+                  {(() => {
+                  return (
+                    <div className={clsx(
+                      "rounded-xl px-2 py-3",
+                      theme === "light" 
+                        ? "text-black" 
+                        : "text-white"
+                    )}>
+                      <div className={clsx(
+                        "space-y-4 text-sm sm:text-base leading-snug text-left",
+                        theme === "light" ? "text-black" : "text-white"
+                      )}>
+                        {/* Chinese Connection Section */}
+                        <div className="space-y-2">
+                      {/* Detailed Chinese Compatibility */}
+                      {(() => {
+                        const chineseCompatRaw = getChineseDetailedCompat(
+                          (eastA || '').toLowerCase().trim(),
+                          (eastB || '').toLowerCase().trim()
+                        );
+                        // Filter out Monkey × Rooster combinations
+                        const shouldExclude = chineseCompatRaw && (
+                          chineseCompatRaw.heading.includes("Monkey × Rooster") ||
+                          chineseCompatRaw.heading.includes("Rooster × Monkey")
+                        );
+                        const chineseCompat = shouldExclude ? null : chineseCompatRaw;
+                        if (chineseCompat) {
+                          // Parse heading: "Rat × Ox— Secret Friend (Liu He 六合)"
+                          // Extract sign pair and pattern
+                          const headingParts = chineseCompat.heading.split(/[—–]/);
+                          const signPair = headingParts[0]?.trim() || '';
+                          const patternInfo = headingParts[1]?.trim() || '';
+                          
+                          return (
+                            <div>
+                              {/* First line: Sign pair with tagline */}
+                              <h4 className={clsx(
+                                "text-base font-bold mb-1",
+                                theme === "light" ? "text-black" : "text-white"
+                              )}>
+                                {signPair}{chineseCompat.tagline ? ` — ${chineseCompat.tagline}` : ''}
+                              </h4>
+                              {/* Second line: Pattern info */}
+                              {patternInfo && (
+                                <p className={clsx(
+                                  "text-base font-bold mb-2",
+                                  theme === "light" ? "text-black" : "text-white"
+                                )}>
+                                  {patternInfo}
+                                </p>
+                              )}
+                              <p className={clsx(
+                                "text-base leading-relaxed",
+                                theme === "light" ? "text-black" : "text-white"
+                              )}>
+                                {chineseCompat.description}
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
+                        </div>
+
+                        {/* Western Connection Section */}
+                        <div className="space-y-2">
+                      {/* Detailed Western Compatibility */}
+                      {(() => {
+                        const westernCompatRaw = getWesternDetailedCompat(
+                          westA.toLowerCase().trim(),
+                          westB.toLowerCase().trim()
+                        );
+                        // Filter out Aquarius × Aries combinations
+                        const shouldExclude = westernCompatRaw && (
+                          westernCompatRaw.heading.includes("Aquarius × Aries") ||
+                          westernCompatRaw.heading.includes("Aries × Aquarius")
+                        );
+                        const westernCompat = shouldExclude ? null : westernCompatRaw;
+                        if (westernCompat) {
+                          // Parse heading: "Aries × Taurus — Semi-Compatible (Fire + Earth)"
+                          // Extract sign pair and element/compatibility info
+                          const headingParts = westernCompat.heading.split(/[—–]/);
+                          const signPair = headingParts[0]?.trim() || '';
+                          const elementInfo = headingParts[1]?.trim() || '';
+                          
+                          return (
+                            <div>
+                              {/* First line: Sign pair with tagline */}
+                              <h4 className={clsx(
+                                "text-base font-bold mb-1",
+                                theme === "light" ? "text-black" : "text-white"
+                              )}>
+                                {signPair}{westernCompat.tagline ? ` — ${westernCompat.tagline}` : ''}
+                              </h4>
+                              {/* Second line: Element/Compatibility info */}
+                              {elementInfo && (
+                                <p className={clsx(
+                                  "text-base font-bold mb-2",
+                                  theme === "light" ? "text-black" : "text-white"
+                                )}>
+                                  {elementInfo}
+                                </p>
+                              )}
+                              <p className={clsx(
+                                "text-base leading-relaxed",
+                                theme === "light" ? "text-black" : "text-white"
+                              )}>
+                                {westernCompat.description}
+                              </p>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                  })()}
+                </div>
+              );
+            })()}
+
           </div>
 
           {/* Optional blurb */}
@@ -941,136 +1110,6 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 {connectionBlurb}
               </p>
             </>
-          )}
-        </div>
-      )}
-
-      {/* Profile Details Box - Separate background box */}
-      {hasProfileDetails && showProfile && (
-        <div 
-          className={clsx(
-            "w-full max-w-xl rounded-2xl border p-4 sm:p-5 backdrop-blur-md mt-3",
-            theme === "light" 
-              ? "bg-white border-gray-200" 
-              : "bg-slate-900/90 border-white/10"
-          )}
-        >
-          {/* About me section */}
-          {aboutMe && (
-            <div className={clsx(aboutMe && (age || city || occupation || height || children || religion) ? "mb-4" : "")}>
-              <div className="mb-3">
-                <div
-                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
-                  style={{
-                    background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
-                  }}
-                >
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
-                  About Me
-                </div>
-              </div>
-              <p className={clsx(
-                "text-sm leading-relaxed",
-                theme === "light" ? "text-gray-700" : "text-white/90"
-              )}>
-                {aboutMe}
-              </p>
-            </div>
-          )}
-
-          {/* Divider between About Me and Essentials */}
-          {aboutMe && (age || city || occupation || height || children || religion) && (
-            <div className={clsx(
-              "my-4 h-px w-full bg-gradient-to-r from-transparent to-transparent",
-              theme === "light" ? "via-gray-300/50" : "via-slate-500/50"
-            )} />
-          )}
-
-          {/* Essentials section */}
-          {(age || city || occupation || height || children || religion) && (
-            <div>
-              <div className="mb-3">
-                <div
-                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
-                  style={{
-                    background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
-                  }}
-                >
-                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
-                  Essentials
-                </div>
-              </div>
-              <div className="space-y-2 text-base">
-                {age && (
-                  <div className={clsx(
-                    "flex items-center gap-2 font-medium",
-                    theme === "light" ? "text-gray-700" : "text-gray-100"
-                  )}>
-                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <path d="M16 2v4M8 2v4M3 10h18"/>
-                    </svg>
-                    <span>{age} years old</span>
-                  </div>
-                )}
-                {city && (
-                  <div className={clsx(
-                    "flex items-center gap-2 font-medium",
-                    theme === "light" ? "text-gray-700" : "text-gray-100"
-                  )}>
-                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                    <span>{city}</span>
-                  </div>
-                )}
-                {occupation && (
-                  <div className={clsx(
-                    "flex items-center gap-2 font-medium",
-                    theme === "light" ? "text-gray-700" : "text-gray-100"
-                  )}>
-                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
-                      <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
-                    </svg>
-                    <span>{occupation}</span>
-                  </div>
-                )}
-                {height && (
-                  <div className={clsx(
-                    "flex items-center gap-2 font-medium",
-                    theme === "light" ? "text-gray-700" : "text-gray-100"
-                  )}>
-                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
-                      <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
-                    </svg>
-                    <span>{height}</span>
-                  </div>
-                )}
-                {children && (
-                  <div className={clsx(
-                    "flex items-center gap-2 font-medium",
-                    theme === "light" ? "text-gray-700" : "text-gray-100"
-                  )}>
-                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
-                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                    <span>{children}</span>
-                  </div>
-                )}
-                {religion && (
-                  <div className={clsx(
-                    "flex items-center gap-2 font-medium",
-                    theme === "light" ? "text-gray-700" : "text-gray-100"
-                  )}>
-                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
-                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                    </svg>
-                    <span>{religion}</span>
-                  </div>
-                )}
-              </div>
-            </div>
           )}
         </div>
       )}

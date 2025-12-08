@@ -7,50 +7,84 @@ type PostListProps = {
 };
 
 export async function PostList({ topic }: PostListProps) {
-  try {
-    const [currentUserProfile, posts] = await Promise.all([
-      getCurrentUserProfile().catch(() => null),
-      prisma.post.findMany({
-        where: { topic },
-        orderBy: { createdAt: "desc" },
-        take: 50,
-      }),
-    ]);
-
-    // Fetch authors separately to avoid relation issues
-    const postsWithAuthors = await Promise.all(
-      posts.map(async (post) => {
-        try {
-          const author = await prisma.profiles.findUnique({
-            where: { id: post.authorId },
-            select: {
-              id: true,
-              display_name: true,
-              western_sign: true,
-              chinese_sign: true,
-              east_west_code: true,
-            },
-          });
-          return { ...post, author };
-        } catch (error) {
-          console.error(`[PostList] Error fetching author for post ${post.id}:`, error);
-          return {
-            ...post,
-            author: {
-              id: post.authorId,
-              display_name: null,
-              western_sign: null,
-              chinese_sign: null,
-              east_west_code: null,
-            },
-          };
-        }
-      })
+  // Check if DATABASE_URL is configured
+  if (!process.env.DATABASE_URL) {
+    console.error('[PostList] DATABASE_URL not configured');
+    return (
+      <div className="mt-4 rounded-xl border border-amber-800 bg-amber-950/20 p-4">
+        <p className="text-sm text-amber-400">
+          Database is not configured. Posts cannot be loaded.
+        </p>
+        <p className="mt-2 text-xs text-amber-300">
+          Please configure DATABASE_URL in your environment variables.
+        </p>
+      </div>
     );
+  }
 
-    // Map posts with author data
-    const formattedPosts = postsWithAuthors.map((post: any) => ({
-      ...post,
+  try {
+    // Add timeout wrapper to prevent infinite hanging
+    const withTimeout = <T,>(promise: Promise<T>, timeoutMs: number): Promise<T> => {
+      return Promise.race([
+        promise,
+        new Promise<T>((_, reject) => 
+          setTimeout(() => reject(new Error('Database query timeout')), timeoutMs)
+        ),
+      ]);
+    };
+
+    let posts: any[] = [];
+    let currentUserProfile: any = null;
+
+    try {
+      const result = await withTimeout(
+        Promise.all([
+          getCurrentUserProfile().catch(() => null),
+          prisma.post.findMany({
+            where: { topic },
+            orderBy: { createdAt: "desc" },
+            take: 50,
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  display_name: true,
+                  western_sign: true,
+                  chinese_sign: true,
+                  east_west_code: true,
+                },
+              },
+            },
+          }),
+        ]),
+        5000
+      );
+      currentUserProfile = result[0];
+      posts = result[1];
+    } catch (err) {
+      console.error('[PostList] Database query failed or timed out:', err);
+      // Return empty state instead of crashing
+      return (
+        <div className="mt-4 rounded-xl border border-amber-800 bg-amber-950/20 p-4">
+          <p className="text-sm text-amber-400">
+            Unable to load posts. The database connection may be unavailable.
+          </p>
+          <p className="mt-2 text-xs text-amber-300">
+            Please check your connection and try again.
+          </p>
+        </div>
+      );
+    }
+
+    // Format posts with author data
+    const formattedPosts = posts.map((post: any) => ({
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      createdAt: post.createdAt.toISOString(),
+      topic: post.topic,
+      likeCount: post.likeCount || 0,
+      commentCount: post.commentCount || 0,
       author: {
         id: post.author?.id || post.authorId,
         displayName: post.author?.display_name ?? "Anonymous",
@@ -76,14 +110,7 @@ export async function PostList({ topic }: PostListProps) {
         {formattedPosts.map((post) => (
           <PostCardClient
             key={post.id}
-            post={{
-              id: post.id,
-              title: post.title,
-              content: post.content,
-              createdAt: post.createdAt.toISOString(),
-              topic: post.topic,
-              author: post.author,
-            }}
+            post={post}
             currentUserProfile={
               currentUserProfile
                 ? {

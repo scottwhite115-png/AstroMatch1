@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { LikeButton } from "./LikeButton";
 import { ReplyForm } from "./ReplyForm";
+import Link from "next/link";
+
+type Author = {
+  id: string;
+  displayName: string;
+  westSign: string;
+  chineseSign: string;
+  eastWestCode: string;
+};
 
 type Comment = {
   id: string;
@@ -11,17 +20,17 @@ type Comment = {
   authorId: string;
   createdAt: string;
   parentId: string | null;
-  _count: {
-    likes: number;
-  };
+  likeCount: number;
+  author: Author;
   replies: Comment[];
 };
 
 type CommentThreadProps = {
   postId: string;
+  currentUser: any; // Profile or null
 };
 
-export function CommentThread({ postId }: CommentThreadProps) {
+export function CommentThread({ postId, currentUser }: CommentThreadProps) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -83,6 +92,7 @@ export function CommentThread({ postId }: CommentThreadProps) {
           key={comment.id}
           comment={comment}
           postId={postId}
+          currentUser={currentUser}
           replyingTo={replyingTo}
           setReplyingTo={setReplyingTo}
           onReplySuccess={handleReplySuccess}
@@ -95,6 +105,7 @@ export function CommentThread({ postId }: CommentThreadProps) {
 type CommentItemProps = {
   comment: Comment;
   postId: string;
+  currentUser: any;
   replyingTo: string | null;
   setReplyingTo: (id: string | null) => void;
   onReplySuccess: () => void;
@@ -103,6 +114,7 @@ type CommentItemProps = {
 function CommentItem({
   comment,
   postId,
+  currentUser,
   replyingTo,
   setReplyingTo,
   onReplySuccess,
@@ -113,13 +125,25 @@ function CommentItem({
       <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-6 h-6 rounded-full bg-slate-700 flex items-center justify-center text-xs text-slate-300">
-                {comment.authorId.slice(0, 2).toUpperCase()}
-              </div>
-              <span className="text-xs text-slate-400">
-                {comment.authorId.slice(0, 8)}...
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              {/* East-West Pill */}
+              {comment.author.eastWestCode && (
+                <div className="inline-flex items-center gap-1 rounded-full border border-slate-700 bg-slate-950/60 px-2 py-0.5 text-[10px] font-medium text-slate-200">
+                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-800 text-[9px]">
+                    {comment.author.westSign?.[0] || "?"}
+                  </span>
+                  <span className="truncate max-w-[100px]">
+                    {comment.author.eastWestCode}
+                  </span>
+                </div>
+              )}
+
+              {/* Author name */}
+              <span className="text-xs font-semibold text-slate-300">
+                {comment.author.displayName}
               </span>
+
+              {/* Time */}
               <span className="text-xs text-slate-500">
                 {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
               </span>
@@ -132,18 +156,28 @@ function CommentItem({
 
         {/* Actions */}
         <div className="mt-3 flex items-center gap-4">
-          <button
-            type="button"
-            onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
-            className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
-          >
-            Reply
-          </button>
-          <LikeButton commentId={comment.id} initialCount={comment._count.likes} />
+          {currentUser ? (
+            <button
+              type="button"
+              onClick={() => setReplyingTo(replyingTo === comment.id ? null : comment.id)}
+              className="text-xs text-slate-400 hover:text-slate-300 transition-colors"
+            >
+              Reply
+            </button>
+          ) : (
+            <Link href="/login" className="text-xs text-slate-400 hover:text-emerald-400 transition-colors">
+              Log in to reply
+            </Link>
+          )}
+          <LikeButton
+            commentId={comment.id}
+            initialCount={comment.likeCount}
+            disabled={!currentUser}
+          />
         </div>
 
         {/* Reply Form */}
-        {replyingTo === comment.id && (
+        {currentUser && replyingTo === comment.id && (
           <div className="mt-3 pt-3 border-t border-slate-800">
             <ReplyForm
               postId={postId}
@@ -162,13 +196,25 @@ function CommentItem({
             <div key={reply.id} className="rounded-xl border border-slate-800 bg-slate-900/30 p-3">
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-5 h-5 rounded-full bg-slate-700 flex items-center justify-center text-[10px] text-slate-300">
-                      {reply.authorId.slice(0, 2).toUpperCase()}
-                    </div>
-                    <span className="text-xs text-slate-400">
-                      {reply.authorId.slice(0, 8)}...
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    {/* East-West Pill for reply */}
+                    {reply.author.eastWestCode && (
+                      <div className="inline-flex items-center gap-1 rounded-full border border-slate-700 bg-slate-950/60 px-2 py-0.5 text-[10px] font-medium text-slate-200">
+                        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-800 text-[9px]">
+                          {reply.author.westSign?.[0] || "?"}
+                        </span>
+                        <span className="truncate max-w-[100px]">
+                          {reply.author.eastWestCode}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Author name */}
+                    <span className="text-xs font-semibold text-slate-300">
+                      {reply.author.displayName}
                     </span>
+
+                    {/* Time */}
                     <span className="text-xs text-slate-500">
                       {formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true })}
                     </span>
@@ -179,7 +225,11 @@ function CommentItem({
                 </div>
               </div>
               <div className="mt-2">
-                <LikeButton commentId={reply.id} initialCount={reply._count.likes} />
+                <LikeButton
+                  commentId={reply.id}
+                  initialCount={reply.likeCount}
+                  disabled={!currentUser}
+                />
               </div>
             </div>
           ))}

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 import { useTheme } from "@/contexts/ThemeContext"
@@ -12,6 +13,13 @@ const FourPointedStar = ({ className }: { className?: string }) => (
 
 // Navigation sections and pages
 const ASTROLAB_SECTIONS = [
+  {
+    id: 'match-generator',
+    label: 'Match Generator',
+    icon: '🧮',
+    description: 'Calculate compatibility',
+    path: '/astrology/match-generator', // This is a page, not a section
+  },
   {
     id: 'chinese-patterns',
     label: 'Chinese Patterns',
@@ -30,16 +38,21 @@ const ASTROLAB_SECTIONS = [
     icon: '☀️',
     description: 'Element compatibility chart',
   },
+  {
+    id: 'five-elements',
+    label: 'Five Elements',
+    icon: '🌳',
+    description: 'Wu Xing (五行) element compatibility',
+  },
+  {
+    id: 'chinese-zodiac-calendar',
+    label: 'Zodiac Calendar',
+    icon: '📅',
+    description: 'Chinese zodiac year calendar',
+  },
 ]
 
 const ASTROLAB_PAGES = [
-  {
-    id: 'match-generator',
-    label: 'Match Generator',
-    icon: '🧮',
-    path: '/astrology/match-generator',
-    description: 'Calculate compatibility',
-  },
   {
     id: 'combinations',
     label: 'Sign Combinations',
@@ -78,8 +91,26 @@ interface AstroLabNavigationHeaderProps {
 export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNavigationHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const [activeTab, setActiveTab] = useState<'matches' | 'astrolab'>('astrolab')
+
+  // Sync active tab with current route
+  useEffect(() => {
+    if (pathname === '/matches' || pathname.startsWith('/matches/')) {
+      setActiveTab('matches')
+    } else if (pathname === '/astrology' || pathname.startsWith('/astrology/')) {
+      setActiveTab('astrolab')
+    }
+  }, [pathname])
 
   const handleSectionClick = (sectionId: string) => {
+    // Check if this section has a path (like match-generator which is a page)
+    const section = ASTROLAB_SECTIONS.find(s => s.id === sectionId)
+    if (section && 'path' in section && section.path) {
+      // Navigate to the page
+      router.push(section.path)
+      return
+    }
+
     // If we're on the main page, scroll to section
     if (pathname === '/astrology') {
       const element = document.getElementById(sectionId)
@@ -106,39 +137,88 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
         ? "bg-white/80 backdrop-blur-sm border-gray-200"
         : "bg-slate-900/80 backdrop-blur-sm border-slate-800"
     }`}>
-      <div className="mx-auto max-w-4xl px-4 py-3">
+      <div className="mx-auto max-w-4xl px-4 pt-3 pb-3">
+        {/* Tabs: Matches | AstroLab */}
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <FourPointedStar className="w-5 h-5 text-orange-500" />
-            <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-              AstroLab
-            </span>
+          <div className="flex-1 -ml-4">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+              <div className="flex gap-0.5 min-w-max">
+                <button
+                  onClick={() => {
+                    setActiveTab('matches')
+                    router.push('/matches')
+                  }}
+                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                    activeTab === 'matches'
+                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                      : theme === "light"
+                        ? "text-gray-600 hover:text-gray-900"
+                        : "text-gray-400 hover:text-gray-200"
+                  }`}
+                >
+                  AstroMatch
+                  <div 
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
+                      activeTab === 'matches' 
+                        ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
+                        : "opacity-0"
+                    }`}
+                  />
+                </button>
+                <button
+                  onClick={() => setActiveTab('astrolab')}
+                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                    activeTab === 'astrolab'
+                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                      : theme === "light"
+                        ? "text-gray-600 hover:text-gray-900"
+                        : "text-gray-400 hover:text-gray-200"
+                  }`}
+                >
+                  AstroLab
+                  <div 
+                    className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
+                      activeTab === 'astrolab' 
+                        ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
+                        : "opacity-0"
+                    }`}
+                  />
+                </button>
+              </div>
+            </div>
           </div>
           
-          {/* Theme Toggle Button */}
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? (
-              <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </svg>
-            )}
-          </button>
+          {/* Right side: Placeholder buttons to match matches page layout, then Theme Toggle */}
+          <div className="flex items-center gap-2 ml-2">
+            {/* Invisible placeholder buttons to maintain consistent spacing */}
+            <div className="w-8 h-8" aria-hidden="true"></div>
+            <div className="w-8 h-8" aria-hidden="true"></div>
+            
+            {/* Theme Toggle Button */}
+            <button
+              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+              aria-label="Toggle theme"
+            >
+              {theme === "light" ? (
+                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="12" cy="12" r="5" />
+                  <line x1="12" y1="1" x2="12" y2="3" />
+                  <line x1="12" y1="21" x2="12" y2="23" />
+                  <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                  <line x1="1" y1="12" x2="3" y2="12" />
+                  <line x1="21" y1="12" x2="23" y2="12" />
+                  <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                  <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Pill Navigation - Pages */}
