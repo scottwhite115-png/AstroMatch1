@@ -1,158 +1,237 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
-import { isValidTopicId } from "@/app/community/topics";
+import { NextRequest, NextResponse } from "next/server"
+import { createClient } from "@/lib/supabase/server"
+import { prisma } from "@/lib/prisma"
+import { COMMUNITY_TOPICS } from "@/app/community/topics"
 
-export async function GET(req: Request) {
+export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const topic = searchParams.get("topic");
-    const cursor = searchParams.get("cursor");
-    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 50);
-    const sort = searchParams.get("sort") || "latest";
+    const searchParams = request.nextUrl.searchParams
+    const topic = searchParams.get("topic")
+    const cursor = searchParams.get("cursor")
+    const limit = Math.min(parseInt(searchParams.get("limit") || "20"), 50)
+    const sort = searchParams.get("sort") || "latest" // "latest" | "top"
 
-    // Validate topic
-    if (!topic) {
-      return new NextResponse("Missing topic parameter", { status: 400 });
-    }
-
-    if (!isValidTopicId(topic)) {
-      return new NextResponse("Invalid topic", { status: 400 });
+    // Validate topic if provided
+    if (topic && !COMMUNITY_TOPICS.find((t) => t.id === topic)) {
+      return NextResponse.json(
+        { error: "Invalid topic" },
+        { status: 400 }
+      )
     }
 
     // Build where clause
-    const where: any = { topic };
+    const where: any = {}
+    if (topic) {
+      where.topic = topic
+    }
     if (cursor) {
-      where.id = { lt: cursor }; // Cursor pagination using ID
+      where.createdAt = { lt: new Date(cursor) }
     }
 
-    // Build orderBy clause
-    let orderBy: any;
+    // Build orderBy
+    let orderBy: any
     if (sort === "top") {
-      // Custom sorting by engagement score
-      // We'll fetch and sort in memory for now (for simplicity)
-      // In production, you might want to use a database function or computed field
-      orderBy = { createdAt: "desc" };
-    } else {
-      // "latest" - default
-      orderBy = { createdAt: "desc" };
-    }
-
-    const posts = await prisma.post.findMany({
-      where,
-      orderBy,
-      take: limit + 1, // Fetch one extra to determine if there's a next page
-      include: {
-        author: {
-          select: {
-            id: true,
-            display_name: true,
-            western_sign: true,
-            chinese_sign: true,
-            east_west_code: true,
+      // Custom ordering by engagement score
+      // We'll fetch and sort in-memory for top posts
+      const posts = await prisma.post.findMany({
+        where,
+        take: limit * 2, // Fetch more for scoring
+        orderBy: { createdAt: "desc" },
+        include: {
+          author: {
+            select: {
+              id: true,
+              display_name: true,
+              east_west_code: true,
+              chinese_sign: true,
+            },
           },
         },
-      },
-    });
+      })
 
-    // Apply custom sorting if "top"
-    let sortedPosts = posts;
-    if (sort === "top") {
-      sortedPosts = posts.sort((a, b) => {
-        const scoreA = a.likeCount + a.commentCount * 2;
-        const scoreB = b.likeCount + b.commentCount * 2;
-        if (scoreB !== scoreA) return scoreB - scoreA;
-        return b.createdAt.getTime() - a.createdAt.getTime();
-      });
+      // Calculate engagement score and sort
+      const scored = posts
+        .map((post) => ({
+          ...post,
+          score: post.likeCount + post.commentCount * 2,
+        }))
+        .sort((a, b) => {
+          if (b.score !== a.score) return b.score - a.score
+          return b.createdAt.getTime() - a.createdAt.getTime()
+        })
+        .slice(0, limit)
+
+      const formatted = scored.map((post) => ({
+        id: post.id,
+        topic: post.topic,
+        type: post.type,
+        title: post.title,
+        snippet: post.content.substring(0, 200) + (post.content.length > 200 ? "..." : ""),
+        createdAt: post.createdAt.toISOString(),
+        likeCount: post.likeCount,
+        commentCount: post.commentCount,
+        author: {
+          id: post.author.id,
+          displayName: post.author.display_name || "Anonymous",
+          eastWestCode: post.author.east_west_code,
+          chineseSign: post.author.chinese_sign,
+        },
+      }))
+
+      return NextResponse.json({
+        posts: formatted,
+        nextCursor: formatted.length === limit 
+          ? formatted[formatted.length - 1].createdAt 
+          : null,
+      })
+    } else {
+      // Latest posts
+      orderBy = { createdAt: "desc" }
+
+      const posts = await prisma.post.findMany({
+        where,
+        orderBy,
+        take: limit,
+        include: {
+          author: {
+            select: {
+              id: true,
+              display_name: true,
+              east_west_code: true,
+              chinese_sign: true,
+            },
+          },
+        },
+      })
+
+      const formatted = posts.map((post) => ({
+        id: post.id,
+        topic: post.topic,
+        type: post.type,
+        title: post.title,
+        snippet: post.content.substring(0, 200) + (post.content.length > 200 ? "..." : ""),
+        createdAt: post.createdAt.toISOString(),
+        likeCount: post.likeCount,
+        commentCount: post.commentCount,
+        author: {
+          id: post.author.id,
+          displayName: post.author.display_name || "Anonymous",
+          eastWestCode: post.author.east_west_code,
+          chineseSign: post.author.chinese_sign,
+        },
+      }))
+
+      return NextResponse.json({
+        posts: formatted,
+        nextCursor: posts.length === limit 
+          ? posts[posts.length - 1].createdAt.toISOString() 
+          : null,
+      })
     }
-
-    // Determine next cursor
-    const hasMore = sortedPosts.length > limit;
-    const postsToReturn = hasMore ? sortedPosts.slice(0, limit) : sortedPosts;
-    const nextCursor = hasMore ? postsToReturn[postsToReturn.length - 1].id : null;
-
-    // Format response
-    const formattedPosts = postsToReturn.map((post) => ({
-      id: post.id,
-      topic: post.topic,
-      title: post.title,
-      content: post.content,
-      createdAt: post.createdAt.toISOString(),
-      likeCount: post.likeCount,
-      commentCount: post.commentCount,
-      author: {
-        id: post.author.id,
-        displayName: post.author.display_name || "Anonymous",
-        westSign: post.author.western_sign || "",
-        chineseSign: post.author.chinese_sign || "",
-        eastWestCode: post.author.east_west_code || "",
-      },
-    }));
-
-    return NextResponse.json({
-      posts: formattedPosts,
-      nextCursor,
-    });
-  } catch (err) {
-    console.error("[GET /api/community/posts]", err);
-    return new NextResponse("Internal error", { status: 500 });
+  } catch (error) {
+    console.error("[GET /api/community/posts] Error:", error)
+    return NextResponse.json(
+      { error: "Failed to fetch posts" },
+      { status: 500 }
+    )
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const user = await getCurrentUser();
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-    if (!user) {
-      return new NextResponse("Unauthorized", { status: 401 });
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      )
     }
 
-    const body = await req.json();
-    const { title, content, topic } = body as {
-      title?: string;
-      content?: string;
-      topic?: string;
-    };
+    const body = await request.json()
+    const { topic, type, title, content } = body
 
-    // Validate required fields
-    if (!title || !content || !topic) {
-      return new NextResponse("Missing fields", { status: 400 });
+    // Validation
+    if (!topic || !type || !title || !content) {
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      )
     }
 
-    // Validate non-empty
-    if (!title.trim() || !content.trim()) {
-      return new NextResponse("Title and content cannot be empty", { status: 400 });
+    if (!COMMUNITY_TOPICS.find((t) => t.id === topic)) {
+      return NextResponse.json(
+        { error: "Invalid topic" },
+        { status: 400 }
+      )
     }
 
-    // Validate topic
-    if (!isValidTopicId(topic)) {
-      return new NextResponse("Invalid topic", { status: 400 });
+    if (type !== "STORY" && type !== "QUESTION") {
+      return NextResponse.json(
+        { error: "Invalid post type" },
+        { status: 400 }
+      )
     }
 
+    if (title.length < 3 || title.length > 200) {
+      return NextResponse.json(
+        { error: "Title must be between 3 and 200 characters" },
+        { status: 400 }
+      )
+    }
+
+    if (content.length < 10 || content.length > 10000) {
+      return NextResponse.json(
+        { error: "Content must be between 10 and 10000 characters" },
+        { status: 400 }
+      )
+    }
+
+    // Get user profile for language/country
+    const profile = await prisma.profiles.findUnique({
+      where: { id: user.id },
+      select: {
+        id: true,
+        display_name: true,
+        east_west_code: true,
+        chinese_sign: true,
+      },
+    })
+
+    if (!profile) {
+      return NextResponse.json(
+        { error: "Profile not found" },
+        { status: 404 }
+      )
+    }
+
+    // Create post
     const post = await prisma.post.create({
       data: {
-        title: title.trim(),
-        content: content.trim(),
-        topic: topic.trim(),
+        topic,
+        type,
+        title,
+        content,
         authorId: user.id,
+        // language and countryCode can be added later when profile has them
       },
       include: {
         author: {
           select: {
             id: true,
             display_name: true,
-            western_sign: true,
-            chinese_sign: true,
             east_west_code: true,
+            chinese_sign: true,
           },
         },
       },
-    });
+    })
 
-    // Format response
-    const formattedPost = {
+    return NextResponse.json({
       id: post.id,
       topic: post.topic,
+      type: post.type,
       title: post.title,
       content: post.content,
       createdAt: post.createdAt.toISOString(),
@@ -161,16 +240,15 @@ export async function POST(req: Request) {
       author: {
         id: post.author.id,
         displayName: post.author.display_name || "Anonymous",
-        westSign: post.author.western_sign || "",
-        chineseSign: post.author.chinese_sign || "",
-        eastWestCode: post.author.east_west_code || "",
+        eastWestCode: post.author.east_west_code,
+        chineseSign: post.author.chinese_sign,
       },
-    };
-
-    return NextResponse.json(formattedPost, { status: 201 });
-  } catch (err) {
-    console.error("[POST /api/community/posts]", err);
-    return new NextResponse("Internal error", { status: 500 });
+    })
+  } catch (error) {
+    console.error("[POST /api/community/posts] Error:", error)
+    return NextResponse.json(
+      { error: "Failed to create post" },
+      { status: 500 }
+    )
   }
 }
-

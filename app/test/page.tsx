@@ -1,27 +1,11 @@
 'use client'
 
-export default function TestSimple() {
+export default function TestPage() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#0a0a0a',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-      fontFamily: 'system-ui',
-      flexDirection: 'column',
-      gap: '2rem'
-    }}>
-      <h1 style={{ fontSize: '3rem' }}>✅ Test Works!</h1>
-      <p>This page uses the client component.</p>
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <a href="/matches" style={{ padding: '1rem 2rem', background: '#f97316', color: 'white', textDecoration: 'none', borderRadius: '8px' }}>
-          Go to Matches
-        </a>
-        <a href="/astrology" style={{ padding: '1rem 2rem', background: '#8b5cf6', color: 'white', textDecoration: 'none', borderRadius: '8px' }}>
-          Go to Astrology
-        </a>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">Test Page</h1>
+        <p className="text-gray-600">If you can see this, the app is loading correctly.</p>
       </div>
     </div>
   )

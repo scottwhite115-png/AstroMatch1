@@ -1,223 +1,142 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
+import { NextRequest, NextResponse } from "next/server"
+import { createClient } from "@/lib/supabase/server"
+import { prisma } from "@/lib/prisma"
 
-export async function GET(
-  req: Request,
-  { params }: { params: Promise<{ postId: string }> }
-) {
-  try {
-    const { postId } = await params;
-
-    // Get all top-level comments (no parentId) and their replies
-    const comments = await prisma.comment.findMany({
-      where: {
-        postId,
-        parentId: null,
-      },
-      orderBy: { createdAt: "asc" },
-      include: {
-        author: {
-          select: {
-            id: true,
-            display_name: true,
-            western_sign: true,
-            chinese_sign: true,
-            east_west_code: true,
-          },
-        },
-        replies: {
-          orderBy: { createdAt: "asc" },
-          include: {
-            author: {
-              select: {
-                id: true,
-                display_name: true,
-                western_sign: true,
-                chinese_sign: true,
-                east_west_code: true,
-              },
-            },
-          },
-        },
-      },
-    });
-
-    // Format with author info
-    const formattedComments = comments.map((comment) => ({
-      id: comment.id,
-      content: comment.content,
-      createdAt: comment.createdAt.toISOString(),
-      authorId: comment.authorId,
-      parentId: comment.parentId,
-      likeCount: comment.likeCount,
-      author: {
-        id: comment.author?.id || comment.authorId,
-        displayName: comment.author?.display_name || "Anonymous",
-        westSign: comment.author?.western_sign || "",
-        chineseSign: comment.author?.chinese_sign || "",
-        eastWestCode: comment.author?.east_west_code || "",
-      },
-      replies: comment.replies.map((reply) => ({
-        id: reply.id,
-        content: reply.content,
-        createdAt: reply.createdAt.toISOString(),
-        authorId: reply.authorId,
-        parentId: reply.parentId,
-        likeCount: reply.likeCount,
-        author: {
-          id: reply.author?.id || reply.authorId,
-          displayName: reply.author?.display_name || "Anonymous",
-          westSign: reply.author?.western_sign || "",
-          chineseSign: reply.author?.chinese_sign || "",
-          eastWestCode: reply.author?.east_west_code || "",
-        },
-      })),
-    }));
-
-    return NextResponse.json(formattedComments);
-  } catch (err) {
-    console.error("[GET /api/community/posts/[postId]/comments]", err);
-    return new NextResponse("Internal error", { status: 500 });
-  }
+type RouteContext = {
+  params: Promise<{ postId: string }>
 }
 
 export async function POST(
-  req: Request,
-  { params }: { params: Promise<{ postId: string }> }
+  request: NextRequest,
+  context: RouteContext
 ) {
   try {
-    const user = await getCurrentUser();
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-    if (!user) {
-      return new NextResponse("Unauthorized", { status: 401 });
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      )
     }
 
-    const { postId } = await params;
-    const body = await req.json();
-    const { content, parentId } = body as {
-      content?: string;
-      parentId?: string;
-    };
+    const { postId } = await context.params
+    const body = await request.json()
+    const { content, parentId } = body
 
-    if (!content || !content.trim()) {
-      return new NextResponse("Missing content", { status: 400 });
+    // Validation
+    if (!content || content.trim().length === 0) {
+      return NextResponse.json(
+        { error: "Comment content is required" },
+        { status: 400 }
+      )
     }
 
-    // Verify post exists
+    if (content.length > 2000) {
+      return NextResponse.json(
+        { error: "Comment must be less than 2000 characters" },
+        { status: 400 }
+      )
+    }
+
+    // Check if post exists
     const post = await prisma.post.findUnique({
       where: { id: postId },
-    });
+      select: { id: true, authorId: true },
+    })
 
     if (!post) {
-      return new NextResponse("Post not found", { status: 404 });
+      return NextResponse.json(
+        { error: "Post not found" },
+        { status: 404 }
+      )
     }
 
-    // If parentId is provided, verify parent comment exists
+    // If replying to a comment, check if parent exists
+    let parentComment = null
     if (parentId) {
-      const parentComment = await prisma.comment.findUnique({
+      parentComment = await prisma.comment.findUnique({
         where: { id: parentId },
-      });
+        select: { id: true, authorId: true, postId: true },
+      })
 
       if (!parentComment || parentComment.postId !== postId) {
-        return new NextResponse("Parent comment not found", { status: 404 });
+        return NextResponse.json(
+          { error: "Parent comment not found" },
+          { status: 404 }
+        )
       }
     }
 
-    // Create the comment and increment post comment count in a transaction
+    // Create comment and update counts in a transaction
     const comment = await prisma.$transaction(async (tx) => {
+      // Create the comment
       const newComment = await tx.comment.create({
         data: {
           postId,
           parentId: parentId || null,
           authorId: user.id,
-          content: content.trim(),
+          content,
         },
         include: {
           author: {
             select: {
               id: true,
               display_name: true,
-              western_sign: true,
-              chinese_sign: true,
               east_west_code: true,
+              chinese_sign: true,
+              photo_url: true,
             },
           },
         },
-      });
+      })
 
-      // Increment post comment count
+      // Increment comment count on post
       await tx.post.update({
         where: { id: postId },
-        data: {
-          commentCount: {
-            increment: 1,
+        data: { commentCount: { increment: 1 } },
+      })
+
+      // Create notification for post author or parent comment author
+      const notifyUserId = parentId ? parentComment!.authorId : post.authorId
+
+      // Don't notify if user is commenting on their own post/comment
+      if (notifyUserId !== user.id) {
+        await tx.notification.create({
+          data: {
+            userId: notifyUserId,
+            actorId: user.id,
+            type: parentId ? "COMMENT_REPLY" : "POST_REPLY",
+            postId,
+            commentId: newComment.id,
           },
-        },
-      });
-
-      return newComment;
-    });
-
-    // Create notification
-    try {
-      if (parentId) {
-        // Reply to comment - notify parent comment author
-        const parentComment = await prisma.comment.findUnique({
-          where: { id: parentId },
-          select: { authorId: true },
-        });
-
-        if (parentComment && parentComment.authorId !== user.id) {
-          await prisma.notification.create({
-            data: {
-              userId: parentComment.authorId,
-              actorId: user.id,
-              type: "COMMENT_REPLY",
-              postId,
-              commentId: comment.id,
-            },
-          });
-        }
-      } else {
-        // Reply to post - notify post author
-        if (post.authorId !== user.id) {
-          await prisma.notification.create({
-            data: {
-              userId: post.authorId,
-              actorId: user.id,
-              type: "POST_REPLY",
-              postId,
-              commentId: comment.id,
-            },
-          });
-        }
+        })
       }
-    } catch (notifErr) {
-      // Don't fail the comment creation if notification fails
-      console.error("[Notification creation error]", notifErr);
-    }
 
-    // Format response
-    const formattedComment = {
+      return newComment
+    })
+
+    return NextResponse.json({
       id: comment.id,
+      postId: comment.postId,
+      parentId: comment.parentId,
       content: comment.content,
       createdAt: comment.createdAt.toISOString(),
-      parentId: comment.parentId,
       likeCount: comment.likeCount,
       author: {
-        id: comment.author?.id || comment.authorId,
-        displayName: comment.author?.display_name || "Anonymous",
-        westSign: comment.author?.western_sign || "",
-        chineseSign: comment.author?.chinese_sign || "",
-        eastWestCode: comment.author?.east_west_code || "",
+        id: comment.author.id,
+        displayName: comment.author.display_name || "Anonymous",
+        eastWestCode: comment.author.east_west_code,
+        chineseSign: comment.author.chinese_sign,
+        photoUrl: comment.author.photo_url,
       },
-    };
-
-    return NextResponse.json(formattedComment, { status: 201 });
-  } catch (err) {
-    console.error("[POST /api/community/posts/[postId]/comments]", err);
-    return new NextResponse("Internal error", { status: 500 });
+    })
+  } catch (error) {
+    console.error("[POST /api/community/posts/[postId]/comments] Error:", error)
+    return NextResponse.json(
+      { error: "Failed to create comment" },
+      { status: 500 }
+    )
   }
 }
-

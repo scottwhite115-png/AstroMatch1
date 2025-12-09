@@ -1,7 +1,7 @@
 import { COMMUNITY_TOPICS } from "../topics";
 import { notFound } from "next/navigation";
 import { PostList } from "../_components/PostList";
-import { TopicHeading } from "./_components/TopicHeading";
+import { NewPostButton } from "../_components/NewPostButton";
 import { Suspense } from "react";
 
 export default async function TopicPage({ 
@@ -16,8 +16,14 @@ export default async function TopicPage({
 
     return (
       <div className="mt-2 space-y-3">
-        <div className="min-w-0">
-          <TopicHeading topic={topic} />
+        <div className="flex items-center justify-between gap-3">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-50">
+              {topic.hashtag}
+            </h2>
+            <p className="text-xs text-slate-400">{topic.description}</p>
+          </div>
+          <NewPostButton topic={topic.id} />
         </div>
 
         <Suspense fallback={

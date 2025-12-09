@@ -626,19 +626,30 @@ const SHUFFLED_PROFILES = shuffleArray(TEST_PROFILES);
 
 export default function MatchesPage() {
   const router = useRouter()
+  const [mounted, setMounted] = useState(false)
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
   const enrichedProfiles = useMemo(() => {
-    return SHUFFLED_PROFILES.map((profile) => {
-      const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
-      return {
-        ...profile,
-        tropicalWesternSign: tropical ?? profile.westernSign,
-        siderealWesternSign: sidereal ?? profile.westernSign,
-      }
-    })
+    try {
+      return SHUFFLED_PROFILES.map((profile) => {
+        const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
+        return {
+          ...profile,
+          tropicalWesternSign: tropical ?? profile.westernSign,
+          siderealWesternSign: sidereal ?? profile.westernSign,
+        }
+      })
+    } catch (error) {
+      console.error('[MatchesPage] Error enriching profiles:', error)
+      return []
+    }
   }, [])
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0)
+  
+  // Set mounted state on client side only
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
   const [profilesLoading, setProfilesLoading] = useState(false) // Changed to false for immediate load
@@ -2418,6 +2429,17 @@ export default function MatchesPage() {
     setButtonTouchStart(null)
   }
 
+  // Show loading state until mounted (prevents hydration mismatch)
+  if (!mounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <p className="text-lg text-gray-900">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
   // Show loading indicator only if we have no profiles at all
   if (profilesLoading && filteredProfiles.length === 0) {
     return (
@@ -2425,6 +2447,19 @@ export default function MatchesPage() {
         <div className="text-center">
           <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
             Loading matches...
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // Safety check: if no profiles, show a message instead of blank screen
+  if (filteredProfiles.length === 0 && !profilesLoading) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
+        <div className="text-center px-4">
+          <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+            No matches found. Try adjusting your filters.
           </p>
         </div>
       </div>

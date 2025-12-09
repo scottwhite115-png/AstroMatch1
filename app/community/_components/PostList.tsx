@@ -81,8 +81,9 @@ export async function PostList({ topic }: PostListProps) {
       id: post.id,
       title: post.title,
       content: post.content,
-      createdAt: post.createdAt.toISOString(),
       topic: post.topic,
+      type: post.type, // Add type field
+      createdAt: post.createdAt.toISOString(),
       likeCount: post.likeCount || 0,
       commentCount: post.commentCount || 0,
       author: {

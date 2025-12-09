@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContext";
+import { COMMUNITY_TOPICS } from "../topics";
 
 type NewPostButtonProps = {
   topic: string; // topic slug for this section
@@ -10,16 +11,20 @@ type NewPostButtonProps = {
   onPostCreated?: () => void; // optional: to trigger refresh
 };
 
-export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButtonProps) {
+export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }: NewPostButtonProps) {
   const { theme } = useTheme();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [type, setType] = useState<"STORY" | "QUESTION">("STORY");
+  const [topic, setTopic] = useState(defaultTopic);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   const resetForm = () => {
+    setType("STORY");
+    setTopic(defaultTopic);
     setTitle("");
     setContent("");
     setError(null);
@@ -43,12 +48,13 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
             title,
             content,
             topic,
+            type,
           }),
         });
 
         if (!res.ok) {
-          const text = await res.text();
-          throw new Error(text || "Failed to create post");
+          const data = await res.json();
+          throw new Error(data.error || "Failed to create post");
         }
 
         resetForm();
@@ -65,11 +71,11 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
 
   return (
     <>
-      {/* The green pill button you already have */}
+      {/* The green pill button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`inline-flex items-center gap-1 rounded-full px-2 sm:px-3 py-1.5 text-xs font-medium transition-all border-2 whitespace-nowrap flex-shrink-0 ${
+        className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all border-2 ${
           theme === "light"
             ? "bg-transparent border-emerald-500 text-emerald-600 hover:bg-emerald-50"
             : "bg-transparent border-emerald-500 text-emerald-400 hover:bg-emerald-950/30"
@@ -83,7 +89,7 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 z-40 bg-black/30"
+            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
             onClick={() => {
               setOpen(false);
               resetForm();
@@ -101,18 +107,11 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
-                <div>
-                  <p className={`text-xs uppercase tracking-wide ${
-                    theme === "light" ? "text-gray-500" : "text-slate-400"
-                  }`}>
-                    Posting in
-                  </p>
-                  <p className={`text-sm font-semibold ${
-                    theme === "light" ? "text-gray-900" : "text-slate-100"
-                  }`}>
-                    {topicLabel || `#${topic}`}
-                  </p>
-                </div>
+                <h2 className={`text-base font-semibold ${
+                  theme === "light" ? "text-gray-900" : "text-slate-50"
+                }`}>
+                  Create a post
+                </h2>
                 <button
                   type="button"
                   onClick={() => {
@@ -128,6 +127,68 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Type selector */}
+                <div className="space-y-2">
+                  <label className={`text-xs font-medium ${
+                    theme === "light" ? "text-gray-700" : "text-slate-300"
+                  }`}>
+                    Type
+                  </label>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setType("STORY")}
+                      className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                        type === "STORY"
+                          ? "bg-purple-500 text-white"
+                          : theme === "light"
+                            ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                      }`}
+                    >
+                      📖 Story
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setType("QUESTION")}
+                      className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
+                        type === "QUESTION"
+                          ? "bg-blue-500 text-white"
+                          : theme === "light"
+                            ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                      }`}
+                    >
+                      ❓ Question
+                    </button>
+                  </div>
+                </div>
+
+                {/* Topic selector */}
+                <div className="space-y-1">
+                  <label className={`text-xs font-medium ${
+                    theme === "light" ? "text-gray-700" : "text-slate-300"
+                  }`}>
+                    Topic
+                  </label>
+                  <select
+                    value={topic}
+                    onChange={(e) => setTopic(e.target.value)}
+                    className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                      theme === "light"
+                        ? "border-gray-300 bg-white text-gray-900"
+                        : "border-slate-700 bg-slate-950/60 text-slate-50"
+                    }`}
+                  >
+                    {COMMUNITY_TOPICS.map((t) => (
+                      <option key={t.id} value={t.id}>
+                        {t.icon} {t.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Title */}
                 <div className="space-y-1">
                   <label className={`text-xs font-medium ${
                     theme === "light" ? "text-gray-700" : "text-slate-300"
@@ -138,7 +199,7 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    maxLength={120}
+                    maxLength={200}
                     className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
@@ -148,6 +209,7 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
                   />
                 </div>
 
+                {/* Content */}
                 <div className="space-y-1">
                   <label className={`text-xs font-medium ${
                     theme === "light" ? "text-gray-700" : "text-slate-300"
@@ -157,7 +219,7 @@ export function NewPostButton({ topic, topicLabel, onPostCreated }: NewPostButto
                   <textarea
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    rows={5}
+                    rows={6}
                     className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 resize-none ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"

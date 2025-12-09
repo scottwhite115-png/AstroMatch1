@@ -817,138 +817,6 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
               </div>
             </div>
 
-            {/* Profile Details - Drop down from under buttons */}
-            {hasProfileDetails && showProfile && (
-              <div className="mt-3">
-                <div 
-                  className={clsx(
-                    "w-full rounded-2xl border p-4 sm:p-5 backdrop-blur-md",
-                    theme === "light" 
-                      ? "bg-white border-gray-200" 
-                      : "bg-slate-900/90 border-white/10"
-                  )}
-                >
-                  {/* About me section */}
-                  {aboutMe && (
-                    <div className={clsx(aboutMe && (age || city || occupation || height || children || religion) ? "mb-4" : "")}>
-                      <div className="mb-3">
-                        <div
-                          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
-                          style={{
-                            background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
-                          }}
-                        >
-                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
-                          About Me
-                        </div>
-                      </div>
-                      <p className={clsx(
-                        "text-sm leading-relaxed",
-                        theme === "light" ? "text-gray-700" : "text-white/90"
-                      )}>
-                        {aboutMe}
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Divider between About Me and Essentials */}
-                  {aboutMe && (age || city || occupation || height || children || religion) && (
-                    <div className={clsx(
-                      "my-4 h-px w-full bg-gradient-to-r from-transparent to-transparent",
-                      theme === "light" ? "via-gray-300/50" : "via-slate-500/50"
-                    )} />
-                  )}
-
-                  {/* Essentials section */}
-                  {(age || city || occupation || height || children || religion) && (
-                    <div>
-                      <div className="mb-3">
-                        <div
-                          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
-                          style={{
-                            background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
-                          }}
-                        >
-                          <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
-                          Essentials
-                        </div>
-                      </div>
-                      <div className="space-y-2 text-base">
-                        {age && (
-                          <div className={clsx(
-                            "flex items-center gap-2 font-medium",
-                            theme === "light" ? "text-gray-700" : "text-gray-100"
-                          )}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
-                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                              <path d="M16 2v4M8 2v4M3 10h18"/>
-                            </svg>
-                            <span>{age} years old</span>
-                          </div>
-                        )}
-                        {city && (
-                          <div className={clsx(
-                            "flex items-center gap-2 font-medium",
-                            theme === "light" ? "text-gray-700" : "text-gray-100"
-                          )}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
-                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                            </svg>
-                            <span>{city}</span>
-                          </div>
-                        )}
-                        {occupation && (
-                          <div className={clsx(
-                            "flex items-center gap-2 font-medium",
-                            theme === "light" ? "text-gray-700" : "text-gray-100"
-                          )}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
-                              <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
-                            </svg>
-                            <span>{occupation}</span>
-                          </div>
-                        )}
-                        {height && (
-                          <div className={clsx(
-                            "flex items-center gap-2 font-medium",
-                            theme === "light" ? "text-gray-700" : "text-gray-100"
-                          )}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
-                              <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
-                            </svg>
-                            <span>{height}</span>
-                          </div>
-                        )}
-                        {children && (
-                          <div className={clsx(
-                            "flex items-center gap-2 font-medium",
-                            theme === "light" ? "text-gray-700" : "text-gray-100"
-                          )}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
-                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                            <span>{children}</span>
-                          </div>
-                        )}
-                        {religion && (
-                          <div className={clsx(
-                            "flex items-center gap-2 font-medium",
-                            theme === "light" ? "text-gray-700" : "text-gray-100"
-                          )}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
-                              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                            </svg>
-                            <span>{religion}</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
             {/* ===== ASTROLOGY BREAKDOWN ===== */}
             {(() => {
               // Check if we have Chinese or Western compatibility data to show
@@ -974,7 +842,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                   {(() => {
                   return (
                     <div className={clsx(
-                      "rounded-xl px-2 py-3",
+                      "rounded-xl px-3 py-3",
                       theme === "light" 
                         ? "text-black" 
                         : "text-white"
@@ -1006,14 +874,23 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                           
                           return (
                             <div>
-                              {/* First line: Sign pair with tagline */}
+                              {/* First line: Sign pair */}
                               <h4 className={clsx(
                                 "text-base font-bold mb-1",
                                 theme === "light" ? "text-black" : "text-white"
                               )}>
-                                {signPair}{chineseCompat.tagline ? ` — ${chineseCompat.tagline}` : ''}
+                                {signPair}
                               </h4>
-                              {/* Second line: Pattern info */}
+                              {/* Second line: Tagline */}
+                              {chineseCompat.tagline && (
+                                <p className={clsx(
+                                  "text-base font-bold mb-1",
+                                  theme === "light" ? "text-black" : "text-white"
+                                )}>
+                                  {chineseCompat.tagline}
+                                </p>
+                              )}
+                              {/* Third line: Pattern info */}
                               {patternInfo && (
                                 <p className={clsx(
                                   "text-base font-bold mb-2",
@@ -1058,14 +935,23 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                           
                           return (
                             <div>
-                              {/* First line: Sign pair with tagline */}
+                              {/* First line: Sign pair */}
                               <h4 className={clsx(
                                 "text-base font-bold mb-1",
                                 theme === "light" ? "text-black" : "text-white"
                               )}>
-                                {signPair}{westernCompat.tagline ? ` — ${westernCompat.tagline}` : ''}
+                                {signPair}
                               </h4>
-                              {/* Second line: Element/Compatibility info */}
+                              {/* Second line: Tagline */}
+                              {westernCompat.tagline && (
+                                <p className={clsx(
+                                  "text-base font-bold mb-1",
+                                  theme === "light" ? "text-black" : "text-white"
+                                )}>
+                                  {westernCompat.tagline}
+                                </p>
+                              )}
+                              {/* Third line: Element/Compatibility info */}
                               {elementInfo && (
                                 <p className={clsx(
                                   "text-base font-bold mb-2",
@@ -1110,6 +996,136 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                 {connectionBlurb}
               </p>
             </>
+          )}
+        </div>
+      )}
+
+      {/* Profile Details Box - Separate background box */}
+      {hasProfileDetails && showProfile && (
+        <div 
+          className={clsx(
+            "w-full max-w-xl rounded-2xl border p-4 sm:p-5 backdrop-blur-md mt-3",
+            theme === "light" 
+              ? "bg-white border-gray-200" 
+              : "bg-slate-900/90 border-white/10"
+          )}
+        >
+          {/* About me section */}
+          {aboutMe && (
+            <div className={clsx(aboutMe && (age || city || occupation || height || children || religion) ? "mb-4" : "")}>
+              <div className="mb-3">
+                <div
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
+                  style={{
+                    background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
+                  }}
+                >
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
+                  About Me
+                </div>
+              </div>
+              <p className={clsx(
+                "text-sm leading-relaxed",
+                theme === "light" ? "text-gray-700" : "text-white/90"
+              )}>
+                {aboutMe}
+              </p>
+            </div>
+          )}
+
+          {/* Divider between About Me and Essentials */}
+          {aboutMe && (age || city || occupation || height || children || religion) && (
+            <div className={clsx(
+              "my-4 h-px w-full bg-gradient-to-r from-transparent to-transparent",
+              theme === "light" ? "via-gray-300/50" : "via-slate-500/50"
+            )} />
+          )}
+
+          {/* Essentials section */}
+          {(age || city || occupation || height || children || religion) && (
+            <div>
+              <div className="mb-3">
+                <div
+                  className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wide text-white ${styles.border}`}
+                  style={{
+                    background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
+                  }}
+                >
+                  <span className="inline-block h-1.5 w-1.5 rounded-full bg-white" />
+                  Essentials
+                </div>
+              </div>
+              <div className="space-y-2 text-base">
+                {age && (
+                  <div className={clsx(
+                    "flex items-center gap-2 font-medium",
+                    theme === "light" ? "text-gray-700" : "text-gray-100"
+                  )}>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <path d="M16 2v4M8 2v4M3 10h18"/>
+                    </svg>
+                    <span>{age} years old</span>
+                  </div>
+                )}
+                {city && (
+                  <div className={clsx(
+                    "flex items-center gap-2 font-medium",
+                    theme === "light" ? "text-gray-700" : "text-gray-100"
+                  )}>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <span>{city}</span>
+                  </div>
+                )}
+                {occupation && (
+                  <div className={clsx(
+                    "flex items-center gap-2 font-medium",
+                    theme === "light" ? "text-gray-700" : "text-gray-100"
+                  )}>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
+                      <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
+                    </svg>
+                    <span>{occupation}</span>
+                  </div>
+                )}
+                {height && (
+                  <div className={clsx(
+                    "flex items-center gap-2 font-medium",
+                    theme === "light" ? "text-gray-700" : "text-gray-100"
+                  )}>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
+                      <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
+                    </svg>
+                    <span>{height}</span>
+                  </div>
+                )}
+                {children && (
+                  <div className={clsx(
+                    "flex items-center gap-2 font-medium",
+                    theme === "light" ? "text-gray-700" : "text-gray-100"
+                  )}>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={gradientColors.start}>
+                      <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span>{children}</span>
+                  </div>
+                )}
+                {religion && (
+                  <div className={clsx(
+                    "flex items-center gap-2 font-medium",
+                    theme === "light" ? "text-gray-700" : "text-gray-100"
+                  )}>
+                    <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={gradientColors.start} strokeWidth="2">
+                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                    </svg>
+                    <span>{religion}</span>
+                  </div>
+                )}
+              </div>
+            </div>
           )}
         </div>
       )}

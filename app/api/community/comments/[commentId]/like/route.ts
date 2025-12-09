@@ -1,27 +1,39 @@
-import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { getCurrentUser } from "@/lib/auth-server";
+import { NextRequest, NextResponse } from "next/server"
+import { createClient } from "@/lib/supabase/server"
+import { prisma } from "@/lib/prisma"
+
+type RouteContext = {
+  params: Promise<{ commentId: string }>
+}
 
 export async function POST(
-  req: Request,
-  { params }: { params: Promise<{ commentId: string }> }
+  request: NextRequest,
+  context: RouteContext
 ) {
   try {
-    const user = await getCurrentUser();
+    const supabase = await createClient()
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-    if (!user) {
-      return new NextResponse("Unauthorized", { status: 401 });
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      )
     }
 
-    const { commentId } = await params;
+    const { commentId } = await context.params
 
-    // Verify comment exists
+    // Check if comment exists
     const comment = await prisma.comment.findUnique({
       where: { id: commentId },
-    });
+      select: { id: true },
+    })
 
     if (!comment) {
-      return new NextResponse("Comment not found", { status: 404 });
+      return NextResponse.json(
+        { error: "Comment not found" },
+        { status: 404 }
+      )
     }
 
     // Check if user already liked this comment
@@ -32,60 +44,67 @@ export async function POST(
           userId: user.id,
         },
       },
-    });
+    })
 
-    let liked: boolean;
-    let likeCount: number;
+    let liked: boolean
+    let likeCount: number
 
     if (existingLike) {
-      // Remove like and decrement count in a transaction
+      // Unlike - remove the like
       await prisma.$transaction(async (tx) => {
         await tx.commentLike.delete({
-          where: {
-            id: existingLike.id,
-          },
-        });
+          where: { id: existingLike.id },
+        })
 
         await tx.comment.update({
           where: { id: commentId },
-          data: {
-            likeCount: {
-              decrement: 1,
-            },
-          },
-        });
-      });
+          data: { likeCount: { decrement: 1 } },
+        })
+      })
 
-      liked = false;
-      likeCount = Math.max(0, comment.likeCount - 1);
+      liked = false
+
+      // Get updated count
+      const updated = await prisma.comment.findUnique({
+        where: { id: commentId },
+        select: { likeCount: true },
+      })
+      likeCount = updated?.likeCount || 0
     } else {
-      // Add like and increment count in a transaction
+      // Like - create the like
       await prisma.$transaction(async (tx) => {
         await tx.commentLike.create({
           data: {
             commentId,
             userId: user.id,
           },
-        });
+        })
 
         await tx.comment.update({
           where: { id: commentId },
-          data: {
-            likeCount: {
-              increment: 1,
-            },
-          },
-        });
-      });
+          data: { likeCount: { increment: 1 } },
+        })
+      })
 
-      liked = true;
-      likeCount = comment.likeCount + 1;
+      liked = true
+
+      // Get updated count
+      const updated = await prisma.comment.findUnique({
+        where: { id: commentId },
+        select: { likeCount: true },
+      })
+      likeCount = updated?.likeCount || 0
     }
 
-    return NextResponse.json({ liked, likeCount });
-  } catch (err) {
-    console.error("[POST /api/community/comments/[commentId]/like]", err);
-    return new NextResponse("Internal error", { status: 500 });
+    return NextResponse.json({
+      liked,
+      likeCount,
+    })
+  } catch (error) {
+    console.error("[POST /api/community/comments/[commentId]/like] Error:", error)
+    return NextResponse.json(
+      { error: "Failed to toggle like" },
+      { status: 500 }
+    )
   }
 }
-
