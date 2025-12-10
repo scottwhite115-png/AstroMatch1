@@ -1119,9 +1119,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Virgo and Capricorn both think long-term and are willing to put in effort over time. Virgo manages details and systems; Capricorn sets direction and takes on heavy loads when needed. Together you can build something solid. Making deliberate space for pleasure and emotional openness stops this from feeling like a permanent job."
     },
     "aquarius": {
-      "heading": "Virgo × Aquarius — Semi-compatible Elements (Earth + Air)",
-      "tagline": "System and vision",
-      "description": "Virgo cares about how things work day-to-day; Aquarius cares about the big idea or principle behind them. Virgo can implement Aquarius' concepts and make them usable; Aquarius can help Virgo see beyond small flaws to the larger pattern. This fails when Virgo gets lost in minutiae and Aquarius stops engaging with practical limits."
+      "heading": "Virgo × Aquarius — Element clash (Earth + Air)",
+      "tagline": "Concept vs craft",
+      "description": "Aquarius sees systems and big ideas; Virgo sees details and practical steps. Virgo can help Aquarius implement changes cleanly; Aquarius can lift Virgo's view above immediate flaws. Friction shows up when Aquarius ignores how people actually function, or Virgo nit-picks every deviation from the plan."
     },
     "pisces": {
       "heading": "Virgo × Pisces — Opposite Signs (Earth + Water)",
@@ -1404,9 +1404,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Aquarius and Leo oppose each other: Leo focuses on the individual; Aquarius on the group or ideal. You can balance each other—Leo gives heart and identity to Aquarius' visions; Aquarius challenges Leo to think beyond ego. Power struggles around attention, leadership, and loyalty are the main stress points."
     },
     "virgo": {
-      "heading": "Aquarius × Virgo — Semi-compatible Elements (Air + Earth)",
-      "tagline": "Concept and craft",
-      "description": "Aquarius sees systems and big ideas; Virgo sees details and practical steps. Virgo can help Aquarius implement changes cleanly; Aquarius can lift Virgo's view above immediate flaws. It fails when Aquarius ignores how people actually function, or Virgo nit-picks every deviation from the plan."
+      "heading": "Aquarius × Virgo — Element clash (Air + Earth)",
+      "tagline": "Concept vs craft",
+      "description": "Aquarius sees systems and big ideas; Virgo sees details and practical steps. Virgo can help Aquarius implement changes cleanly; Aquarius can lift Virgo's view above immediate flaws. Friction shows up when Aquarius ignores how people actually function, or Virgo nit-picks every deviation from the plan."
     },
     "libra": {
       "heading": "Aquarius × Libra — Same Element (Air + Air)",

@@ -12,24 +12,14 @@ interface GenderSectionProps {
 
 export function GenderSection({ value, onChange }: GenderSectionProps) {
   const { theme } = useTheme();
-  
-  const icon =
-    value === "man"
-      ? "👨🏽"
-      : value === "woman"
-      ? "👩🏽"
-      : "🧑🏽"; // fallback / not chosen
 
   return (
     <section className="space-y-4">
-      {/* Heading with dynamic icon */}
-      <div className="flex items-center gap-2">
-        <div className="flex items-center justify-center text-xl">
-          <span aria-hidden>{icon}</span>
-        </div>
-        <span className={`text-xs font-semibold uppercase tracking-[0.16em] ${theme === "light" ? "text-gray-800" : "text-slate-200"}`}>
+      {/* Heading */}
+      <div className="mb-4 flex items-center gap-2">
+        <h2 className="font-semibold text-base text-orange-600 dark:text-orange-400">
           Gender
-        </span>
+        </h2>
       </div>
 
       {/* Options – two buttons only */}

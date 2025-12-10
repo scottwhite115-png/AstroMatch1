@@ -253,3 +253,4 @@ Everything is installed and ready. Just apply the migration through Supabase Das
 
 Then visit `/community` and enjoy your new AstroLounge! 🎊
 
+

@@ -57,3 +57,4 @@ export const REGION_SCOPES = [
   { value: "GLOBAL", label: "Global", icon: "🌍" },
 ] as const
 
+

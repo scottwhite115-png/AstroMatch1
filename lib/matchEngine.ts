@@ -114,7 +114,7 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
     emoji: "◽",
     labelEn: "Neutral",
     labelFull: "Neutral 中",
-    tagline: "No strong classical pattern; the vibe depends more on personal charts, timing, and your Western signs.",
+    tagline: "No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.",
     min: 52,
     max: 68,
     highStart: 64,

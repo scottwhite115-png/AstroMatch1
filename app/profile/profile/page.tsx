@@ -28,6 +28,16 @@ import { INSIGHT_OVERRIDES, type OverrideKey } from "@/data/insight_overrides"
 import { getCompleteLongformBlurb, getTierKeyFromScore, createPairId } from "@/data/longformBlurbsComplete"
 import ConnectionBoxSimple from "@/components/ConnectionBoxSimple"
 import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
+import { ConnectionBoxNew } from "@/components/ConnectionBoxNew"
+import { deriveConnectionOverview } from "@/lib/patternOneLiner"
+import { getChinesePatternCode } from "@/lib/matchEngineHelpers"
+import { 
+  getPatternPillLabel, 
+  getPatternHeaderText, 
+  getPatternTagline,
+  getPatternIcon,
+  type ChinesePattern as PatternType
+} from "@/lib/astrology/patternLabels"
 import ProfilePhotoCarouselWithRanking from "@/components/ProfilePhotoCarouselWithRanking"
 import PhotoCarouselWithGestures from "@/components/PhotoCarouselWithGestures"
 import { computeMatchWithNewEngine } from "@/lib/matchEngineAdapter"
@@ -102,6 +112,24 @@ const Check = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Helper function to map match labels to new MatchTier format for ConnectionBoxNew
+function mapToNewTier(rankLabel?: string, rank?: string): "Soulmate Match" | "Twin Flame Match" | "Harmonious Match" | "Neutral Match" | "Opposites Attract" | "Difficult Match" {
+  const label = (rankLabel || rank || "").toLowerCase();
+  
+  if (label.includes("soulmate")) return "Soulmate Match";
+  if (label.includes("twin flame")) return "Twin Flame Match";
+  if (label.includes("excellent") || label.includes("harmonious")) return "Harmonious Match";
+  if (label.includes("opposites attract") || label.includes("magnetic opposites")) return "Opposites Attract";
+  if (label.includes("difficult") || label.includes("challenging")) return "Difficult Match";
+  
+  return "Neutral Match";
+}
+
+// Helper function to capitalize first letter
+function capitalize(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
 interface ProfilePageProps {
   pageIndex?: number
   totalPages?: number
@@ -125,6 +153,8 @@ export default function AstrologyProfilePage({
   const [showProfileMenu, setShowProfileMenu] = useState(true)
   const [showStickyNameHeader, setShowStickyNameHeader] = useState(false)
   const [showMatchDropdown, setShowMatchDropdown] = useState(false)
+  const [showConnectionProfile, setShowConnectionProfile] = useState(false)
+  const [showConnectionElements, setShowConnectionElements] = useState(true) // Always show connection box in view tab
   const [showInterestsDropdown, setShowInterestsDropdown] = useState(false)
   const [showInterestCategoryDropdowns, setShowInterestCategoryDropdowns] = useState<{[key: string]: boolean}>({})
   const [showLifestyleDropdown, setShowLifestyleDropdown] = useState(false)
@@ -466,7 +496,7 @@ export default function AstrologyProfilePage({
   const interestCategories = {
     "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
     "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
-    "Going Out": ["Pubs & Bars", "Cocktail Bars", "Rooftop Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Food Trucks", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
+    "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
     "Sport & Fitness": ["Surfing", "Running", "F45", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
     "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
   }
@@ -608,7 +638,7 @@ export default function AstrologyProfilePage({
   const [selectedOrganizedInterests, setSelectedOrganizedInterests] = useState<{[category: string]: string[]}>({})
   const [selectedLifestyleOptions, setSelectedLifestyleOptions] = useState<string[]>([])
   const [selectedFoods, setSelectedFoods] = useState<string[]>([])
-  const [selectedRelationshipGoals, setSelectedRelationshipGoals] = useState<string[]>(["Life companion", "Soul mate", "Best friend", "Intimate connection"])
+  const [selectedRelationshipGoals, setSelectedRelationshipGoals] = useState<string[]>(["Soul mate", "Best friend", "Intimate connection"])
   const [selectedPrompts, setSelectedPrompts] = useState<string[]>([])
   const [promptAnswers, setPromptAnswers] = useState<{[key: string]: string}>({})
   const [selectedRomanticPrompts, setSelectedRomanticPrompts] = useState<string[]>([])
@@ -741,6 +771,14 @@ export default function AstrologyProfilePage({
         const combinedTags = Array.from(new Set([...(result.tags ?? []), ...badgeTags]))
         const rankLabelDisplay = `${astroMatch.tier} Match`
 
+        // In profile view tab, we're comparing user to themselves, so it's always same Chinese animal sign
+        // Set pattern to SAME_SIGN and get appropriate labels/taglines
+        const chinesePattern: PatternType = "SAME_SIGN"
+        const patternFullLabel = getPatternHeaderText(chinesePattern)
+        const pillLabel = getPatternPillLabel(chinesePattern)
+        const baseTagline = getPatternTagline(chinesePattern)
+        const patternEmoji = getPatternIcon(chinesePattern)
+
         const boxData: ConnectionBoxData = {
           score: astroMatch.score,
           rank: rankLabelDisplay,
@@ -779,6 +817,7 @@ export default function AstrologyProfilePage({
           selectedDeepPrompts: selectedDeepPrompts && selectedDeepPrompts.length > 0 ? selectedDeepPrompts : undefined,
           deepPromptAnswers: deepPromptAnswers && Object.keys(deepPromptAnswers).length > 0 ? deepPromptAnswers : undefined,
           selectedRelationshipGoals: selectedRelationshipGoals && selectedRelationshipGoals.length > 0 ? selectedRelationshipGoals : undefined,
+          selectedOrganizedInterests: selectedOrganizedInterests && Object.keys(selectedOrganizedInterests).length > 0 ? selectedOrganizedInterests : undefined,
           // Essentials
           age: birthInfo?.birthdate ? (() => {
             const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
@@ -796,6 +835,13 @@ export default function AstrologyProfilePage({
           height: selectedHeight || undefined,
           children: selectedChildrenOption || undefined,
           religion: selectedReligion || undefined,
+          // Pattern fields for same sign detection
+          chinesePattern: chinesePattern,
+          pattern: chinesePattern,
+          patternFullLabel: patternFullLabel,
+          pillLabel: pillLabel,
+          baseTagline: baseTagline,
+          patternEmoji: patternEmoji,
         }
         
         setConnectionBoxData(boxData)
@@ -1787,6 +1833,8 @@ export default function AstrologyProfilePage({
       if (selectedRelationshipGoals.length >= 6) return
       updatedGoals = [...selectedRelationshipGoals, goal]
     }
+    // Filter out "Life Companion" before saving
+    updatedGoals = updatedGoals.filter(g => g !== "Life Companion" && g !== "Life companion")
     setSelectedRelationshipGoals(updatedGoals)
     if (typeof window !== 'undefined') {
       localStorage.setItem("relationshipGoals", JSON.stringify(updatedGoals))
@@ -2146,7 +2194,15 @@ export default function AstrologyProfilePage({
     if (savedRelationshipGoals) {
       try {
         const parsedGoals = JSON.parse(savedRelationshipGoals)
-        if (Array.isArray(parsedGoals)) setSelectedRelationshipGoals(parsedGoals)
+        if (Array.isArray(parsedGoals)) {
+          // Filter out "Life Companion" and any goals not in the current options list
+          const validGoals = parsedGoals.filter((goal: string) => 
+            goal !== "Life Companion" && 
+            goal !== "Life companion" && 
+            relationshipGoalsOptions.includes(goal)
+          )
+          setSelectedRelationshipGoals(validGoals)
+        }
       } catch (error) {
         console.log("[v0] Error parsing saved relationship goals:", error)
       }
@@ -2599,25 +2655,22 @@ export default function AstrologyProfilePage({
         </div>
 
         {/* Horizontal Tabs Navigation */}
-        <div className="px-5 py-4 border-b" style={{ 
-          borderColor: theme === "light" ? "#e5e7eb" : "rgba(255, 255, 255, 0.1)"
-        }}>
-          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent">
-            <div className="flex gap-1 min-w-max">
+        <div className="px-5 pt-1 pb-2">
+          <div className="flex justify-center gap-8">
               <button
                 onClick={() => router.push("/profile/profile")}
-                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
+                className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "text-purple-600"
-                    : "text-purple-400"
+                    ? "text-orange-600"
+                    : "text-orange-400"
                 }`}
               >
                 Profile
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`} />
+                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 via-orange-500 to-red-500 rounded-full`} />
               </button>
               <button
                 onClick={() => router.push("/profile/account")}
-                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
+                className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
                     ? "text-gray-600 hover:text-gray-900"
                     : "text-gray-400 hover:text-gray-200"
@@ -2626,48 +2679,10 @@ export default function AstrologyProfilePage({
                 Account
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
               </button>
-              <button
-                onClick={() => router.push("/profile/safety-privacy")}
-                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
-                  theme === "light"
-                    ? "text-gray-600 hover:text-gray-900"
-                    : "text-gray-400 hover:text-gray-200"
-                }`}
-              >
-                Safety & Privacy
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
-              </button>
-            </div>
           </div>
         </div>
 
-        <div className="px-5 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 flex justify-start">
-              <button
-                onClick={() => router.push("/profile/safety-privacy")}
-                className="hover:opacity-70 transition-opacity invisible"
-                aria-label="Previous"
-              >
-                <ChevronLeft className={`w-7 h-7 ${theme === "light" ? "!text-gray-500 hover:!text-gray-600" : "!text-gray-400 hover:!text-gray-300"} transition-colors`} />
-              </button>
-            </div>
-            <h1 className="font-semibold text-2xl whitespace-nowrap bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent">
-              Profile
-            </h1>
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={() => router.push("/profile/account")}
-                className="hover:opacity-70 transition-opacity"
-                aria-label="Next"
-              >
-                <ChevronRight className={`w-7 h-7 ${theme === "light" ? "!text-gray-500 hover:!text-gray-600" : "!text-gray-400 hover:!text-gray-300"} transition-colors`} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex px-5 mb-3 pt-1">
+        <div className="flex px-5 mb-3 pt-4">
           <button
             onClick={() => setActiveTab("edit")}
             className={`flex-1 pb-3 pt-2 text-center font-semibold transition-all duration-300 relative profile-tab-button ${
@@ -2768,38 +2783,85 @@ export default function AstrologyProfilePage({
               )}
 
               {/* Connection Box - Permanently displayed below photo carousel */}
-              {connectionBoxData && (
-                <div className="px-2">
-                  <ConnectionBoxSimple
-                    data={{
-                      ...connectionBoxData,
-                      aboutMeText: connectionBoxData.aboutMeText ?? aboutMeText,
-                      occupation: connectionBoxData.occupation ?? selectedOccupation,
-                      city: connectionBoxData.city ?? selectedCity ?? cityInput,
-                      height: connectionBoxData.height ?? selectedHeight,
-                      children: connectionBoxData.children ?? selectedChildrenOption,
-                      religion: connectionBoxData.religion ?? selectedReligion,
-                      age: connectionBoxData.age ?? (() => {
-                        if (birthInfo?.birthdate) {
-                          const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
-                          const today = new Date();
-                          let age = today.getFullYear() - year;
-                          const monthDiff = today.getMonth() + 1 - month;
-                          if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
-                            age--;
-                          }
-                          return age > 0 ? age : 27;
-                        }
-                        return 27;
-                      })(),
-                      selectedDeepPrompts: connectionBoxData.selectedDeepPrompts ?? selectedDeepPrompts,
-                      deepPromptAnswers: connectionBoxData.deepPromptAnswers ?? deepPromptAnswers,
-                    }}
-                    alwaysExpanded={true}
-                    hideHeader={true}
-                  />
-                </div>
-              )}
+              {connectionBoxData && (() => {
+                const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
+                const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
+                const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
+                const westB = connectionBoxData.b?.west ? capitalize(connectionBoxData.b.west) : "Unknown";
+                const eastB = connectionBoxData.b?.east ? capitalize(connectionBoxData.b.east) : "Unknown";
+                const chineseLine = connectionBoxData.east_relation || `${eastA} × ${eastB}`;
+                const westernLine = connectionBoxData.west_relation || `${westA} × ${westB}`;
+                const wuXingLine = connectionBoxData.wuXingLine;
+                const connectionBlurb = connectionBoxData.insight && connectionBoxData.insight.trim().length > 0
+                  ? connectionBoxData.insight
+                  : connectionBoxData.pattern && connectionBoxData.score
+                  ? deriveConnectionOverview(
+                      connectionBoxData.pattern as import('@/lib/matchEngine').ChinesePattern,
+                      connectionBoxData.score
+                    )
+                  : undefined;
+                const calculatedAge = connectionBoxData.age ?? (() => {
+                  if (birthInfo?.birthdate) {
+                    const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+                    const today = new Date();
+                    let age = today.getFullYear() - year;
+                    const monthDiff = today.getMonth() + 1 - month;
+                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+                      age--;
+                    }
+                    return age > 0 ? age : 27;
+                  }
+                  return 27;
+                })();
+
+                return (
+                  <div className="px-2">
+                    <ConnectionBoxNew
+                      tier={newTier}
+                      score={connectionBoxData.score}
+                      westA={westA}
+                      eastA={eastA}
+                      westB={westB}
+                      eastB={eastB}
+                      chineseLine={chineseLine}
+                      sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                      westernLine={westernLine}
+                      wuXingLine={wuXingLine}
+                      chineseElementA={connectionBoxData.a?.chineseElement}
+                      chineseElementB={connectionBoxData.b?.chineseElement}
+                      connectionBlurb={connectionBlurb || undefined}
+                      theme={theme}
+                      aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
+                      interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
+                      relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
+                      age={calculatedAge}
+                      city={connectionBoxData.city ?? selectedCity ?? cityInput}
+                      occupation={connectionBoxData.occupation ?? selectedOccupation}
+                      height={connectionBoxData.height ?? selectedHeight}
+                      children={connectionBoxData.children ?? selectedChildrenOption}
+                      religion={connectionBoxData.religion ?? selectedReligion}
+                      chinesePattern={connectionBoxData.chinesePattern}
+                      westAspect={connectionBoxData.westAspect}
+                      westElementRelation={connectionBoxData.westElementRelation}
+                      isChineseOpposite={connectionBoxData.isChineseOpposite}
+                      isLivelyPair={connectionBoxData.isLivelyPair}
+                      showProfile={showConnectionProfile}
+                      showElements={true} // Always show the main connection box in view tab
+                      patternFullLabel={connectionBoxData.patternFullLabel}
+                      pillLabel={connectionBoxData.pillLabel}
+                      baseTagline={connectionBoxData.baseTagline}
+                      patternEmoji={connectionBoxData.patternEmoji}
+                      pattern={connectionBoxData.pattern}
+                      chemistryStars={connectionBoxData.chemistryStars}
+                      stabilityStars={connectionBoxData.stabilityStars}
+                      onPass={undefined}
+                      onLike={undefined}
+                      onMessage={undefined}
+                      onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
+                    />
+                  </div>
+                );
+              })()}
 
             </div>
           </>
@@ -2813,7 +2875,6 @@ export default function AstrologyProfilePage({
             >
               <SectionHeader
                 label="First name"
-                icon={<span role="img" aria-label="user">👤</span>}
               />
               <div className="space-y-2">
                 <input
@@ -2830,104 +2891,12 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-
-            {/* About Me Section */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
-              <SectionHeader
-                label="About me"
-                icon={<span role="img" aria-label="star">⭐</span>}
-              />
-              <div className="space-y-2">
-                <div className="relative">
-                  <textarea
-                    ref={aboutMeTextareaRef}
-                    value={aboutMeText}
-                    onChange={handleAboutMeTextChange}
-                    placeholder="Tell us about yourself..."
-                    maxLength={300}
-                    className={`w-full px-4 py-3 pb-6 text-lg rounded-lg focus:outline-none transition-all resize-none about-me-textarea ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/50" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
-                    rows={2}
-                    style={{ 
-                      minHeight: '60px',
-                      height: 'auto',
-                      overflow: 'hidden'
-                    }}
-                    onInput={(e) => {
-                      const target = e.target as HTMLTextAreaElement;
-                      target.style.height = 'auto';
-                      target.style.height = target.scrollHeight + 'px';
-                    }}
-                  />
-                  <div className={`absolute bottom-2 right-3 text-xs ${theme === "light" ? "text-black/40" : "text-white/40"}`}>
-                    {300 - (aboutMeText || '').length}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Birth Information Section */}
-            <BirthInformationSection
-              birthDateISO={birthInfo.birthdate}
-              onBirthDateChange={(value) => {
-                setBirthInfo((prev) => ({ ...prev, birthdate: value }))
-                const [year, month, day] = value.split("-").map(Number)
-                setSelectedYear(year)
-                setSelectedMonth(month)
-                setSelectedDay(day)
-              }}
-            />
-
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
-              <SectionHeader
-                label="Occupation / Industry"
-                icon={<span role="img" aria-label="briefcase">💼</span>}
-              />
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  value={selectedOccupation}
-                  onChange={handleOccupationChange}
-                  placeholder="Enter your profession"
-                  maxLength={30}
-                  className={`w-full px-4 py-3 rounded-xl focus:outline-none transition-all occupation-input ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/40" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
-                  style={{ fontSize: '1.25rem !important' }}
-                />
-                <div className="flex items-center justify-between pt-2">
-                  <div></div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
-                      Display
-                    </span>
-                    <button
-                      onClick={toggleOccupationVisibility}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        visibilitySettings.showOccupation
-                          ? "bg-gray-300"
-                          : "bg-transparent border border-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
-                          visibilitySettings.showOccupation ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
-                        }`}
-                        style={!visibilitySettings.showOccupation ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
-                      ></div>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            {/* Location Section */}
             <div
               className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
             >
               <SectionHeader
                 label="Location"
-                icon={<span role="img" aria-label="location">📍</span>}
               />
               <div className="space-y-4">
                 <div className="relative" ref={cityInputRef}>
@@ -2989,6 +2958,272 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
+            {/* Occupation / Industry Section */}
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Occupation / Industry"
+              />
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  value={selectedOccupation}
+                  onChange={handleOccupationChange}
+                  placeholder="Enter your profession"
+                  maxLength={30}
+                  className={`w-full px-4 py-3 rounded-xl focus:outline-none transition-all occupation-input ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/40" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
+                  style={{ fontSize: '1.25rem !important' }}
+                />
+                <div className="flex items-center justify-between pt-2">
+                  <div></div>
+                  <div className="flex items-center gap-2">
+                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
+                      Display
+                    </span>
+                    <button
+                      onClick={toggleOccupationVisibility}
+                      className={`relative w-12 h-6 rounded-full transition-colors ${
+                        visibilitySettings.showOccupation
+                          ? "bg-gray-300"
+                          : "bg-transparent border border-gray-300"
+                      }`}
+                    >
+                      <div
+                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                          visibilitySettings.showOccupation ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
+                        }`}
+                        style={!visibilitySettings.showOccupation ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
+                      ></div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Birth Information Section */}
+            <BirthInformationSection
+              birthDateISO={birthInfo.birthdate}
+              onBirthDateChange={(value) => {
+                setBirthInfo((prev) => ({ ...prev, birthdate: value }))
+                const [year, month, day] = value.split("-").map(Number)
+                setSelectedYear(year)
+                setSelectedMonth(month)
+                setSelectedDay(day)
+              }}
+            />
+
+            {/* About Me Section */}
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="About me"
+              />
+              <div className="space-y-2">
+                <div className="relative">
+                  <textarea
+                    ref={aboutMeTextareaRef}
+                    value={aboutMeText}
+                    onChange={handleAboutMeTextChange}
+                    placeholder="Tell us about yourself..."
+                    maxLength={300}
+                    className={`w-full px-4 py-3 pb-6 text-lg rounded-lg focus:outline-none transition-all resize-none about-me-textarea ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/50" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
+                    rows={2}
+                    style={{ 
+                      minHeight: '60px',
+                      height: 'auto',
+                      overflow: 'hidden'
+                    }}
+                    onInput={(e) => {
+                      const target = e.target as HTMLTextAreaElement;
+                      target.style.height = 'auto';
+                      target.style.height = target.scrollHeight + 'px';
+                    }}
+                  />
+                  <div className={`absolute bottom-2 right-3 text-xs ${theme === "light" ? "text-black/40" : "text-white/40"}`}>
+                    {300 - (aboutMeText || '').length}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Relationship Goals Section */}
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Relationship Goals"
+              />
+              <div className="space-y-4">
+                {/* Selected Goals Pills */}
+                {selectedRelationshipGoals.filter(goal => goal !== "Life Companion" && goal !== "Life companion").length > 0 && (
+                  <div className="flex flex-wrap gap-2">
+                    {selectedRelationshipGoals
+                      .filter(goal => goal !== "Life Companion" && goal !== "Life companion")
+                      .map((goal) => (
+                        <span
+                          key={goal}
+                          className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                        >
+                          {goal}
+                        </span>
+                      ))}
+                  </div>
+                )}
+
+                {/* Scrollable Goals List */}
+                <div className="relative relationship-goals-dropdown-container">
+                  <div
+                    className={`max-h-48 overflow-y-auto rounded-lg border ${
+                      theme === "light"
+                        ? "bg-white border-gray-200"
+                        : "bg-slate-900/50 border-indigo-400/20"
+                    }`}
+                    style={{ scrollbarWidth: 'thin' }}
+                  >
+                    <div className="p-2 space-y-1">
+                      {relationshipGoalsOptions.map((goal) => {
+                        const isSelected = selectedRelationshipGoals.includes(goal)
+                        const isDisabled = !isSelected && selectedRelationshipGoals.length >= 6
+                        return (
+                          <button
+                            key={goal}
+                            type="button"
+                            onClick={() => handleRelationshipGoalToggle(goal)}
+                            disabled={isDisabled}
+                            className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                              isSelected
+                                ? theme === "light"
+                                  ? "bg-purple-100 text-purple-900"
+                                  : "bg-purple-500/20 text-purple-300"
+                                : isDisabled
+                                ? theme === "light"
+                                  ? "text-gray-400 cursor-not-allowed"
+                                  : "text-slate-500 cursor-not-allowed"
+                                : theme === "light"
+                                ? "text-gray-700 hover:bg-gray-100"
+                                : "text-slate-300 hover:bg-slate-800/50"
+                            }`}
+                          >
+                            {goal}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                  {selectedRelationshipGoals.length >= 6 && (
+                    <p className={`text-xs mt-2 ${theme === "light" ? "text-gray-500" : "text-slate-400"}`}>
+                      Maximum of 6 goals selected
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Interests Section */}
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Interests"
+              />
+              <div className="space-y-4">
+                {/* Selected Interests Pills */}
+                {Object.keys(selectedOrganizedInterests).some(category => selectedOrganizedInterests[category]?.length > 0) && (
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(selectedOrganizedInterests).map(([category, interests]) =>
+                      interests.map((interest) => (
+                        <span
+                          key={`${category}-${interest}`}
+                          className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                        >
+                          {interest}
+                        </span>
+                      ))
+                    )}
+                  </div>
+                )}
+
+                {/* Interest Categories */}
+                <div className="space-y-3">
+                  {Object.entries(interestCategories).map(([category, interests]) => {
+                    const categoryInterests = selectedOrganizedInterests[category] || []
+                    const isOpen = showInterestCategoryDropdowns[category] || false
+                    const isMaxReached = categoryInterests.length >= 6
+
+                    return (
+                      <div key={category} className="relative">
+                        <button
+                          type="button"
+                          onClick={() => toggleInterestCategoryDropdown(category)}
+                          className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
+                            theme === "light"
+                              ? "bg-gray-100 hover:bg-gray-200 text-gray-900"
+                              : "bg-slate-800/50 hover:bg-slate-800/70 text-slate-200"
+                          }`}
+                        >
+                          <span className="font-medium">{category}</span>
+                          <div className="flex items-center gap-2">
+                            {categoryInterests.length > 0 && (
+                              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                theme === "light" ? "bg-purple-100 text-purple-700" : "bg-purple-500/20 text-purple-300"
+                              }`}>
+                                {categoryInterests.length}/6
+                              </span>
+                            )}
+                            <ChevronDown
+                              className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                            />
+                          </div>
+                        </button>
+
+                        {isOpen && (
+                          <div
+                            className={`mt-2 rounded-lg border ${
+                              theme === "light"
+                                ? "bg-white border-gray-200"
+                                : "bg-slate-900/50 border-indigo-400/20"
+                            }`}
+                            style={{ maxHeight: '200px', overflowY: 'auto', scrollbarWidth: 'thin' }}
+                          >
+                            <div className="p-2 space-y-1">
+                              {interests.map((interest) => {
+                                const isSelected = categoryInterests.includes(interest)
+                                const isDisabled = !isSelected && isMaxReached
+                                return (
+                                  <button
+                                    key={interest}
+                                    type="button"
+                                    onClick={() => handleOrganizedInterestToggle(category, interest)}
+                                    disabled={isDisabled}
+                                    className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                                      isSelected
+                                        ? theme === "light"
+                                          ? "bg-purple-100 text-purple-900"
+                                          : "bg-purple-500/20 text-purple-300"
+                                        : isDisabled
+                                        ? theme === "light"
+                                          ? "text-gray-400 cursor-not-allowed"
+                                          : "text-slate-500 cursor-not-allowed"
+                                        : theme === "light"
+                                        ? "text-gray-700 hover:bg-gray-100"
+                                        : "text-slate-300 hover:bg-slate-800/50"
+                                    }`}
+                                  >
+                                    {interest}
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
 
             <div
               className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
@@ -3026,7 +3261,6 @@ export default function AstrologyProfilePage({
             >
               <SectionHeader
                 label="Distance"
-                icon={<span role="img" aria-label="radar">📡</span>}
               />
               <div className="space-y-3">
                 <div className="relative pt-6">
@@ -3076,7 +3310,6 @@ export default function AstrologyProfilePage({
             >
               <SectionHeader
                 label="Age"
-                icon={<span role="img" aria-label="hourglass">⏳</span>}
               />
               <div className="space-y-4">
                 {/* Age Range Display */}
@@ -3153,7 +3386,7 @@ export default function AstrologyProfilePage({
 
             <button 
               onClick={handleSaveChanges}
-              className="w-full py-4 bg-gradient-to-r from-purple-500 to-purple-600 text-white font-bold rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all shadow-lg hover:shadow-xl active:scale-[0.98]"
+              className="w-full py-4 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-xl hover:from-orange-500 hover:to-orange-600 transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
             >
               {savedSuccessfully ? "Saved" : "Save Changes"}
             </button>

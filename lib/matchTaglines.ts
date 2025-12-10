@@ -81,7 +81,7 @@ export function getPatternTagline(
   }
 
   if (isDamagePattern) {
-    return "Spark over stability · Chemistry with sensitive fault lines.";
+    return "";
   }
 
   // 5) Opposites (Chinese or Western)

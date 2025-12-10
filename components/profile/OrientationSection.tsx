@@ -12,24 +12,15 @@ interface OrientationSectionProps {
 
 export function OrientationSection({ value, onChange }: OrientationSectionProps) {
   const { theme } = useTheme();
-  
-  const icon = value === "Men" ? "👨🏽" : value === "Women" ? "👩🏽" : "🧑🏽"; // fallback / not chosen
 
   return (
     <section className="space-y-2">
-      {/* Heading with dynamic icon */}
-      <div className="mb-1 flex items-center gap-2">
-        <div className="flex items-center justify-center text-xl">
-          <span aria-hidden>{icon}</span>
-        </div>
-        <span className={`text-xs font-semibold uppercase tracking-[0.16em] ${theme === "light" ? "text-gray-800" : "text-slate-200"}`}>
-          Orientation
-        </span>
+      {/* Heading */}
+      <div className="mb-4 flex items-center gap-2">
+        <h2 className="font-semibold text-base text-orange-600 dark:text-orange-400">
+          Interested in
+        </h2>
       </div>
-
-      <p className={`text-xs mb-1 ${theme === "light" ? "text-gray-500" : "text-slate-400"}`}>
-        Interested in
-      </p>
 
       {/* Options – two buttons */}
       <div className="flex gap-2 text-xs">

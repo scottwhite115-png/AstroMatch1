@@ -12,6 +12,13 @@ import {
   saveSunSigns,
   type SunSignSystem,
 } from "@/lib/sunSignCalculator"
+import { getBlockedUsers, unblockUser, type BlockedUser } from "@/lib/utils/blocked-users"
+import {
+  requestNotificationPermission,
+  saveNotificationPreferences,
+  loadNotificationPreferences,
+  sendTestNotification,
+} from "@/lib/utils/notifications"
 
 interface AccountPageProps {
   pageIndex?: number
@@ -120,6 +127,10 @@ export default function AccountPage({
   const [guidelinesOpen, setGuidelinesOpen] = useState(false)
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false)
   const [termsOfServiceOpen, setTermsOfServiceOpen] = useState(false)
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
+  const [pushNotifications, setPushNotifications] = useState({
+    messages: true,
+  })
 
   useEffect(() => {
     const savedName = localStorage.getItem("userFullName")
@@ -181,6 +192,11 @@ export default function AccountPage({
       // Save both signs to localStorage
       saveSunSigns(tropical, sidereal)
     }
+
+    // Load blocked users and notification preferences
+    setBlockedUsers(getBlockedUsers())
+    const savedPreferences = loadNotificationPreferences()
+    setPushNotifications(savedPreferences)
 
   }, [])
 
@@ -278,6 +294,39 @@ export default function AccountPage({
     
     // Force a page refresh to update all displays
     window.dispatchEvent(new Event("sunSignSystemChanged"))
+  }
+
+  const handleUnblock = (userId: number) => {
+    unblockUser(userId)
+    setBlockedUsers(getBlockedUsers())
+  }
+
+  const togglePushNotification = async (setting: keyof typeof pushNotifications) => {
+    const newValue = !pushNotifications[setting]
+
+    // If turning ON, request permission first
+    if (newValue) {
+      const permissionGranted = await requestNotificationPermission()
+      if (!permissionGranted) {
+        alert("Please enable notifications in your browser settings to receive message alerts")
+        return
+      }
+
+      // Send a test notification to confirm it's working
+      sendTestNotification("Notifications Enabled", "You'll now receive notifications for new messages")
+    }
+
+    // Update state
+    const newPreferences = {
+      ...pushNotifications,
+      [setting]: newValue,
+    }
+    setPushNotifications(newPreferences)
+
+    // Save to localStorage
+    saveNotificationPreferences(newPreferences)
+
+    console.log("[v0] Notification preferences updated:", newPreferences)
   }
 
 
@@ -401,14 +450,11 @@ export default function AccountPage({
         </div>
 
         {/* Horizontal Tabs Navigation */}
-        <div className="px-5 py-4 border-b" style={{ 
-          borderColor: theme === "light" ? "#e5e7eb" : "rgba(255, 255, 255, 0.1)"
-        }}>
-          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-purple-500 scrollbar-track-transparent">
-            <div className="flex gap-1 min-w-max">
+        <div className="px-5 pt-1 pb-2">
+          <div className="flex justify-center gap-8">
               <button
                 onClick={() => router.push("/profile/profile")}
-                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
+                className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
                     ? "text-gray-600 hover:text-gray-900"
                     : "text-gray-400 hover:text-gray-200"
@@ -419,65 +465,59 @@ export default function AccountPage({
               </button>
               <button
                 onClick={() => router.push("/profile/account")}
-                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
+                className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "text-purple-600"
-                    : "text-purple-400"
+                    ? "text-orange-600"
+                    : "text-orange-400"
                 }`}
               >
                 Account
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`} />
+                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 via-orange-500 to-red-500 rounded-full`} />
               </button>
-              <button
-                onClick={() => router.push("/profile/safety-privacy")}
-                className={`relative px-5 py-2.5 font-medium transition-all duration-200 whitespace-nowrap ${
-                  theme === "light"
-                    ? "text-gray-600 hover:text-gray-900"
-                    : "text-gray-400 hover:text-gray-200"
-                }`}
-              >
-                Safety & Privacy
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Header */}
-        <div className="px-5 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 flex justify-start">
-              <button
-                onClick={() => router.push("/profile/profile")}
-                className="hover:opacity-70 transition-opacity invisible"
-              >
-                <ChevronLeft className={`w-7 h-7 ${theme === "light" ? "!text-gray-500 hover:!text-gray-600" : "!text-gray-400 hover:!text-gray-300"} transition-colors`} />
-              </button>
-            </div>
-            <h1 className="font-semibold text-2xl whitespace-nowrap bg-gradient-to-r from-purple-500 to-purple-600 bg-clip-text text-transparent">
-              Account
-            </h1>
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={() => router.push("/profile/safety-privacy")}
-                className="hover:opacity-70 transition-opacity"
-              >
-                <ChevronRight className={`w-7 h-7 ${theme === "light" ? "!text-gray-500 hover:!text-gray-600" : "!text-gray-400 hover:!text-gray-300"} transition-colors`} />
-              </button>
-            </div>
           </div>
         </div>
 
         {/* Account Content */}
-        <div className="px-5 pb-24">
+        <div className="px-5 pt-4 pb-24">
           <div className="max-w-md mx-auto space-y-8">
+
+            {/* Notifications Section */}
+            <div className="mb-8">
+              <h2
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
+              >
+                Notifications
+              </h2>
+              <div className="space-y-3">
+                <div className={`flex items-center justify-between p-4 ${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg`}>
+                  <div>
+                    <div className={`${theme === "light" ? "!text-black/95" : "!text-white/95"} font-medium`}>Messages</div>
+                    <div className={`${theme === "light" ? "!text-black/60" : "!text-white/60"} text-sm`}>Get notified when you receive a message</div>
+                  </div>
+                  <button
+                    onClick={() => togglePushNotification("messages")}
+                    className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors ${
+                      pushNotifications.messages
+                        ? "bg-gray-300"
+                        : "bg-transparent border border-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`inline-block w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                        pushNotifications.messages ? "translate-x-[26px]" : "translate-x-0.5 border border-gray-300"
+                      }`}
+                      style={!pushNotifications.messages ? { position: 'absolute', top: '50%', transform: 'translateY(-50%) translateX(2px)' } : {}}
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
 
             {/* Instant Message Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="lightning">⚡</span>
                 Instant Message
               </h2>
               <div className={`p-4 ${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg`}>
@@ -513,9 +553,8 @@ export default function AccountPage({
             {/* Friend Finder Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="handshake">🤝</span>
                 Friend Finder
               </h2>
               <div className={`p-4 ${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg`}>
@@ -549,9 +588,8 @@ export default function AccountPage({
             {/* Sun Signs Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="sun">☀️</span>
                 Sun Signs
               </h2>
               <div className={`p-4 ${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg`}>
@@ -595,9 +633,8 @@ export default function AccountPage({
 
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="user">👤</span>
                 Profile Details
               </h2>
               <div className="space-y-3">
@@ -635,9 +672,8 @@ export default function AccountPage({
 
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="lock">🔒</span>
                 Change Password
               </h2>
               <div className="space-y-3">
@@ -672,11 +708,53 @@ export default function AccountPage({
               </div>
             </div>
 
+            {/* Report & Block Management Section */}
+            <div className="mb-8">
+              <h2
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
+              >
+                Blocked Users
+              </h2>
+              {blockedUsers.length > 0 ? (
+                <div className="space-y-3">
+                  {blockedUsers.map((user) => (
+                    <div
+                      key={user.id}
+                      className={`flex items-center justify-between p-4 ${theme === "light" ? "bg-gray-100 border-gray-300" : "bg-slate-800/40 border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg border`}
+                    >
+                      <div className="flex items-center gap-3 flex-1">
+                        <img
+                          src={user.photo || "/placeholder.svg"}
+                          alt={user.name}
+                          className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
+                        />
+                        <div>
+                          <div className={`${theme === "light" ? "!text-black/95" : "!text-white/95"} font-medium`}>
+                            {user.name}, {user.age}
+                          </div>
+                          <div className={`${theme === "light" ? "!text-black/60" : "!text-white/60"} text-sm`}>Blocked on {user.blockedDate}</div>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => handleUnblock(user.id)}
+                        className="px-4 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors border border-red-500/30"
+                      >
+                        Unblock
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className={`p-6 ${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg text-center`}>
+                  <p className={`${theme === "light" ? "!text-black/95" : "!text-white/95"}`}>No blocked users</p>
+                </div>
+              )}
+            </div>
+
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="link">🔗</span>
                 Linked Logins
               </h2>
               <div className="space-y-3">
@@ -735,9 +813,8 @@ export default function AccountPage({
             {/* Contact Support Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="headphones">🎧</span>
                 Contact Support
               </h2>
               <button
@@ -757,9 +834,8 @@ export default function AccountPage({
             {/* Community Guidelines Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="book">📖</span>
                 Community Guidelines
               </h2>
               <div className={`${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg overflow-hidden`}>
@@ -790,9 +866,8 @@ export default function AccountPage({
             {/* Legal Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="scale">⚖️</span>
                 Legal
               </h2>
               <div className="space-y-3">
@@ -820,9 +895,8 @@ export default function AccountPage({
             {/* Account Actions Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-rank-purple/90 dark:text-purple-300 flex items-center gap-2"
+                className="font-semibold text-base mb-4 text-orange-600 dark:text-orange-400 flex items-center gap-2"
               >
-                <span role="img" aria-label="warning">⚠️</span>
                 Account Actions
               </h2>
               <div className="space-y-3">

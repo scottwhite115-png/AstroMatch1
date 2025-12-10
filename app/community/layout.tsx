@@ -26,9 +26,7 @@ export default function CommunityLayout({
         <header className="mb-4">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="flex-1">
-              <h1 className={`text-lg font-semibold ${
-                theme === "light" ? "text-gray-900" : "text-slate-50"
-              }`}>
+              <h1 className="font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent px-5 py-2.5">
                 AstroLounge
               </h1>
               <p className={`text-xs ${

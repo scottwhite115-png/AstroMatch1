@@ -254,6 +254,7 @@ export interface ConnectionBoxData {
   selectedDeepPrompts?: string[];
   deepPromptAnswers?: {[key: string]: string};
   selectedRelationshipGoals?: string[];
+  selectedOrganizedInterests?: {[category: string]: string[]};
   // Essentials
   age?: number;
   occupation?: string;

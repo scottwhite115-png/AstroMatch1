@@ -380,7 +380,7 @@ export default function ProfilePhotoCarouselWithRanking({
           setCurrentPhotoIndex(index);
           onPhotoChange?.(index);
         }}
-        className="photo-carousel-container w-full aspect-[2/3] rounded-2xl bg-black"
+        className="photo-carousel-container w-full aspect-[3/4] rounded-2xl bg-black"
       >
         {/* Photo Navigation Areas - Only show when not zoomed */}
         <div
@@ -422,19 +422,13 @@ export default function ProfilePhotoCarouselWithRanking({
               <div className="text-white font-semibold text-3xl mb-1">
                 {profileName}
               </div>
-              {/* Zodiac Signs with Emojis */}
-              {(westernSign || easternSign) && (
-                <div className="font-medium flex items-center gap-2" style={{ color: '#ffffff !important', fontSize: '1.25rem', WebkitTextFillColor: '#ffffff' }}>
-                  {westernSign && (
-                    <span className="flex items-center gap-1" style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
-                      {getWesternSignGlyph(westernSign)} {westernSign}
-                    </span>
-                  )}
-                  {easternSign && (
-                    <span className="flex items-center gap-1" style={{ color: '#ffffff', WebkitTextFillColor: '#ffffff' }}>
-                      {getChineseSignGlyph(easternSign)} {easternSign}
-                    </span>
-                  )}
+              {/* Geo Location */}
+              {(selectedCity || cityInput) && (
+                <div className="text-white text-lg font-medium flex items-center gap-1">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                  </svg>
+                  {selectedCity || cityInput}
                 </div>
               )}
             </div>

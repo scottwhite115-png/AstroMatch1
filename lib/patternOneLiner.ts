@@ -24,10 +24,10 @@ export function deriveConnectionOverview(
       return "Familiar, mirror-style bond; you recognise each other's habits very clearly.";
 
     case "NO_PATTERN":
-      return "The connection tends to feel flexible and open-ended, not strongly fixed.";
+      return "";
 
     case "LIU_CHONG":
-      return "Spark over stability; strong pull with repeated points of friction.";
+      return "";
 
     case "LIU_HAI":
       return "Emotionally sensitive match; small hurts need gentle handling.";

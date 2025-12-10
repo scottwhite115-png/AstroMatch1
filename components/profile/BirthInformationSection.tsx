@@ -40,7 +40,6 @@ export function BirthInformationSection({
     >
       <SectionHeader
         label="Birth Information"
-        icon={<span role="img" aria-label="calendar">📅</span>}
       />
 
       <div className="space-y-4">

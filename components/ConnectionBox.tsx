@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import { getWesternSignGlyph } from "@/lib/zodiacHelpers";
+import { 
+  getMatchLabel, 
+  type WesternElementRelation,
+  type PrimaryMatchLabel 
+} from "@/lib/matchLabelEngine";
 
 /** ===== Types ===== */
 
@@ -11,13 +16,7 @@ type ElementRelation =
   | "semiCompatible"
   | "opposite";
 
-type PrimaryLabel =
-  | "Soulmate Match"
-  | "Twin Flame Match"
-  | "Secret Friends Match"
-  | "Magnetic Opposites"
-  | "Challenging Match"
-  | "Neutral Match";
+type PrimaryLabel = PrimaryMatchLabel;
 
 type ChineseBasePattern =
   | "SAN_HE"
@@ -32,6 +31,17 @@ type ChineseOverlayPattern =
   | "PO";
 
 type SanHeTrineName = "Visionaries" | "Strategists" | "Adventurers" | "Artists";
+
+type ConnectionArchetype =
+  | 'TRIPLE_HARMONY'
+  | 'SUPPORTIVE_ALLY'
+  | 'MIRROR'
+  | 'OPEN_PATTERN'
+  | 'OPPOSITES'
+  | 'LESSON_REPAIR';
+
+type WesternEase = 'EASY' | 'MEDIUM' | 'HARD';
+type ScoreBand = 'TOP' | 'HIGH' | 'MID' | 'LOW';
 
 interface ConnectionBoxProps {
   // Basic profile info
@@ -105,74 +115,47 @@ function getElementRelation(
   return "opposite";
 }
 
+/**
+ * Convert ElementRelation to WesternElementRelation for the new engine
+ */
+function convertToWesternRelation(elementRelation: ElementRelation): WesternElementRelation {
+  switch (elementRelation) {
+    case "same":
+      return 'SAME';
+    case "compatible":
+      return 'COMPATIBLE';
+    case "semiCompatible":
+      return 'SEMI_COMPATIBLE';
+    case "opposite":
+      return 'CLASH';
+    default:
+      return 'NEUTRAL';
+  }
+}
+
+/**
+ * Legacy wrapper function for backward compatibility
+ * Now uses the new match label engine
+ */
 function getPrimaryLabel(
   basePattern: ChineseBasePattern,
   overlays: ChineseOverlayPattern[] = [],
   isOppositeBranches: boolean,
   elementRelation: ElementRelation,
   sameChineseAnimal?: boolean,
-  sameWesternSign?: boolean
+  sameWesternSign?: boolean,
+  score?: number
 ): PrimaryLabel {
-  const hasDamage = overlays.length > 0;
+  const westernRelation = convertToWesternRelation(elementRelation);
+  
+  const result = getMatchLabel({
+    chineseBase: basePattern,
+    chineseOverlays: overlays,
+    westernRelation,
+    score: score !== undefined ? score : 75 // Default to mid-range if no score
+  });
 
-  // 1) Opposite branches ALWAYS show as Magnetic Opposites.
-  // Liu Chong etc. are then shown in description, not as label.
-  if (isOppositeBranches) {
-    return "Magnetic Opposites";
-  }
-
-  // 2) Non-opposite damage patterns → Challenging Match
-  if (hasDamage) {
-    return "Challenging Match";
-  }
-
-  // 3) SAN_HE logic — top-tier harmony
-  if (basePattern === "SAN_HE") {
-    // We only block same-animal here. Same Western sign is allowed.
-    // Same sign pairs (Dragon/Dragon etc.) should come in as SAME_SIGN, not SAN_HE.
-    if (!sameChineseAnimal) {
-      if (elementRelation === "same") {
-        return "Soulmate Match";
-      }
-
-      if (
-        elementRelation === "compatible" ||
-        elementRelation === "semiCompatible"
-      ) {
-        return "Twin Flame Match";
-      }
-
-      if (elementRelation === "opposite") {
-        return "Challenging Match";
-      }
-    }
-
-    // Fallback if something is odd: treat as strong but not named cosmic
-    return "Challenging Match";
-  }
-
-  // 4) LIU_HE logic — Secret Friends only lives here
-  if (basePattern === "LIU_HE") {
-    if (
-      elementRelation === "same" ||
-      elementRelation === "compatible" ||
-      elementRelation === "semiCompatible"
-    ) {
-      return "Secret Friends Match";
-    }
-    // Secret Friends under element clash
-    return "Challenging Match";
-  }
-
-  // 5) SAME_SIGN logic
-  if (basePattern === "SAME_SIGN") {
-    // If there were overlays we would already have returned Challenging above.
-    // Pure Same Sign → Neutral vibe (familiar, not automatically easy).
-    return "Neutral Match";
-  }
-
-  // 6) NO_PATTERN
-  return "Neutral Match";
+  return result.primaryLabel;
 }
 
 /**
@@ -347,7 +330,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     isOppositeBranches,
     elementRelation,
     sameChineseAnimal,
-    sameWesternSign
+    sameWesternSign,
+    score
   );
 
   const baseChip = getBasePatternChip(basePattern, sanHeTrineName);
@@ -364,6 +348,26 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     isOppositeBranches
   );
 
+  // Remove sign pair from western heading (everything before the dash)
+  const westernHeadingWithoutSignPair = westernCompatibilityHeading
+    ? (() => {
+        const parts = westernCompatibilityHeading.split(/[—–]/);
+        return parts.length > 1 ? parts.slice(1).join('—').trim() : westernCompatibilityHeading;
+      })()
+    : undefined;
+
+  // Extract Chinese animal names from sign labels (format: "Aquarius / Monkey")
+  const chineseAnimalA = userASignLabel.split(' / ')[1] || '';
+  const chineseAnimalB = userBSignLabel.split(' / ')[1] || '';
+
+  // Remove sign pair from Chinese heading (everything before the dash)
+  const chineseHeadingWithoutSignPair = connectionOverviewHeading
+    ? (() => {
+        const parts = connectionOverviewHeading.split(/[—–]/);
+        return parts.length > 1 ? parts.slice(1).join('—').trim() : connectionOverviewHeading;
+      })()
+    : undefined;
+
   // Get gradient colors based on primary label
   const getGradientColors = (): { start: string; end: string } => {
     switch (primaryLabel) {
@@ -373,6 +377,10 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         return { start: "#c026d3", end: "#fb923c" }; // fuchsia-600 to orange-400
       case "Secret Friends Match":
         return { start: "#c084fc", end: "#f472b6" }; // purple-400 to pink-400
+      case "Strong Harmony Match":
+        return { start: "#f59e0b", end: "#ec4899" }; // amber-500 to pink-500
+      case "Mirror Match":
+        return { start: "#06b6d4", end: "#8b5cf6" }; // cyan-500 to violet-500
       case "Magnetic Opposites":
         return { start: "#67e8f9", end: "#c084fc" }; // cyan-300 to purple-400
       case "Challenging Match":
@@ -414,11 +422,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               }`}>
                 {userASignLabel}
               </span>
-              <span className={`text-[11px] ${
-                theme === "light" ? "text-slate-600" : "text-slate-400"
-              }`}>
-                {userAName}
-              </span>
             </div>
             
             {/* Heart icon in the center */}
@@ -440,11 +443,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 theme === "light" ? "text-slate-700" : "text-slate-200"
               }`}>
                 {userBSignLabel}
-              </span>
-              <span className={`text-[11px] ${
-                theme === "light" ? "text-slate-600" : "text-slate-400"
-              }`}>
-                {userBName}
               </span>
             </div>
           </div>
@@ -473,24 +471,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Pattern breakdown chips */}
         <div className="space-y-2 text-xs leading-snug mb-4">
           <div className="flex flex-wrap gap-1 justify-center">
-            {/* Only show base pattern chip if it's a real pattern (not NO_PATTERN), or if NO_PATTERN with no overlays (show Neutral) */}
-            {/* Hide Neutral chip when there are overlays or other patterns present */}
-            {(basePattern !== "NO_PATTERN" || (basePattern === "NO_PATTERN" && overlays.length === 0)) && (
+            {/* Only show base pattern chip if it's a real pattern (not NO_PATTERN) */}
+            {basePattern !== "NO_PATTERN" && (
               <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
                 theme === "light" 
                   ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
                   : "border-slate-600/80 bg-slate-800/80 text-slate-200"
               }`}>
                 {baseChip}
-              </span>
-            )}
-            {isOppositeBranches && (
-              <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
-                theme === "light" 
-                  ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
-                  : "border-slate-600/80 bg-slate-800/80 text-slate-200"
-              }`}>
-                Opposite branches
               </span>
             )}
             {overlayChips.map((chip) => (
@@ -527,7 +515,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           <div className="grid grid-cols-3 gap-2">
             {/* Profile Button */}
             <button
-              onClick={() => setShowAbout(!showAbout)}
+              onClick={() => {
+                if (!showAbout) {
+                  setShowAbout(true);
+                  setShowOverview(false);
+                } else {
+                  setShowAbout(false);
+                }
+              }}
               className={`inline-flex items-center justify-center rounded-full px-1.5 py-2 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
@@ -543,7 +538,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Star Button (Connection Overview) */}
             <button
-              onClick={() => setShowOverview(!showOverview)}
+              onClick={() => {
+                if (!showOverview) {
+                  setShowOverview(true);
+                  setShowAbout(false);
+                } else {
+                  setShowOverview(false);
+                }
+              }}
               className={`inline-flex items-center justify-center rounded-full px-1.5 py-2 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
@@ -579,20 +581,37 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
           }`}>
-            <h3 className={`text-sm font-semibold mb-3 ${
-              theme === "light" ? "text-slate-900" : "text-slate-100"
-            }`}>
-              Connection Overview
-            </h3>
-            
             {/* Chinese Zodiac Compatibility Section */}
             {connectionOverviewText && (
               <div className="mb-4">
-                {connectionOverviewHeading && (
+                {/* Chinese Signs Display with Icons */}
+                {chineseAnimalA && chineseAnimalB && userAChineseIcon && userBChineseIcon && (
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <span className="text-xl">{userAChineseIcon}</span>
+                    <span className={`font-semibold text-base ${
+                      theme === "light" ? "text-slate-700" : "text-slate-200"
+                    }`}>
+                      {chineseAnimalA}
+                    </span>
+                    <span className={`text-lg ${
+                      theme === "light" ? "text-pink-500" : "text-pink-400"
+                    }`}>
+                      ♥
+                    </span>
+                    <span className={`font-semibold text-base ${
+                      theme === "light" ? "text-slate-700" : "text-slate-200"
+                    }`}>
+                      {chineseAnimalB}
+                    </span>
+                    <span className="text-xl">{userBChineseIcon}</span>
+                  </div>
+                )}
+                
+                {chineseHeadingWithoutSignPair && (
                   <h4 className={`text-sm font-bold mb-1.5 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
-                    {connectionOverviewHeading}
+                    {chineseHeadingWithoutSignPair}
                   </h4>
                 )}
                 {connectionOverviewTagline && (
@@ -610,39 +629,35 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             
             {/* Western Sun Sign Compatibility Section */}
             {westernCompatibilityDescription && (
-              <div className={connectionOverviewText ? "pt-4 border-t border-slate-300/30 dark:border-slate-600/30" : ""}>
+              <div className={connectionOverviewText ? "pt-4" : ""}>
                 {/* Western Signs Display with Icons */}
                 {westernSignA && westernSignB && (
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <div className="flex items-center gap-1">
-                      <span className="text-xl">{getWesternSignGlyph(westernSignA)}</span>
-                      <span className={`font-semibold text-sm ${
-                        theme === "light" ? "text-slate-700" : "text-slate-200"
-                      }`}>
-                        {westernSignA}
-                      </span>
-                    </div>
+                    <span className="text-xl">{getWesternSignGlyph(westernSignA)}</span>
+                    <span className={`font-semibold text-base ${
+                      theme === "light" ? "text-slate-700" : "text-slate-200"
+                    }`}>
+                      {westernSignA}
+                    </span>
                     <span className={`text-lg ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
                     </span>
-                    <div className="flex items-center gap-1">
-                      <span className={`font-semibold text-sm ${
-                        theme === "light" ? "text-slate-700" : "text-slate-200"
-                      }`}>
-                        {westernSignB}
-                      </span>
-                      <span className="text-xl">{getWesternSignGlyph(westernSignB)}</span>
-                    </div>
+                    <span className={`font-semibold text-base ${
+                      theme === "light" ? "text-slate-700" : "text-slate-200"
+                    }`}>
+                      {westernSignB}
+                    </span>
+                    <span className="text-xl">{getWesternSignGlyph(westernSignB)}</span>
                   </div>
                 )}
                 
-                {westernCompatibilityHeading && (
+                {westernHeadingWithoutSignPair && (
                   <h4 className={`text-sm font-bold mb-1.5 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
-                    {westernCompatibilityHeading}
+                    {westernHeadingWithoutSignPair}
                   </h4>
                 )}
                 {westernCompatibilityTagline && (

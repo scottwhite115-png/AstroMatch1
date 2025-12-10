@@ -1,6 +1,7 @@
 {
-  "/messages/page": "app/messages/page.js",
-  "/profile/profile/page": "app/profile/profile/page.js",
-  "/matches/page": "app/matches/page.js",
-  "/messages/[id]/page": "app/messages/[id]/page.js"
+  "/astrology/chinese-zodiac/page": "app/astrology/chinese-zodiac/page.js",
+  "/astrology/guide/next/rat/page": "app/astrology/guide/next/rat/page.js",
+  "/astrology/page": "app/astrology/page.js",
+  "/astrology/guide/next/monkey/page": "app/astrology/guide/next/monkey/page.js",
+  "/matches/page": "app/matches/page.js"
 }

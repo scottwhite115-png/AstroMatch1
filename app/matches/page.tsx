@@ -620,30 +620,74 @@ function shuffleArray<T>(array: T[]): T[] {
   return shuffled;
 }
 
-// Apply shuffle once when the module loads
-const SHUFFLED_PROFILES = shuffleArray(TEST_PROFILES);
+// Apply shuffle once when the module loads (only on client side)
+const SHUFFLED_PROFILES = typeof window !== 'undefined' 
+  ? shuffleArray(TEST_PROFILES)
+  : TEST_PROFILES; // Fallback to unshuffled on server
 
 
 export default function MatchesPage() {
   const router = useRouter()
   const [mounted, setMounted] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
+  
+  // Wrap enrichedProfiles in error boundary
   const enrichedProfiles = useMemo(() => {
     try {
+      if (!SHUFFLED_PROFILES || !Array.isArray(SHUFFLED_PROFILES) || SHUFFLED_PROFILES.length === 0) {
+        console.warn('[MatchesPage] SHUFFLED_PROFILES is empty or invalid')
+        return []
+      }
       return SHUFFLED_PROFILES.map((profile) => {
-        const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
-        return {
-          ...profile,
-          tropicalWesternSign: tropical ?? profile.westernSign,
-          siderealWesternSign: sidereal ?? profile.westernSign,
+        try {
+          if (!profile || !profile.birthdate) {
+            console.warn('[MatchesPage] Profile missing birthdate:', profile?.id)
+            return {
+              ...profile,
+              tropicalWesternSign: profile.westernSign,
+              siderealWesternSign: profile.westernSign,
+            }
+          }
+          const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
+          return {
+            ...profile,
+            tropicalWesternSign: tropical ?? profile.westernSign,
+            siderealWesternSign: sidereal ?? profile.westernSign,
+          }
+        } catch (profileError) {
+          console.error('[MatchesPage] Error enriching individual profile:', profile?.id, profileError)
+          return {
+            ...profile,
+            tropicalWesternSign: profile.westernSign,
+            siderealWesternSign: profile.westernSign,
+          }
         }
       })
     } catch (error) {
       console.error('[MatchesPage] Error enriching profiles:', error)
+      setHasError(true)
       return []
     }
   }, [])
+  
+  // Show error state if there's a critical error
+  if (hasError && enrichedProfiles.length === 0) {
+    return (
+      <div className={`flex items-center justify-center min-h-screen ${theme === "light" ? "bg-white" : "bg-slate-950"}`}>
+        <div className="text-center p-8">
+          <p className={`text-lg mb-4 ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Error loading profiles</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+          >
+            Reload Page
+          </button>
+        </div>
+      </div>
+    )
+  }
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0)
   
   // Set mounted state on client side only
@@ -891,8 +935,8 @@ export default function MatchesPage() {
       tagline: "Neutral Match",
       east_tagline: `${profileEast} × ${userEast} — Neutral Pattern`,
       tags: [],
-      insight: 'Compatibility information is being calculated. Please refresh the page.',
-      longformBody: 'Compatibility information is being calculated. Please refresh the page.',
+      insight: '',
+      longformBody: '',
       east_relation: `${profileEast} × ${userEast} — Neutral Pattern`,
       east_summary: `${profileEast} × ${userEast} — Neutral Pattern`,
       east_description: '',
@@ -1081,8 +1125,8 @@ export default function MatchesPage() {
       east_tagline: simpleBox.chineseLine,
       tags: [],
       // NEW: Map overview from SimpleConnectionBox to both insight and longformBody
-      insight: simpleBox.overview || 'Compatibility information is being calculated.',
-      longformBody: simpleBox.overview || 'Compatibility information is being calculated.',
+      insight: simpleBox.overview || '',
+      longformBody: simpleBox.overview || '',
       // Use the full formatted lines from the new engine for display
       east_relation: simpleBox.chineseLine, // Full line: "Monkey × Rat — San He (三合) "Three Harmonies" (Same Trine: Visionaries 三会)"
       east_summary: simpleBox.chineseLine,
@@ -1204,7 +1248,7 @@ export default function MatchesPage() {
         console.log(`[🚀 Match Engine] Processing profile ${profile.id}: ${profile.name}`)
         console.log(`[🚀 Match Engine] Profile birthdate:`, profile.birthdate)
         console.log(`[🚀 Match Engine] Profile signs:`, { western: profile.westernSign, eastern: profile.easternSign })
-      try {
+        try {
         // Get user's display signs based on sun sign system
         const savedSunSigns = getSavedSunSigns()
         const userDisplayWest = sunSignSystem === "sidereal"
@@ -1348,6 +1392,31 @@ export default function MatchesPage() {
         }
         console.log(`[✓] Successfully built box for profile ${profile.id} (${profile.name})`)
         console.log(`[✓] Box data keys:`, Object.keys(boxData))
+      } catch (error) {
+        // Catch any unhandled errors for this specific profile
+        const errorMessage = error instanceof Error ? error.message : error instanceof Event ? 'Event error' : String(error);
+        const errorStack = error instanceof Error ? error.stack : '';
+        console.error(`[✗] Unhandled error processing profile ${profile.name} (ID: ${profile.id}):`, errorMessage, errorStack || error);
+        // Create fallback connection box so the profile still shows up
+        try {
+          const profileDisplayWest = sunSignSystem === "sidereal"
+            ? (profile.siderealWesternSign || profile.westernSign)
+            : (profile.tropicalWesternSign || profile.westernSign)
+          const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
+          const fallbackBox = createFallbackConnectionBox(
+            profile,
+            userWest,
+            userEast,
+            profileDisplayWestCapitalized,
+            profileEast,
+            `Unhandled error: ${errorMessage}`
+          );
+          boxes[profile.id] = fallbackBox;
+        } catch (fallbackError) {
+          console.error(`[✗] Error creating fallback box for ${profile.name}:`, fallbackError);
+          // Skip this profile if even the fallback fails
+        }
+      }
         
         // OLD ENGINE CODE - COMMENTED OUT (using new buildSimpleConnectionBox instead)
         /*
@@ -1879,11 +1948,6 @@ export default function MatchesPage() {
           }, null, 2))
         }
         */
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : error instanceof Event ? 'Event error' : String(error);
-        const errorStack = error instanceof Error ? error.stack : '';
-        console.error(`[✗] Error building compatibility for ${profile.name}:`, errorMessage, errorStack || error);
-      }
     }
     
     // After processing all profiles, set the boxes
@@ -1916,7 +1980,9 @@ export default function MatchesPage() {
     setFilteredProfiles(enrichedProfiles)
   }, [enrichedProfiles])
 
-  const currentProfile = filteredProfiles[currentProfileIndex]
+  const currentProfile = filteredProfiles && filteredProfiles.length > 0 && currentProfileIndex >= 0 && currentProfileIndex < filteredProfiles.length
+    ? filteredProfiles[currentProfileIndex]
+    : null
 
   const handlePrevProfile = () => {
     if (currentProfileIndex > 0) {
@@ -2947,7 +3013,23 @@ export default function MatchesPage() {
         </header>
 
         {/* Profile Card Stack */}
-        {currentProfile ? (
+        {!mounted ? (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+              <p className={`text-lg ${theme === "light" ? "text-gray-700" : "text-white"}`}>Loading...</p>
+            </div>
+          </div>
+        ) : filteredProfiles.length === 0 ? (
+          <div className="flex items-center justify-center min-h-screen">
+            <div className="text-center">
+              <p className={`text-lg ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
+              <p className={`text-sm mt-2 ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
+                {enrichedProfiles.length === 0 ? "Loading profiles..." : "Try adjusting your filters"}
+              </p>
+            </div>
+          </div>
+        ) : currentProfile ? (
           <div className="pb-32 relative overflow-visible">
             {/* Next profile card (underneath) - Full size and ready */}
             {filteredProfiles[currentProfileIndex + 1] && (
@@ -3232,7 +3314,7 @@ export default function MatchesPage() {
         ) : (
           <div className="px-4 py-8 text-center">
             <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-              No profiles match your filters
+              {filteredProfiles.length === 0 ? "No profiles available" : "No profiles match your filters"}
             </p>
             <button
               onClick={() => {

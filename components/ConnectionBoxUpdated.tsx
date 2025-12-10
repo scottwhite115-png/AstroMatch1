@@ -390,11 +390,6 @@ export const ConnectionBoxUpdated: React.FC<ConnectionBoxUpdatedProps> = ({
               }`}>
                 {userASignLabel}
               </span>
-              <span className={`text-[11px] ${
-                theme === "light" ? "text-slate-600" : "text-slate-400"
-              }`}>
-                {userAName}
-              </span>
             </div>
             
             {/* Heart icon in the center */}
@@ -416,11 +411,6 @@ export const ConnectionBoxUpdated: React.FC<ConnectionBoxUpdatedProps> = ({
                 theme === "light" ? "text-slate-700" : "text-slate-200"
               }`}>
                 {userBSignLabel}
-              </span>
-              <span className={`text-[11px] ${
-                theme === "light" ? "text-slate-600" : "text-slate-400"
-              }`}>
-                {userBName}
               </span>
             </div>
           </div>

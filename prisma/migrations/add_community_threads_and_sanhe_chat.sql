@@ -99,3 +99,4 @@ ALTER TABLE "SanHeMessage" ADD CONSTRAINT "SanHeMessage_authorId_fkey" FOREIGN K
 ALTER TABLE "SanHePresence" ADD CONSTRAINT "SanHePresence_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "SanHeRoom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ALTER TABLE "SanHePresence" ADD CONSTRAINT "SanHePresence_userId_fkey" FOREIGN KEY ("userId") REFERENCES "profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+

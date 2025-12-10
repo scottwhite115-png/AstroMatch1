@@ -139,7 +139,7 @@ export function getPatternTagline(pattern: ChinesePattern | "NO_PATTERN"): strin
     case "SAME_SIGN":
       return "Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.";
     case "NEUTRAL":
-      return "No strong classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
+      return "No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
     case "LIU_CHONG":
       return "Magnetic opposites with sharp edges; big lessons, not automatic comfort.";
     case "LIU_HAI":
@@ -149,7 +149,7 @@ export function getPatternTagline(pattern: ChinesePattern | "NO_PATTERN"): strin
     case "PO":
       return "This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.";
     default:
-      return "No strong classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
+      return "No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
   }
 }
 

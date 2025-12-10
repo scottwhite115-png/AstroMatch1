@@ -204,7 +204,7 @@ export function getConnectionOverview(
 
     case "LIU_CHONG":
       if (score >= 46) {
-        return "Spark over stability; strong pull with noticeable points of friction.";
+        return "";
       }
       return "Live-wire chemistry with clashes that can surface quickly.";
 

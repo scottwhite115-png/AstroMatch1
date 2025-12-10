@@ -1731,9 +1731,9 @@ export function buildSimpleConnectionBox(
     } catch (fallbackError) {
       console.error('[buildSimpleConnectionBox] Fallback also failed:', fallbackError);
       chineseLine = `${animalALabel} × ${animalBLabel} — Pattern`;
-      chineseDescription = 'Compatibility information is being calculated.';
+      chineseDescription = '';
       westernLine = `${signALabel} × ${signBLabel}`;
-      westernDescription = 'Compatibility information is being calculated.';
+      westernDescription = '';
     }
   }
 

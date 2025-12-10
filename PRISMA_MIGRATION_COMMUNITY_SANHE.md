@@ -134,3 +134,4 @@ async function joinSanHeRoom(userId: string, house: SanHeHouse, scope: ChatRegio
 - Room creation is dynamic based on demand
 - Users can visit any house, not just their own San He trine
 
+

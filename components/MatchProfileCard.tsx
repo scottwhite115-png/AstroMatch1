@@ -219,7 +219,7 @@ export default function MatchProfileCard({
     >
       {/* Photo Carousel with Ranking */}
       {profile.photos.length > 0 && (
-        <div className="relative px-2">
+        <div className="relative px-2 mb-3">
           <ProfilePhotoCarouselWithRanking
             images={profile.photos}
             profileName={profile.name}

@@ -645,7 +645,7 @@ export function buildConnectionOverview(
     return {
       chineseLine: `${eastA} × ${eastB}`,
       westLine: `${westA} × ${westB}`,
-      overview: 'Compatibility information is being calculated.',
+      overview: '',
       score: 50,
       label: 'Neutral Match',
       labelColor: MATCH_LABEL_COLORS['Neutral Match'],
