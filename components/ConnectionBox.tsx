@@ -134,8 +134,34 @@ function convertToWesternRelation(elementRelation: ElementRelation): WesternElem
 }
 
 /**
+ * Get match label and tagline from the new match label engine
+ */
+function getMatchLabelAndTagline(
+  basePattern: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[] = [],
+  isOppositeBranches: boolean,
+  elementRelation: ElementRelation,
+  sameChineseAnimal?: boolean,
+  sameWesternSign?: boolean,
+  score?: number
+): { primaryLabel: PrimaryLabel; tagline: string } {
+  const westernRelation = convertToWesternRelation(elementRelation);
+  
+  const result = getMatchLabel({
+    chineseBase: basePattern,
+    chineseOverlays: overlays,
+    westernRelation,
+    score: score !== undefined ? score : 75 // Default to mid-range if no score
+  });
+
+  return {
+    primaryLabel: result.primaryLabel,
+    tagline: result.subLabel
+  };
+}
+
+/**
  * Legacy wrapper function for backward compatibility
- * Now uses the new match label engine
  */
 function getPrimaryLabel(
   basePattern: ChineseBasePattern,
@@ -146,16 +172,16 @@ function getPrimaryLabel(
   sameWesternSign?: boolean,
   score?: number
 ): PrimaryLabel {
-  const westernRelation = convertToWesternRelation(elementRelation);
-  
-  const result = getMatchLabel({
-    chineseBase: basePattern,
-    chineseOverlays: overlays,
-    westernRelation,
-    score: score !== undefined ? score : 75 // Default to mid-range if no score
-  });
-
-  return result.primaryLabel;
+  const { primaryLabel } = getMatchLabelAndTagline(
+    basePattern,
+    overlays,
+    isOppositeBranches,
+    elementRelation,
+    sameChineseAnimal,
+    sameWesternSign,
+    score
+  );
+  return primaryLabel;
 }
 
 /**
@@ -324,7 +350,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   const elementRelation =
     elementRelationOverride ?? getElementRelation(elements.a, elements.b);
 
-  const primaryLabel = getPrimaryLabel(
+  const { primaryLabel, tagline } = getMatchLabelAndTagline(
     basePattern,
     overlays,
     isOppositeBranches,
@@ -340,12 +366,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     elements.a,
     elements.b,
     elementRelation
-  );
-  const headline = getHeadlineSummary(
-    primaryLabel,
-    basePattern,
-    overlays,
-    isOppositeBranches
   );
 
   // Remove sign pair from western heading (everything before the dash)
@@ -449,7 +469,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         </div>
 
         {/* Primary label pill */}
-        <div className="mb-3 flex justify-center">
+        <div className="mb-2 flex justify-center">
           <div 
             className={`inline-flex items-center rounded-full px-4 py-2 text-sm font-bold shadow-lg whitespace-nowrap border-2 ${
               theme === "light" ? "bg-white" : "bg-slate-900"
@@ -467,6 +487,15 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             )}
           </div>
         </div>
+
+        {/* Tagline under the pill */}
+        {tagline && (
+          <p className={`text-xs text-center leading-relaxed mb-3 ${
+            theme === "light" ? "text-slate-600" : "text-slate-300"
+          }`}>
+            {tagline}
+          </p>
+        )}
 
         {/* Pattern breakdown chips */}
         <div className="space-y-2 text-xs leading-snug mb-4">
@@ -501,13 +530,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               {elementChip}
             </span>
           </div>
-
-          {/* Headline summary */}
-          <p className={`text-[12px] text-center leading-relaxed ${
-            theme === "light" ? "text-slate-700" : "text-slate-300"
-          }`}>
-            {headline}
-          </p>
         </div>
 
         {/* Action Buttons Row */}
