@@ -638,23 +638,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   </div>
                 )}
                 
-                {/* Element Info */}
-                {westernElementA && westernElementB && (
-                  <div className={`text-xs mb-2 text-center ${
-                    theme === "light" ? "text-slate-600" : "text-slate-400"
-                  }`}>
-                    {westernElementA} + {westernElementB}
-                    {elementRelation && (
-                      <span className="ml-1">
-                        {elementRelation === "same" && "· Same element"}
-                        {elementRelation === "compatible" && "· Compatible elements"}
-                        {elementRelation === "semiCompatible" && "· Semi-compatible"}
-                        {elementRelation === "opposite" && "· Clashing elements"}
-                      </span>
-                    )}
-                  </div>
-                )}
-                
                 {westernCompatibilityHeading && (
                   <h4 className={`text-sm font-bold mb-1.5 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
