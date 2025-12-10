@@ -1860,14 +1860,29 @@ export function buildSimpleConnectionBox(
       westernElementRelation: westElemRelation,
       westernAspectRelation: westAspectRelation,
       wuXingRelation,
+      overlays: chinesePatternResult.all,
     });
+    
+    // Map overlay patterns to ChinesePattern type for match engine
+    const overlayPatterns: any[] = chinesePatternResult.all
+      .filter((p: string) => p !== chinesePattern) // Exclude the primary pattern
+      .map((p: string) => {
+        const overlayMap: Record<string, string> = {
+          'liu_hai': 'LIU_HAI',
+          'xing': 'XING',
+          'po': 'PO',
+          'liu_chong': 'LIU_CHONG',
+        };
+        return overlayMap[p];
+      })
+      .filter((p: string) => p !== undefined);
     
     matchEngineResult = buildMatchResult({
       pattern: patternKey,
       westernElementRelation: westElemRelation,
       westernAspectRelation: westAspectRelation,
       wuXingRelation,
-    });
+    }, overlayPatterns);
     
     console.log('[buildSimpleConnectionBox] Match engine result:', matchEngineResult);
   } catch (error) {

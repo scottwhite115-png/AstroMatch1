@@ -1,5 +1,7 @@
 // matchLabelEngine.ts
 
+import { taglines } from './matchTaglines';
+
 // ----------------------
 // 1. Basic enums / types
 // ----------------------
@@ -145,14 +147,14 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     if (westernEase === 'HARD') {
       return {
         primaryLabel: 'Challenging Match',
-        subLabel: 'High-friction lesson match – memorable and intense, but demanding clear boundaries and maturity.'
+        subLabel: taglines.lessonHard
       };
     }
 
     // Damage + some Western support
     return {
       primaryLabel: 'Challenging Match',
-      subLabel: 'Lesson match – growth through tests and snags, softened somewhat by your elemental blend.'
+      subLabel: taglines.lessonSoftened
     };
   }
 
@@ -161,13 +163,13 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     if (westernEase === 'HARD') {
       return {
         primaryLabel: 'Challenging Match',
-        subLabel: 'Volatile opposites match – high spark and high friction, not the easiest path to stability.'
+        subLabel: taglines.volatileOpposites
       };
     }
 
     return {
       primaryLabel: 'Magnetic Opposites',
-      subLabel: 'Magnetic opposites – strong pull, big differences, and low autopilot. This pairing thrives on conscious effort.'
+      subLabel: taglines.magneticOpposites
     };
   }
 
@@ -177,7 +179,7 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     if (westernEase === 'EASY' && scoreBand === 'TOP') {
       return {
         primaryLabel: 'Soulmate Match',
-        subLabel: 'Triple Harmony Match – strong alignment with easy flow and long-term potential.'
+        subLabel: taglines.soulmate
       };
     }
 
@@ -185,15 +187,15 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     if (westernEase !== 'HARD' && (scoreBand === 'HIGH' || scoreBand === 'MID')) {
       return {
         primaryLabel: 'Strong Harmony Match',
-        subLabel: 'Triple Harmony connection – solid core compatibility with supportive, natural chemistry.'
+        subLabel: taglines.strongHarmony
       };
     }
 
-    // San He + element clash → deep but intense
+    // San He + element clash → deep but intense (could use Twin Flame tagline)
     if (westernEase === 'HARD') {
       return {
         primaryLabel: 'Challenging Match',
-        subLabel: 'Deep but intense match – strong San He bond with elemental friction that can be powerful if you can handle the tension.'
+        subLabel: taglines.twinFlame
       };
     }
   }
@@ -204,22 +206,22 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
       // Let really sweet Liu He behave like a top-tier "Secret Friends"
       return {
         primaryLabel: 'Secret Friends Match',
-        subLabel: "Quiet ally match – reliable support, loyalty, and a natural sense of having each other's back."
+        subLabel: taglines.quietAlly
       };
     }
 
     if (westernEase === 'MEDIUM') {
       return {
         primaryLabel: 'Secret Friends Match',
-        subLabel: 'Steady ally match – dependable support that grows over time, even if your styles differ at first.'
+        subLabel: taglines.steadyAlly
       };
     }
 
-    // Liu He + clash, but no damage overlay
+    // Liu He + clash, but no damage overlay - use softSteadyFriend as fallback
     if (westernEase === 'HARD') {
       return {
-        primaryLabel: 'Challenging Match',
-        subLabel: 'Hidden-tension ally match – underlying loyalty, but different needs rub until you find better communication.'
+        primaryLabel: 'Secret Friends Match',
+        subLabel: taglines.softSteadyFriend
       };
     }
   }
@@ -229,21 +231,21 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     if (westernEase === 'EASY' && (scoreBand === 'HIGH' || scoreBand === 'TOP')) {
       return {
         primaryLabel: 'Mirror Match',
-        subLabel: 'Same sign mirror – strong familiarity, shared instincts, and shared blind spots. Feels very recognisable.'
+        subLabel: taglines.mirrorStrong
       };
     }
 
     if (westernEase === 'HARD') {
       return {
         primaryLabel: 'Challenging Match',
-        subLabel: "Mirror clash – very similar nature but very different needs; intense recognition that isn't always easy."
+        subLabel: taglines.mirrorClash
       };
     }
 
     // Middle-lane same sign
     return {
       primaryLabel: 'Neutral Match',
-      subLabel: 'Same sign mirror – similar instincts and values, with outcomes depending heavily on maturity and timing.'
+      subLabel: taglines.mirrorMid
     };
   }
 
@@ -252,27 +254,27 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     if (westernEase === 'EASY') {
       return {
         primaryLabel: 'Neutral Match',
-        subLabel: 'Easygoing match – no strong classical pattern, but the elements create a smooth, natural flow.'
+        subLabel: taglines.neutralEasy
       };
     }
 
     if (westernEase === 'MEDIUM') {
       return {
         primaryLabel: 'Neutral Match',
-        subLabel: 'Workable match – open-ended connection that grows through shared effort and communication.'
+        subLabel: taglines.neutralWorkable
       };
     }
 
     // OPEN + HARD
     return {
       primaryLabel: 'Challenging Match',
-      subLabel: 'Mixed-signals match – no strong classical bond, with attraction and friction trading places over time.'
+      subLabel: taglines.neutralMixedSignals
     };
   }
 
   // Fallback (should be rare)
   return {
     primaryLabel: 'Neutral Match',
-    subLabel: 'Balanced connection without a dominant harmony or conflict pattern.'
+    subLabel: taglines.fallbackBalanced
   };
 }

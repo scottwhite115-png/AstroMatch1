@@ -1,125 +1,28 @@
 // lib/matchTaglines.ts
 
-import {
-  ChinesePattern,
-  MatchTier,
-  WestAspect,
-  WestElementRelation,
-} from "@/lib/matchEngine";
+export const taglines = {
+  soulmate: 'Triple Harmony Match – strong alignment with easy flow and long-term potential.',
+  twinFlame: 'Deep, fated-feeling connection with intense chemistry and clear growth edges.',
+  strongHarmony: 'Triple Harmony connection – solid core compatibility with supportive, natural chemistry.',
 
-export interface PatternTaglineInput {
-  tier: MatchTier;
-  chinesePattern: ChinesePattern;
-  westAspect: WestAspect;
-  westElementRelation: WestElementRelation;
-  isChineseOpposite: boolean;
-}
+  quietAlly: "Quiet ally match – reliable support, loyalty, and a sense of having each other's back.",
+  softSteadyFriend: 'Soft, steady connection with a warm, friend-like tone.',
+  steadyAlly: 'Steady ally match – dependable support that strengthens slowly as trust builds.',
 
-export function getPatternTagline(
-  input: PatternTaglineInput
-): string | undefined {
-  const {
-    tier,
-    chinesePattern,
-    westAspect,
-    westElementRelation,
-    isChineseOpposite,
-  } = input;
+  neutralEasy: 'Easygoing match – no strong classical pattern, but the elements create a smooth, natural flow.',
+  neutralWorkable: 'Workable match – open-ended connection that improves through communication and shared effort.',
+  neutralMixedSignals: 'Mixed-signals match – attraction and friction tend to trade places over time.',
 
-  const isDamagePattern = ["liu_chong", "liu_hai", "xing", "po"].includes(
-    chinesePattern
-  );
-  const isSameTribe =
-    chinesePattern === "san_he" || chinesePattern === "same_trine";
+  mirrorStrong: 'Same-sign mirror – strong familiarity, shared instincts, and shared blind spots.',
+  mirrorClash: "Mirror clash – very similar nature but very different needs; intense recognition that isn't always easy.",
+  mirrorMid: 'Same-sign mirror – similar values and style; outcome depends heavily on maturity and timing.',
 
-  const westNice =
-    (westAspect === "trine" || westAspect === "sextile") &&
-    (westElementRelation === "same" ||
-      westElementRelation === "compatible" ||
-      westElementRelation === "semi_compatible");
+  magneticOpposites: 'Magnetic opposites – strong pull, big differences, and low autopilot; this pairing thrives on conscious effort.',
+  volatileOpposites: 'Volatile opposites match – high spark and high friction, demanding patience and emotional regulation.',
 
-  // 0) Bland neutral: no tagline, keep box clean
-  if (
-    tier === "Neutral Match" &&
-    !isDamagePattern &&
-    !isSameTribe &&
-    !isChineseOpposite
-  ) {
-    return undefined;
-  }
+  lessonSoftened: 'Lesson match – growth through tests and snags, softened somewhat by your elemental blend.',
+  lessonHard: 'High-friction lesson match – memorable and transformative, but not low-effort or low-drama.',
 
-  // 1) Top tiers
-  if (tier === "Soulmate Match") {
-    return "Top tier · One of your strongest overall matches.";
-  }
-
-  if (tier === "Twin Flame Match") {
-    return "Intense flow · Strong match with extra edge and movement.";
-  }
-
-  // 2) Same tribe (San He / same_trine) but not Soulmate/Twin
-  if (isSameTribe) {
-    if (westNice) {
-      return "Deep harmony · Same tribe energy with easy flow.";
-    }
-    return "Tribe bond · Strong link with different emotional rhythm.";
-  }
-
-  // 3) Liu He "secret friends"
-  if (chinesePattern === "liu_he") {
-    return "Soft support · Quietly loyal, good for real life.";
-  }
-
-  // 4) Damage patterns
-  if (
-    isDamagePattern &&
-    (westAspect === "square" ||
-      westAspect === "opposition" ||
-      westAspect === "quincunx")
-  ) {
-    return "Handle with care · Intense pattern that needs maturity.";
-  }
-
-  if (isDamagePattern) {
-    return "";
-  }
-
-  // 5) Opposites (Chinese or Western)
-  if (
-    tier === "Opposites Attract" ||
-    isChineseOpposite ||
-    westAspect === "opposition"
-  ) {
-    return "Magnetic pull · Exciting but rarely relaxing.";
-  }
-
-  // 6) Harmonious / Neutral catch-alls
-  if (tier === "Harmonious Match") {
-    return "Easy rhythm · Feels natural to spend time together.";
-  }
-
-  if (tier === "Neutral Match") {
-    return "Could go either way · A lot depends on timing and effort.";
-  }
-
-  // 7) Difficult fallback
-  if (tier === "Difficult Match") {
-    return "Challenging pattern · Growth-heavy connection.";
-  }
-
-  return undefined;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  fallbackBalanced: 'Balanced connection without a single dominant harmony or conflict pattern.',
+  fallbackOpenEnded: 'Open-ended connection where your choices and communication matter more than fate.',
+};

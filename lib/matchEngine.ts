@@ -374,6 +374,71 @@ export function calculateMatchScore(input: MatchInput): number {
   return Math.round(score);
 }
 
+/**
+ * Calculate match score with overlay penalties applied.
+ * This version should be used when overlay information is available.
+ */
+export function calculateMatchScoreWithOverlays(
+  input: MatchInput,
+  overlays: ChinesePattern[]
+): number {
+  const {
+    pattern,
+    westernElementRelation,
+    westernAspectRelation,
+    wuXingRelation,
+    sameWesternSign,
+  } = input;
+
+  // NEW: Use element-based base score instead of fixed PATTERN_BASE_SCORE
+  const elementRelation = wuXingToElementRelation(wuXingRelation);
+  let score = getChineseBaseScore(pattern, elementRelation);
+
+  // Add Western adjustments
+  score += scoreFromWesternElementRelation(westernElementRelation);
+  score += scoreFromWesternAspect(westernAspectRelation);
+  score += sameSignAdjustment(sameWesternSign);
+
+  score = clampToPatternBand(pattern, score);
+  
+  // Cap NO_PATTERN (Neutral) scores at 65%
+  if (pattern === "NO_PATTERN" && score > 65) {
+    score = 65;
+  }
+  
+  // Apply overlay penalties
+  const damageOverlays = overlays.filter(o => 
+    o === "LIU_HAI" || o === "XING" || o === "PO"
+  );
+  const hasDamageOverlays = damageOverlays.length > 0;
+  
+  // Count damage overlays
+  if (hasDamageOverlays) {
+    // For harmonious base patterns (San He, Liu He), apply caps
+    if (pattern === "SAN_HE" || pattern === "LIU_HE") {
+      if (damageOverlays.length >= 2) {
+        // 2+ damage overlays: cap at 78-84% max
+        if (westernElementRelation === "SAME_ELEMENT" || westernElementRelation === "COMPATIBLE_ELEMENT") {
+          score = Math.min(score, 84);
+        } else {
+          score = Math.min(score, 82);
+        }
+      } else if (damageOverlays.length === 1) {
+        // 1 overlay with good West: cap at 82-86%
+        if (westernElementRelation === "SAME_ELEMENT" || westernElementRelation === "COMPATIBLE_ELEMENT") {
+          score = Math.min(score, 86);
+        } else {
+          score = Math.min(score, 82);
+        }
+      }
+    }
+  }
+  
+  score = clamp(score, 0, 100);
+
+  return Math.round(score);
+}
+
 // ----------------- Chemistry & Stability Star Mapping -----------------
 
 interface StarPair {
@@ -502,8 +567,10 @@ function getStarRatings(
 
 import { getPatternPillLabel, getPatternHeading } from './astrology/patternLabels';
 
-export function buildMatchResult(input: MatchInput): MatchResult {
-  const score = calculateMatchScore(input);
+export function buildMatchResult(input: MatchInput, overlays?: ChinesePattern[]): MatchResult {
+  const score = overlays && overlays.length > 0 
+    ? calculateMatchScoreWithOverlays(input, overlays)
+    : calculateMatchScore(input);
   const meta = PATTERN_META[input.pattern];
 
   // Use the new pattern label functions from patternLabels.ts
