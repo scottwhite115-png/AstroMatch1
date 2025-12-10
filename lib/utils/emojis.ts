@@ -25,10 +25,10 @@ export const getChineseSignEmoji = (sign: string): string => {
   const signLower = sign.toLowerCase()
   
   const emojiMap: { [key: string]: string } = {
-    'rat': '🐭',
+    'rat': '🐀',
     'ox': '🐂',
     'tiger': '🐅',
-    'rabbit': '🐰',
+    'rabbit': '🐇',
     'dragon': '🐉',
     'snake': '🐍',
     'horse': '🐎',
@@ -36,8 +36,8 @@ export const getChineseSignEmoji = (sign: string): string => {
     'monkey': '🐒',
     'rooster': '🐓',
     'dog': '🐕',
-    'pig': '🐷'
+    'pig': '🐖'
   }
   
-  return emojiMap[signLower] || '🐭'
+  return emojiMap[signLower] || '🐀'
 }

@@ -236,10 +236,10 @@ export function getWesternSignEmoji(sign: string): string {
 // Get emoji for Chinese zodiac sign
 export function getChineseSignEmoji(sign: string): string {
   const emojiMap: { [key: string]: string } = {
-    Rat: "🐭",
+    Rat: "🐀",
     Ox: "🐂",
     Tiger: "🐅",
-    Rabbit: "🐰",
+    Rabbit: "🐇",
     Dragon: "🐉",
     Snake: "🐍",
     Horse: "🐎",
@@ -247,7 +247,7 @@ export function getChineseSignEmoji(sign: string): string {
     Monkey: "🐒",
     Rooster: "🐓",
     Dog: "🐕",
-    Pig: "🐷",
+    Pig: "🐖",
   }
   return emojiMap[sign] || ""
 }

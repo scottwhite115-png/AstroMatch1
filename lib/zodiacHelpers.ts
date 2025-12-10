@@ -20,10 +20,10 @@ export const getWesternSignGlyph = (sign: string): string => {
 
 export const getChineseSignGlyph = (sign: string): string => {
   const glyphMap: { [key: string]: string } = {
-    Rat: "🐭",
+    Rat: "🐀",
     Ox: "🐂",
     Tiger: "🐅",
-    Rabbit: "🐰",
+    Rabbit: "🐇",
     Dragon: "🐉",
     Snake: "🐍",
     Horse: "🐎",
@@ -31,7 +31,7 @@ export const getChineseSignGlyph = (sign: string): string => {
     Monkey: "🐒",
     Rooster: "🐓",
     Dog: "🐕",
-    Pig: "🐷",
+    Pig: "🐖",
   }
   return glyphMap[sign] || ""
 }
