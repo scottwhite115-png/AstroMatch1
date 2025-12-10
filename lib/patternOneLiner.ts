@@ -15,7 +15,7 @@ export function deriveConnectionOverview(
     case "SAN_HE":
       return score >= 90
         ? "Very strong harmony; one of your most natural matches."
-        : "Steady, supportive harmony with good long-term potential.";
+        : "Strong harmony with natural alignment.";
 
     case "LIU_HE":
       return "Soft, steady connection with a warm, friend-like tone.";

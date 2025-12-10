@@ -11,746 +11,746 @@ export interface DetailedCompatDescription {
 export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedCompatDescription>> = {
   "rat": {
     "rat": {
-      "heading": "Rat × Rat— Same Sign (同生肖)",
-      "tagline": "Quick and calculating",
-      "description": "Two Rats form a quick-witted, perceptive bond full of sharp humour and intuitive recognition. Sharing the same instinctive style can create subtle competitiveness or overthinking, but the mental chemistry is strong and engaging. The connection feels lively, intelligent, and quietly charged."
+      "heading": "Rat × Rat — Same Sign (同生肖)",
+      "tagline": "Quick minds, shared instincts",
+      "description": "Two Rats together notice everything: shifts in mood, money, and opportunity. You are good at adapting, saving when needed, and acting early when something looks promising. The stress comes from worry and subtle competition over control, work, or money. This match works when you agree clearly on goals and treat each other as partners, not rivals."
     },
     "ox": {
-      "heading": "Rat × Ox— Secret Friend (Liu He 六合)",
-      "tagline": "Smart and steady",
-      "description": "Rat and Ox share a Liu He (六合) secret-friend harmony known for stability, loyalty, and long-term support. Rat contributes strategy, adaptability, and clever insight; Ox provides steadiness, commitment, and calm strength. Together they form a natural, quietly powerful team. The dynamic feels grounding, reliable, and mutually reinforcing."
+      "heading": "Rat × Ox — Secret Friend (Liu He 六合)",
+      "tagline": "Quietly strong team",
+      "description": "Rat and Ox form a Liu He (六合) bond known for reliability. Ox brings patience and steady effort; Rat brings timing, ideas, and an eye for risk. Together you are well suited to building a home, business, or savings base over time. Respecting Ox's slower pace and trusting Rat's sense of when to move keeps this pairing very solid."
     },
     "tiger": {
-      "heading": "Rat × Tiger— Neutral",
-      "tagline": "Nerves and impulse",
-      "description": "Rat operates through strategy and foresight, while Tiger moves through instinct and boldness. Their contrasting approaches create an energising, unpredictable rhythm. Rat influences Tiger with subtle planning; Tiger adds courage and immediacy to Rat's world. The connection feels spirited, curious, and lightly contrasting."
+      "heading": "Rat × Tiger — Neutral (中)",
+      "tagline": "Different tempo, shared drive",
+      "description": "Rat plans and calculates; Tiger jumps and leads. Rat can help Tiger avoid obvious mistakes, while Tiger stops Rat from getting stuck in overthinking. Friction shows up when Rat quietly judges Tiger as reckless or Tiger feels Rat is negative or controlling. It works best when you divide decisions clearly and accept that you approach risk differently."
     },
     "rabbit": {
-      "heading": "Rat × Rabbit— Punishment (Xing 刑)",
-      "tagline": "Fast and soft",
-      "description": "Rat's intensity contrasts with Rabbit's gentleness in a Xing (刑) \"Punishment\" pattern that highlights manners, expectations, and emotional sensitivity. Rabbit brings softness and calm; Rat brings structure and sharp perception. Their blend forms a quiet, thoughtful dynamic that needs care around tone and respect. The connection feels soft, delicate, and emotionally nuanced."
+      "heading": "Rat × Rabbit — Punishment Pattern (Xing 刑)",
+      "tagline": "Soft nerves, sharp edges",
+      "description": "Rat and Rabbit sit in a punishment (刑) relation where small hurts can slowly build. Rat is more direct and tactical; Rabbit is sensitive and avoids heavy conflict. At your best, Rat protects and organises while Rabbit keeps the atmosphere gentle and civil. At your worst, Rabbit swallows hurt and withdraws, and Rat feels blocked without knowing why."
     },
     "dragon": {
-      "heading": "Rat × Dragon— Same Trine (San He 三合)",
-      "tagline": "Ambitious and bold",
-      "description": "Rat and Dragon belong to the San He (三合) visionary trine, creating a dynamic, high-energy, and naturally ambitious pairing. Rat offers strategy and subtle intelligence; Dragon contributes drive, charisma, and bold initiative. Their chemistry inspires movement and mutual elevation. The dynamic feels confident, lively, and strongly aligned."
+      "heading": "Rat × Dragon — Same Trine (San He 三合)",
+      "tagline": "Vision plus timing",
+      "description": "Rat and Dragon share the San He (三合) \"Visionary\" trine. Dragon brings confidence, presence, and big goals; Rat brings careful timing, negotiation, and discipline with resources. This is one of Rat's strongest combinations for ambition and progress. It only really breaks when Dragon feels constantly second-guessed or Rat feels decisions are made for show, not substance."
     },
     "snake": {
-      "heading": "Rat × Snake— Neutral",
-      "tagline": "Quiet operators",
-      "description": "Rat and Snake share intuition, subtlety, and a discerning inner world. Snake adds calm insight and emotional depth; Rat contributes mental agility and long-range thinking. Together they create a quiet, perceptive connection built on trust. The dynamic feels refined, intuitive, and quietly strong."
+      "heading": "Rat × Snake — Neutral (中)",
+      "tagline": "Quiet strategy, few words",
+      "description": "Rat and Snake both like to think first and talk later. Rat tracks practical details; Snake reads people and long-term patterns. You can make a strong, discreet team that handles problems before they are visible to others. Just be careful that secrecy and \"testing\" do not replace straightforward conversation."
     },
     "horse": {
-      "heading": "Rat × Horse— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Pulling in opposite directions",
-      "description": "Rat and Horse stand in a Liu Chong (六冲) opposition, where pacing and priorities move in opposite directions. Rat seeks planning, structure, and emotional steadiness; Horse seeks freedom, speed, and open horizons. The interplay can spark quickly yet shift unpredictably. The connection feels charged, restless, and rhythmically contrasting."
+      "heading": "Rat × Horse — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Freedom versus security",
+      "description": "Rat and Horse form a Liu Chong (六冲) clash with a clear lifestyle gap. Horse wants movement, new experiences, and freedom; Rat wants stability, savings, and a plan. Early on, Rat admires Horse's spirit and Horse enjoys Rat's cleverness. Over time, Rat may feel exposed by constant change, while Horse feels fenced in by constant caution."
     },
     "goat": {
-      "heading": "Rat × Goat— Six Harms (Liu Hai 六害)",
-      "tagline": "Practical vs. tender",
-      "description": "Rat and Goat fall under the Liu Hai (六害) \"Six Harms\" pattern, where misunderstandings form easily. Rat's directness and logic can feel sharp to Goat's sensitive nature; Goat's emotional nuance can confuse Rat's practicality. Yet their contrast holds a gentle, creative softness when balanced. The dynamic feels tender, delicate, and quietly complex."
+      "heading": "Rat × Goat — Six Harms (Liu Hai 六害)",
+      "tagline": "Security versus ease",
+      "description": "Rat and Goat form a Liu Hai (六害) pair where needs quietly rub. Rat worries about money and the future; Goat worries about feeling safe, seen, and comfortable day to day. Rat can see Goat as impractical; Goat can feel judged or tightened up by Rat's focus on problems. Clear budgets and regular reassurance on both sides are essential."
     },
     "monkey": {
-      "heading": "Rat × Monkey— Same Trine (San He 三合)",
-      "tagline": "Clever and restless",
-      "description": "Rat and Monkey share the San He (三合) visionary trine, forming one of the zodiac's quickest, brightest, and most synergistic pairings. Monkey brings inventiveness and spontaneity; Rat brings insight, planning, and strategic brilliance. Together they amplify each other's talents with ease. The connection feels clever, agile, and naturally aligned."
+      "heading": "Rat × Monkey — Same Trine (San He 三合)",
+      "tagline": "Sharp, playful, opportunistic",
+      "description": "Rat and Monkey complete the San He (三合) Visionary trine. Monkey brings ideas, humour, and quick problem-solving; Rat brings structure, realism, and strong follow-through when motivated. You spot chances early and can turn some of them into real gains. The main risk is chasing too many schemes without finishing enough of them."
     },
     "rooster": {
-      "heading": "Rat × Rooster— Break (Po 破)",
-      "tagline": "Details and disruption",
-      "description": "Rat's flexible thinking meets Rooster's precision and structured clarity in a Po (破) \"Break\" pattern that can quietly crack routines or expectations. Rooster brings refinement and high standards; Rat adds adaptability and inventive solutions. When handled well, the tension between detail and strategy can push both out of ruts. The dynamic feels sharp, organised, and capable of shaking things up."
+      "heading": "Rat × Rooster — Neutral (中)",
+      "tagline": "Standards and adjustments",
+      "description": "Rooster likes clear rules and visible order; Rat prefers flexible plans and quiet work-arounds. At best, Rooster sets standards and Rat finds smart ways to meet them without wasting effort. At worst, Rooster's criticism makes Rat evasive, and Rat's side-steps look dishonest. Agreeing on who decides what, and how feedback is given, keeps things fair."
     },
     "dog": {
-      "heading": "Rat × Dog— Neutral",
-      "tagline": "Loyal schemers",
-      "description": "Rat and Dog share sincerity, intuition, and an underlying desire for loyalty and honesty. Dog brings steadiness and emotional clarity; Rat offers adaptability and strategic support. Their bond forms gradually through trust and consistency. The connection feels warm, genuine, and quietly supportive."
+      "heading": "Rat × Dog — Neutral (中)",
+      "tagline": "Principle meets pragmatism",
+      "description": "Dog cares about what is right; Rat cares about what will actually work. Dog can stop Rat from crossing lines for convenience; Rat can stop Dog from sacrificing stability out of pure idealism. Clashes come when Dog judges Rat's survival moves or Rat dismisses Dog's concerns as naïve. Regular, practical talks about money and commitments help a lot."
     },
     "pig": {
-      "heading": "Rat × Pig— Neutral",
-      "tagline": "Warm and resourceful",
-      "description": "Rat and Pig create a gentle, cooperative pairing shaped by sensitivity and goodwill. Pig offers kindness, emotional openness, and sincerity; Rat brings structure, insight, and problem-solving. Together they form a soft, balanced connection. The dynamic feels nurturing, warm, and easygoing."
+      "heading": "Rat × Pig — Neutral (中)",
+      "tagline": "Care and caution under one roof",
+      "description": "Pig is open-hearted, generous, and pleasure-oriented; Rat is cautious, alert, and future-oriented. Pig makes Rat's life feel warmer and more forgiving; Rat protects Pig from being taken advantage of and keeps plans realistic. It turns sour if Pig feels constantly policed or Rat feels forced into the \"serious one\" role all the time. Clear shared priorities—what you are allowed to enjoy, what you are saving for—make this a much steadier match."
     }
   },
   "ox": {
     "rat": {
-      "heading": "Ox × Rat— Secret Friend (Liu He 六合)",
-      "tagline": "Smart and steady",
-      "description": "Ox and Rat share the Liu He (六合) secret-friend harmony, forming one of the zodiac's most stable and reliable bonds. Rat offers strategy, adaptability, and quick insight; Ox contributes steadiness, loyalty, and patient strength. Together they turn ideas into tangible results with ease. The connection feels dependable, balanced, and deeply supportive."
+      "heading": "Ox × Rat — Secret Friend (Liu He 六合)",
+      "tagline": "Steady builder, sharp planner",
+      "description": "Ox and Rat form a Liu He (六合) pair that's practical and quietly powerful. Ox brings stamina, loyalty, and the willingness to do long, slow work; Rat brings timing, ideas, and a keen eye on risk and opportunity. Together you are well suited to paying off debts, building savings, or slowly improving your life circumstances. The match gets strained if Ox feels hustled or Rat feels their warnings are ignored."
     },
     "ox": {
-      "heading": "Ox × Ox— Same Sign (同生肖)",
-      "tagline": "Slow and solid",
-      "description": "Two Oxen create a patient, principled pairing marked by loyalty, endurance, and shared values. Their similar rigidity can sometimes lead to standstills or long silences when neither wants to bend, yet the foundation is strong, grounded, and sincere. The dynamic feels steady, traditional, and quietly powerful when both allow room for flexibility and emotional expression."
+      "heading": "Ox × Ox — Same Sign (同生肖)",
+      "tagline": "Shared grind, shared duty",
+      "description": "Two Ox together take commitments seriously and are usually prepared to work through difficult periods without flinching. You are good at building something solid over time—property, a family base, or a business. The tension comes from stubbornness and emotional reserve; neither side likes to admit mistakes or vulnerability. Making space for affection and fun, not just duty, keeps this from feeling like a lifetime of chores."
     },
     "tiger": {
-      "heading": "Ox × Tiger— Neutral",
-      "tagline": "Stable vs. impulsive",
-      "description": "Ox moves with stability and deliberate action, while Tiger moves with intensity and instinctive momentum. Their contrasting rhythms create a dynamic full of strength and determination. Ox grounds the atmosphere; Tiger lifts it with passion and courage. The connection feels spirited, steady, and intriguingly balanced."
+      "heading": "Ox × Tiger — Neutral (中)",
+      "tagline": "Slow earth, fast fire",
+      "description": "Ox moves slowly and carefully; Tiger wants quick, decisive action. Ox can keep Tiger from leaping into unrealistic plans, while Tiger can prevent Ox from getting trapped in the same routine for years. Friction appears when Tiger feels blocked or nagged, and Ox feels pushed or disrespected. Clear agreements about tempo and money make this pair much easier to live in."
     },
     "rabbit": {
-      "heading": "Ox × Rabbit— Neutral",
-      "tagline": "Gentle and grounded",
-      "description": "Ox and Rabbit form a soft, gentle pairing shaped by sincerity and emotional warmth. Rabbit brings sensitivity and grace; Ox offers calm presence and dependable strength. Together they create a peaceful, comforting dynamic. The connection feels warm, tender, and quietly harmonious."
+      "heading": "Ox × Rabbit — Neutral (中)",
+      "tagline": "Quiet care",
+      "description": "Ox offers reliability, practical support, and a calm physical presence; Rabbit brings tact, grace, and awareness of moods and social cues. Together you can build a peaceful, home-centred life if you both value simplicity and loyalty. Problems develop when Rabbit feels emotionally overlooked or when Ox gets tired of what they see as endless worry or indecision."
     },
     "dragon": {
-      "heading": "Ox × Dragon— Break (Po 破)",
-      "tagline": "Weight and flare",
-      "description": "Ox and Dragon fall under the Po (破) \"Break\" pattern, where approaches and values often diverge. Dragon moves boldly with ambition; Ox prefers structure, patience, and steady pacing. Their contrast can create tension around direction and timing. The dynamic feels strong, bright, and sharply contrasting."
+      "heading": "Ox × Dragon — Neutral (中)",
+      "tagline": "Ground versus glory",
+      "description": "Dragon pushes for big outcomes and recognition; Ox is more concerned with whether the basics are covered and the work is done properly. Ox can turn Dragon's big ideas into something measurable and real; Dragon can lift Ox's sights beyond pure survival. It goes wrong if Dragon dismisses Ox as boring or Ox sees Dragon as reckless and self-centred."
     },
     "snake": {
-      "heading": "Ox × Snake— Same Trine (San He 三合)",
-      "tagline": "Calm strategists",
-      "description": "Ox and Snake share the San He (三合) strategic trine, forming a thoughtful, intuitive, and deeply harmonious bond. Snake offers insight and subtle emotional understanding; Ox provides steadiness and enduring resolve. Together they build trust through intention and quiet strength. The connection feels wise, composed, and naturally aligned."
+      "heading": "Ox × Snake — Same Trine (San He 三合)",
+      "tagline": "Measured and strategic",
+      "description": "Ox and Snake share the San He (三合) Strategist trine. Ox brings patience, persistence, and a strong sense of duty; Snake contributes insight, timing, and a feel for hidden patterns. This combination is well suited for long-range planning, financial discipline, and slow but meaningful progress. It needs trust and privacy, not constant outside interference."
     },
     "horse": {
-      "heading": "Ox × Horse— Six Harms (Liu Hai 六害)",
-      "tagline": "Routine vs. freedom",
-      "description": "Ox and Horse fall into Liu Hai (六害), where pacing and priorities differ noticeably. Horse craves movement and freedom; Ox values structure and continuity. Their energies can wear on each other without space and clarity. The dynamic feels energetic, contrasting, and delicate."
+      "heading": "Ox × Horse — Six Harms (Liu Hai 六害)",
+      "tagline": "Routine versus restlessness",
+      "description": "Ox and Horse form a Liu Hai (六害) pair. Ox likes a set routine, known responsibilities, and predictable finances; Horse prefers motion, variety, and the freedom to change course. At first, Horse may enjoy Ox's grounded presence and Ox may admire Horse's spirit. Over time, Ox can feel drained trying to hold everything together, and Horse can feel tied down. You need strong agreements about freedom and shared obligations for this to work."
     },
     "goat": {
-      "heading": "Ox × Goat— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Security and sensitivity",
-      "description": "Ox and Goat sit in a Liu Chong (六冲) opposition, where emotional rhythms often move in opposite directions. Ox's grounded nature can feel heavy to Goat's sensitive and shifting moods; Goat's fluidity can unsettle Ox's steadiness. Yet compassion softens the contrast. The connection feels gentle, complex, and quietly challenging."
+      "heading": "Ox × Goat — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
+      "tagline": "Different needs, shared fatigue",
+      "description": "Ox and Goat sit in a Liu Chong (六冲) clash and also share a \"punishment\" (刑) pattern, so effort and emotional needs can easily feel mismatched. Ox is task-oriented, stoic, and often shows love through work; Goat is feeling-oriented, expressive, and needs emotional reassurance. Ox can give Goat real-world stability; Goat can bring softness and creativity into Ox's life. If you stop appreciating each other, Ox feels taken for granted and Goat feels emotionally abandoned."
     },
     "monkey": {
-      "heading": "Ox × Monkey— Neutral",
-      "tagline": "Work and improvisation",
-      "description": "Ox values reliability and consistency; Monkey thrives on agility, ideas, and quick change. Their blend forms a dynamic mix of stability and spontaneity. Monkey widens Ox's perspective; Ox grounds Monkey's energy. The connection feels practical, inventive, and steadily engaging."
+      "heading": "Ox × Monkey — Neutral (中)",
+      "tagline": "Structure and improvisation",
+      "description": "Ox prefers clear plans and steady effort; Monkey likes options, experiments, and quick adjustments. Monkey can help Ox adapt to changing conditions, and Ox can help Monkey finish what they start. The match becomes difficult if Ox labels Monkey as unreliable, or Monkey sees Ox as controlling and joyless. A simple division of roles—who sets the plan, who tweaks it—goes a long way."
     },
     "rooster": {
-      "heading": "Ox × Rooster— Same Trine (San He 三合)",
-      "tagline": "Efficient and exacting",
-      "description": "Ox and Rooster share the San He (三合) strategic trine, forming a focused and highly cooperative bond. Rooster brings precision and insight; Ox adds perseverance and structured effort. Together they work smoothly toward long-term stability. The dynamic feels clear, disciplined, and strongly aligned."
+      "heading": "Ox × Rooster — Same Trine (San He 三合)",
+      "tagline": "Work and standards",
+      "description": "Ox and Rooster share the San He (三合) Strategist trine. Ox supplies grinding effort and endurance; Rooster contributes organisation, standards, and attention to detail. Together you can run a household or business efficiently and steadily. The main risk is a dry atmosphere—too much criticism, not enough warmth—so remembering to praise each other matters."
     },
     "dog": {
-      "heading": "Ox × Dog— Punishment (Xing 刑)",
-      "tagline": "Duty and devotion",
-      "description": "Ox and Dog sit in a Xing (刑) punishment group, where shared duty and loyalty can tip into pressure or resentment if things feel unfair. Dog brings intuition and a strong sense of justice; Ox contributes patience and grounded reliability. Their partnership can feel honest and quietly stabilising when respect flows both ways, but rigidity versus idealism may trigger periodic clashes. The connection is serious, loyal, and growth-focused around boundaries and responsibility."
+      "heading": "Ox × Dog — Punishment Pattern (Xing 刑)",
+      "tagline": "Duty versus worry",
+      "description": "Ox and Dog belong to the same \"ungrateful punishment\" (刑) set, where both can feel their efforts are not properly recognised. Ox focuses on carrying responsibilities and doing the hard work; Dog focuses on loyalty, ethics, and whether things feel right. You can quietly achieve a lot if values and goals line up, but if not, Ox may feel unfairly criticised and Dog may feel alone with their concerns. Naming mutual effort and gratitude clearly is essential."
     },
     "pig": {
-      "heading": "Ox × Pig— Neutral",
-      "tagline": "Steady and soft",
-      "description": "Ox and Pig create a warm, comforting pairing rooted in kindness and emotional softness. Pig offers empathy and openness; Ox provides structure and steady support. Together they cultivate a gentle, peaceful rhythm. The dynamic feels nurturing, calm, and emotionally reassuring."
+      "heading": "Ox × Pig — Neutral (中)",
+      "tagline": "Provider and comfort-seeker",
+      "description": "Ox is willing to carry responsibility; Pig wants comfort, enjoyment, and emotional warmth. Ox can give Pig a safe base and practical support; Pig can help Ox relax, receive affection, and actually enjoy the fruits of their labour. Issues arise if Pig is seen as indulgent or Ox as unromantic and rigid. Simple, shared pleasures and clear agreements about money keep this stable."
     }
   },
   "tiger": {
     "rat": {
-      "heading": "Tiger × Rat— Neutral",
-      "tagline": "Nerves and impulse",
-      "description": "Rat and Tiger share strong instincts expressed in very different ways. Rat moves strategically and subtly, while Tiger moves boldly and directly. Their dynamic blends sharp thinking with raw momentum, creating a connection that feels lively and unpredictable. The pairing is spirited, fast-paced, and full of contrast."
+      "heading": "Tiger × Rat — Neutral (中)",
+      "tagline": "Bold versus cautious",
+      "description": "Tiger acts on impulse and courage; Rat plans, stores, and calculates. Tiger can pull Rat into bigger, more exciting moves; Rat can help Tiger avoid obvious pitfalls, especially around finances and timing. Tension comes when Tiger feels criticised or slowed down and Rat feels exposed by Tiger's risks. Respect for each other's role—Tiger for initiative, Rat for strategy—is essential."
     },
     "ox": {
-      "heading": "Tiger × Ox— Neutral",
-      "tagline": "Stable vs. impulsive",
-      "description": "Tiger's intensity contrasts with Ox's steady, grounded approach. Tiger prefers movement and quick impact; Ox prefers structure and patient effort. Together they form a rhythm built on contrast rather than similarity. The dynamic feels firm, centred, and quietly powerful when aligned."
+      "heading": "Tiger × Ox — Neutral (中)",
+      "tagline": "Force meets resistance",
+      "description": "Tiger wants to move quickly, test limits, and change course when necessary; Ox wants a clear lane and slow, steady progress. When you are aligned, Tiger opens new paths and Ox consolidates gains. When you are not, arguments repeat: Tiger feels fenced in, Ox feels under attack. Long-term, you must agree on which areas are \"go slow\" and which are \"go bold.\""
     },
     "tiger": {
-      "heading": "Tiger × Tiger— Same Sign (同生肖)",
-      "tagline": "High-voltage duo",
-      "description": "Two Tigers form a passionate, high-energy pairing marked by courage, charisma, and fierce independence. Sharing the same intense style can amplify both chemistry and conflict, especially when pride or control issues surface. Yet when that power is channelled constructively, the bond feels unstoppable and inspiring. The connection is bold, dynamic, and emotionally electric."
+      "heading": "Tiger × Tiger — Same Sign (同生肖)",
+      "tagline": "Double fire",
+      "description": "Two Tigers together means strong will, emotional heat, and a low tolerance for feeling controlled. You understand each other's desire for freedom, passion, and straight talk, which can make the bond intense and alive. The downside is fierce conflict—neither side backs down easily. This match needs humour, space, and a few agreed rules about how far you let anger go."
     },
     "rabbit": {
-      "heading": "Tiger × Rabbit— Neutral",
-      "tagline": "Edge and gentleness",
-      "description": "Tiger brings strength and boldness; Rabbit brings sensitivity and diplomacy. Their blend creates a gentle contrast of courage and calm. The connection grows through emotional awareness and mutual respect. The dynamic feels protective, soft, and subtly balanced."
+      "heading": "Tiger × Rabbit — Neutral (中)",
+      "tagline": "Courage and tact",
+      "description": "Tiger is direct and intense; Rabbit is gentle and conflict-averse. Tiger can stand up for Rabbit in hard situations and push life forward; Rabbit can soften Tiger's tone, smooth social situations, and tune in to emotional undercurrents. It fails when Tiger tramples Rabbit's feelings or Rabbit never actually says what they need, hoping Tiger will guess."
     },
     "dragon": {
-      "heading": "Tiger × Dragon— Neutral",
-      "tagline": "Big moves",
-      "description": "Tiger and Dragon both radiate strong Yang energy, creating a connection full of momentum, ambition, and expressive power. This pairing feels commanding and intense, especially when goals align. Differences in temperament can spark rivalry, but admiration keeps the connection engaging. The dynamic is fiery, forceful, and full of presence."
+      "heading": "Tiger × Dragon — Neutral (中)",
+      "tagline": "Two leaders, one story",
+      "description": "Tiger and Dragon both like to lead and dislike being told what to do. Tiger brings raw courage and quick decisive moves; Dragon brings vision, charisma, and a sense of long-term mission. Together you can be impressive when you fight the same battles. At home, you need a clear division of territory so every conversation doesn't turn into a power contest."
     },
     "snake": {
-      "heading": "Tiger × Snake— Six Harms (Liu Hai 六害)",
-      "tagline": "Impulse vs. calculation",
-      "description": "Tiger and Snake sit in a Liu Hai (六害) \"Six Harms\" pattern, where instinct and emotional style often rub against each other. Tiger is open, direct, and fast-moving; Snake is private, measured, and inwardly perceptive. Misread signals and unspoken tensions can build if feelings aren't named. The connection feels enigmatic, magnetic, and quietly tense."
+      "heading": "Tiger × Snake — Six Harms (Liu Hai 六害) · Punishment Pattern (Xing 刑)",
+      "tagline": "Complicated chemistry",
+      "description": "Tiger and Snake form a Liu Hai (六害) pair with an added punishment (刑) link in the Tiger–Snake–Monkey group. Tiger is open and impulsive; Snake is guarded, observant, and slow to trust. Attraction can be real, but misunderstandings and control issues surface easily. Without a very high level of honesty and patience, this pairing tends to feel more draining than supportive."
     },
     "horse": {
-      "heading": "Tiger × Horse— Same Trine (San He 三合)",
-      "tagline": "Adventurous and wild",
-      "description": "Tiger and Horse share the San He (三合) Adventurer trine, forming one of the zodiac's most energising partnerships. Both thrive on movement, freedom, and bold ideas, creating a fast, exciting rhythm. Your shared drive creates natural synergy and forward momentum. The dynamic feels bright, adventurous, and effortlessly aligned."
+      "heading": "Tiger × Horse — Same Trine (San He 三合)",
+      "tagline": "Running mates",
+      "description": "Tiger and Horse share the San He (三合) Adventurer trine. Both value freedom, movement, and the sense that life is an adventure worth chasing. Tiger brings leadership and drive; Horse brings enthusiasm, social energy, and adaptability. This is one of Tiger's easiest matches as long as you respect each other's independence and don't try to cage the other."
     },
     "goat": {
-      "heading": "Tiger × Goat— Neutral",
-      "tagline": "Brave and tender",
-      "description": "Tiger moves with intensity and instinct, while Goat moves with softness and emotional sensitivity. Their energy blend requires care but can create unexpected warmth. Goat brings gentleness that softens Tiger's force; Tiger brings courage that supports Goat's confidence. The connection feels tender, contrasting, and delicately balanced."
+      "heading": "Tiger × Goat — Neutral (中)",
+      "tagline": "Intensity and softness",
+      "description": "Tiger's blunt, strong energy can feel like a lot for Goat's gentle, artistic temperament. Tiger can protect Goat and give them courage; Goat can offer Tiger emotional understanding and a softer home environment. If Tiger views Goat as overly fragile or Goat quietly resents Tiger's tone, resentment grows. Small acts of kindness and clear words from both sides keep this workable."
     },
     "monkey": {
-      "heading": "Tiger × Monkey— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Competitive spark",
-      "description": "Tiger and Monkey sit in a Liu Chong (六冲) opposition, generating a sharp, high-voltage interaction. Monkey's clever adaptability contrasts with Tiger's direct strength. The chemistry is vivid and immediate, often leaving a strong impression. The dynamic is intense, electric, and charged with contrast."
+      "heading": "Tiger × Monkey — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
+      "tagline": "Magnetic opposites",
+      "description": "Tiger and Monkey form a Liu Chong (六冲) clash and also belong to the Tiger–Snake–Monkey punishment (刑) set. Tiger moves straight; Monkey moves sideways. The attraction is strong, with humour, competition, and drama, but so are ego clashes and sudden reversals. This pairing is vivid and memorable, but rarely calm; it takes unusual maturity to turn it into a lasting, stable bond."
     },
     "rooster": {
-      "heading": "Tiger × Rooster— Neutral",
-      "tagline": "Pride and critique",
-      "description": "Tiger leads with instinct and speed; Rooster leads with precision and analysis. This creates a connection filled with differing methods and pacing. Rooster's clarity challenges Tiger's spontaneity, while Tiger adds boldness to Rooster's structure. The pairing feels sharp, focused, and quietly competitive."
+      "heading": "Tiger × Rooster — Neutral (中)",
+      "tagline": "Big moves, fine print",
+      "description": "Tiger focuses on big actions and immediate results; Rooster focuses on details, methods, and doing things properly. Rooster can protect Tiger from obvious errors; Tiger can stop Rooster from getting paralysed by small imperfections. The match deteriorates if Rooster's critique feels constant or Tiger dismisses all feedback as nagging."
     },
     "dog": {
-      "heading": "Tiger × Dog— Same Trine (San He 三合)",
-      "tagline": "Loyal fighters",
-      "description": "Tiger and Dog share the San He (三合) harmony, creating a loyal, principled, and deeply bonded pairing. Dog's sincerity steadies Tiger's intensity; Tiger's bravery strengthens Dog's resolve. This connection feels trustworthy, mission-driven, and naturally aligned. It is one of Tiger's most dependable and heartfelt matches."
+      "heading": "Tiger × Dog — Same Trine (San He 三合)",
+      "tagline": "Allies in action",
+      "description": "Tiger and Dog share the San He (三合) Adventurer trine. Tiger brings initiative and daring; Dog brings loyalty, realism, and a strong moral compass. Dog will back Tiger in fights they believe are just, and Tiger will protect Dog fiercely. This is one of Tiger's best long-term matches when trust is honoured on both sides."
     },
     "pig": {
-      "heading": "Tiger × Pig— Secret Friend (Liu He 六合)",
-      "tagline": "Brave and generous",
-      "description": "Tiger and Pig form the Liu He (六合) secret-friend pairing, offering emotional warmth and mutual encouragement. Pig brings softness and empathy; Tiger brings strength and protection. This combination blends tenderness with boldness in a balanced, heartfelt way. The dynamic feels warm, steady, and quietly harmonious."
+      "heading": "Tiger × Pig — Secret Friend (Liu He 六合)",
+      "tagline": "Soft landing for a fierce heart",
+      "description": "Tiger and Pig form a Liu He (六合) pair. Tiger offers protection, heat, and forward motion; Pig offers acceptance, humour, and emotional warmth. Pig can make Tiger feel safe enough to relax; Tiger can help Pig feel defended in a tough world. Keeping an eye on spending and over-indulgence is usually the main joint task."
     }
   },
   "rabbit": {
     "rat": {
-      "heading": "Rabbit × Rat— Punishment (Xing 刑)",
-      "tagline": "Fast and soft",
-      "description": "Rabbit's sensitivity meets Rat's sharp, strategic nature, creating a connection shaped by contrast. Rat brings clarity and structure, while Rabbit adds emotional nuance and softness. As a Xing (刑) \"Punishment\" pairing, unspoken frustrations or differences in style can quietly build if not addressed. The dynamic feels thoughtful and quietly complex, with a blend of calm intuition and quick insight when both stay open and respectful."
+      "heading": "Rabbit × Rat — Punishment Pattern (Xing 刑)",
+      "tagline": "Sensitive to pressure",
+      "description": "Rabbit and Rat sit in a punishment (刑) relationship where small frictions can quietly build. Rat is more direct and tactical; Rabbit is gentle, cautious, and conflict-shy. When handled well, Rat offers practical protection and planning, and Rabbit keeps the tone kind and social ties smooth. When ignored, Rabbit starts internalising hurt and Rat feels blocked by invisible resistance."
     },
     "ox": {
-      "heading": "Rabbit × Ox— Neutral",
-      "tagline": "Gentle and grounded",
-      "description": "Rabbit and Ox create a calm, sincere pairing rooted in steadiness and emotional comfort. Ox brings reliability and grounded presence; Rabbit contributes warmth and subtle perception. Together they form a peaceful, understated bond. The connection feels stable, reassuring, and filled with quiet care."
+      "heading": "Rabbit × Ox — Neutral (中)",
+      "tagline": "Quiet stability",
+      "description": "Ox brings reliability, effort, and a solid physical presence; Rabbit brings tact, charm, and awareness of emotional atmospheres. Together you can create a peaceful, modestly comfortable life if you both value loyalty and routine. Troubles appear when Rabbit feels emotionally neglected or Ox feels exhausted by what they see as constant worry and hesitation."
     },
     "tiger": {
-      "heading": "Rabbit × Tiger— Neutral",
-      "tagline": "Edge and gentleness",
-      "description": "Rabbit's diplomacy balances Tiger's boldness, creating a mix of strength and softness. Tiger offers protection and expressive energy; Rabbit brings calm understanding. Their pace differs, but the relationship forms a gentle equilibrium when attuned. The dynamic feels supportive, tempered, and quietly resilient."
+      "heading": "Rabbit × Tiger — Neutral (中)",
+      "tagline": "Heart and courage",
+      "description": "Rabbit anticipates moods and subtle signals; Tiger acts on instinct and bravery. Rabbit can help Tiger avoid unnecessary conflict and read the room, while Tiger can stand up for Rabbit and push life forward when Rabbit is frozen by doubt. It breaks down if Tiger treats Rabbit's sensitivity as weakness or Rabbit never clearly voices their limits."
     },
     "rabbit": {
-      "heading": "Rabbit × Rabbit— Same Sign (同生肖)",
-      "tagline": "Soft and cautious",
-      "description": "Two Rabbits form a deeply intuitive, emotionally attuned partnership. Sharing the same sensitivity can sometimes lead to withdrawal or over-reflection when feelings get overwhelming, yet the connection is naturally tender and attentive. It feels soothing, empathetic, and quietly harmonious when emotional openness is shared."
+      "heading": "Rabbit × Rabbit — Same Sign (同生肖)",
+      "tagline": "Double sensitivity",
+      "description": "Two Rabbits together create a soft, considerate atmosphere where open cruelty is rare. You are usually thoughtful about each other's feelings and home comfort. The main problem is avoidance—neither wants a difficult talk, so issues can be buried instead of solved. Treating honest conversation as an act of care, not hostility, makes this pairing much stronger."
     },
     "dragon": {
-      "heading": "Rabbit × Dragon— Six Harms (Liu Hai 六害)",
-      "tagline": "Quiet vs. bold",
-      "description": "Rabbit and Dragon sit in a Liu Hai (六害) \"Six Harms\" pattern, where caution meets bold ambition in ways that can feel mismatched. Dragon moves with force, confidence, and grand visions, while Rabbit prefers subtlety, emotional safety, and quiet rhythms. Misunderstandings and unmet expectations can build if needs aren't clearly expressed. The dynamic feels dramatic, vivid, and shaped by deep temperament differences."
+      "heading": "Rabbit × Dragon — Six Harms (Liu Hai 六害)",
+      "tagline": "Soft versus strong",
+      "description": "Rabbit and Dragon form a Liu Hai (六害) pair. Dragon is bold, pushy, and focused on big goals; Rabbit is understated, cautious, and tuned into nuance. Rabbit can feel overwhelmed or overridden; Dragon can feel stalled or misunderstood. When it works, Dragon uses their strength to shield, not push, and Rabbit offers grounded, tactful advice."
     },
     "snake": {
-      "heading": "Rabbit × Snake— Neutral",
-      "tagline": "Soft and strategic",
-      "description": "Rabbit and Snake share a subtle emotional depth expressed in different ways. Rabbit brings softness and gentle intuition; Snake brings insight, composure, and quiet intensity. Together they create a private, reflective connection. The bond feels calm, perceptive, and quietly layered."
+      "heading": "Rabbit × Snake — Neutral (中)",
+      "tagline": "Quiet depth",
+      "description": "Rabbit and Snake both dislike loud drama. Snake brings depth, analysis, and a careful, sometimes secretive way of moving; Rabbit brings warmth, politeness, and social awareness. This can be a refined, private bond. It suffers when Snake withdraws into silence and Rabbit guesses instead of asking, creating distance with no clear cause."
     },
     "horse": {
-      "heading": "Rabbit × Horse— Break (Po 破)",
-      "tagline": "Calm vs. restless",
-      "description": "Rabbit's need for steadiness contrasts with Horse's instinctive speed and spontaneity. Horse brings movement and confidence; Rabbit adds emotional awareness and softness. The pairing forms a dynamic rhythm when balance is found. The connection feels active, contrasting, and shaped by pacing differences."
+      "heading": "Rabbit × Horse — Neutral (中)",
+      "tagline": "Pace mismatch, shared goodwill",
+      "description": "Horse likes activity, change, and speaking openly; Rabbit prefers calm, safety, and familiar surroundings. When balanced, Horse pulls Rabbit into new experiences, and Rabbit offers Horse a peaceful landing place. Over time, though, Rabbit can feel worn out by constant motion and Horse can feel contained. Planning both \"out days\" and \"home days\" helps."
     },
     "goat": {
-      "heading": "Rabbit × Goat— Same Trine (San He 三合)",
-      "tagline": "Gentle support",
-      "description": "Rabbit and Goat share the San He (三合) Artist trine, creating one of the gentlest harmonies in the zodiac. Both value kindness, sincerity, and emotional ease. The connection is naturally peaceful and nurturing. It feels warm, expressive, and beautifully aligned."
+      "heading": "Rabbit × Goat — Same Trine (San He 三合)",
+      "tagline": "Gentle alliance",
+      "description": "Rabbit and Goat share the San He (三合) Artist trine. Both value kindness, softness, and a pleasing environment. Goat adds creativity and emotional expression; Rabbit adds diplomacy and a steadying influence. This is one of Rabbit's most comfortable matches, as long as someone takes responsibility for practical matters."
     },
     "monkey": {
-      "heading": "Rabbit × Monkey— Neutral",
-      "tagline": "Soft and sharp",
-      "description": "Rabbit's calm presence blends with Monkey's lively, inventive energy. Monkey brings spark and movement; Rabbit brings softness and emotional clarity. Together, they create a curious and balanced pairing. The dynamic feels warm, light, and quietly engaging."
+      "heading": "Rabbit × Monkey — Neutral (中)",
+      "tagline": "Soft heart, quick wit",
+      "description": "Monkey jokes, tests, and likes to keep things moving; Rabbit is more sensitive, observant, and easily affected by tone. Monkey can bring fun, variety, and useful ideas into Rabbit's world; Rabbit can offer emotional safety and a calming influence. The match frays when teasing cuts too deep or worries are never voiced. Clear limits around humour and honesty keep it healthy."
     },
     "rooster": {
-      "heading": "Rabbit × Rooster— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Delicate vs. direct",
-      "description": "Rabbit and Rooster communicate in contrasting ways: Rabbit with tact, Rooster with precision and blunt clarity. As a Liu Chong (六冲) opposition, their styles can easily rub against each other yet also reveal truths that might otherwise be missed. Rabbit softens the edges; Rooster sharpens the details. The connection feels crisp, candid, and strongly shaped by communication style and timing."
+      "heading": "Rabbit × Rooster — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Critique versus sensitivity",
+      "description": "Rabbit and Rooster sit in a Liu Chong (六冲) clash. Rooster is blunt, detail-focused, and quick to point out flaws; Rabbit is gentle, image-conscious, and conflict-averse. You can genuinely help each other—Rooster gives clarity and practicality, Rabbit teaches kindness and timing—but this requires real effort. Rules about how you argue and how far criticism goes are crucial."
     },
     "dog": {
-      "heading": "Rabbit × Dog— Secret Friend (Liu He 六合)",
-      "tagline": "Kind and protective",
-      "description": "Rabbit and Dog form a Liu He (六合) secret-friend match rooted in loyalty, warmth, and emotional safety. Dog brings sincerity and steadfastness; Rabbit offers gentleness and intuitive care. The bond feels protective, sincere, and deeply trusting. It is one of Rabbit's most effortless and heartfelt connections."
+      "heading": "Rabbit × Dog — Secret Friend (Liu He 六合)",
+      "tagline": "Safe harbour",
+      "description": "Rabbit and Dog form a Liu He (六合) pair. Dog offers loyalty, protection, and a strong sense of right and wrong; Rabbit offers warmth, charm, and emotional nuance. This often feels like a place where both can drop their guard. Being transparent about fears, money, and outside friendships keeps this bond steady."
     },
     "pig": {
-      "heading": "Rabbit × Pig— Same Trine (San He 三合)",
-      "tagline": "Soft and sweet",
-      "description": "Rabbit and Pig share the San He (三合) Artist trine, creating harmony through kindness and emotional openness. Pig adds warmth and generosity; Rabbit brings sensitivity and grace. The relationship flows with ease and heartfelt sincerity. The dynamic feels peaceful, affectionate, and beautifully cohesive."
+      "heading": "Rabbit × Pig — Same Trine (San He 三合)",
+      "tagline": "Easy warmth",
+      "description": "Rabbit and Pig share the San He (三合) Artist trine. Pig brings generosity, humour, and sensual enjoyment; Rabbit brings subtle care and social grace. The atmosphere is usually kind and forgiving. The main risk is drifting into comfort with no direction, so simple, shared goals help anchor the sweetness."
     }
   },
   "dragon": {
     "rat": {
-      "heading": "Dragon × Rat— Same Trine (San He 三合)",
-      "tagline": "Ambitious and bold",
-      "description": "Dragon and Rat share the San He (三合) visionary trine, creating a dynamic bond full of momentum and clarity. Rat brings strategy and insight; Dragon brings strength and ambition. Together the connection feels energised, purposeful, and naturally aligned. This is one of Dragon's most confident and mutually empowering matches."
+      "heading": "Dragon × Rat — Same Trine (San He 三合)",
+      "tagline": "Vision and timing",
+      "description": "Dragon and Rat belong to the San He (三合) Visionary trine. Dragon brings confidence, presence, and daring ideas; Rat brings timing, negotiation skills, and control over resources. Together you are well positioned to build something meaningful or rise socially. Pride and secrecy are the main enemies—once trust cracks, the whole structure weakens."
     },
     "ox": {
-      "heading": "Dragon × Ox— Break (Po 破)",
-      "tagline": "Weight and flare",
-      "description": "Dragon's bold movement contrasts with Ox's steady, practical rhythm. Ox prefers measured progress, while Dragon charges forward with instinct and intensity. As a Po (破) \"Break\" pairing, they tend to shake each other's routines and assumptions about pace and control. The connection feels firm, grounded, and shaped by contrasting styles, with real change triggered when they collide."
+      "heading": "Dragon × Ox — Neutral (中)",
+      "tagline": "Drive and steadiness",
+      "description": "Dragon wants acceleration and visible progress; Ox wants security and careful, step-by-step work. Ox can keep Dragon's projects grounded; Dragon can help Ox reach beyond pure survival. Conflict appears when Dragon feels suffocated or Ox feels dragged into unnecessary risk. Agreeing on where you'll play safe and where you'll stretch helps a lot."
     },
     "tiger": {
-      "heading": "Dragon × Tiger— Neutral",
-      "tagline": "Big moves",
-      "description": "Dragon and Tiger share powerful Yang energy expressed through confidence, drive, and action. Tiger brings courage and immediacy; Dragon brings presence and ambition. The dynamic is strong and expressive, with moments of intensity when neither yields. At its best, the connection feels bold, spirited, and vividly alive."
+      "heading": "Dragon × Tiger — Neutral (中)",
+      "tagline": "Two leaders, one stage",
+      "description": "Dragon and Tiger are both strong personalities who like to lead. Dragon operates on vision and charisma; Tiger on courage and direct action. You can be a formidable team when you are on the same side. At home, though, you need clear areas of authority so every decision doesn't become a test of dominance."
     },
     "rabbit": {
-      "heading": "Dragon × Rabbit— Six Harms (Liu Hai 六害)",
-      "tagline": "Quiet vs. bold",
-      "description": "Dragon and Rabbit sit in a Liu Hai (六害) \"Six Harms\" pattern, where bold ambition meets caution in ways that can feel mismatched. Dragon moves with force, confidence, and grand visions, while Rabbit prefers subtlety, emotional safety, and quiet rhythms. Misunderstandings and unmet expectations can build if needs aren't clearly expressed. The dynamic feels dramatic, vivid, and shaped by deep temperament differences."
+      "heading": "Dragon × Rabbit — Six Harms (Liu Hai 六害)",
+      "tagline": "Intensity and softness",
+      "description": "Dragon and Rabbit form a Liu Hai (六害) pair. Dragon's blunt, forceful style can bruise Rabbit's finely tuned feelings; Rabbit's hesitation can frustrate Dragon. Still, Dragon can shield Rabbit in rough environments, and Rabbit can refine Dragon's approach and help with timing and presentation. Extra care in how you speak to each other is essential."
     },
     "dragon": {
-      "heading": "Dragon × Dragon— Same Sign (Self-Punishment Xing 相刑)",
-      "tagline": "Big presence",
-      "description": "Two Dragons create a striking, high-energy partnership filled with charisma and ambition. As a self-punishment Xing (相刑) match, shared intensity can heighten both synergy and conflict, making the bond feel powerful yet demanding. The pairing radiates presence and determination. When emotions align, the connection feels magnetic, bold, and unmistakably strong."
+      "heading": "Dragon × Dragon — Same Sign (同生肖) · Self-Punishment (自刑)",
+      "tagline": "Magnified will",
+      "description": "Two Dragons together double the charisma, pride, and sense of destiny. You may feel drawn to big goals and public roles, and you understand each other's desire to \"do something significant.\" The self-punishment (自刑) flavour shows up as internal pressure and stubborn stand-offs when expectations aren't met. Humility, humour, and equal sharing of power keep this from burning out."
     },
     "snake": {
-      "heading": "Dragon × Snake— Neutral",
-      "tagline": "Charisma and strategy",
-      "description": "Dragon and Snake create a bond marked by intuition, strategy, and mutual understanding. Dragon brings strength and expressive confidence; Snake adds insight and psychological depth. While they don't form a classical Liu He pair, their mix of drive and depth can feel quietly powerful when aligned. The connection feels calm, perceptive, and purpose-driven."
+      "heading": "Dragon × Snake — Neutral (中)",
+      "tagline": "Frontstage and backstage",
+      "description": "Dragon prefers the front of stage; Snake prefers working from the shadows. Dragon pushes outward, selling the vision; Snake monitors patterns, risks, and timing. This can be a very effective \"executive plus strategist\" pairing. It sours when Dragon ignores Snake's input, or Snake reacts to that by withdrawing support instead of talking."
     },
     "horse": {
-      "heading": "Dragon × Horse— Neutral",
-      "tagline": "Fire and motion",
-      "description": "Dragon and Horse both move quickly, valuing freedom, exploration, and forward energy. Horse contributes enthusiasm and movement; Dragon adds vision and momentum. The dynamic is spirited and expressive with a bright, active flow. When aligned, the connection feels adventurous and mutually uplifting."
+      "heading": "Dragon × Horse — Neutral (中)",
+      "tagline": "Charge ahead",
+      "description": "Horse loves motion and immediate experience; Dragon focuses on big pushes and visible breakthroughs. Together you can move quickly, travel far, and bring a lot of energy to shared projects. The weak spot is follow-through—once the first rush fades, both can lose interest. Simple systems and deadlines help keep wins from evaporating."
     },
     "goat": {
-      "heading": "Dragon × Goat— Neutral",
-      "tagline": "Strong and sensitive",
-      "description": "Dragon's strong presence contrasts with Goat's gentle emotional tone. Goat brings warmth and empathy; Dragon offers protection and confidence. The pairing depends on pacing and emotional awareness rather than instinctive harmony. The connection feels soft, expressive, and quietly balanced."
+      "heading": "Dragon × Goat — Neutral (中)",
+      "tagline": "Strong arm, soft heart",
+      "description": "Dragon's forceful, sometimes blunt style meets Goat's soft, artistic nature. Dragon can open doors, negotiate, and protect; Goat can soften the home atmosphere, add beauty, and offer emotional nuance. Problems appear if Dragon dismisses Goat's feelings as weakness or Goat quietly resists Dragon's plans without speaking up. Honest conversations about security and lifestyle are key."
     },
     "monkey": {
-      "heading": "Dragon × Monkey— Same Trine (San He 三合)",
-      "tagline": "Ambitious and inventive",
-      "description": "Dragon and Monkey share the San He (三合) visionary trine, forming a naturally synergistic and creative bond. Monkey brings cleverness and agility; Dragon brings ambition and drive. The pairing lights up quickly and stays dynamic through shared inspiration. The relationship feels bright, innovative, and mutually energising."
+      "heading": "Dragon × Monkey — Same Trine (San He 三合)",
+      "tagline": "Big moves, clever methods",
+      "description": "Dragon and Monkey complete the San He (三合) Visionary trine. Dragon leads with bold ideas and public presence; Monkey supports with clever tactics, flexibility, and quick fixes when plans hit obstacles. You are good at spotting angles and turning them into action. This match thrives when you share credit and don't turn every disagreement into a power contest."
     },
     "rooster": {
-      "heading": "Dragon × Rooster— Secret Friend (Liu He 六合)",
-      "tagline": "Show and precision",
-      "description": "Dragon and Rooster create a Liu He (六合) bond built on clarity, loyalty, and purposeful cooperation. Rooster offers precision and steadiness; Dragon brings direction and daring vision. Together they create structure infused with momentum. The connection feels capable, reliable, and naturally aligned toward growth."
+      "heading": "Dragon × Rooster — Secret Friend (Liu He 六合)",
+      "tagline": "Standards and success",
+      "description": "Dragon and Rooster form a Liu He (六合) pair. Dragon provides direction, energy, and the big picture; Rooster refines details, spots weak points, and maintains standards. Together you can build a reputation for competence. It becomes difficult if criticism turns personal or if Dragon treats Rooster's concerns as trivial."
     },
     "dog": {
-      "heading": "Dragon × Dog— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Pride vs. principle",
-      "description": "Dragon moves with power and outward ambition; Dog moves with sincerity and cautious depth. Dog brings integrity and perceptiveness, while Dragon brings confidence and momentum. Differences appear strongly in priorities and emotional expression. The connection feels intense, candid, and shaped by contrasting values."
+      "heading": "Dragon × Dog — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Glory versus justice",
+      "description": "Dragon and Dog sit in a Liu Chong (六冲) clash. Dragon is drawn to glory, influence, and big moves; Dog is focused on fairness, loyalty, and whether things feel right. Dog may question Dragon's motives; Dragon may feel constantly judged. When values truly align, Dog keeps Dragon honest and Dragon gives Dog hope—but it is not a low-maintenance pairing."
     },
     "pig": {
-      "heading": "Dragon × Pig— Neutral",
-      "tagline": "Bold and kind",
-      "description": "Dragon's bold energy meets Pig's warmth and open-hearted nature, forming a calm yet expressive dynamic. Pig contributes generosity and emotional depth; Dragon offers protection and direction. The relationship grows gently when energies blend in harmony. The connection feels kind, steady, and quietly uplifting."
+      "heading": "Dragon × Pig — Neutral (中)",
+      "tagline": "Drive and comfort",
+      "description": "Pig enjoys comfort, affection, and shared pleasures; Dragon is driven toward goals and visible progress. Pig can make Dragon's life feel warmer and more human; Dragon can prevent Pig from drifting and offer real protection. Friction arises if Pig feels ordered around or Dragon feels things are sliding into laziness. Mutual respect for both rest and ambition is needed."
     }
   },
   "snake": {
     "rat": {
-      "heading": "Snake × Rat— Neutral",
-      "tagline": "Quiet operators",
-      "description": "Snake and Rat share quiet intelligence and emotional depth, forming a connection that unfolds gradually but meaningfully. Rat brings strategic clarity; Snake contributes insight and intuition. The pairing feels private, thoughtful, and quietly steady when understood. The energy is subtle and perceptive, with a natural respect for each other's inner world."
+      "heading": "Snake × Rat — Neutral (中)",
+      "tagline": "Quiet planners",
+      "description": "Snake and Rat both think ahead and notice what others miss. Rat watches money, logistics, and external moves; Snake studies motives, timing, and longer trends. Together you can be an effective behind-the-scenes team. Suspicion grows, though, if either starts hiding too much or probing for answers instead of asking directly."
     },
     "ox": {
-      "heading": "Snake × Ox— Same Trine (San He 三合)",
-      "tagline": "Calm strategists",
-      "description": "Snake and Ox belong to the San He (三合) strategic trine, creating a bond grounded in trust, patience, and long-range thinking. Ox offers strength and consistency; Snake offers perception and calm understanding. Together the relationship feels steady, intentional, and quietly powerful. This is one of Snake's most harmonious and dependable connections."
+      "heading": "Snake × Ox — Same Trine (San He 三合)",
+      "tagline": "Patient strategists",
+      "description": "Snake and Ox share the San He (三合) Strategist trine. Ox brings reliability, work ethic, and calm persistence; Snake adds insight, timing, and careful analysis. This is a strong combination for slow, steady wins—career advancement, property, or long-term plans. Respecting each other's naturally deliberate pace is important."
     },
     "tiger": {
-      "heading": "Snake × Tiger— Six Harms (Liu Hai 六害)",
-      "tagline": "Impulse vs. calculation",
-      "description": "Snake's introspective style contrasts with Tiger's bold, outward energy. Tiger brings force and immediacy; Snake brings secrecy and subtlety. These differences create emotional friction beneath the surface. The connection feels sharp, reactive, and sensitive to misunderstanding."
+      "heading": "Snake × Tiger — Six Harms (Liu Hai 六害) · Punishment Pattern (Xing 刑)",
+      "tagline": "Edge and lesson",
+      "description": "Snake and Tiger form a Liu Hai (六害) pair with an added punishment (刑) link. Tiger moves openly and fast; Snake moves selectively and guards their inner world. The attraction can be real but often comes with tests, sharp words, or power struggles. Without unusual maturity, it tends to bring more lessons than ease."
     },
     "rabbit": {
-      "heading": "Snake × Rabbit— Neutral",
-      "tagline": "Soft and strategic",
-      "description": "Snake and Rabbit share sensitivity expressed in different ways — Rabbit through emotion, Snake through intuition. Rabbit brings warmth and gentleness; Snake contributes depth and quiet reassurance. The pairing is reflective and subtle, growing best through trust. The connection feels soft, composed, and delicately balanced."
+      "heading": "Snake × Rabbit — Neutral (中)",
+      "tagline": "Subtle pair",
+      "description": "Snake and Rabbit both prefer nuance over noise. Snake offers depth and strategic thinking; Rabbit brings warmth, social grace, and an eye on harmony. This can be a quietly elegant partnership. However, if worries and doubts remain unspoken, distance appears with no clean moment to resolve it."
     },
     "dragon": {
-      "heading": "Snake × Dragon— Neutral",
-      "tagline": "Charisma and strategy",
-      "description": "Snake and Dragon create a bond marked by intuition, strategy, and mutual understanding. Snake brings insight and psychological depth; Dragon adds strength and expressive confidence. While they don't form a classical Liu He pair, their mix of depth and drive can feel quietly powerful when aligned. The connection feels calm, perceptive, and purpose-driven."
+      "heading": "Snake × Dragon — Neutral (中)",
+      "tagline": "Brains and bravado",
+      "description": "Dragon pushes outward with force and vision; Snake steers with insight and timing. Snake can help Dragon avoid unnecessary conflicts and refine their moves; Dragon can help Snake act instead of staying in analysis mode. It fails when Dragon ignores Snake's signals or Snake responds with silent resistance instead of conversation."
     },
     "snake": {
-      "heading": "Snake × Snake— Same Sign (同生肖)",
-      "tagline": "Quiet intensity",
-      "description": "Two Snakes create a deep, intuitive connection filled with quiet understanding and emotional complexity. Shared sensitivity can create calm unity or silent tension depending on communication. The relationship feels intimate, thoughtful, and almost telepathic at times. When balanced, the bond carries a composed, timeless quality."
+      "heading": "Snake × Snake — Same Sign (同生肖)",
+      "tagline": "Inner worlds",
+      "description": "Two Snakes together create a calm, private, and often intense inner bond. You share a taste for depth, selectivity, and quiet observation. The risk is holding grudges and making assumptions instead of asking questions. This pairing improves sharply when you commit to clear, honest communication—even if it feels awkward at first."
     },
     "horse": {
-      "heading": "Snake × Horse— Neutral",
-      "tagline": "Stillness vs. motion",
-      "description": "Snake's deliberation contrasts with Horse's momentum, creating a rhythm defined by differing speeds. Horse brings energy and optimism; Snake offers reflection and depth. The pairing works through appreciation of contrast. The connection feels dynamic, thoughtful, and shaped by pacing."
+      "heading": "Snake × Horse — Neutral (中)",
+      "tagline": "Different speeds",
+      "description": "Horse is open, active, and fast-moving; Snake is reserved, measured, and slow to commit. Horse can help Snake experience more of life; Snake can help Horse avoid obvious mistakes and see hidden implications. The match breaks down if Horse feels judged or Snake feels dragged from one thing to the next."
     },
     "goat": {
-      "heading": "Snake × Goat— Neutral",
-      "tagline": "Calm and receptive",
-      "description": "Snake and Goat form a gentle, emotionally aware pairing with warmth on one side and calm insight on the other. Goat offers empathy and openness; Snake provides steadiness and subtle understanding. Together the relationship feels soft, reflective, and quietly resilient. The bond strengthens slowly through kindness and consistency."
+      "heading": "Snake × Goat — Neutral (中)",
+      "tagline": "Art and insight",
+      "description": "Goat leads with feelings and aesthetics; Snake with analysis and control of timing. Goat can warm Snake and bring creativity and softness into shared spaces; Snake can offer structure and perspective when Goat is overwhelmed. Trouble starts when Goat feels emotionally dismissed or Snake feels emotionally flooded."
     },
     "monkey": {
-      "heading": "Snake × Monkey— Secret Friend (Liu He 六合)",
-      "tagline": "Clever and composed",
-      "description": "Snake and Monkey share the Liu He (六合) harmony, blending intelligence, adaptability, and psychological depth. Monkey brings inventive spark; Snake brings clarity and composure. The match is mentally stimulating and emotionally nuanced. The connection feels bright, clever, and naturally supportive."
+      "heading": "Snake × Monkey — Secret Friend (Liu He 六合) · Punishment Pattern (Xing 刑)",
+      "tagline": "Sharp minds, sharp lessons",
+      "description": "Snake and Monkey form a Liu He (六合) pair inside the Tiger–Snake–Monkey punishment (刑) set. Both are clever and observant, but Monkey is more playful and outwardly restless while Snake is more guarded. You can solve problems brilliantly together and understand each other's mental style. When trust is weak, though, this quickly turns into mind games."
     },
     "rooster": {
-      "heading": "Snake × Rooster— Same Trine (San He 三合)",
-      "tagline": "Exact and incisive",
-      "description": "Snake and Rooster share the San He (三合) strategic trine, creating precision, focus, and strong mutual respect. Rooster contributes structure and insight; Snake adds intuition and calm perception. The relationship feels clear, deliberate, and strongly aligned in purpose. This is one of Snake's most stable and harmoniously matched pairings."
+      "heading": "Snake × Rooster — Same Trine (San He 三合)",
+      "tagline": "Precision and depth",
+      "description": "Snake and Rooster share the San He (三合) Strategist trine. Rooster brings standards, organisation, and clear critique; Snake brings depth, pattern recognition, and subtle influence. Together you are well suited to complex tasks that require both sharp thinking and careful execution. Remember to make room for affection and rest so life doesn't feel like one long project."
     },
     "dog": {
-      "heading": "Snake × Dog— Neutral",
-      "tagline": "Insight and loyalty",
-      "description": "Snake and Dog form a thoughtful, sincere bond grounded in emotional honesty. Dog brings loyalty and clarity; Snake brings depth and intuition. The pairing feels steady, heartfelt, and quietly secure. Trust and emotional steadiness shape the connection's tone."
+      "heading": "Snake × Dog — Neutral (中)",
+      "tagline": "Integrity and caution",
+      "description": "Dog values honesty and loyalty; Snake values privacy and sound strategy. When aligned, Dog's straightforwardness and Snake's cautious planning complement each other, especially in serious matters. If Dog suspects manipulation or Snake feels morally policed, tension grows. Agreeing on which areas must be fully transparent helps."
     },
     "pig": {
-      "heading": "Snake × Pig— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Guarded vs. open",
-      "description": "Snake's inward, measured nature contrasts sharply with Pig's open emotional expression. Pig brings warmth and vulnerability; Snake brings restraint and introspection. This difference creates tension in communication and emotional pace. The connection feels contrasting, sensitive, and easily imbalanced without awareness."
+      "heading": "Snake × Pig — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Opposite instincts",
+      "description": "Snake and Pig form a Liu Chong (六冲) pair. Snake is selective, self-protective, and analytical; Pig is open-hearted, trusting, and comfort-seeking. Attraction can be real, but disappointment can follow if expectations are unclear. Strong shared values, clear boundaries, and honest talk about money and loyalty are mandatory."
     }
   },
   "horse": {
     "rat": {
-      "heading": "Horse × Rat— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Pulling in opposite directions",
-      "description": "Horse and Rat differ sharply in rhythm and priorities — Rat plans ahead while Horse moves on instinct. Rat brings strategy and caution; Horse brings momentum and independence. The connection can feel charged and effortful without pacing. This pairing has vivid chemistry but contrasting emotional tempos."
+      "heading": "Horse × Rat — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Different directions",
+      "description": "Horse and Rat form a Liu Chong (六冲) clash. Horse wants movement, variety, and room to follow impulses; Rat wants savings, backup plans, and clear calculations. Early on this can feel exciting, but long-term you tend to argue about money, routines, and commitments. It takes conscious compromise on both freedom and security to make this work."
     },
     "ox": {
-      "heading": "Horse × Ox— Six Harms (Liu Hai 六害)",
-      "tagline": "Routine vs. freedom",
-      "description": "Ox prefers reliability and steady structure, while Horse thrives on motion and freedom. These differences create subtle emotional erosion over time. Ox offers grounding; Horse brings spark and change. The bond feels contrasting, requiring space and awareness to stay balanced."
+      "heading": "Horse × Ox — Six Harms (Liu Hai 六害)",
+      "tagline": "Restless versus steady",
+      "description": "Horse and Ox sit in a Liu Hai (六害) pattern. Horse needs space and change; Ox needs routine and reliability. Ox can offer Horse a solid anchor, and Horse can stop life from feeling like endless grind for Ox. But if neither side bends, Ox feels exhausted and Horse feels trapped."
     },
     "tiger": {
-      "heading": "Horse × Tiger— Same Trine (San He 三合)",
-      "tagline": "Adventurous and wild",
-      "description": "Horse and Tiger belong to the San He (三合) Adventurer trine, creating a vibrant, bold, and forward-moving match. Tiger brings courage and intensity; Horse adds enthusiasm and momentum. Together the connection feels dynamic, inspired, and full of shared drive. This is one of Horse's most naturally energising pairings."
+      "heading": "Horse × Tiger — Same Trine (San He 三合)",
+      "tagline": "Fire and motion",
+      "description": "Horse and Tiger share the San He (三合) Adventurer trine. Both are energetic, bold, and happiest when life is moving. Tiger brings leadership and a sense of mission; Horse brings enthusiasm, adaptability, and social spark. This pairing thrives on shared adventures, clear independence, and not over-controlling each other's schedule."
     },
     "rabbit": {
-      "heading": "Horse × Rabbit— Break (Po 破)",
-      "tagline": "Calm vs. restless",
-      "description": "Rabbit seeks calm clarity, while Horse responds quickly to instinct — creating a mismatch in pacing. Rabbit brings sensitivity and gentleness; Horse adds motion and initiative. This pairing works when rhythms align deliberately. The connection is soft but easily unsettled by timing differences."
+      "heading": "Horse × Rabbit — Neutral (中)",
+      "tagline": "Adventure and shelter",
+      "description": "Horse brings activity, travel, and openness; Rabbit offers calm, comfort, and emotional shelter. Done well, Horse broadens Rabbit's world and Rabbit gives Horse a safe base to return to. Done poorly, Horse feels nagged about every move and Rabbit feels constantly unsettled. Planning both outings and recovery time keeps this balanced."
     },
     "dragon": {
-      "heading": "Horse × Dragon— Neutral",
-      "tagline": "Fire and motion",
-      "description": "Horse and Dragon share energy, confidence, and a taste for movement, creating an exciting and forward-leaning match. Dragon brings presence and charisma; Horse brings freedom and spontaneity. The relationship feels bright and adventurous. Independence needs balance to keep the energy steady."
+      "heading": "Horse × Dragon — Neutral (中)",
+      "tagline": "Big pushes",
+      "description": "Horse thrives on the rush of movement; Dragon thrives on major efforts and visible progress. Together you can launch bold projects or live a busy, outward-facing life. The challenge is staying consistent once the initial excitement passes. Simple routines and agreed responsibilities keep momentum from fading."
     },
     "snake": {
-      "heading": "Horse × Snake— Neutral",
-      "tagline": "Stillness vs. motion",
-      "description": "Snake moves quietly and thoughtfully, while Horse acts quickly and openly. Snake offers depth and reflection; Horse brings optimism and drive. This pairing grows through appreciation of contrast. The tone feels dynamic, subtle, and shaped by pacing."
+      "heading": "Horse × Snake — Neutral (中)",
+      "tagline": "Open versus guarded",
+      "description": "Horse tends to speak and move quickly; Snake tends to observe and hold back. Horse may see Snake as secretive; Snake may see Horse as careless or loud. Yet Snake can help Horse pick better battles, and Horse can help Snake engage with life more fully. Clear agreements about what must be shared and what can stay private are key."
     },
     "horse": {
-      "heading": "Horse × Horse— Same Sign (Self-Punishment Xing 相刑)",
-      "tagline": "Fast and free",
-      "description": "Two Horses create a lively, passionate connection full of motion, instinct, and shared excitement. As a self-punishment Xing (相刑) match, restlessness and impatience can escalate quickly. The relationship feels spirited, bold, and fast-moving. Grounding and steadiness define its long-term strength."
+      "heading": "Horse × Horse — Same Sign (同生肖) · Self-Punishment (自刑)",
+      "tagline": "Double freedom, double restlessness",
+      "description": "Two Horses together make a lively, changeable, often exciting partnership. You understand each other's need for independence, movement, and new experiences. As a self-punishment (自刑) pair, the same energy can loop into repeated impulsive choices, on–off plans, or burning out together. Simple structure, honest talk about commitments, and a few non-negotiable priorities keep this thrilling instead of exhausting."
     },
     "goat": {
-      "heading": "Horse × Goat— Secret Friend (Liu He 六合)",
-      "tagline": "Active and gentle",
-      "description": "Horse and Goat share a gentle Liu He (六合) harmony, forming a warm and emotionally supportive bond. Goat brings softness and creativity; Horse adds inspiration and confidence. The connection feels nurturing and uplifting. This is one of Horse's most comforting and heartfelt matches."
+      "heading": "Horse × Goat — Secret Friend (Liu He 六合)",
+      "tagline": "Mutual support",
+      "description": "Horse and Goat form a Liu He (六合) pair. Horse brings momentum, confidence, and outward drive; Goat brings emotional support, loyalty, and creative flair. Goat softens Horse's rough days; Horse encourages Goat to believe in themselves and take chances. Clear sharing of chores and money helps keep resentment out."
     },
     "monkey": {
-      "heading": "Horse × Monkey— Neutral",
-      "tagline": "Action and antics",
-      "description": "Horse and Monkey share bright energy, curiosity, and quick minds, creating a playful and lively dynamic. Monkey brings clever ideas; Horse brings initiative and spark. The bond feels adventurous and open-ended. Pacing and communication define its stability."
+      "heading": "Horse × Monkey — Neutral (中)",
+      "tagline": "Fast minds, fast moves",
+      "description": "Horse and Monkey both like movement and stimulation. Horse expresses through action; Monkey through ideas and quick shifts. Together you can jump on opportunities quickly and keep life interesting. The weak spot is commitment—without clear agreements, things can stay permanently casual or chaotic."
     },
     "rooster": {
-      "heading": "Horse × Rooster— Neutral",
-      "tagline": "Pace and precision",
-      "description": "Horse relies on instinct and movement, while Rooster prefers clarity, precision, and planning. Rooster brings structure; Horse adds vitality and spontaneity. The connection feels contrasting but capable when each role is valued. This match thrives through shared goals and rhythm awareness."
+      "heading": "Horse × Rooster — Neutral (中)",
+      "tagline": "Spontaneity and order",
+      "description": "Horse prefers flexible plans and room to improvise; Rooster wants schedule, structure, and clarity. Rooster can help Horse stay on track and avoid unnecessary mess; Horse can help Rooster take healthy risks and enjoy the moment. It frays if Rooster's critiques feel like chains or Horse treats every agreement as optional."
     },
     "dog": {
-      "heading": "Horse × Dog— Same Trine (San He 三合)",
-      "tagline": "Loyal adventurers",
-      "description": "Horse and Dog share the San He (三合) Adventurer trine, forming a partnership rooted in loyalty, sincerity, and shared purpose. Dog offers steadiness and integrity; Horse brings enthusiasm and vision. The relationship feels aligned, principled, and emotionally solid. This is one of Horse's strongest and most harmonious matches."
+      "heading": "Horse × Dog — Same Trine (San He 三合)",
+      "tagline": "Loyal companions",
+      "description": "Horse and Dog share the San He (三合) Adventurer trine. Horse brings energy, social connection, and movement; Dog brings loyalty, realism, and a protective instinct. Dog steadies Horse when life gets rough; Horse lifts Dog out of ruts and into new experiences. This is one of Horse's strongest matches when both avoid over-sacrificing for others."
     },
     "pig": {
-      "heading": "Horse × Pig— Neutral",
+      "heading": "Horse × Pig — Neutral (中)",
       "tagline": "Fun and comfort",
-      "description": "Pig brings warmth, generosity, and emotional sincerity, while Horse brings motion, optimism, and independence. Together the connection feels gentle yet lively. This pairing works through pacing and mutual appreciation. The tone is warm, open, and quietly supportive."
+      "description": "Horse likes activity and social buzz; Pig enjoys relaxed pleasures and emotional closeness. When balanced, Horse keeps life interesting and Pig makes home feel welcoming and safe. If unbalanced, Horse feels slowed down and Pig feels dragged around. Scheduling both lively plans and pure downtime helps keep you in sync."
     }
   },
   "goat": {
     "rat": {
-      "heading": "Goat × Rat— Six Harms (Liu Hai 六害)",
-      "tagline": "Practical vs. tender",
-      "description": "Rat's direct approach contrasts with Goat's emotional sensitivity, creating misunderstandings if not handled gently. Rat brings strategy and clarity; Goat offers warmth and empathy. The connection feels delicate and requires emotional pacing. With patience, this pairing becomes workable but remains easily unsettled."
+      "heading": "Goat × Rat — Six Harms (Liu Hai 六害)",
+      "tagline": "Worry and caution",
+      "description": "Goat and Rat form a Liu Hai (六害) pair. Goat wants emotional reassurance, beauty, and a kindly atmosphere; Rat worries about money, risk, and long-term security. Goat may feel micromanaged or judged; Rat may feel they carry the whole burden. Gentle honesty about fears—without blame—helps turn this into mutual support instead of quiet stress."
     },
     "ox": {
-      "heading": "Goat × Ox— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Security and sensitivity",
-      "description": "Ox relies on steadiness and structure, while Goat moves through intuition and emotional expression. This contrast creates mismatched expectations and frequent tension. Ox brings grounding; Goat adds creativity and softness. The relationship depends on openness and clear alignment of pace."
+      "heading": "Goat × Ox — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
+      "tagline": "Different needs, shared fatigue",
+      "description": "Goat and Ox sit in a Liu Chong (六冲) clash and also share a \"punishment\" (刑) pattern, so effort and emotional needs can easily feel mismatched. Ox is task-oriented, stoic, and often shows love through work; Goat is feeling-oriented, expressive, and needs emotional reassurance. Ox can give Goat real-world stability; Goat can bring softness and creativity into Ox's life. If you stop appreciating each other, Ox feels taken for granted and Goat feels emotionally abandoned."
     },
     "tiger": {
-      "heading": "Goat × Tiger— Neutral",
-      "tagline": "Brave and tender",
-      "description": "Tiger's boldness can overwhelm Goat's sensitivity unless approached with care. Tiger offers courage and decisive energy; Goat brings warmth and emotional insight. The tone is supportive when both honour each other's needs. This pairing grows through gentle communication and shared respect."
+      "heading": "Goat × Tiger — Neutral (中)",
+      "tagline": "Soft and wild",
+      "description": "Tiger's strong, sometimes abrupt energy can be overwhelming for Goat's sensitivity, but it can also offer real protection and courage. Goat can give Tiger a gentle, artistic, and emotionally rich home life. Problems arise when Tiger dismisses Goat's feelings as drama or Goat never clearly states what they need, hoping Tiger will just sense it."
     },
     "rabbit": {
-      "heading": "Goat × Rabbit— Same Trine (San He 三合)",
-      "tagline": "Gentle support",
-      "description": "Goat and Rabbit share the San He (三合) Artist trine, forming a naturally harmonious, gentle, and nurturing bond. Rabbit offers diplomacy and emotional understanding; Goat brings softness and sincerity. Conflict is rare and easily resolved. This is one of Goat's most peaceful and emotionally secure matches."
+      "heading": "Goat × Rabbit — Same Trine (San He 三合)",
+      "tagline": "Gentle alliance",
+      "description": "Goat and Rabbit share the San He (三合) Artist trine. Both value kindness, peace, and a tasteful, comfortable environment. Goat brings creativity and open emotion; Rabbit brings diplomacy and a steady hand. This is one of Goat's most soothing matches, as long as someone keeps an eye on practicalities."
     },
     "dragon": {
-      "heading": "Goat × Dragon— Neutral",
-      "tagline": "Strong and sensitive",
-      "description": "Dragon's strength and confidence can overshadow Goat's subtle emotional rhythm at first. Goat brings warmth and empathy; Dragon provides direction and protection. The connection becomes tender when both respect each other's pace. This pairing thrives through emotional consideration."
+      "heading": "Goat × Dragon — Neutral (中)",
+      "tagline": "Soft heart, strong will",
+      "description": "Dragon's commanding presence meets Goat's soft, artistic nature. Dragon can open doors, negotiate, and shield Goat from harshness; Goat can add warmth, nuance, and beauty to Dragon's life. It unravels if Dragon mocks Goat's worries or Goat undermines Dragon's plans through quiet avoidance instead of clear discussion."
     },
     "snake": {
-      "heading": "Goat × Snake— Neutral",
-      "tagline": "Calm and receptive",
-      "description": "Snake and Goat share a quiet, thoughtful tone marked by sensitivity and emotional depth. Snake offers calm intuition; Goat brings openness and gentleness. The relationship strengthens through reassurance and privacy. It's a subtle, steady connection with quiet longevity."
+      "heading": "Goat × Snake — Neutral (中)",
+      "tagline": "Emotion and analysis",
+      "description": "Goat leads with feeling; Snake leads with analysis and restraint. Goat can warm Snake's cool exterior and encourage more emotional expression; Snake can steady Goat's moods and help with realistic planning. Conflict emerges when Goat feels judged or alone with their feelings, and Snake feels overwhelmed by emotional intensity."
     },
     "horse": {
-      "heading": "Goat × Horse— Secret Friend (Liu He 六合)",
-      "tagline": "Active and gentle",
-      "description": "Horse and Goat form a gentle, emotionally supportive Liu He (六合) harmony. Goat's creativity softens Horse's intensity, while Horse brings enthusiasm and uplifting energy. The connection feels warm, caring, and deeply encouraging. This is one of Goat's most comforting and naturally affectionate matches."
+      "heading": "Goat × Horse — Secret Friend (Liu He 六合)",
+      "tagline": "Team effort",
+      "description": "Goat and Horse form a Liu He (六合) pair. Horse brings outward drive, adventure, and confidence; Goat brings loyalty, care, and creativity. Goat appreciates having someone bold in their corner; Horse appreciates having someone who truly cares how they are, not just what they do. Clear sharing of responsibilities, especially financial, keeps this match healthy."
     },
     "goat": {
-      "heading": "Goat × Goat— Same Sign (同生肖)",
-      "tagline": "Soft and moody",
-      "description": "Two Goats create a deeply intuitive and empathetic connection. Mirrored sensitivities can intensify emotional withdrawal or insecurity if feelings go unspoken, but they also bring great compassion and shared understanding. When communication stays soft and open, the match becomes loving and nurturing. Reassurance and presence keep the bond strong."
+      "heading": "Goat × Goat — Same Sign (同生肖)",
+      "tagline": "Shared sensitivity",
+      "description": "Two Goats together can create a deeply caring, emotionally rich, and aesthetically pleasing life. You are usually very aware of each other's moods and needs. The downside is shared anxiety and difficulty with firm decisions or boundaries. Bringing in structure—budgets, plans, and simple routines—helps this tenderness last."
     },
     "monkey": {
-      "heading": "Goat × Monkey— Neutral",
-      "tagline": "Soft and quick",
-      "description": "Goat's emotional depth pairs interestingly with Monkey's quick, unpredictable spark. Monkey brings creativity and energy; Goat brings softness and stability. The match feels lively but delicate. Patience and flexibility help this bond grow warmly."
+      "heading": "Goat × Monkey — Neutral (中)",
+      "tagline": "Feeling and wit",
+      "description": "Monkey jokes, improvises, and likes variety; Goat feels deeply and needs reassurance. Monkey can bring lightness, new experiences, and useful ideas; Goat can offer loyal support and genuine emotional presence. It falls apart if Monkey trivialises Goat's feelings or Goat uses guilt to keep Monkey close."
     },
     "rooster": {
-      "heading": "Goat × Rooster— Neutral",
-      "tagline": "Art and order",
-      "description": "Rooster favours clarity and structure, while Goat favours emotional expression and intuition. Rooster brings precision; Goat brings warmth and compassion. The connection works when differences are respected. Shared goals help balance contrasting communication styles."
+      "heading": "Goat × Rooster — Neutral (中)",
+      "tagline": "Critic and dreamer",
+      "description": "Rooster values correctness, order, and competence; Goat values warmth, expression, and comfort. Rooster can help Goat bring their ideas into reality and manage details; Goat can help Rooster soften, enjoy life, and relate more gently. If corrections are constant and appreciation rare, both feel unvalued."
     },
     "dog": {
-      "heading": "Goat × Dog— Break (Po 破)",
-      "tagline": "Caring and conscientious",
-      "description": "Goat and Dog share sincerity but move through emotions in different ways. Dog offers protection, realism, and a strong sense of duty; Goat brings gentleness and emotional nuance. As a Po (破) \"Break\" pairing, they tend to shake each other's habits and expectations around care, work, and responsibility. The bond feels honest and kind, but it asks for ongoing adjustment to stay comfortable and stable."
+      "heading": "Goat × Dog — Punishment Pattern (Xing 刑)",
+      "tagline": "Care that can cut both ways",
+      "description": "Goat and Dog also sit in the \"ungrateful punishment\" (刑) group, so your shared concern can slip into mutual strain. Dog worries about loyalty and justice; Goat worries about belonging and emotional security. You understand each other's fears, but can end up feeling unappreciated or blamed. Deliberate positivity, clear appreciation, and practical plans—rather than just shared worry—keep this from becoming heavy."
     },
     "pig": {
-      "heading": "Goat × Pig— Same Trine (San He 三合)",
-      "tagline": "Gentle nesters",
-      "description": "Goat and Pig belong to the San He (三合) Artist trine, forming one of the warmest and most emotionally secure matches in the zodiac. Pig brings generosity and kindness; Goat adds empathy and artistic sensitivity. The connection feels natural, deeply caring, and intuitively supportive. This is one of Goat's strongest and most heartfelt partnerships."
+      "heading": "Goat × Pig — Same Trine (San He 三合)",
+      "tagline": "Soft, sweet match",
+      "description": "Goat and Pig share the San He (三合) Artist trine. Both enjoy comfort, affection, and a gentler pace of life. Goat brings creativity and sensitivity; Pig brings generosity, humour, and simple enjoyment. This is one of Goat's most naturally affectionate matches, as long as you keep an eye on spending and follow-through."
     }
   },
   "monkey": {
     "rat": {
-      "heading": "Monkey × Rat— Same Trine (San He 三合)",
-      "tagline": "Clever and restless",
-      "description": "Monkey and Rat belong to the San He (三合) Visionary trine, creating a naturally sharp, clever, and energising match. Monkey adds creativity and playful ingenuity; Rat brings insight and strategic thinking. You lift each other quickly and instinctively. This is one of Monkey's most synergistic and mentally alive partnerships."
+      "heading": "Monkey × Rat — Same Trine (San He 三合)",
+      "tagline": "Fast and clever",
+      "description": "Monkey and Rat share the San He (三合) Visionary trine. Monkey brings humour, ideas, and agile problem-solving; Rat brings planning, resource sense, and timing. Together you can turn chances into results quickly. This is one of Monkey's best matches for both money and fun, as long as you don't drown in schemes."
     },
     "ox": {
-      "heading": "Monkey × Ox— Neutral",
-      "tagline": "Work and improvisation",
-      "description": "Ox values steadiness and structure, while Monkey thrives on movement and flexibility. Ox brings grounding and reliability; Monkey contributes adaptability and inventive thinking. The tone is balanced when both appreciate each other's strengths. Clear rhythm and communication keep the partnership harmonious."
+      "heading": "Monkey × Ox — Neutral (中)",
+      "tagline": "Improviser and grinder",
+      "description": "Monkey likes options, shortcuts, and quick adjustments; Ox likes a clear lane and steady effort. Monkey can optimise Ox's plans and introduce better methods; Ox can stabilise Monkey's many shifts and make sure something actually gets finished. It strains when Ox sees Monkey as slippery or Monkey sees Ox as controlling and unimaginative."
     },
     "tiger": {
-      "heading": "Monkey × Tiger— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Competitive spark",
-      "description": "Tiger and Monkey form a high-voltage clash where styles and instincts differ strongly. Tiger leads boldly and directly; Monkey moves through wit, agility, and quick shifts. In some traditions this pair also sits in a punishment (刑) group, adding extra edge and lesson-learning to the connection. The bond feels charged, memorable, and unpredictable. Success requires humour, patience, and a real willingness to meet in the middle."
+      "heading": "Monkey × Tiger — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
+      "tagline": "High spark, low peace",
+      "description": "Monkey and Tiger form a Liu Chong (六冲) clash and are part of the Tiger–Snake–Monkey punishment (刑) group. Monkey moves through wit and flexibility; Tiger through force and direct action. Attraction and excitement are strong, but so are ego clashes, sudden blow-ups, and on–off patterns. This pairing is vivid and memorable, but rarely gentle."
     },
     "rabbit": {
-      "heading": "Monkey × Rabbit— Neutral",
-      "tagline": "Soft and sharp",
-      "description": "Rabbit's calm warmth contrasts with Monkey's quick, playful tempo. Monkey introduces new ideas and spark; Rabbit adds sensitivity and steady emotional presence. The dynamic feels lively but delicate. Pacing and mutual respect allow this bond to deepen softly."
+      "heading": "Monkey × Rabbit — Neutral (中)",
+      "tagline": "Quick mind, soft heart",
+      "description": "Monkey tests, jokes, and changes direction easily; Rabbit is more sensitive, cautious, and aware of subtle signals. Monkey can pull Rabbit into new social circles and ideas; Rabbit can give Monkey emotional grounding and a sense of home. It works when Monkey respects Rabbit's limits and Rabbit doesn't expect Monkey to process everything at Rabbit's pace."
     },
     "dragon": {
-      "heading": "Monkey × Dragon— Same Trine (San He 三合)",
+      "heading": "Monkey × Dragon — Same Trine (San He 三合)",
       "tagline": "Ambitious and inventive",
-      "description": "Monkey and Dragon share the San He (三合) Visionary trine, creating a dynamic full of charisma, willpower, and mental brightness. Dragon brings drive and bold leadership; Monkey brings cleverness and adaptability. Together the connection feels inspiring and effortlessly collaborative. This is one of Monkey's strongest and most rewarding matches."
+      "description": "Monkey and Dragon share the San He (三合) Visionary trine. Dragon brings bold direction and public presence; Monkey brings clever tactics, improvisation, and backup plans. You're good at making an impact and then adjusting when reality pushes back. Sharing credit and not turning every disagreement into a dominance test keeps this healthy."
     },
     "snake": {
-      "heading": "Monkey × Snake— Secret Friend (Liu He 六合)",
-      "tagline": "Clever and composed",
-      "description": "Monkey and Snake form a Liu He (六合) secret-friend harmony grounded in intelligence, intuition, and emotional subtlety. Snake offers depth and clarity; Monkey adds spark and mental agility. The connection feels stimulating, thoughtful, and quietly supportive. This is one of Monkey's safest and most balanced partnerships."
+      "heading": "Monkey × Snake — Secret Friend (Liu He 六合) · Punishment Pattern (Xing 刑)",
+      "tagline": "Brains meeting brains",
+      "description": "Monkey and Snake form a Liu He (六合) pair within the Tiger–Snake–Monkey punishment (刑) set. Both are sharp and observant, but Monkey is louder and more playful, Snake more private and selective. At best, this is a powerful, strategic partnership with a lot of mental chemistry. When trust slips, it quickly turns into second-guessing and subtle power games."
     },
     "horse": {
-      "heading": "Monkey × Horse— Neutral",
-      "tagline": "Action and antics",
-      "description": "Monkey's strategic mind meets Horse's instinctive momentum, creating a connection full of movement and unpredictability. Horse brings enthusiasm and decisiveness; Monkey brings creativity and flexibility. The bond is adventurous but inconsistent. Stability depends on shared goals and honest communication."
+      "heading": "Monkey × Horse — Neutral (中)",
+      "tagline": "Restless duo",
+      "description": "Monkey and Horse both like movement, stimulation, and variety. Monkey provides ideas, tricks, and agility; Horse provides raw energy and the drive to \"just go.\" You can have a lot of fun and shared adventures, but routine and long-term planning can suffer. A short list of firm commitments makes a big difference."
     },
     "goat": {
-      "heading": "Monkey × Goat— Neutral",
-      "tagline": "Soft and quick",
-      "description": "Goat offers tenderness and emotional presence, while Monkey brings inventiveness and lively charm. The contrast can feel exciting yet delicate. When paced well, the relationship becomes warm, imaginative, and quietly supportive. Gentleness and reassurance keep this pairing steady."
+      "heading": "Monkey × Goat — Neutral (中)",
+      "tagline": "Charm and care",
+      "description": "Monkey entertains, experiments, and looks for new angles; Goat nurtures, feels deeply, and wants emotional safety. Monkey can bring opportunity and lightness into Goat's life; Goat can provide loyalty, comfort, and deeper meaning. It falters if Monkey dismisses Goat's feelings or Goat leans on guilt or worry to keep Monkey close."
     },
     "monkey": {
-      "heading": "Monkey × Monkey— Same Sign (同生肖)",
+      "heading": "Monkey × Monkey — Same Sign (同生肖)",
       "tagline": "Busy minds",
-      "description": "Two Monkeys create a clever, quick-moving, and intellectually vibrant pairing. Shared restlessness or scattered focus can unsettle the bond if there's no grounding, but curiosity and mutual encouragement make this dynamic inspiring. Consistency and emotional steadiness help it thrive long-term."
+      "description": "Two Monkeys together mean constant ideas, banter, and mental motion. You rarely bore each other and are good at brainstorming your way out of tight corners. The shared weak spot is distraction—bills, health, and groundwork can fall behind. External structure and a simple, shared priority list are essential."
     },
     "rooster": {
-      "heading": "Monkey × Rooster— Neutral",
-      "tagline": "Wit and critique",
-      "description": "Monkey's playfulness and Rooster's precision create a lively but contrasting dynamic. Rooster brings clarity and structure; Monkey adds imagination and spontaneity. The relationship grows through shared respect for each other's different styles. Honest communication keeps the match functional and balanced."
+      "heading": "Monkey × Rooster — Neutral (中)",
+      "tagline": "Improv versus precision",
+      "description": "Monkey likes to improvise and adapt; Rooster likes to plan and correct. Rooster can help Monkey bring projects into order; Monkey can help Rooster handle unexpected change with more ease. It goes wrong when critique and sarcasm replace problem-solving, leaving both defensive."
     },
     "dog": {
-      "heading": "Monkey × Dog— Neutral",
-      "tagline": "Clever and loyal",
-      "description": "Monkey's adaptability meets Dog's sincerity and loyalty, creating a stable but understated dynamic. Dog offers grounding and emotional steadiness; Monkey brings innovation and clever perspective. This bond strengthens through shared trust and consistency. The connection feels dependable when both value emotional clarity."
+      "heading": "Monkey × Dog — Neutral (中)",
+      "tagline": "Strategy and loyalty",
+      "description": "Dog brings sincerity, loyalty, and a strong sense of right and wrong; Monkey brings cleverness, options, and adaptability. Dog can anchor Monkey when life feels chaotic; Monkey can show Dog work-arounds and alternative routes. If Dog doubts Monkey's honesty or Monkey feels constantly judged, trust erodes fast."
     },
     "pig": {
-      "heading": "Monkey × Pig— Six Harms (Liu Hai 六害)",
-      "tagline": "Play and comfort",
-      "description": "Monkey's quick shifts may overwhelm Pig's emotional openness, while Pig's vulnerability can feel heavy for Monkey's fast mind. Pig brings warmth and sincerity; Monkey contributes creativity and spark. This pairing requires sensitivity and emotional pacing to stay balanced. Careful communication makes the connection possible but delicate."
+      "heading": "Monkey × Pig — Six Harms (Liu Hai 六害)",
+      "tagline": "Spark and softness",
+      "description": "Monkey and Pig form a Liu Hai (六害) pair. Monkey's teasing and fast shifts can unsettle Pig's open, trusting nature; Pig's emotional openness can feel heavy to a Monkey who prefers to keep things light. Pig offers warmth and generosity; Monkey offers stimulation and novelty. Extra kindness and clear communication are mandatory."
     }
   },
   "rooster": {
     "rat": {
-      "heading": "Rooster × Rat— Break (Po 破)",
-      "tagline": "Details and tactics",
-      "description": "Rooster's precision contrasts with Rat's flexible, quick-thinking approach. Rat brings adaptability and creativity; Rooster adds clarity and structure. As a Po (破) \"Break\" pairing, they tend to shake each other's routines and assumptions about presentation versus practicality. The dynamic feels mentally sharp but easily reactive, with real change triggered when their different priorities collide. Respectful communication keeps the connection functional."
+      "heading": "Rooster × Rat — Neutral (中)",
+      "tagline": "Order versus improvisation",
+      "description": "Rooster wants clear plans, tidy spaces, and high standards; Rat wants flexibility, options, and subtle advantage. Rooster may see Rat as slippery; Rat may see Rooster as nit-picking. When you line up, Rooster sets structure and Rat finds efficient ways to work within it, often to good effect."
     },
     "ox": {
-      "heading": "Rooster × Ox— Same Trine (San He 三合)",
-      "tagline": "Efficient and exacting",
-      "description": "Rooster and Ox share the San He (三合) Strategic trine, creating a strong, focused, and highly dependable bond. Rooster contributes insight and refinement; Ox offers patience and practical strength. You align naturally around commitment and long-term goals. This is one of Rooster's most stable and harmonious partnerships."
+      "heading": "Rooster × Ox — Same Trine (San He 三合)",
+      "tagline": "Work and standards",
+      "description": "Rooster and Ox share the San He (三合) Strategist trine. Ox brings steady effort and reliability; Rooster brings organisation, discipline, and sharp attention to detail. Together you can manage work, money, and daily life competently. Just be sure that feedback doesn't turn into constant criticism."
     },
     "tiger": {
-      "heading": "Rooster × Tiger— Neutral",
-      "tagline": "Pride and critique",
-      "description": "Tiger's bold momentum meets Rooster's careful precision, producing a contrast in pace and communication. Tiger brings courage and initiative; Rooster provides clarity and direction. The pairing works when each values the other's strengths. Shared goals help this connection find balance."
+      "heading": "Rooster × Tiger — Neutral (中)",
+      "tagline": "Rules and risk",
+      "description": "Rooster focuses on doing things properly; Tiger focuses on bold moves and quick decisions. Rooster can protect Tiger from sloppy mistakes; Tiger can help Rooster avoid paralysis by analysis. Without respect, Rooster calls Tiger reckless and Tiger calls Rooster fussy, and nothing changes."
     },
     "rabbit": {
-      "heading": "Rooster × Rabbit— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Delicate vs. direct",
-      "description": "Rabbit's gentle, tactful nature differs strongly from Rooster's direct, detail-oriented style. Rabbit brings softness and emotional nuance; Rooster brings focus and honesty. The connection feels sensitive and easily activated. Clear boundaries and steady appreciation keep the pairing workable."
+      "heading": "Rooster × Rabbit — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Sharp words, soft nerves",
+      "description": "Rooster and Rabbit sit in a Liu Chong (六冲) clash. Rooster speaks plainly and points out flaws; Rabbit is sensitive and avoids heavy conflict. You can help each other—Rooster gives clarity and practicality, Rabbit teaches kindness and timing—but it takes conscious effort to avoid doing damage with words."
     },
     "dragon": {
-      "heading": "Rooster × Dragon— Secret Friend (Liu He 六合)",
-      "tagline": "Show and precision",
-      "description": "Rooster and Dragon share a Liu He (六合) harmony built on mutual vision, loyalty, and clarity. Rooster adds refinement and strategy; Dragon contributes strength and inspiration. Together, you create stability and forward momentum. This is a deeply supportive and capable partnership."
+      "heading": "Rooster × Dragon — Secret Friend (Liu He 六合)",
+      "tagline": "Applause-worthy team",
+      "description": "Rooster and Dragon form a Liu He (六合) pair. Dragon brings vision, charisma, and big aspirations; Rooster refines the plan, checks the details, and keeps the process on track. People often see you as capable and impressive together. The risk is focusing only on outcomes, not emotional connection."
     },
     "snake": {
-      "heading": "Rooster × Snake— Same Trine (San He 三合)",
-      "tagline": "Exact and incisive",
-      "description": "Rooster and Snake form part of the San He (三合) Strategic trine, creating a sharp, perceptive, and intellectually attuned match. Snake brings calm wisdom; Rooster brings precision and focus. The connection feels steady, insightful, and deeply complementary. This is one of Rooster's strongest and most reliable matches."
+      "heading": "Rooster × Snake — Same Trine (San He 三合)",
+      "tagline": "Sharp eyes",
+      "description": "Rooster and Snake share the San He (三合) Strategist trine. Snake sees patterns and timing; Rooster monitors execution and standards. This combination is excellent for complex tasks and demanding environments. Remember to build in pockets of rest and simple enjoyment so life doesn't feel like one long critique session."
     },
     "horse": {
-      "heading": "Rooster × Horse— Neutral",
-      "tagline": "Pace and precision",
-      "description": "Rooster values organisation and detail, while Horse values freedom and instinct. Horse brings vitality and enthusiasm; Rooster adds clarity and structure. The relationship becomes functional when roles are respected. Balance grows through flexibility and shared intention."
+      "heading": "Rooster × Horse — Neutral (中)",
+      "tagline": "List versus spur-of-the-moment",
+      "description": "Rooster prefers lists, structure, and clear commitments; Horse likes spur-of-the-moment decisions and open days. Rooster can help Horse follow through and keep chaos down; Horse can help Rooster be more flexible and spontaneous. It frays if Rooster keeps scolding and Horse keeps ignoring agreements."
     },
     "goat": {
-      "heading": "Rooster × Goat— Neutral",
-      "tagline": "Art and order",
-      "description": "Goat's emotional openness contrasts with Rooster's exacting style, creating a dynamic that requires thoughtful communication. Goat brings warmth and creativity; Rooster brings stability and guidance. The pairing thrives when each honours the other's rhythm. Mutual appreciation keeps the connection grounded."
+      "heading": "Rooster × Goat — Neutral (中)",
+      "tagline": "Critic and carer",
+      "description": "Rooster values correctness and improvement; Goat values emotional tone and comfort. Rooster can help Goat ground their creative ideas and manage practical matters; Goat can help Rooster soften, become more approachable, and enjoy life. If criticism dominates and appreciation is rare, both feel unvalued."
     },
     "monkey": {
-      "heading": "Rooster × Monkey— Neutral",
-      "tagline": "Wit and critique",
-      "description": "Monkey's spontaneity and wit mesh intriguingly with Rooster's order and precision. Monkey injects creativity and fresh ideas; Rooster offers structure and refinement. This bond grows through teamwork and shared goals. Honest, balanced dialogue keeps things smooth."
+      "heading": "Rooster × Monkey — Neutral (中)",
+      "tagline": "Exactness and play",
+      "description": "Rooster checks details and methods; Monkey experiments and shifts. Together you can innovate and still maintain standards, blending creativity with reliability. It breaks down when Rooster labels Monkey as flaky and Monkey responds by mocking or ignoring Rooster's concerns."
     },
     "rooster": {
-      "heading": "Rooster × Rooster— Same Sign (Self-Punishment 相刑)",
-      "tagline": "High standards",
-      "description": "Two Roosters create a relationship full of clarity, drive, and high standards. But as a self-punishment Xing (相刑) pairing, perfectionism and critique can escalate quickly. The connection becomes strong and purposeful when appreciation leads. Warmth softens intensity and allows this match to thrive."
+      "heading": "Rooster × Rooster — Same Sign (同生肖) · Self-Punishment (自刑)",
+      "tagline": "Double critic",
+      "description": "Two Roosters together can run projects, households, and schedules with impressive precision. You share a drive to fix what is wrong and raise standards. As a self-punishment (自刑) match, that critical eye can easily turn on yourselves and each other, so tension never quite relaxes. Regularly naming what you appreciate and consciously easing standards in private life keeps this sharp, capable bond humane."
     },
     "dog": {
-      "heading": "Rooster × Dog— Six Harms (Liu Hai 六害)",
-      "tagline": "Rules and principles",
-      "description": "Rooster prioritises accuracy and directness, while Dog seeks sincerity and emotional truth — creating mismatched communication rhythms. Dog brings devotion and integrity; Rooster brings focus and accountability. Sensitivity and pacing are essential. The bond can work with gentleness but remains delicate."
+      "heading": "Rooster × Dog — Six Harms (Liu Hai 六害)",
+      "tagline": "Too many shoulds",
+      "description": "Rooster and Dog form a Liu Hai (六害) pair. Rooster focuses on \"how things should be done\"; Dog on \"how people should behave.\" You can slide into cycles of complaint and criticism if you're not careful. Balancing this with genuine warmth, humour, and shared small pleasures is essential."
     },
     "pig": {
-      "heading": "Rooster × Pig— Neutral",
-      "tagline": "Critique and care",
-      "description": "Pig's kindness and emotional generosity soften Rooster's intensity, creating a surprisingly balanced dynamic. Pig brings warmth and ease; Rooster adds direction and stability. Though not a classical harmony, the pairing becomes supportive over time. Consistency and trust help this match grow stronger."
+      "heading": "Rooster × Pig — Neutral (中)",
+      "tagline": "Neat and cosy",
+      "description": "Rooster likes things in order; Pig likes them comfortable and inviting. Rooster can keep responsibilities on track; Pig can make life feel warm and enjoyable. It strains if Rooster lectures about indulgence or Pig quietly resents Rooster's rules. Agreeing on what \"good enough\" looks like helps."
     }
   },
   "dog": {
     "rat": {
-      "heading": "Dog × Rat— Neutral",
-      "tagline": "Loyal schemers",
-      "description": "Dog and Rat share perceptiveness and strong instincts but express them differently. Rat's adaptability helps Dog navigate complexity, while Dog's loyalty grounds Rat's restlessness. The connection grows through consistency and emotional honesty. Warm communication keeps the bond steady and supportive."
+      "heading": "Dog × Rat — Neutral (中)",
+      "tagline": "Principle and pragmatism",
+      "description": "Dog cares about fairness and loyalty; Rat cares about survival and workable plans. Together you can cover both ethics and practicality. Conflict arises when Dog sees Rat's manoeuvres as selfish or Rat sees Dog's stances as naïve. Grounded talks about money, promises, and limits are crucial."
     },
     "ox": {
-      "heading": "Dog × Ox— Punishment (Xing 刑)",
-      "tagline": "Duty and devotion",
-      "description": "Both value commitment and sincerity, creating a calm, dependable foundation. Ox brings stability and patience; Dog brings intuition and fairness. As a Xing (刑) punishment pairing, pressure and unspoken resentment can build if duty feels one-sided. When both share the load and talk honestly, shared reliability strengthens the match over time. Mutual encouragement keeps this pairing solid and quietly loyal."
+      "heading": "Dog × Ox — Punishment Pattern (Xing 刑)",
+      "tagline": "Duty versus worry",
+      "description": "Dog and Ox belong to the same \"ungrateful punishment\" (刑) set, where both can feel their efforts are not properly recognised. Ox focuses on carrying responsibilities and doing the hard work; Dog focuses on loyalty, ethics, and whether things feel right. You can quietly achieve a lot if values and goals line up, but if not, Ox may feel unfairly criticised and Dog may feel alone with their concerns. Naming mutual effort and gratitude clearly is essential."
     },
     "tiger": {
-      "heading": "Dog × Tiger— Same Trine (San He 三合)",
-      "tagline": "Loyal fighters",
-      "description": "Dog and Tiger share the San He (三合) Adventurer trine, forming a principled, courageous, and emotionally aligned bond. Tiger brings boldness and passion; Dog brings loyalty, integrity, and protection. You elevate each other's confidence and sense of purpose. This is one of Dog's most reliable and empowering matches."
+      "heading": "Dog × Tiger — Same Trine (San He 三合)",
+      "tagline": "Allied spirits",
+      "description": "Dog and Tiger share the San He (三合) Adventurer trine. Tiger leads with courage and action; Dog with loyalty and conscience. Dog backs Tiger in battles they believe are just, and Tiger stands up for Dog with real force. This is one of Dog's best matches if both avoid reckless decisions that violate Dog's values."
     },
     "rabbit": {
-      "heading": "Dog × Rabbit— Secret Friend (Liu He 六合)",
-      "tagline": "Kind and protective",
-      "description": "Dog and Rabbit form a gentle Liu He (六合) harmony rooted in emotional safety and shared sincerity. Rabbit offers warmth and empathy; Dog provides protection and steadfast loyalty. You understand each other intuitively, creating a peaceful, trusting connection. This is one of Dog's most secure and heartfelt partnerships."
+      "heading": "Dog × Rabbit — Secret Friend (Liu He 六合)",
+      "tagline": "Trusted bond",
+      "description": "Dog and Rabbit form a Liu He (六合) pair. Dog offers protection, direct honesty, and a strong sense of right and wrong; Rabbit offers gentleness, charm, and emotional awareness. You often feel you can be yourselves with each other. Transparency about finances, boundaries, and outside friendships keeps trust high."
     },
     "dragon": {
-      "heading": "Dog × Dragon— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Pride vs. principle",
-      "description": "Dog and Dragon often differ in values and emotional tempo. Dragon seeks recognition and momentum; Dog prioritises integrity and caution. Without clear communication, misunderstandings form quickly. With empathy and patience, the relationship can stabilise — but it requires deliberate effort."
+      "heading": "Dog × Dragon — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Justice versus glory",
+      "description": "Dog and Dragon sit in a Liu Chong (六冲) clash. Dragon wants to shine and achieve; Dog wants things to be fair and principled. Dog may challenge Dragon's motives; Dragon may feel constantly criticised. If you genuinely share core values, Dog can keep Dragon ethical and Dragon can give Dog hope—but it is not an easy road."
     },
     "snake": {
-      "heading": "Dog × Snake— Neutral",
-      "tagline": "Insight and loyalty",
-      "description": "Dog and Snake share emotional perceptiveness but express it in different ways. Snake brings depth and psychological insight; Dog brings sincerity and grounded reassurance. This pairing grows through honesty and mutual respect. Trust becomes the stabilising force of the connection."
+      "heading": "Dog × Snake — Neutral (中)",
+      "tagline": "Straight talk and subtlety",
+      "description": "Dog is blunt and principled; Snake is reserved and strategic. Dog can push for clarity and honesty; Snake can teach nuance, timing, and the value of holding some things back. It fails when Dog suspects manipulation everywhere or Snake feels put on trial for every private thought."
     },
     "horse": {
-      "heading": "Dog × Horse— Same Trine (San He 三合)",
-      "tagline": "Loyal adventurers",
-      "description": "Dog and Horse share the San He (三合) Adventurer trine, creating a purposeful, energetic, and mutually uplifting match. Horse adds optimism and momentum; Dog brings loyalty and emotional steadiness. Together, you align around shared ideals and long-term commitment. This is one of Dog's strongest, most natural partnerships."
+      "heading": "Dog × Horse — Same Trine (San He 三合)",
+      "tagline": "Faithful partners",
+      "description": "Dog and Horse share the San He (三合) Adventurer trine. Horse provides motion, social reach, and enthusiasm; Dog provides loyalty, realism, and protective care. You can build a lively but solid life together. Make sure you both get breaks, as both signs can over-commit for the sake of others."
     },
     "goat": {
-      "heading": "Dog × Goat— Break (Po 破)",
-      "tagline": "Caring and conscientious",
-      "description": "Dog and Goat fall under Po (破), where emotional rhythms and communication styles often clash. Goat expresses through sensitivity; Dog expresses through conviction — creating misunderstandings if unspoken. Still, kindness and patience soften the edges. This connection works best with clear boundaries and steady reassurance."
+      "heading": "Dog × Goat — Punishment Pattern (Xing 刑)",
+      "tagline": "Care that can cut both ways",
+      "description": "Dog and Goat also sit in the \"ungrateful punishment\" (刑) group, so your shared concern can slip into mutual strain. Dog worries about loyalty and justice; Goat worries about belonging and emotional security. You understand each other's fears, but can end up feeling unappreciated or blamed. Deliberate positivity, clear appreciation, and practical plans—rather than just shared worry—keep this from becoming heavy."
     },
     "rooster": {
-      "heading": "Dog × Rooster— Six Harms (Liu Hai 六害)",
-      "tagline": "Rules and principles",
-      "description": "Dog seeks emotional truth, while Rooster values precision and direct critique — a mismatch that can create tension. Dog brings sincerity; Rooster brings clarity, but differing delivery styles cause friction. Gentle communication is essential. With care, the pairing can remain functional but tends to feel delicate."
+      "heading": "Dog × Rooster — Six Harms (Liu Hai 六害)",
+      "tagline": "Too many shoulds",
+      "description": "Dog and Rooster form a Liu Hai (六害) pair. Both think in \"shoulds,\" but Dog focuses on people, Rooster on tasks. You can end up criticising yourselves, each other, and the world without much relief. Deliberately noticing what works—and making space for simple enjoyment—helps a lot."
     },
     "dog": {
-      "heading": "Dog × Dog— Same Sign (同生肖)",
-      "tagline": "Loyal hearts",
-      "description": "Two Dogs form a deeply loyal and principled bond. Shared sensitivity and concern for what's \"right\" can either create a safe emotional home or amplify worry and overthinking. When both practice reassurance and avoid spiralling into worst-case scenarios, the match becomes protective and fulfilling. This pairing creates a strong emotional home when balanced with patience and perspective."
+      "heading": "Dog × Dog — Same Sign (同生肖)",
+      "tagline": "Shared guard duty",
+      "description": "Two Dogs together form a very loyal, very protective pairing. You stand guard over each other and the things you care about, which can feel deeply safe. The risk is ongoing worry, defensiveness, and difficulty relaxing. Learning to trust life a bit, not just each other, makes this far easier."
     },
     "monkey": {
-      "heading": "Dog × Monkey— Neutral",
-      "tagline": "Clever and loyal",
-      "description": "Monkey brings cleverness and adaptability; Dog brings steadiness and loyalty. Their strengths complement each other when communication is open. Monkey helps Dog lighten up, while Dog helps Monkey feel grounded. This match grows through humour and shared problem-solving."
+      "heading": "Dog × Monkey — Neutral (中)",
+      "tagline": "Serious and playful",
+      "description": "Dog values sincerity and clear motives; Monkey values flexibility, humour, and clever angles. Monkey can help Dog see options and lighten up; Dog can teach Monkey the importance of follow-through and trust. It goes badly when Monkey lies or Dog moralises every difference."
     },
     "pig": {
-      "heading": "Dog × Pig— Neutral",
-      "tagline": "Safe and kind",
-      "description": "Pig offers warmth, compassion, and gentle emotional presence; Dog provides loyalty and grounded support. The connection feels kind and nurturing, even without classical harmony. Each boosts the other's emotional wellbeing. Consistency and empathy help this pairing grow into a soft, dependable bond."
+      "heading": "Dog × Pig — Neutral (中)",
+      "tagline": "Guard and host",
+      "description": "Dog stands watch; Pig makes the house a home. Pig brings warmth, optimism, and hospitality; Dog brings realism, boundaries, and protection. This can be a quietly good match when Pig respects Dog's limits and Dog doesn't shame Pig for enjoying life and small luxuries."
     }
   },
   "pig": {
     "rat": {
-      "heading": "Pig × Rat— Neutral",
-      "tagline": "Warm and resourceful",
-      "description": "Rat and Pig create a gentle, supportive connection when both honour each other's emotional pace. Pig brings sincerity and warmth; Rat brings structure and inventive thinking. There's no classical harmony, but goodwill grows naturally. Patience and steady communication make this a nurturing match."
+      "heading": "Pig × Rat — Neutral (中)",
+      "tagline": "Warmth and caution",
+      "description": "Pig is open, generous, and people-oriented; Rat is guarded, cautious, and future-oriented. Pig can make Rat feel seen and accepted; Rat can protect Pig from being taken advantage of and keep long-term plans realistic. It frays when Pig feels constantly controlled or Rat feels forced into the serious role all the time."
     },
     "ox": {
-      "heading": "Pig × Ox— Neutral",
-      "tagline": "Steady and soft",
-      "description": "Ox's reliability blends well with Pig's softness, forming a calm and comforting bond. Pig helps Ox open emotionally, while Ox gives Pig consistency and grounding. Though not part of San He or Liu He, the match deepens beautifully through everyday care. Kindness and stability keep this connection fulfilling."
+      "heading": "Pig × Ox — Neutral (中)",
+      "tagline": "Comfort and effort",
+      "description": "Ox works hard and thinks in terms of duty; Pig values comfort, pleasure, and emotional closeness. Ox can give Pig a stable base; Pig can give Ox a warmer home life and a reason to enjoy their successes. Issues arise if Ox sees Pig as lazy or Pig sees Ox as cold and thankless."
     },
     "tiger": {
-      "heading": "Pig × Tiger— Secret Friend (Liu He 六合)",
-      "tagline": "Brave and generous",
-      "description": "Pig and Tiger share the Liu He (六合) secret-friend harmony, creating a bond of trust, emotional openness, and mutual encouragement. Pig softens Tiger's intensity; Tiger strengthens Pig's confidence. The pairing feels supportive and balanced when communication stays honest and warm. This is one of Pig's most dependable matches."
+      "heading": "Pig × Tiger — Secret Friend (Liu He 六合)",
+      "tagline": "Big heart, big moves",
+      "description": "Pig and Tiger form a Liu He (六合) pair. Tiger brings energy, courage, and a protective instinct; Pig brings acceptance, humour, and emotional warmth. Pig offers Tiger a soft place to land; Tiger helps Pig feel defended in a rough world. Keeping an eye on spending and not burning out in drama is key."
     },
     "rabbit": {
-      "heading": "Pig × Rabbit— Same Trine (San He 三合)",
-      "tagline": "Soft and sweet",
-      "description": "Pig and Rabbit belong to the San He (三合) Artist trine, creating emotional harmony, gentleness, and natural affection. Both value sincerity and emotional connection, making conflict rare. You understand each other intuitively and build comfort easily. This is one of the zodiac's softest, most secure pairings."
+      "heading": "Pig × Rabbit — Same Trine (San He 三合)",
+      "tagline": "Gentle match",
+      "description": "Pig and Rabbit share the San He (三合) Artist trine. Both prefer kindness, ease, and a pleasant environment over harsh competition. Pig adds openness and generosity; Rabbit adds tact and perceptive care. This tends to feel emotionally safe and forgiving, as long as you manage money and chores fairly."
     },
     "dragon": {
-      "heading": "Pig × Dragon— Neutral",
-      "tagline": "Bold and kind",
-      "description": "Dragon offers strength and vision; Pig offers warmth and empathy. The match feels caring and quietly aspirational when both stay patient. Pig tempers Dragon's intensity, while Dragon boosts Pig's confidence. With steady communication, the relationship grows in a grounded, supportive way."
+      "heading": "Pig × Dragon — Neutral (中)",
+      "tagline": "Soft touch, strong push",
+      "description": "Dragon pushes toward big goals and visible progress; Pig wants everyone to feel okay along the way. Pig can humanise Dragon and remind them why success matters; Dragon can stop Pig from drifting and bring structure. You must meet in the middle on pace, ambition, and lifestyle."
     },
     "snake": {
-      "heading": "Pig × Snake— Clash Pair (Liu Chong 六冲)",
-      "tagline": "Guarded vs. open",
-      "description": "Pig and Snake form a Liu Chong (六冲) clash, where emotional expression and priorities differ sharply. Snake's reserve may confuse Pig's openness, while Pig's vulnerability can overwhelm Snake's inward style. This match needs clear boundaries and emotional transparency. Without them, misunderstandings escalate quickly."
+      "heading": "Pig × Snake — Clash Pair (Liu Chong 六冲)",
+      "tagline": "Opposite instincts",
+      "description": "Pig and Snake form a Liu Chong (六冲) pair. Pig is trusting, open, and comfort-seeking; Snake is cautious, selective, and self-protective. Pig may feel judged or kept at arm's length; Snake may feel overwhelmed by Pig's emotional intensity or openness. Strong boundaries and shared values are needed to keep this reasonably steady."
     },
     "horse": {
-      "heading": "Pig × Horse— Neutral",
-      "tagline": "Fun and comfort",
-      "description": "Pig seeks emotional depth; Horse seeks freedom and movement — a rhythm that requires pacing. Pig brings warmth and compassion; Horse brings enthusiasm and momentum. With respect for each other's needs, the connection feels wholesome and uplifting. Patience helps this pairing become steady and supportive."
+      "heading": "Pig × Horse — Neutral (中)",
+      "tagline": "Party and pillow",
+      "description": "Horse thrives on action and external stimulation; Pig enjoys cosy enjoyment, good food, and emotional intimacy. Together you can host well, have fun, and build a social life. But if Horse keeps moving and Pig keeps nesting, your daily rhythms diverge. Planning both busy nights and quiet ones helps."
     },
     "goat": {
-      "heading": "Pig × Goat— Same Trine (San He 三合)",
-      "tagline": "Gentle nesters",
-      "description": "Pig and Goat share the San He (三合) Artist trine, forming a heartfelt, intuitive, and emotionally rich match. Both are gentle, thoughtful, and nurturing, making the bond naturally safe. You comfort each other easily and speak a similar emotional language. This is one of the most compassionate and peaceful relationships in the zodiac."
+      "heading": "Pig × Goat — Same Trine (San He 三合)",
+      "tagline": "Kindred comfort-seekers",
+      "description": "Pig and Goat share the San He (三合) Artist trine. Both value affection, beauty, and a gentle pace. Goat brings creativity and sensitivity; Pig brings generosity and good humour. This is one of Pig's most naturally affectionate matches, as long as you don't put off every hard decision."
     },
     "monkey": {
-      "heading": "Pig × Monkey— Six Harms (Liu Hai 六害)",
-      "tagline": "Play and comfort",
-      "description": "Pig values warmth and emotional steadiness, while Monkey moves quickly and unpredictably. Their rhythms differ, creating misunderstandings if not managed gently. Pig may feel unsettled; Monkey may feel restricted. With patience, the match stays friendly, but it remains a delicate pairing overall."
+      "heading": "Pig × Monkey — Six Harms (Liu Hai 六害)",
+      "tagline": "Soft versus sharp",
+      "description": "Pig and Monkey form a Liu Hai (六害) pair. Pig is open and literal; Monkey is quick, teasing, and sometimes emotionally evasive. Pig can feel wounded by offhand remarks; Monkey can feel weighed down by heavy feelings. Clear limits around joking, honesty, and what's off-limits are mandatory."
     },
     "rooster": {
-      "heading": "Pig × Rooster— Neutral",
-      "tagline": "Critique and care",
-      "description": "Rooster's directness blends surprisingly well with Pig's warmth and sincerity when both communicate gently. Pig softens Rooster's rigidity; Rooster adds structure that strengthens Pig's confidence. Though not a classical harmony, the relationship becomes emotionally supportive with patience. Kindness and consistency keep the match thriving."
+      "heading": "Pig × Rooster — Neutral (中)",
+      "tagline": "Order and indulgence",
+      "description": "Rooster likes things in order and done properly; Pig likes them comfortable and enjoyable. Rooster can help Pig keep life running smoothly; Pig can help Rooster relax and be less hard on themselves. It strains if Rooster lectures about indulgence or Pig quietly ignores every rule."
     },
     "dog": {
-      "heading": "Pig × Dog— Neutral",
-      "tagline": "Safe and kind",
-      "description": "Pig brings empathy and emotional softness; Dog brings loyalty and grounded reassurance. This pairing feels kind, safe, and mutually supportive even without San He or Liu He alignment. Pig calms Dog's internal tension, while Dog protects Pig's sensitive nature. The bond grows through warmth and steady honesty."
+      "heading": "Pig × Dog — Neutral (中)",
+      "tagline": "Protector and nurturer",
+      "description": "Dog brings loyalty, realism, and protection; Pig brings warmth, optimism, and care. Pig can make Dog feel appreciated and less alone with their worries; Dog can make Pig feel safe and anchored. It can become heavy if Dog worries constantly and Pig tries to cheer it away instead of listening, so real conversations about fear and hope are important."
     },
     "pig": {
-      "heading": "Pig × Pig— Same Sign (Self-Punishment Xing 相刑)",
+      "heading": "Pig × Pig — Same Sign (同生肖) · Self-Punishment (自刑)",
       "tagline": "Extra-soft landing",
-      "description": "Two Pigs create a nurturing, compassionate connection filled with generosity and emotional sincerity. But as a self-punishment Xing (相刑) pairing, shared softness can lead to avoidance or emotional overwhelm. Healthy boundaries and open communication keep the match balanced. When aligned, this becomes a deeply loving and comforting partnership."
+      "description": "Two Pigs together usually create a generous, forgiving, and emotionally open bond with plenty of comfort and shared pleasures. Because this is a self-punishment (自刑) pattern, the same softness can slip into avoidance, overindulgence, and quietly repeating the same mistakes around money or boundaries. Gentle but honest conversations about limits, spending, and self-care keep this match deeply loving and comforting instead of a place where you both hide from problems."
     }
   }
 };
@@ -760,745 +760,745 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
   "aries": {
     "aries": {
       "heading": "Aries × Aries — Same Element (Fire + Fire)",
-      "tagline": "Double spark",
-      "description": "Two Aries create a bold, fast-moving connection built on excitement, initiative, and honesty. You energise each other to take risks and chase what you want. The challenge is learning when to slow down and listen so passion doesn't turn into constant battles."
+      "tagline": "Two sparks, one fuse",
+      "description": "Two Aries together create a fast, direct, and high-energy connection. You push each other to act, try things, and be honest—sometimes brutally. The upside is momentum and passion; the downside is temper and pride. This pairing works when you learn to cool off, apologise quickly, and respect each other's need for independence."
     },
     "taurus": {
-      "heading": "Aries × Taurus — Semi-Compatible (Fire + Earth)",
-      "tagline": "Speed vs stability",
-      "description": "Aries wants action and change; Taurus wants security and steady progress. This can feel like accelerator versus handbrake, but also creates a powerful builder–starter duo. It works best when Aries respects Taurus' pacing and Taurus gives Aries room to move."
+      "heading": "Aries × Taurus — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Speed meets steadiness",
+      "description": "Aries wants movement and quick decisions; Taurus prefers to take time and secure the ground first. Aries can wake Taurus up and stop life from becoming stagnant, while Taurus can give Aries a stable base and help turn impulses into something lasting. It breaks down if Aries feels blocked at every turn or Taurus feels pushed and ignored. Clear agreements about money and pace are vital."
     },
     "gemini": {
       "heading": "Aries × Gemini — Compatible Elements (Fire + Air)",
-      "tagline": "Instant chemistry",
-      "description": "Aries brings drive and courage; Gemini brings ideas and playful curiosity. Together you create a lively, impulsive, and mentally stimulating bond with lots of movement. You'll need some grounding to follow through on plans instead of just chasing the next shiny thing."
+      "tagline": "Spark and talk",
+      "description": "Aries brings initiative and courage; Gemini brings ideas, information, and flexibility. This can be a light, active, and socially busy match where plans change often and boredom is rare. Neither sign likes heavy emotional drama or long sulks, which helps. The weak spot is follow-through—lots starts, not everything finishes—so a bit of structure goes a long way."
     },
     "cancer": {
-      "heading": "Aries × Cancer — Clashing Elements (Fire + Water)",
-      "tagline": "Heat and tides",
-      "description": "Aries is direct and fiery; Cancer is protective and emotionally attuned. Attraction can be strong, but emotional triggers and defensiveness flare quickly. Clear reassurance and compassion on both sides are essential if this pairing is going to feel safe, not exhausting."
+      "heading": "Aries × Cancer — Challenging Elements (Fire + Water)",
+      "tagline": "Heat and tide",
+      "description": "Aries moves quickly and speaks plainly; Cancer feels deeply and reacts to tone as much as content. Aries can help Cancer be bolder and less stuck in old hurts; Cancer can teach Aries to slow down, listen, and actually process feelings. If Aries dismisses emotion as \"overreacting\" or Cancer clings and guilt-trips, both feel unsafe. You need strong boundaries and real patience for this to work long-term."
     },
     "leo": {
       "heading": "Aries × Leo — Same Element (Fire + Fire)",
-      "tagline": "Royal flames",
-      "description": "Aries and Leo share confidence, passion, and a love of big gestures. This is a fiery, charismatic pairing that attracts attention and thrives on shared adventures. Learning to share leadership and apologise when ego gets in the way keeps the connection golden."
+      "tagline": "Big energy, big ego",
+      "description": "Aries and Leo together create a confident, dramatic pairing. Aries brings raw drive and willingness to start; Leo brings warmth, loyalty, and a taste for doing things in style. You energise each other and tend to make bold moves when aligned. Problems come when ego wounds pile up—jealousy, competition for attention, or feeling under-appreciated. Regular, genuine praise on both sides keeps this strong."
     },
     "virgo": {
-      "heading": "Aries × Virgo — Semi-Compatible (Fire + Earth)",
-      "tagline": "Impulse meets precision",
-      "description": "Aries acts first and refines later; Virgo prefers to analyse and plan before moving. This can be frustrating or incredibly effective, depending on respect levels. When you value each other's strengths, you become a problem-solving team that actually gets things done."
+      "heading": "Aries × Virgo — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Impulse and precision",
+      "description": "Aries wants to move fast; Virgo wants to get it right. Virgo can help Aries refine plans, avoid obvious mistakes, and take better care of daily details; Aries can stop Virgo from getting stuck in worry or analysis. It turns sour if Virgo slides into constant criticism or Aries refuses to listen to any feedback. Agreeing on where detail matters and where it doesn't is crucial."
     },
     "libra": {
-      "heading": "Aries × Libra — Compatible Elements (Fire + Air), Opposites",
-      "tagline": "Opposites in orbit",
-      "description": "Aries brings raw initiative; Libra brings balance and awareness of others. As true opposites, you constantly negotiate independence versus partnership. When you see each other as complements rather than adversaries, the relationship becomes dynamic, exciting, and surprisingly educational."
+      "heading": "Aries × Libra — Opposite Signs (Fire + Air)",
+      "tagline": "Me versus we",
+      "description": "Aries and Libra sit opposite each other in the zodiac. Aries is about action, directness, and \"I\"; Libra is about balance, diplomacy, and \"we.\" The attraction can be strong, as each has what the other lacks: Aries provides decisiveness; Libra provides perspective and social skill. The tension shows up around conflict—Aries pushes, Libra negotiates or retreats. This works when decisions are shared and neither side is forced into a role they resent."
     },
     "scorpio": {
-      "heading": "Aries × Scorpio — Clashing Elements (Fire + Water)",
-      "tagline": "Intense and uncompromising",
-      "description": "Both signs are strong-willed and allergic to weakness, but Aries burns openly while Scorpio moves in deeper emotional currents. Power struggles and jealousy can flare if trust isn't rock solid. With honesty and mutual respect, the chemistry is potent but never lightweight."
+      "heading": "Aries × Scorpio — Challenging Elements (Fire + Water)",
+      "tagline": "Surface heat, deep currents",
+      "description": "Aries is direct and explosive; Scorpio is controlled on the surface but intense underneath. Both are strong-willed and dislike feeling weak, which makes for powerful chemistry and serious fights. Aries can bring issues into the open; Scorpio can bring depth and focus. It becomes destructive if anger turns into revenge or endless tests. Clean honesty and clear lines around trust are mandatory."
     },
     "sagittarius": {
       "heading": "Aries × Sagittarius — Same Element (Fire + Fire)",
-      "tagline": "Adventure buddies",
-      "description": "Aries and Sagittarius both crave freedom, exploration, and new experiences. This pairing is fun, upbeat, and great for travel, projects, or big life changes. The key is adding a bit of structure so everything doesn't stay in \"just vibes\" mode."
+      "tagline": "Adventure partners",
+      "description": "Aries and Sagittarius together create a very active, forward-moving match. Aries has the push to start; Sagittarius has the appetite for exploration, travel, and big ideas. You are likely to share humour and dislike heavy routines or emotional stagnation. The risk is restlessness and a tendency to avoid hard, boring work. Shared goals and at least a simple plan keep this from just being chaos with good stories."
     },
     "capricorn": {
-      "heading": "Aries × Capricorn — Semi-Compatible (Fire + Earth)",
-      "tagline": "Drive meets discipline",
-      "description": "Aries wants fast wins; Capricorn wants long-term results. You're both ambitious but differ in patience and style. When you align on shared goals, this becomes a powerful builder–initiator combination that can move mountains."
+      "heading": "Aries × Capricorn — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Risk and strategy",
+      "description": "Aries wants to charge; Capricorn wants a plan and a reason. Capricorn can help Aries channel raw drive into something that actually pays off; Aries can help Capricorn act sooner and not over-delay moves out of caution. Power struggles are common if Aries resents Capricorn's authority or Capricorn sees Aries as reckless. This match is strongest when you agree on a shared mission and clear roles."
     },
     "aquarius": {
       "heading": "Aries × Aquarius — Compatible Elements (Fire + Air)",
-      "tagline": "Rebels in sync",
-      "description": "Aries supplies courage and raw momentum; Aquarius supplies vision and a bigger picture. You understand each other's need for independence and doing life differently. The bond feels progressive, energetic, and future-focused when you allow space and avoid control games."
+      "tagline": "Rebel team",
+      "description": "Aries brings courage and willingness to act; Aquarius brings perspective, ideas, and a taste for doing things differently. Both value freedom and dislike petty control, which can make this feel like a \"partners in crime\" vibe. Emotions may be handled more via logic and humour than tears. The main risk is detachment—someone has to remember to check in on feelings, not just plans and principles."
     },
     "pisces": {
-      "heading": "Aries × Pisces — Clashing Elements (Fire + Water)",
-      "tagline": "Action vs sensitivity",
-      "description": "Aries is blunt and fast; Pisces is gentle, intuitive, and easily overwhelmed. You can inspire each other—Aries helps Pisces act, Pisces helps Aries feel—but missteps sting. Clear boundaries and kindness are required so neither feels trampled or burdened."
+      "heading": "Aries × Pisces — Challenging Elements (Fire + Water)",
+      "tagline": "Blade and mist",
+      "description": "Aries is clear, fast, and openly assertive; Pisces is sensitive, impressionistic, and often indirect. Aries can give Pisces backbone and help them set boundaries; Pisces can soften Aries, expand empathy, and open intuitive, creative channels. If Aries steamrolls Pisces' feelings or Pisces avoids direct talks altogether, confusion and hurt build quickly. You need extra clarity around expectations, time, and money for this to stay balanced."
     }
   },
   "taurus": {
     "aries": {
-      "heading": "Taurus × Aries — Semi-Compatible (Earth + Fire)",
-      "tagline": "Speed vs stability",
-      "description": "Aries wants action and change; Taurus wants security and steady progress. This can feel like accelerator versus handbrake, but also creates a powerful builder–starter duo. It works best when Aries respects Taurus' pacing and Taurus gives Aries room to move."
+      "heading": "Taurus × Aries — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Steady ground, quick spark",
+      "description": "Taurus likes to move slowly and secure what they have; Aries wants speed and immediate action. Taurus can give Aries stability, loyalty, and practical follow-through, while Aries pushes Taurus out of ruts and into new experiences. It breaks when Taurus feels bulldozed and Aries feels blocked at every turn."
     },
     "taurus": {
       "heading": "Taurus × Taurus — Same Element (Earth + Earth)",
-      "tagline": "Solid ground",
-      "description": "Two Taureans form a steady, sensual pairing rooted in loyalty, comfort, and shared routines. You understand each other's need for stability and simple pleasures. The work is to avoid getting stuck in stubborn stand-offs or letting life become too predictable."
+      "tagline": "Slow build, solid base",
+      "description": "Two Taureans together create a relationship built around security, routine, and physical comfort. You usually value loyalty, decent food, and a dependable home life. The risk is stubbornness and stagnation—once habits form, they are hard to change, even when they no longer work."
     },
     "gemini": {
-      "heading": "Taurus × Gemini — Semi-Compatible (Earth + Air)",
-      "tagline": "Stillness vs scatter",
-      "description": "Taurus loves consistency; Gemini needs variety and mental stimulation. You can either balance each other or feel permanently out of sync. Simple shared rituals plus freedom to roam mentally keep this pairing feeling fresh but safe."
+      "heading": "Taurus × Gemini — Semi-compatible Elements (Earth + Air)",
+      "tagline": "Body and mind at different speeds",
+      "description": "Taurus wants consistency; Gemini wants variety, conversation, and movement. Taurus can anchor Gemini and turn ideas into something tangible; Gemini can bring fresh perspectives and social life into Taurus' world. It frays if Taurus feels talked at and not cared for, or Gemini feels life has turned into a fixed routine."
     },
     "cancer": {
       "heading": "Taurus × Cancer — Compatible Elements (Earth + Water)",
-      "tagline": "Home builders",
-      "description": "Taurus and Cancer both crave security, closeness, and a sense of home. Taurus offers reliability and practical support; Cancer brings emotional care and intuition. The connection is naturally nurturing and long-term, as long as you talk about needs rather than expecting mind-reading."
+      "tagline": "Home and hearth",
+      "description": "Taurus and Cancer both care about safety, food, and a secure emotional base. Taurus brings practical reliability and material support; Cancer brings emotional warmth and attentiveness. This is one of Taurus' most naturally homely matches, as long as you stay honest about money and do not smother each other with worry."
     },
     "leo": {
-      "heading": "Taurus × Leo — Clashing Elements (Earth + Fire)",
-      "tagline": "Fixed vs flashy",
-      "description": "Taurus wants comfort and stability; Leo wants expression, drama, and recognition. You're both fixed signs, so once you clash, nobody wants to budge. Mutual admiration and shared creative or financial goals help you feel like a power couple instead of opponents."
+      "heading": "Taurus × Leo — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Pride and pleasure",
+      "description": "Taurus enjoys comfort and steady affection; Leo wants attention, fun, and recognition. Taurus can offer Leo loyalty and a consistent presence; Leo adds sparkle, romance, and a sense of occasion. Power struggles around money, lifestyle, and who gets their way can wear you down if not named openly."
     },
     "virgo": {
       "heading": "Taurus × Virgo — Same Element (Earth + Earth)",
-      "tagline": "Practical harmony",
-      "description": "Taurus and Virgo both value reliability, quality, and tangible progress. Taurus brings patience and sensuality; Virgo brings refinement and attention to detail. The connection feels grounded and competent, though you'll want to schedule fun so life isn't all chores."
+      "tagline": "Practical pair",
+      "description": "Taurus and Virgo share a grounded, realistic outlook. Taurus contributes endurance and a taste for simple pleasures; Virgo brings organisation and attention to detail. You are usually on the same page about work ethic and responsibility. The danger is becoming overly critical or pessimistic instead of enjoying what you build."
     },
     "libra": {
-      "heading": "Taurus × Libra — Semi-Compatible (Earth + Air)",
-      "tagline": "Beauty and balance",
-      "description": "Both appreciate aesthetics and comfort, but Taurus is more physical and fixed, while Libra is more social and flexible. Taurus wants clear commitments; Libra wants options and diplomacy. Open talks about expectations transform this into a graceful, stylish, and cooperative match."
+      "heading": "Taurus × Libra — Semi-compatible Elements (Earth + Air)",
+      "tagline": "Taste and comfort",
+      "description": "Both signs appreciate beauty and pleasant surroundings, but in different ways. Taurus is tactile and comfort-driven; Libra is social and focused on balance and charm. You can create a stylish, enjoyable life together if money and values line up. If not, fights over spending, friends, or standards of \"nice\" living pop up often."
     },
     "scorpio": {
-      "heading": "Taurus × Scorpio — Compatible Elements (Earth + Water), Opposites",
-      "tagline": "Possessive polarity",
-      "description": "Taurus and Scorpio are opposite signs who both like depth, loyalty, and staying power. Taurus focuses on material and sensual security; Scorpio focuses on emotional and psychological intensity. When trust is high, this feels like a powerful, all-in bond—with a strong need for honesty and boundaries."
+      "heading": "Taurus × Scorpio — Opposite Signs (Earth + Water)",
+      "tagline": "Possession and depth",
+      "description": "Taurus and Scorpio oppose each other in the zodiac, both strong-willed and private about what matters most. Taurus seeks physical and financial security; Scorpio seeks emotional and psychological depth. You can form a powerful, loyal bond that does not rattle easily. But jealousy, control, and grudges can turn this into a long, quiet war if trust is broken."
     },
     "sagittarius": {
-      "heading": "Taurus × Sagittarius — Clashing Elements (Earth + Fire)",
-      "tagline": "Roots vs wings",
-      "description": "Taurus seeks calm, routine, and tangible results; Sagittarius seeks adventure, growth, and open horizons. This can feel like you're pulling in different directions. It works best when you create a stable base together and explore from there, rather than living in extremes."
+      "heading": "Taurus × Sagittarius — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Anchor and wild card",
+      "description": "Taurus wants predictability; Sagittarius wants movement, stimulation, and room to roam. Taurus can help Sagittarius actually land ideas and build something lasting; Sagittarius can stop Taurus from living the same year on repeat. The match strains if Taurus tries to clip Sagittarius' wings or Sagittarius treats Taurus' need for stability as a joke."
     },
     "capricorn": {
       "heading": "Taurus × Capricorn — Same Element (Earth + Earth)",
-      "tagline": "Power builders",
-      "description": "Taurus and Capricorn share a strong work ethic and desire for long-term stability. Taurus adds patience and enjoyment; Capricorn adds ambition and structure. The relationship feels serious and reliable, especially when you remember to celebrate and rest, not just grind."
+      "tagline": "Long-term builders",
+      "description": "Taurus and Capricorn both think in terms of work, results, and long-range security. Taurus brings patience and a focus on comfort; Capricorn brings ambition, structure, and toughness during hard phases. Together you can climb steadily. Just be careful life doesn't become all duty and no joy."
     },
     "aquarius": {
-      "heading": "Taurus × Aquarius — Semi-Compatible (Earth + Air)",
-      "tagline": "Traditional vs radical",
-      "description": "Taurus often prefers tried-and-true methods; Aquarius likes innovation and shaking things up. You might frustrate each other's pace and priorities. Respecting each other's values can create a dynamic where Taurus stabilises Aquarius' visions and Aquarius opens Taurus to new possibilities."
+      "heading": "Taurus × Aquarius — Semi-compatible Elements (Earth + Air)",
+      "tagline": "Traditional meets experimental",
+      "description": "Taurus often trusts what is proven; Aquarius wants to try what is new or unconventional. Taurus can make Aquarius' ideas workable in the real world; Aquarius can widen Taurus' outlook and challenge fixed assumptions. It fails when Taurus feels destabilised and Aquarius feels locked into a script they never chose."
     },
     "pisces": {
       "heading": "Taurus × Pisces — Compatible Elements (Earth + Water)",
-      "tagline": "Soft landing",
-      "description": "Taurus brings grounding and physical comfort; Pisces brings imagination and emotional sensitivity. Together you create a soothing, romantic, and creative atmosphere. Clear boundaries around money and responsibilities help this dreamy combo stay practical enough to work."
+      "tagline": "Practical magic",
+      "description": "Taurus gives Pisces something to lean on—material stability, routines, and patience. Pisces brings imagination, softness, and a sense of spiritual or artistic dimension to everyday life. This pairing can feel quietly enchanted when boundaries are kept clear and escapism, debt, or avoidance don't take over."
     }
   },
   "gemini": {
     "aries": {
       "heading": "Gemini × Aries — Compatible Elements (Air + Fire)",
-      "tagline": "Instant chemistry",
-      "description": "Aries brings drive and courage; Gemini brings ideas and playful curiosity. Together you create a lively, impulsive, and mentally stimulating bond with lots of movement. You'll need some grounding to follow through on plans instead of just chasing the next shiny thing."
+      "tagline": "Words and action",
+      "description": "Gemini comes with ideas and curiosity; Aries brings courage and follow-through. Together you tend to move quickly from thought to action. This match stays light and lively when you both avoid drama-for-drama's sake. Commitments and deeper feelings need to be handled intentionally, not just joked about."
     },
     "taurus": {
-      "heading": "Gemini × Taurus — Semi-Compatible (Air + Earth)",
-      "tagline": "Stillness vs scatter",
-      "description": "Taurus loves consistency; Gemini needs variety and mental stimulation. You can either balance each other or feel permanently out of sync. Simple shared rituals plus freedom to roam mentally keep this pairing feeling fresh but safe."
+      "heading": "Gemini × Taurus — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Wind over soil",
+      "description": "Gemini wants variety and mental stimulation; Taurus wants predictability and tangible results. Gemini can stop Taurus from getting stuck and bring fresh contacts and information; Taurus can help Gemini slow down enough to actually build something. It wears thin if Gemini feels bored or Taurus feels everything is up in the air."
     },
     "gemini": {
       "heading": "Gemini × Gemini — Same Element (Air + Air)",
-      "tagline": "Talking in stereo",
-      "description": "Two Geminis create a lively, mentally stimulating bond full of conversation, ideas, and playful banter. You \"get\" each other's curiosity, humour, and need for variety. To keep things satisfying long-term, you'll need intention around emotional depth, not just endless chatter."
+      "tagline": "Twin talk",
+      "description": "Two Geminis together create a quick, changeable atmosphere full of talk, jokes, and shifting ideas. You understand each other's need for freedom and mental variety. The risk is superficiality—hard feelings or long-term issues can be analysed but never resolved. This works best when you agree on a few non-negotiables and honour them."
     },
     "cancer": {
-      "heading": "Gemini × Cancer — Semi-Compatible (Air + Water)",
-      "tagline": "Head vs heart",
-      "description": "Gemini leads with thoughts; Cancer leads with feelings. This can be beautifully complementary or a source of mutual frustration. Regular check-ins about emotional needs and communication style are essential if this pairing is going to feel secure rather than confused."
+      "heading": "Gemini × Cancer — Challenging Elements (Air + Water)",
+      "tagline": "Head and heart mismatch",
+      "description": "Gemini tends to stay in their head; Cancer in their feelings. Cancer may experience Gemini as detached or inconsistent; Gemini may experience Cancer as heavy or moody. At best, Gemini can help Cancer see things from different angles, and Cancer can teach Gemini emotional depth. You need real patience and clear reassurance to bridge the gap."
     },
     "leo": {
       "heading": "Gemini × Leo — Compatible Elements (Air + Fire)",
-      "tagline": "Party duo",
-      "description": "Gemini and Leo both love fun, drama, and self-expression. Gemini brings witty commentary and flexibility; Leo brings warmth, flair, and confidence. The relationship feels bright and social, thriving on shared adventures and creative projects."
+      "tagline": "Story and spotlight",
+      "description": "Leo likes to be recognised and fully engaged; Gemini likes to keep things interesting and communicative. Gemini can promote Leo's talents and keep conversations fun; Leo brings warmth, loyalty, and a sense of theatre. This is a naturally social pairing if jealousy, pride, and stray flirting are kept in check."
     },
     "virgo": {
-      "heading": "Gemini × Virgo — Semi-Compatible (Air + Earth)",
-      "tagline": "Mental mechanics",
-      "description": "Both ruled by Mercury, Gemini and Virgo share sharp minds but different priorities. Gemini likes breadth and variety; Virgo likes depth and precision. When you respect that difference, you become an excellent problem-solving pair—chatty but effective."
+      "heading": "Gemini × Virgo — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Two problem-solvers, no driver",
+      "description": "Both Gemini and Virgo are ruled by Mercury and want information and clear thinking. Gemini explores broadly; Virgo analyses deeply. You can talk through problems in detail and adapt when needed. The issue is scattered focus and overthinking—someone has to decide and act, not just refine the plan."
     },
     "libra": {
       "heading": "Gemini × Libra — Same Element (Air + Air)",
-      "tagline": "Social symphony",
-      "description": "Gemini and Libra both thrive on conversation, ideas, and connection. Gemini brings curiosity and speed; Libra brings grace, diplomacy, and a sense of fairness. The bond feels easy, light, and charming, as long as someone is willing to make firm decisions when needed."
+      "tagline": "Social breeze",
+      "description": "Gemini and Libra both enjoy conversation, ideas, and a certain lightness in relationships. Gemini brings variety, quick humour, and adaptability; Libra brings charm, diplomacy, and a focus on fairness. The pairing is easy socially, but decisions and deeper emotional work can get delayed. Putting time limits on big choices can help."
     },
     "scorpio": {
-      "heading": "Gemini × Scorpio — Clashing Elements (Air + Water)",
-      "tagline": "Mind vs mystery",
-      "description": "Gemini wants openness and options; Scorpio wants depth, loyalty, and emotional truth. You fascinate each other but may struggle with trust and consistency. Honest boundaries and real vulnerability are needed if this pairing is going to move beyond cat-and-mouse."
+      "heading": "Gemini × Scorpio — Challenging Elements (Air + Water)",
+      "tagline": "Curiosity meets intensity",
+      "description": "Gemini prefers to keep things moving and avoid heavy emotional entanglement; Scorpio tends to go deep, attach strongly, and test loyalties. The fascination can be real—each has what the other lacks. But Scorpio may experience Gemini as shallow or unreliable, and Gemini may find Scorpio too controlling or intense. You need strong boundaries and unusually clear communication."
     },
     "sagittarius": {
-      "heading": "Gemini × Sagittarius — Compatible Elements (Air + Fire), Opposites",
-      "tagline": "Wandering minds",
-      "description": "Gemini and Sagittarius are opposite signs that both love learning and movement. Gemini gathers information; Sagittarius seeks big-picture meaning. The connection feels adventurous, philosophical, and fun, but it needs some shared structure to last."
+      "heading": "Gemini × Sagittarius — Opposite Signs (Air + Fire)",
+      "tagline": "Axes of exploration",
+      "description": "Gemini and Sagittarius oppose each other in the zodiac, sharing a love of learning and movement but in different styles. Gemini collects bits of information and samples many things; Sagittarius seeks big-picture meaning and long journeys. You can travel, talk, and grow a lot together. Commitment and daily structure must be handled on purpose, not left to chance."
     },
     "capricorn": {
-      "heading": "Gemini × Capricorn — Clashing Elements (Air + Earth)",
-      "tagline": "Ideas vs execution",
-      "description": "Gemini brings flexibility and curiosity; Capricorn brings focus and long-term planning. At times you feel like you're on different timelines. When you sync up, Gemini opens doors and Capricorn walks through them—making this a surprisingly effective partnership."
+      "heading": "Gemini × Capricorn — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Ideas and outcomes",
+      "description": "Gemini brings options and improvisation; Capricorn brings direction and discipline. Capricorn can help Gemini focus on what actually matters and what will last; Gemini can help Capricorn avoid pessimism and rigid thinking. If Capricorn dismisses Gemini as flaky or Gemini sees Capricorn as a killjoy, the bond cools quickly."
     },
     "aquarius": {
       "heading": "Gemini × Aquarius — Same Element (Air + Air)",
-      "tagline": "Future talkers",
-      "description": "Gemini and Aquarius both live in the realm of ideas and possibilities. Gemini loves questions; Aquarius loves vision and principle. The relationship feels mentally electric and socially active, though you'll need deliberate emotional presence so it doesn't stay purely in the head."
+      "tagline": "Unusual allies",
+      "description": "Gemini and Aquarius both value freedom, ideas, and mental stimulation. Gemini flits; Aquarius fixates on a cause or framework. Together you can talk for hours, experiment with lifestyle, and give each other space. You need to consciously check in emotionally so the relationship doesn't become a friendship-with-benefits by accident."
     },
     "pisces": {
-      "heading": "Gemini × Pisces — Semi-Compatible (Air + Water)",
-      "tagline": "Dreamy debates",
-      "description": "Gemini processes verbally; Pisces processes emotionally and intuitively. You can either enchant or confuse each other. Gentle communication and patience with different realities keep this pairing magical instead of messy."
+      "heading": "Gemini × Pisces — Challenging Elements (Air + Water)",
+      "tagline": "Logic and clouds",
+      "description": "Gemini handles life through language and quick reasoning; Pisces handles it through feeling and intuition. Misunderstandings are easy: Pisces may feel talked around, Gemini may feel dragged into a fog. At best, Gemini gives words to Pisces' impressions and Pisces gives Gemini access to deeper feeling. This is delicate and needs clear boundaries."
     }
   },
   "cancer": {
     "aries": {
-      "heading": "Cancer × Aries — Clashing Elements (Fire + Water)",
-      "tagline": "Heat and tides",
-      "description": "Aries is direct and fiery; Cancer is protective and emotionally attuned. Attraction can be strong, but emotional triggers and defensiveness flare quickly. Clear reassurance and compassion on both sides are essential if this pairing is going to feel safe, not exhausting."
+      "heading": "Cancer × Aries — Challenging Elements (Water + Fire)",
+      "tagline": "Tide and spark",
+      "description": "Cancer seeks emotional safety and continuity; Aries seeks action and straightforward conflict. Aries can help Cancer be more direct and less stuck in old hurts; Cancer can help Aries understand emotional nuance and family needs. It becomes draining if Cancer always feels attacked or Aries always feels blamed."
     },
     "taurus": {
-      "heading": "Cancer × Taurus — Compatible Elements (Earth + Water)",
-      "tagline": "Home builders",
-      "description": "Taurus and Cancer both crave security, closeness, and a sense of home. Taurus offers reliability and practical support; Cancer brings emotional care and intuition. The connection is naturally nurturing and long-term, as long as you talk about needs rather than expecting mind-reading."
+      "heading": "Cancer × Taurus — Compatible Elements (Water + Earth)",
+      "tagline": "Homebuilders",
+      "description": "Cancer and Taurus both like comfort, security, and a stable home base. Taurus brings reliability and material steadiness; Cancer brings emotional care and a sense of family or tradition. This is one of Cancer's easiest long-term matches if you stay aligned on money and boundaries with relatives."
     },
     "gemini": {
-      "heading": "Cancer × Gemini — Semi-Compatible (Water + Air)",
-      "tagline": "Head vs heart",
-      "description": "Gemini leads with thoughts; Cancer leads with feelings. This can be beautifully complementary or a source of mutual frustration. Regular check-ins about emotional needs and communication style are essential if this pairing is going to feel secure rather than confused."
+      "heading": "Cancer × Gemini — Challenging Elements (Water + Air)",
+      "tagline": "Feeling versus framing",
+      "description": "Cancer experiences life through moods and attachment; Gemini through ideas and mental shifts. Gemini's detachment or joking can sting; Cancer's emotional swings can confuse. When it works, Gemini teaches Cancer lightness and perspective, and Cancer gives Gemini a safe emotional anchor. You'll need patience and clear communication to avoid talking past each other."
     },
     "cancer": {
       "heading": "Cancer × Cancer — Same Element (Water + Water)",
-      "tagline": "Hearts on sleeves",
-      "description": "Two Cancers form an emotionally rich, nurturing connection with a strong sense of home and loyalty. You intuit each other's moods quickly and often care for one another without words. The key is setting boundaries so you don't drown in worry, nostalgia, or unspoken hurt."
+      "tagline": "Deep pool",
+      "description": "Two Cancers together can build a very nurturing, family-focused life. You usually understand each other's need for reassurance and time to retreat. The downside is emotional overdrive—moods echo, hurts linger, and unspoken expectations grow. This pairing works best with explicit agreements about money, chores, and how you'll handle conflict."
     },
     "leo": {
-      "heading": "Cancer × Leo — Semi-Compatible (Water + Fire)",
-      "tagline": "Warm and protective",
-      "description": "Cancer craves security and emotional reassurance; Leo craves appreciation and creative expression. At best, this combo is cosy and affectionate, like a protective sun around a safe home. Honest conversations about attention and reassurance keep it from slipping into drama or sulking."
+      "heading": "Cancer × Leo — Semi-compatible Elements (Water + Fire)",
+      "tagline": "Heart and show",
+      "description": "Cancer seeks private emotional security; Leo desires appreciation and a sense of being special. Cancer can give Leo loyal, heartfelt support; Leo can give Cancer warmth, fun, and protection. Tension appears when Leo feels smothered or unadmired, and Cancer feels their care is unreciprocated or taken for granted."
     },
     "virgo": {
       "heading": "Cancer × Virgo — Compatible Elements (Water + Earth)",
-      "tagline": "Quiet caretakers",
-      "description": "Cancer and Virgo both like to be useful to the people they love. Cancer offers emotional warmth; Virgo offers practical support and problem-solving. The bond feels steady and modest on the surface, but deeply caring beneath it."
+      "tagline": "Care and craft",
+      "description": "Cancer brings warmth, intuition, and concern for emotional needs; Virgo brings practicality, service, and attention to detail. You can be very good at looking after each other and building a life that runs smoothly. Just watch that care doesn't turn into worry and helpfulness doesn't turn into nit-picking."
     },
     "libra": {
-      "heading": "Cancer × Libra — Semi-Compatible (Water + Air)",
-      "tagline": "Feelings and finesse",
-      "description": "Cancer is intuitive and mood-driven; Libra is social and harmony-seeking. You both care about relationships but approach them differently. When you respect each other's way of keeping the peace, this combo becomes graceful, artistic, and emotionally nuanced."
+      "heading": "Cancer × Libra — Challenging Elements (Water + Air)",
+      "tagline": "Emotion versus balance",
+      "description": "Cancer moves by feeling, often wanting clear loyalty and closeness; Libra weighs all sides and seeks harmony, sometimes avoiding confrontation. Cancer may feel Libra is half-hearted; Libra may feel Cancer is demanding or moody. When you talk openly, you can blend emotional intelligence with social ease—but politeness alone won't solve deeper issues."
     },
     "scorpio": {
       "heading": "Cancer × Scorpio — Same Element (Water + Water)",
-      "tagline": "Emotional depth",
-      "description": "Cancer and Scorpio form one of the most intense emotional pairings. Cancer brings softness and care; Scorpio brings depth, focus, and passion. The relationship feels powerful and transformative, but it needs trust and openness so secrets don't poison the well."
+      "tagline": "Intense tides",
+      "description": "Cancer and Scorpio both value loyalty, privacy, and depth of feeling, but Scorpio tends to go further into intensity and possessiveness. Cancer offers nurture and softness; Scorpio offers protection and a sense that nothing shallow is acceptable. This can be a powerful bond, but jealousy and old wounds must be handled cleanly."
     },
     "sagittarius": {
-      "heading": "Cancer × Sagittarius — Clashing Elements (Water + Fire)",
-      "tagline": "Safe harbour vs open sea",
-      "description": "Cancer wants a secure emotional base; Sagittarius wants exploration and freedom. You may feel like you're living in different worlds unless you consciously blend home and adventure. When you do, this becomes a combo of growth, wisdom, and real-hearted care."
+      "heading": "Cancer × Sagittarius — Challenging Elements (Water + Fire)",
+      "tagline": "Nest and horizon",
+      "description": "Cancer wants a safe nest; Sagittarius wants open horizons. Sagittarius can expand Cancer's world and invite more adventure; Cancer can offer Sagittarius a place and person to truly come home to. It strains when Cancer feels abandoned and Sagittarius feels chained. Jointly planned trips and clear signals about reassurance are crucial."
     },
     "capricorn": {
-      "heading": "Cancer × Capricorn — Compatible Elements (Water + Earth), Opposites",
+      "heading": "Cancer × Capricorn — Opposite Signs (Water + Earth)",
       "tagline": "Roots and structure",
-      "description": "Cancer and Capricorn are opposites who meet around family, responsibility, and legacy. Cancer focuses on emotional foundations; Capricorn focuses on material and social structures. Together you can build something solid and meaningful, as long as feelings and duty get equal airtime."
+      "description": "Cancer and Capricorn oppose each other and describe the axis between private life and public role. Cancer focuses on home, family, and emotional continuity; Capricorn focuses on status, work, and long-term achievement. Together you can build a strong base and a respectable outer life. Coldness or emotional stonewalling from Capricorn, and guilt or clinging from Cancer, are your main hazards."
     },
     "aquarius": {
-      "heading": "Cancer × Aquarius — Semi-Compatible (Water + Air)",
-      "tagline": "Sensitive vs detached",
-      "description": "Cancer feels deeply and personally; Aquarius steps back to see the big picture. That difference can feel either enlightening or invalidating. Honest conversations about emotional needs and space help this pairing feel supportive rather than cold."
+      "heading": "Cancer × Aquarius — Challenging Elements (Water + Air)",
+      "tagline": "Attachment versus distance",
+      "description": "Cancer craves emotional closeness; Aquarius craves mental space and freedom. Cancer may experience Aquarius as cool or unpredictable; Aquarius may feel overwhelmed by emotional demand. If you share a cause or vision, you can work well as a team; home life requires deliberate negotiation around alone time and reassurance."
     },
     "pisces": {
       "heading": "Cancer × Pisces — Same Element (Water + Water)",
-      "tagline": "Shared tides",
-      "description": "Cancer and Pisces both swim in emotional and intuitive waters. Cancer builds a safe container; Pisces fills it with imagination and compassion. The relationship feels romantic, spiritual, and soothing, but it benefits from some Earth energy (routines, money talk) to stay grounded."
+      "tagline": "Shared sensitivity",
+      "description": "Cancer and Pisces both feel deeply and often sense things others miss. Cancer leans toward family and memory; Pisces toward imagination and spiritual or artistic concerns. You can be incredibly supportive of each other's inner worlds. The risk is drifting into escapism, financial muddle, or mutual over-responsibility unless someone keeps practical feet on the ground."
     }
   },
   "leo": {
     "aries": {
       "heading": "Leo × Aries — Same Element (Fire + Fire)",
-      "tagline": "Royal flames",
-      "description": "Leo and Aries share confidence, passion, and a love of big gestures. This is a fiery, charismatic pairing that thrives on shared adventures and bold moves. Learning to share leadership and apologise when ego gets in the way keeps the connection golden."
+      "tagline": "Two fires, one stage",
+      "description": "Leo and Aries together create a bold, expressive, and active pairing. Aries brings initiative and raw drive; Leo brings warmth, style, and staying power. You tend to inspire each other, but tempers and ego clashes can be intense if neither wants to yield. Respect and genuine appreciation keep this strong."
     },
     "taurus": {
-      "heading": "Leo × Taurus — Clashing Elements (Fire + Earth)",
-      "tagline": "Fixed vs comfy",
-      "description": "Leo wants expression and recognition; Taurus wants comfort and stability. You're both stubborn, which can create power struggles over lifestyle and money. When you admire instead of resist each other's strength, the bond feels robust, sensual, and loyal."
+      "heading": "Leo × Taurus — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Luxury and loyalty",
+      "description": "Leo enjoys fun, romance, and a sense of specialness; Taurus enjoys comfort, food, and reliable affection. Taurus can offer Leo steady love and practical support; Leo can bring excitement and a sense of celebration into Taurus' world. Stubborn stand-offs about money, time, and who compromises are your main traps."
     },
     "gemini": {
       "heading": "Leo × Gemini — Compatible Elements (Fire + Air)",
-      "tagline": "Sunny and witty",
-      "description": "Leo brings warmth and drama; Gemini brings humour, ideas, and social sparkle. Together you create a playful, extroverted vibe with lots of stories and adventures. A bit of emotional depth and follow-through helps this combo grow beyond pure entertainment."
+      "tagline": "Play and sparkle",
+      "description": "Leo and Gemini often click socially. Gemini brings variety, quick wit, and adaptability; Leo brings warmth, generosity, and flair. This can be a lively, flirtatious pairing that stays interesting for a long time. Problems arise if Leo feels taken lightly or Gemini feels trapped in fixed roles."
     },
     "cancer": {
-      "heading": "Leo × Cancer — Semi-Compatible (Fire + Water)",
-      "tagline": "Warm and protective",
-      "description": "Leo shines outwardly; Cancer nurtures behind the scenes. You can create a cosy, devoted home base if Leo respects feelings and Cancer appreciates Leo's need to shine. Honest talks about attention, affection, and alone-time keep things from tilting into drama or sulking."
+      "heading": "Leo × Cancer — Semi-compatible Elements (Fire + Water)",
+      "tagline": "Show and shelter",
+      "description": "Leo wants to be seen and appreciated; Cancer wants to feel safe and emotionally held. Cancer can give Leo sincere devotion; Leo can protect Cancer and keep life from becoming too insular. It strains when Leo sees Cancer as clingy or negative, and Cancer sees Leo as self-involved or dismissive of feelings."
     },
     "leo": {
       "heading": "Leo × Leo — Same Element (Fire + Fire)",
-      "tagline": "Double royalty",
-      "description": "Two Leos create a generous, glamorous, and affectionate pairing with strong chemistry. You both love to celebrate, create, and be appreciated. The growth edge is learning to listen, share the spotlight, and apologise when pride gets in the way."
+      "tagline": "Mirror of pride",
+      "description": "Two Leos together know the value of loyalty, romance, and grand gestures. You can be very generous with each other and create a warm, creative home. But both need recognition and may react badly to perceived slights. This pairing needs honest praise, not mind games, and a sense that each person's talents have room to shine."
     },
     "virgo": {
-      "heading": "Leo × Virgo — Semi-Compatible (Fire + Earth)",
-      "tagline": "Show and service",
-      "description": "Leo wants bold experiences and recognition; Virgo wants usefulness, order, and improvement. When you respect each other's roles, Leo inspires and Virgo refines. The relationship works best when appreciation flows both ways and criticism is softened with warmth."
+      "heading": "Leo × Virgo — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Drama and detail",
+      "description": "Leo wants big moves and visible expression; Virgo handles details, fixes problems, and can be self-effacing. Virgo can support Leo's plans and keep things running; Leo can help Virgo feel valued and less self-critical. It goes wrong if Virgo turns to constant correction and Leo stops listening altogether."
     },
     "libra": {
       "heading": "Leo × Libra — Compatible Elements (Fire + Air)",
       "tagline": "Charm and theatre",
-      "description": "Leo and Libra both enjoy romance, aesthetics, and social connection. Leo provides heart and drama; Libra brings grace, harmony, and perspective. This pairing feels easy and attractive, as long as you're honest about needs instead of hiding irritation to keep the peace."
+      "description": "Leo and Libra together often look and feel like a classic \"couple\" energy. Libra brings social grace, aesthetics, and a desire for fairness; Leo brings heart, courage, and a clear sense of identity. This is strong for partnership and public image. Avoid letting appearances matter more than honest emotion."
     },
     "scorpio": {
-      "heading": "Leo × Scorpio — Clashing Elements (Fire + Water)",
-      "tagline": "Intensity squared",
-      "description": "Leo seeks open expression; Scorpio seeks emotional control and depth. Attraction is strong but so are power struggles and jealousy if trust isn't solid. When you both choose vulnerability over games, the bond can be fiercely loyal and transformative."
+      "heading": "Leo × Scorpio — Challenging Elements (Fire + Water)",
+      "tagline": "Power dynamics",
+      "description": "Both Leo and Scorpio are fixed signs with strong will. Leo is open and expressive, Scorpio intense and guarded. Attraction can be powerful, but so can tests of loyalty and clashes over control. If mutual respect and real transparency are in place, you can be a formidable pair; without them, battles drag on."
     },
     "sagittarius": {
       "heading": "Leo × Sagittarius — Same Element (Fire + Fire)",
-      "tagline": "Big life energy",
-      "description": "Leo and Sagittarius share optimism, enthusiasm, and a love of adventure. You encourage each other to dream bigger and live more fully. A bit of shared structure around money, health, or commitments keeps this from burning too hot and fast."
+      "tagline": "Shared fire",
+      "description": "Leo and Sagittarius both want life to feel vivid and meaningful. Sagittarius brings humour, philosophy, and a love of exploration; Leo brings warmth, creativity, and a central hearth to come back to. This is one of Leo's easiest matches, as long as jealousy and ego are handled with honesty."
     },
     "capricorn": {
-      "heading": "Leo × Capricorn — Semi-Compatible (Fire + Earth)",
+      "heading": "Leo × Capricorn — Semi-compatible Elements (Fire + Earth)",
       "tagline": "Status and structure",
-      "description": "Leo wants recognition and creative expression; Capricorn wants achievement and long-term security. You both care about success, just in different languages. When you line up your goals, this becomes a strong, respectable \"power couple\" dynamic."
+      "description": "Leo likes recognition and self-expression; Capricorn likes achievement and concrete success. You may share ambitions but differ in style. Capricorn can help Leo build something solid behind the show; Leo can stop Capricorn from becoming entirely work-defined. Respect around work priorities, money, and public image is essential."
     },
     "aquarius": {
-      "heading": "Leo × Aquarius — Compatible Elements (Fire + Air), Opposites",
-      "tagline": "Star and satellite",
-      "description": "Leo and Aquarius are opposites: Leo focuses on personal creativity; Aquarius on collective vision. The connection mixes heart and head, individuality and the bigger picture. When you respect each other's role, the relationship feels progressive, electric, and impactful."
+      "heading": "Leo × Aquarius — Opposite Signs (Fire + Air)",
+      "tagline": "Individual versus tribe",
+      "description": "Leo and Aquarius oppose each other: Leo focuses on personal identity; Aquarius on the group or idea. You can balance each other—Leo puts a face and heart to Aquarius' causes; Aquarius challenges Leo to think beyond ego. The tension lies around attention and autonomy; compromise is needed so neither feels erased."
     },
     "pisces": {
-      "heading": "Leo × Pisces — Clashing Elements (Fire + Water)",
-      "tagline": "Drama and dreams",
-      "description": "Leo lives loudly; Pisces lives in a rich inner world. You can inspire each other—Leo gives Pisces backbone, Pisces gives Leo empathy—but misunderstandings are easy. Clear reassurance and shared creative outlets help this pairing feel magical rather than confusing."
+      "heading": "Leo × Pisces — Challenging Elements (Fire + Water)",
+      "tagline": "Spotlight and haze",
+      "description": "Leo moves in a clear, expressive way; Pisces in a diffuse, impressionistic way. Leo can help Pisces gain confidence and form; Pisces can give Leo a richer inner life and more compassion. Misunderstandings arise when Leo wants straight answers and Pisces wants to float. You need patience and explicit agreements."
     }
   },
   "virgo": {
     "aries": {
-      "heading": "Virgo × Aries — Semi-Compatible (Earth + Fire)",
-      "tagline": "Plan vs impulse",
-      "description": "Virgo prefers careful planning; Aries likes to jump in and adjust later. This can be frustrating or highly effective depending on respect. When you use Aries' courage and Virgo's precision together, you become a strong problem-solving team."
+      "heading": "Virgo × Aries — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Precision meets impulse",
+      "description": "Virgo wants to understand and improve things; Aries wants to move and see what happens. Virgo can help Aries avoid obvious mistakes and refine their efforts; Aries can stop Virgo from stalling in analysis or worry. It goes bad when Virgo turns into a constant critic and Aries stops listening altogether."
     },
     "taurus": {
       "heading": "Virgo × Taurus — Same Element (Earth + Earth)",
-      "tagline": "Practical harmony",
-      "description": "Virgo and Taurus both value reliability, quality, and tangible results. Taurus brings patience and sensuality; Virgo brings refinement and attention to detail. The connection feels grounded and supportive, especially when you remember to schedule pleasure, not just work."
+      "tagline": "Practical pair",
+      "description": "Virgo and Taurus both care about reliability, tangible results, and a relatively calm life. Virgo brings organisation and problem-solving; Taurus brings patience and staying power. You are usually aligned on work ethic and basic values. Just watch that everything doesn't become chores and cost–benefit calculations with no spontaneity."
     },
     "gemini": {
-      "heading": "Virgo × Gemini — Semi-Compatible (Earth + Air)",
-      "tagline": "Mental mechanics",
-      "description": "Both ruled by Mercury, Virgo and Gemini share quick minds but different priorities. Gemini seeks variety and breadth, while Virgo seeks depth and usefulness. You work best when you appreciate each other's style instead of arguing about who's \"right\"."
+      "heading": "Virgo × Gemini — Semi-compatible Elements (Earth + Air)",
+      "tagline": "Two problem-solvers, no driver",
+      "description": "Both Virgo and Gemini are ruled by Mercury and crave information and clarity. Gemini explores widely; Virgo delves into details. You can talk through issues in depth and adapt quickly, but decisions may be delayed and plans endlessly revised. Someone has to say, \"This is good enough, let's act.\""
     },
     "cancer": {
       "heading": "Virgo × Cancer — Compatible Elements (Earth + Water)",
-      "tagline": "Quiet caretakers",
-      "description": "Virgo and Cancer are both service-oriented and attentive to loved ones. Cancer offers emotional warmth; Virgo offers practical help and organisation. This pairing feels modest on the surface but deeply caring underneath."
+      "tagline": "Care with structure",
+      "description": "Virgo and Cancer both want to be useful to the people they love. Cancer brings warmth, intuition, and emotional focus; Virgo brings practical help, planning, and thoughtful advice. Together you are good at creating a safe, well-run home. The risk is sinking into worry and never really relaxing."
     },
     "leo": {
-      "heading": "Virgo × Leo — Semi-Compatible (Earth + Fire)",
+      "heading": "Virgo × Leo — Semi-compatible Elements (Earth + Fire)",
       "tagline": "Backstage and spotlight",
-      "description": "Leo enjoys performing and being seen; Virgo focuses on what happens behind the scenes. Virgo can help Leo polish their talents; Leo can help Virgo relax and enjoy life. Mutual respect—without constant critique—is key."
+      "description": "Leo likes bold expression and recognition; Virgo prefers to support, fix, and refine quietly. Virgo can help Leo's plans actually work and keep daily life in order; Leo can help Virgo feel valued and encourage them to stop over-correcting. This pairing strains if Virgo nit-picks every move or Leo refuses any feedback."
     },
     "virgo": {
       "heading": "Virgo × Virgo — Same Element (Earth + Earth)",
-      "tagline": "Perfecting together",
-      "description": "Two Virgos form a thoughtful, helpful partnership focused on improvement and health. You admire each other's reliability and competence. The main challenge is keeping criticism constructive and remembering to celebrate what's already working."
+      "tagline": "Refinement squared",
+      "description": "Two Virgos together take responsibility seriously and often aim high in what they produce. You're likely to keep promises, manage details, and notice what others miss. The shadow is endless fault-finding—of yourselves and each other. Committing to regular appreciation, not just improvement, is crucial."
     },
     "libra": {
-      "heading": "Virgo × Libra — Semi-Compatible (Earth + Air)",
+      "heading": "Virgo × Libra — Semi-compatible Elements (Earth + Air)",
       "tagline": "Order and aesthetics",
-      "description": "Virgo wants systems and efficiency; Libra wants grace, balance, and connection. You can create something beautiful and functional together when you value both form and function. The relationship thrives on gentle feedback and shared refinement."
+      "description": "Virgo focuses on function and efficiency; Libra on harmony and beauty. You can design spaces, routines, or projects that both work well and look good. Conflict arises when Virgo sees Libra as indecisive or superficial, and Libra sees Virgo as joyless or overly critical. Clear shared standards solve a lot."
     },
     "scorpio": {
       "heading": "Virgo × Scorpio — Compatible Elements (Earth + Water)",
-      "tagline": "Quiet intensity",
-      "description": "Virgo and Scorpio both notice what others miss. Virgo analyses details; Scorpio probes emotional and psychological depths. The bond feels serious, private, and transformative, especially when you share a purpose or project."
+      "tagline": "Depth and detail",
+      "description": "Virgo and Scorpio both like to get beneath the surface. Virgo brings analysis and practical fixes; Scorpio brings intensity, focus, and a willingness to tackle difficult truths. This can be a powerful team for serious life changes. The risk is becoming overly suspicious, pessimistic, or controlling if trust isn't strong."
     },
     "sagittarius": {
-      "heading": "Virgo × Sagittarius — Clashing Elements (Earth + Fire)",
-      "tagline": "Details vs horizon",
-      "description": "Virgo focuses on specifics and day-to-day responsibilities; Sagittarius focuses on big ideas and future possibilities. You can feel like you're living at different scales. Honest agreements about who handles what keep this pairing productive instead of polarised."
+      "heading": "Virgo × Sagittarius — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Map versus adventure",
+      "description": "Virgo wants a plan; Sagittarius wants an open road. Virgo can keep Sagittarius from chaos and help their ideas land in reality; Sagittarius can stop Virgo from shrinking life to a to-do list. It wears thin if Virgo constantly tightens the reins or Sagittarius treats Virgo's concerns as background noise."
     },
     "capricorn": {
       "heading": "Virgo × Capricorn — Same Element (Earth + Earth)",
-      "tagline": "Work in progress",
-      "description": "Virgo and Capricorn share discipline, realism, and a strong sense of duty. Virgo refines the process; Capricorn climbs the mountain. Together you're excellent at building long-term stability, as long as you don't forget to actually enjoy the view."
+      "tagline": "Long-game workers",
+      "description": "Virgo and Capricorn both think long-term and are willing to put in effort over time. Virgo manages details and systems; Capricorn sets direction and takes on heavy loads when needed. Together you can build something solid. Making deliberate space for pleasure and emotional openness stops this from feeling like a permanent job."
     },
     "aquarius": {
-      "heading": "Virgo × Aquarius — Clashing Elements (Earth + Air)",
-      "tagline": "Utility vs theory",
-      "description": "Virgo likes practical solutions; Aquarius likes big-picture concepts and experiments. You can inspire each other or constantly criticise. When you meet in the middle—Virgo grounding ideas and Aquarius opening perspectives—the bond feels innovative and useful."
+      "heading": "Virgo × Aquarius — Semi-compatible Elements (Earth + Air)",
+      "tagline": "System and vision",
+      "description": "Virgo cares about how things work day-to-day; Aquarius cares about the big idea or principle behind them. Virgo can implement Aquarius' concepts and make them usable; Aquarius can help Virgo see beyond small flaws to the larger pattern. This fails when Virgo gets lost in minutiae and Aquarius stops engaging with practical limits."
     },
     "pisces": {
-      "heading": "Virgo × Pisces — Compatible Elements (Earth + Water), Opposites",
-      "tagline": "Sacred service",
-      "description": "Virgo and Pisces are opposites who meet around healing, service, and compassion. Virgo manages the practical side; Pisces holds the emotional and spiritual side. This pairing feels tender and meaningful when boundaries are respected and martyrdom is avoided."
+      "heading": "Virgo × Pisces — Opposite Signs (Earth + Water)",
+      "tagline": "Reality and dream",
+      "description": "Virgo and Pisces sit opposite each other in the zodiac. Virgo edits, organises, and questions; Pisces imagines, feels, and drifts. You can balance each other—Virgo grounds Pisces, Pisces softens Virgo and opens access to intuition and compassion. It breaks when Virgo pathologises Pisces' sensitivity, or Pisces checks out instead of facing real problems."
     }
   },
   "libra": {
     "aries": {
-      "heading": "Libra × Aries — Compatible Elements (Air + Fire), Opposites",
-      "tagline": "Opposites in orbit",
-      "description": "Libra and Aries stand across the zodiac, balancing \"me\" and \"we.\" Libra brings diplomacy and perspective; Aries brings courage and directness. When you work as a team, the relationship feels dynamic, romantic, and growth-oriented."
+      "heading": "Libra × Aries — Opposite Signs (Air + Fire)",
+      "tagline": "We versus me",
+      "description": "Libra looks for balance and partnership; Aries pushes for direct action and personal will. Aries can help Libra decide and act; Libra can help Aries consider impact and timing. This opposition works when each side respects the other's approach instead of seeing it as a flaw."
     },
     "taurus": {
-      "heading": "Libra × Taurus — Semi-Compatible (Air + Earth)",
-      "tagline": "Beauty and comfort",
-      "description": "Both signs appreciate aesthetics and ease, but Libra is more social and verbal while Taurus is more physical and steady. You can create a pleasing life together if you manage money and values openly. The challenge is moving from \"nice\" to truly honest."
+      "heading": "Libra × Taurus — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Style and comfort",
+      "description": "Libra appreciates aesthetics and social harmony; Taurus appreciates physical comfort and steady routines. You can create a pleasant, well-decorated, and sensual shared life. Tension appears around money, stubbornness, and who compromises more—especially if Libra avoids direct conflict and Taurus silently resists change."
     },
     "gemini": {
       "heading": "Libra × Gemini — Same Element (Air + Air)",
-      "tagline": "Social symphony",
-      "description": "Libra and Gemini both love conversation, ideas, and connection. Gemini brings curiosity and speed; Libra brings grace and a sense of fairness. The bond feels light and mentally engaging, though you'll need clear decisions to avoid endless dithering."
+      "tagline": "Easy rapport",
+      "description": "Libra and Gemini both enjoy conversation, ideas, and a light touch socially. Gemini brings variety and flexibility; Libra brings charm, fairness, and a knack for smoothing edges. This is a natural fit for dating and friendship. Real depth requires that you don't avoid hard talks out of sheer politeness or distraction."
     },
     "cancer": {
-      "heading": "Libra × Cancer — Semi-Compatible (Air + Water)",
-      "tagline": "Heart and polish",
-      "description": "Cancer is emotional and protective; Libra is diplomatic and image-aware. You both care about relationships but handle conflict differently. With patience, you can blend real feelings and refined presentation into something very appealing."
+      "heading": "Libra × Cancer — Challenging Elements (Air + Water)",
+      "tagline": "Mood versus balance",
+      "description": "Cancer leads with feeling and attachment; Libra with perspective and compromise. Libra can help Cancer step back and see the bigger picture; Cancer can help Libra get in touch with what they actually feel, not just what seems fair. If Libra keeps intellectualising and Cancer keeps taking everything personally, you get stuck."
     },
     "leo": {
       "heading": "Libra × Leo — Compatible Elements (Air + Fire)",
       "tagline": "Charm and theatre",
-      "description": "Libra enjoys elegance and harmony; Leo enjoys expression and adoration. Together you create a warm, romantic vibe that looks and feels good. Honesty about needs beneath the glamour keeps the connection real."
+      "description": "Libra and Leo typically enjoy being together and being seen together. Leo brings heart, courage, and drama; Libra brings grace, social intelligence, and an eye for presentation. This can be a very classic \"couple\" vibe. Just don't let appearances and other people's opinions matter more than your real connection."
     },
     "virgo": {
-      "heading": "Libra × Virgo — Semi-Compatible (Air + Earth)",
-      "tagline": "Refined adjustments",
-      "description": "Libra sees the social picture; Virgo sees the practical details. You're both inclined to fix things, just in different arenas. When you collaborate instead of critique, the relationship becomes quietly effective and well-balanced."
+      "heading": "Libra × Virgo — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Design and function",
+      "description": "Libra wants things to feel fair and look good; Virgo wants them to work properly and be well thought-out. You can cooperate well on projects, home, or work if you appreciate each other's priorities. Resentment builds if Virgo fixates on flaws while Libra dodges direct conflict."
     },
     "libra": {
       "heading": "Libra × Libra — Same Element (Air + Air)",
-      "tagline": "Refined mirrors",
-      "description": "Two Libras form a charming, aesthetically aware pairing that values harmony and partnership. You instinctively consider each other's needs, which feels lovely but can delay tough decisions. Learning to tolerate conflict makes this match much stronger."
+      "tagline": "Mirror of politeness",
+      "description": "Two Libras together usually create a very civil, aesthetically aware relationship. You care about each other's comfort and often share social circles or cultural interests. The challenge is decision paralysis and conflict avoidance—someone needs to be willing to be \"the bad cop\" occasionally so life actually moves."
     },
     "scorpio": {
-      "heading": "Libra × Scorpio — Semi-Compatible (Air + Water)",
-      "tagline": "Light and shadow",
-      "description": "Libra prefers balance and openness; Scorpio prefers intensity and depth. You can be fascinated by each other but wary of rocking the boat. Honest, gradual deepening helps this pairing feel soulful instead of scary."
+      "heading": "Libra × Scorpio — Challenging Elements (Air + Water)",
+      "tagline": "Surface grace, deep undercurrent",
+      "description": "Libra prefers calm discussion and diplomacy; Scorpio prefers intensity and full emotional honesty. Scorpio may see Libra as superficial or evasive; Libra may see Scorpio as heavy or demanding. This can work when Libra respects depth and Scorpio respects tact, but it's not a light pairing."
     },
     "sagittarius": {
       "heading": "Libra × Sagittarius — Compatible Elements (Air + Fire)",
-      "tagline": "Bright horizons",
-      "description": "Libra and Sagittarius both enjoy social life, ideas, and exploration. Libra brings charm and tact; Sagittarius brings blunt truth and a sense of adventure. Together the connection feels optimistic, expansive, and ideal for learning and travel."
+      "tagline": "Shared horizon",
+      "description": "Libra and Sagittarius both enjoy movement, exploration, and big-picture thinking. Sagittarius brings blunt truth and a taste for adventure; Libra brings social ease and the ability to negotiate differences. This pairing likes to keep things upbeat and forward-looking. The risk is skimming past deeper emotional needs."
     },
     "capricorn": {
-      "heading": "Libra × Capricorn — Clashing Elements (Air + Earth)",
-      "tagline": "Diplomacy vs duty",
-      "description": "Libra focuses on relationships and perception; Capricorn focuses on work and results. You may initially judge each other's priorities. When you find shared goals, Libra opens doors and Capricorn keeps them stable, making this a subtle power duo."
+      "heading": "Libra × Capricorn — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Agreement and structure",
+      "description": "Libra focuses on relationships and fairness; Capricorn on goals and responsibility. Libra can help Capricorn handle people more smoothly; Capricorn can help Libra take practical steps instead of just weighing options. It turns cold if Capricorn sees Libra as flaky or Libra sees Capricorn as controlling."
     },
     "aquarius": {
       "heading": "Libra × Aquarius — Same Element (Air + Air)",
-      "tagline": "Kindred minds",
-      "description": "Libra and Aquarius both value fairness, ideas, and perspective. Libra cares about one-to-one harmony; Aquarius cares about the bigger pattern. The bond feels forward-thinking and mentally rich, though it benefits from deliberate emotional check-ins."
+      "tagline": "Ideals and networks",
+      "description": "Libra and Aquarius both live strongly in the mental and social realms. Libra brings one-to-one finesse; Aquarius brings group vision and a more radical streak. You often agree on principles but differ on how far to push them. Emotions need explicit space, or the relationship can feel like a clever alliance rather than a bond."
     },
     "pisces": {
-      "heading": "Libra × Pisces — Semi-Compatible (Air + Water)",
-      "tagline": "Dreamy diplomacy",
-      "description": "Pisces brings sensitivity and imagination; Libra brings grace and relational skill. You're both idealistic about love, sometimes to a fault. Clear boundaries and grounded routines help this romantic pairing stay functional."
+      "heading": "Libra × Pisces — Challenging Elements (Air + Water)",
+      "tagline": "Logic and feeling",
+      "description": "Libra tries to balance and explain; Pisces feels and absorbs. Pisces may sense that Libra doesn't fully \"meet\" their emotions; Libra may feel confused by shifting moods and unspoken expectations. When you slow down and listen carefully, you can blend kindness with perspective—but neither of you can stay vague forever."
     }
   },
   "scorpio": {
     "aries": {
-      "heading": "Scorpio × Aries — Clashing Elements (Water + Fire)",
-      "tagline": "Raw intensity",
-      "description": "Both Scorpio and Aries are strong-willed and allergic to half-measures. Aries is openly fiery; Scorpio is emotionally volcanic underneath. The chemistry is powerful, but success depends on trust, honesty, and mutual respect for boundaries."
+      "heading": "Scorpio × Aries — Challenging Elements (Water + Fire)",
+      "tagline": "Control and ignition",
+      "description": "Scorpio is intense, strategic, and private; Aries is direct, impulsive, and open. The attraction can be strong, but so can conflict. Aries brings issues into the open; Scorpio brings staying power and depth. Power struggles, jealousy, or revenge patterns need to be off the table early for this to work."
     },
     "taurus": {
-      "heading": "Scorpio × Taurus — Compatible Elements (Water + Earth), Opposites",
-      "tagline": "Deep roots",
-      "description": "Scorpio and Taurus are opposites who both crave loyalty, security, and lasting bonds. Taurus anchors the material and sensual side; Scorpio anchors the emotional and psychological side. This pairing can feel fated and intensely binding when trust is high."
+      "heading": "Scorpio × Taurus — Opposite Signs (Water + Earth)",
+      "tagline": "Depth and possession",
+      "description": "Scorpio and Taurus oppose each other and share a theme of attachment and loyalty. Taurus wants tangible security and simple pleasures; Scorpio wants emotional and psychological depth. Together you can build a bond that is very hard to shake. But if trust breaks, endings can be drawn-out and bitter."
     },
     "gemini": {
-      "heading": "Scorpio × Gemini — Clashing Elements (Water + Air)",
-      "tagline": "Secrets vs stories",
-      "description": "Gemini flits between topics and perspectives; Scorpio dives deep and remembers everything. You may intrigue each other at first but clash over depth and consistency. Clear expectations and genuine vulnerability are needed to avoid suspicion and mixed signals."
+      "heading": "Scorpio × Gemini — Challenging Elements (Water + Air)",
+      "tagline": "Intensity versus curiosity",
+      "description": "Scorpio tends to commit deeply and dislike half-measures; Gemini tends to sample widely and stay adaptable. Scorpio may view Gemini as unreliable or shallow; Gemini may experience Scorpio as controlling or suspicious. Fascination is possible, but both need more maturity than average to avoid hurting each other."
     },
     "cancer": {
       "heading": "Scorpio × Cancer — Same Element (Water + Water)",
-      "tagline": "Soul-deep",
-      "description": "Scorpio and Cancer both take emotions seriously and value real intimacy. Cancer offers care and softness; Scorpio offers focus and passion. The relationship can feel like a sanctuary, but it needs open communication so resentment doesn't build in silence."
+      "tagline": "Protective tide",
+      "description": "Scorpio and Cancer both value loyalty, privacy, and emotional truth, though Scorpio goes harder on intensity and boundaries. Cancer offers nurture and softness; Scorpio offers protection and the sense that someone really has your back. This can be a very strong match if you avoid weaponising secrets or guilt."
     },
     "leo": {
-      "heading": "Scorpio × Leo — Clashing Elements (Water + Fire)",
-      "tagline": "Power and pride",
-      "description": "Leo wants visible affection and admiration; Scorpio wants emotional control and depth. Power dynamics and pride can dominate if you're not careful. When you choose honesty over games, the connection is intense, loyal, and unforgettable."
+      "heading": "Scorpio × Leo — Challenging Elements (Water + Fire)",
+      "tagline": "Pride and depth",
+      "description": "Leo wants to be seen and appreciated; Scorpio wants to be trusted and taken seriously on a deep level. The chemistry can be strong but clashes around power, attention, and loyalty are likely. It works when Leo respects Scorpio's need for privacy and Scorpio respects Leo's need for recognition, not constant testing."
     },
     "virgo": {
       "heading": "Scorpio × Virgo — Compatible Elements (Water + Earth)",
-      "tagline": "Forensic team",
-      "description": "Virgo and Scorpio both notice subtle details and patterns. Virgo analyses and organises; Scorpio probes and transforms. Together you're excellent at solving problems and growing through them, as long as criticism is balanced with appreciation."
+      "tagline": "Analysis and insight",
+      "description": "Scorpio brings psychological depth and focus; Virgo brings systematic thinking and practical repair skills. Together you can change habits, finances, or environments in thorough ways. The risk is sliding into constant problem-finding and suspicion. Deliberate time for rest and enjoyment is important."
     },
     "libra": {
-      "heading": "Scorpio × Libra — Semi-Compatible (Water + Air)",
-      "tagline": "Charm vs depth",
-      "description": "Libra smooths rough edges; Scorpio digs under the surface. You can feel alternately soothed and provoked by each other. Gradual deepening and honest emotional talks help this pairing feel rich instead of destabilising."
+      "heading": "Scorpio × Libra — Challenging Elements (Water + Air)",
+      "tagline": "Under the surface",
+      "description": "Scorpio prefers emotional intensity and blunt reality; Libra prefers balance and diplomacy. Libra may try to smooth over what Scorpio wants to confront; Scorpio may drag Libra into deeper waters than they are comfortable with. This pairing needs a shared understanding of how much truth, and how fast, you can both handle."
     },
     "scorpio": {
       "heading": "Scorpio × Scorpio — Same Element (Water + Water)",
-      "tagline": "Mirror of intensity",
-      "description": "Two Scorpios together create a potent, all-or-nothing bond. You understand each other's desire for depth, loyalty, and truth—but you can also trigger each other's fears and control issues. Healthy boundaries and shared healing work are vital."
+      "tagline": "No shallow end",
+      "description": "Two Scorpios together can feel like an all-or-nothing bond. Loyalty and honesty—or betrayal and fallout—are big themes. On the upside, you may feel deeply understood and fiercely defended. On the downside, suspicion, tests, and old hurts can take over if you don't keep talking honestly."
     },
     "sagittarius": {
-      "heading": "Scorpio × Sagittarius — Clashing Elements (Water + Fire)",
-      "tagline": "Depth vs freedom",
-      "description": "Scorpio wants focus and emotional commitment; Sagittarius wants exploration and open possibilities. You may feel intrigued yet suspicious of each other's style. When you agree on shared principles, this becomes a passionate but challenging growth relationship."
+      "heading": "Scorpio × Sagittarius — Challenging Elements (Water + Fire)",
+      "tagline": "Depth versus freedom",
+      "description": "Scorpio wants depth, focus, and follow-through; Sagittarius wants space, variety, and the freedom to explore. Scorpio may view Sagittarius as careless or non-committal; Sagittarius may feel confined or psycho-analysed. If you share a mission, you can blend courage and strategy, but lifestyle differences are significant."
     },
     "capricorn": {
       "heading": "Scorpio × Capricorn — Compatible Elements (Water + Earth)",
       "tagline": "Strategic builders",
-      "description": "Scorpio and Capricorn are both serious, determined, and future-focused. Scorpio brings emotional insight and persistence; Capricorn brings structure and long-term planning. The bond feels powerful, private, and geared toward building something substantial."
+      "description": "Scorpio and Capricorn both think long-term and are willing to endure discomfort for a goal. Scorpio brings insight, intensity, and emotional x-ray vision; Capricorn brings discipline, structure, and external achievement. Together you can be formidable. Just beware of becoming too severe with yourselves and each other."
     },
     "aquarius": {
-      "heading": "Scorpio × Aquarius — Clashing Elements (Water + Air)",
-      "tagline": "Emotion vs detachment",
-      "description": "Scorpio seeks intensity and emotional merging; Aquarius seeks perspective and mental freedom. You can teach each other a lot about boundaries and connection. Honest, non-defensive communication is crucial if this is going to feel liberating rather than alienating."
+      "heading": "Scorpio × Aquarius — Challenging Elements (Water + Air)",
+      "tagline": "Attachment versus detachment",
+      "description": "Scorpio invests deeply and takes loyalty seriously; Aquarius stands back, observes, and values independence. Aquarius may feel pressed for more intimacy than they're ready to give; Scorpio may feel frozen out by Aquarius' coolness. It only works if boundaries and expectations are spelled out clearly."
     },
     "pisces": {
       "heading": "Scorpio × Pisces — Same Element (Water + Water)",
-      "tagline": "Mystic waters",
-      "description": "Scorpio and Pisces share sensitivity and intuition, but express it differently. Scorpio focuses it like a laser; Pisces lets it float and flow. The relationship can feel spiritual, creative, and deeply healing when grounded in reality."
+      "tagline": "Mystic current",
+      "description": "Scorpio and Pisces both live in emotional and intuitive territory, but Scorpio is more confrontational and Pisces more diffuse. Scorpio can help Pisces set boundaries and face hard truths; Pisces can soften Scorpio and help them forgive. Shared spiritual, artistic, or psychological interests can bind you strongly."
     }
   },
   "sagittarius": {
     "aries": {
       "heading": "Sagittarius × Aries — Same Element (Fire + Fire)",
-      "tagline": "Adventure buddies",
-      "description": "Sagittarius and Aries both crave movement, experience, and challenge. Aries brings initiative; Sagittarius brings vision and humour. The bond feels energetic and optimistic, but benefits from shared responsibilities so life isn't just a string of escapes."
+      "tagline": "Adventure allies",
+      "description": "Sagittarius and Aries both want movement, challenge, and the sense that life is going somewhere. Aries brings direct push; Sagittarius brings optimism, humour, and a wider view. This is an energetic, forward-leaning match. You'll need discipline around money, health, and follow-through."
     },
     "taurus": {
-      "heading": "Sagittarius × Taurus — Clashing Elements (Fire + Earth)",
-      "tagline": "Wanderer vs settler",
-      "description": "Sagittarius is restless and future-focused; Taurus values stability and present comforts. You may feel like you're pulling each other in opposite directions. Agreeing on a core base and planned adventures helps this pairing feel complementary rather than conflicting."
+      "heading": "Sagittarius × Taurus — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Wanderer and settler",
+      "description": "Sagittarius likes travel, ideas, and change; Taurus wants stability, reliability, and tangible comfort. Taurus can give Sagittarius a real base; Sagittarius can prevent Taurus from getting stuck. It unravels when Sagittarius feels caged and Taurus feels abandoned or ignored."
     },
     "gemini": {
-      "heading": "Sagittarius × Gemini — Compatible Elements (Fire + Air), Opposites",
-      "tagline": "Curious explorers",
-      "description": "Sagittarius and Gemini are opposite signs that both love learning and variety. Gemini gathers facts; Sagittarius searches for meaning. The connection feels lively, conversational, and expansive, as long as you honour commitments as well as possibilities."
+      "heading": "Sagittarius × Gemini — Opposite Signs (Fire + Air)",
+      "tagline": "Local and global mind",
+      "description": "Sagittarius and Gemini oppose each other and share a love of learning and movement. Gemini gathers facts and stories; Sagittarius seeks meaning and big-picture patterns. Together you can travel, debate, and grow. Commitment, routine, and emotional care need deliberate attention, not just good intentions."
     },
     "cancer": {
-      "heading": "Sagittarius × Cancer — Clashing Elements (Fire + Water)",
-      "tagline": "Quest vs nest",
-      "description": "Sagittarius wants to roam and explore; Cancer wants to nest and protect. Misunderstandings arise when freedom needs and emotional needs aren't voiced. With honest reassurance and planned together-time, this combo can blend growth with genuine care."
+      "heading": "Sagittarius × Cancer — Challenging Elements (Fire + Water)",
+      "tagline": "Horizon and home",
+      "description": "Sagittarius wants open horizons; Cancer wants a secure nest. Cancer can give Sagittarius a place to truly belong; Sagittarius can show Cancer a bigger world. This pairing struggles if Cancer feels left behind and Sagittarius feels guilted for wanting freedom. Clear expectations and planned reconnection points matter."
     },
     "leo": {
       "heading": "Sagittarius × Leo — Same Element (Fire + Fire)",
-      "tagline": "Big-hearted duo",
-      "description": "Sagittarius and Leo share warmth, enthusiasm, and a love of joyful experiences. Leo brings loyalty and creative flair; Sagittarius brings honesty and a sense of adventure. The relationship feels bright and generous, but needs some grounding to handle practical life."
+      "tagline": "Shared fire",
+      "description": "Sagittarius and Leo can have a warm, lively relationship full of shared adventures, social life, or creative projects. Sagittarius brings humour and honesty; Leo brings heart, loyalty, and a strong sense of identity. Ego clashes can happen, but usually resolve if both stay generous."
     },
     "virgo": {
-      "heading": "Sagittarius × Virgo — Clashing Elements (Fire + Earth)",
-      "tagline": "Spontaneity vs systems",
-      "description": "Sagittarius prefers flexibility and broad strokes; Virgo prefers routines and specifics. You can feel irritated by each other's priorities. When you consciously divide roles—one handles the vision, the other the details—you become more powerful together than apart."
+      "heading": "Sagittarius × Virgo — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Vision and method",
+      "description": "Sagittarius shoots for broad opportunities; Virgo worries about details and execution. Virgo can help Sagittarius make plans realistic; Sagittarius can help Virgo trust that not everything will fall apart. Friction builds when Virgo seems like a brake on everything and Sagittarius seems unable to commit."
     },
     "libra": {
       "heading": "Sagittarius × Libra — Compatible Elements (Fire + Air)",
-      "tagline": "Light and lively",
-      "description": "Sagittarius and Libra both enjoy people, culture, and ideas. Libra brings social finesse and tact; Sagittarius brings blunt truth and big-picture thinking. The connection feels sociable, optimistic, and ideal for travel or shared projects."
+      "tagline": "Light-footed duo",
+      "description": "Sagittarius and Libra both like movement, social life, and a generally positive tone. Libra brings grace and diplomacy; Sagittarius brings blunt truth and enthusiasm. This is a good pairing for growth and exploration. Just ensure that real problems are not brushed aside to \"keep the vibe nice.\""
     },
     "scorpio": {
-      "heading": "Sagittarius × Scorpio — Clashing Elements (Fire + Water)",
-      "tagline": "Truth vs secrecy",
-      "description": "Sagittarius prefers direct, open honesty; Scorpio sometimes prefers controlled revelation. Differences around trust, freedom, and emotional intensity are highlighted. With mutual respect, this combo can be deeply transformative—but not especially calm."
+      "heading": "Sagittarius × Scorpio — Challenging Elements (Fire + Water)",
+      "tagline": "Escape versus excavation",
+      "description": "Sagittarius tends to move on from what feels stuck; Scorpio tends to dig into it. Scorpio may see Sagittarius as evasive or shallow; Sagittarius may see Scorpio as intense or suffocating. It can work if you share a mission and agree on where depth is needed and where lightness is healthier."
     },
     "sagittarius": {
       "heading": "Sagittarius × Sagittarius — Same Element (Fire + Fire)",
       "tagline": "Double wanderer",
-      "description": "Two Sagittarians create a relationship full of movement, learning, and humour. You encourage each other to grow and explore, which can feel exhilarating but unstable. Shared commitments, even small ones, help anchor this connection."
+      "description": "Two Sagittarians together often means a lifestyle built around freedom, exploration, and new experiences. You may share an allergy to boredom and heavy rules. The downside is avoiding responsibilities and difficult feelings. A few solid anchors—a home base, basic financial plan—help a lot."
     },
     "capricorn": {
-      "heading": "Sagittarius × Capricorn — Semi-Compatible (Fire + Earth)",
-      "tagline": "Vision and grind",
-      "description": "Sagittarius looks far ahead; Capricorn climbs step by step. You both care about growth, but one focuses on wisdom and experience while the other focuses on achievement. When you combine big-picture thinking with practical strategy, this becomes a formidable pair."
+      "heading": "Sagittarius × Capricorn — Semi-compatible Elements (Fire + Earth)",
+      "tagline": "Big idea, hard work",
+      "description": "Sagittarius supplies vision and appetite for risk; Capricorn supplies structure and persistent effort. Together, you can launch ambitious projects. The tension is between Sagittarius' need for freedom and Capricorn's need for reliability. You need to agree on which commitments are non-negotiable."
     },
     "aquarius": {
       "heading": "Sagittarius × Aquarius — Compatible Elements (Fire + Air)",
-      "tagline": "Future-focused",
-      "description": "Sagittarius and Aquarius both love ideas, freedom, and seeing beyond the status quo. Sagittarius brings philosophy and adventure; Aquarius brings innovation and social vision. The relationship feels progressive, stimulating, and well-suited to unconventional lifestyles."
+      "tagline": "Freedom lovers",
+      "description": "Sagittarius and Aquarius both value independence, ideas, and living on their own terms. Sagittarius brings optimism and appetite for experience; Aquarius brings originality and a larger social or ethical perspective. This pairing can feel like comrades more than traditional partners, which is often exactly what you want."
     },
     "pisces": {
-      "heading": "Sagittarius × Pisces — Semi-Compatible (Fire + Water)",
-      "tagline": "Dreaming wide",
-      "description": "Sagittarius seeks meaning; Pisces seeks unity and compassion. You share idealism, but one is more fiery and blunt while the other is gentle and impressionable. Clear boundaries and shared creative or spiritual pursuits make this pairing feel inspiring rather than confusing."
+      "heading": "Sagittarius × Pisces — Challenging Elements (Fire + Water)",
+      "tagline": "Quest and dream",
+      "description": "Sagittarius seeks outer journeys and big concepts; Pisces seeks inner journeys and emotional or spiritual experience. Sagittarius can encourage Pisces to act on dreams; Pisces can deepen Sagittarius' understanding of meaning and compassion. But practical matters can be neglected unless you consciously address them."
     }
   },
   "capricorn": {
     "aries": {
-      "heading": "Capricorn × Aries — Semi-Compatible (Earth + Fire)",
-      "tagline": "Drive meets discipline",
-      "description": "Capricorn and Aries are both ambitious but differ in timing and risk tolerance. Aries rushes in; Capricorn plans and persists. When you align on goals, Aries sparks and Capricorn sustains, making this a strong achievement-focused combo."
+      "heading": "Capricorn × Aries — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Plan versus charge",
+      "description": "Capricorn wants strategy and structure; Aries wants momentum and quick moves. Capricorn can turn Aries' impulses into sustained progress; Aries can stop Capricorn from over-delaying and clutching control. This pairing feels strong when you share a goal and respect each other's role in reaching it."
     },
     "taurus": {
       "heading": "Capricorn × Taurus — Same Element (Earth + Earth)",
-      "tagline": "Solid foundations",
-      "description": "Capricorn and Taurus both value stability, loyalty, and tangible results. Taurus brings sensual enjoyment and patience; Capricorn brings strategy and long-term ambition. The bond feels secure and grounded, especially when you remember to play, not just work."
+      "tagline": "Solid ground",
+      "description": "Capricorn and Taurus both think in terms of tangible results and long-term security. Taurus brings patience and appreciation of comfort; Capricorn brings ambition, discipline, and readiness to shoulder heavy responsibilities. Together you can build steadily. The risk is becoming too cautious and work-focused."
     },
     "gemini": {
-      "heading": "Capricorn × Gemini — Clashing Elements (Earth + Air)",
-      "tagline": "Plan vs pivot",
-      "description": "Capricorn prefers structure and predictability; Gemini prefers flexibility and options. You may feel like you're constantly adjusting to each other. Mutual respect lets Gemini bring fresh ideas while Capricorn turns them into something real."
+      "heading": "Capricorn × Gemini — Semi-compatible Elements (Earth + Air)",
+      "tagline": "Outcome versus options",
+      "description": "Capricorn wants decisions and measurable progress; Gemini wants exploration and flexibility. Gemini can help Capricorn see more possibilities and adapt to change; Capricorn can help Gemini follow through and not drift. It doesn't work when Gemini feels micromanaged and Capricorn feels nothing ever gets finished."
     },
     "cancer": {
-      "heading": "Capricorn × Cancer — Compatible Elements (Earth + Water), Opposites",
-      "tagline": "Structure and soul",
-      "description": "Capricorn and Cancer are opposites who meet around family, security, and legacy. Capricorn builds frameworks; Cancer fills them with emotional life. When duties and feelings are both honoured, this pairing can be profoundly stabilising."
+      "heading": "Capricorn × Cancer — Opposite Signs (Earth + Water)",
+      "tagline": "Career and home",
+      "description": "Capricorn and Cancer sit opposite each other, representing public role versus private life. Capricorn focuses on responsibility, status, and long-term planning; Cancer on emotional security and family. You can be a strong unit if you honour both domains. Coldness from Capricorn and guilt or over-dependence from Cancer are the main pitfalls."
     },
     "leo": {
-      "heading": "Capricorn × Leo — Clashing Elements (Earth + Fire)",
-      "tagline": "Prestige and pride",
-      "description": "Capricorn wants respect through achievement; Leo wants recognition through self-expression. You can become a power couple or rivals. Cooperation and shared long-term projects help this connection feel strong instead of competitive."
+      "heading": "Capricorn × Leo — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Status and stage",
+      "description": "Capricorn wants achievement and respect; Leo wants recognition and self-expression. You may share ambitions but differ in style. Capricorn can help Leo turn creativity into lasting success; Leo can help Capricorn enjoy life and celebrate milestones. Ego clashes around who leads and how you're seen can be intense."
     },
     "virgo": {
       "heading": "Capricorn × Virgo — Same Element (Earth + Earth)",
-      "tagline": "Work partners",
-      "description": "Capricorn and Virgo share practicality, realism, and a desire to be useful. Virgo refines processes and details; Capricorn organises resources and direction. The relationship feels efficient and dependable, though you'll want to consciously invite in romance and rest."
+      "tagline": "The long game",
+      "description": "Capricorn and Virgo are both realistic and willing to work. Virgo refines systems and handles details; Capricorn sets direction and takes on big responsibilities. You are capable of slow, solid progress. You need to watch for chronic stress and self-denial; joy and rest are not luxuries here—they're necessary fuel."
     },
     "libra": {
-      "heading": "Capricorn × Libra — Clashing Elements (Earth + Air)",
-      "tagline": "Pragmatism vs presentation",
-      "description": "Capricorn focuses on results; Libra focuses on relationships and perception. You can at first misjudge each other's priorities. When you blend Capricorn's staying power with Libra's social intelligence, the pairing becomes quietly influential."
+      "heading": "Capricorn × Libra — Semi-compatible Elements (Earth + Air)",
+      "tagline": "Form and fairness",
+      "description": "Capricorn focuses on structure and results; Libra on relationships and fairness. Libra can help Capricorn navigate people and politics; Capricorn can help Libra move from ideas to decisions. You frustrate each other when Libra delays choices endlessly and Capricorn appears uncompromising."
     },
     "scorpio": {
       "heading": "Capricorn × Scorpio — Compatible Elements (Earth + Water)",
-      "tagline": "Strategic depth",
-      "description": "Capricorn and Scorpio both take life seriously and think long-term. Scorpio brings emotional insight and intensity; Capricorn brings structure and resilience. Together you're capable of building something powerful, whether that's a business, family, or shared mission."
+      "tagline": "Serious alliance",
+      "description": "Capricorn and Scorpio both have a high tolerance for difficulty and a low tolerance for nonsense. Scorpio brings depth, insight, and emotional intensity; Capricorn brings endurance, planning, and pragmatic action. Together you can handle heavy topics and build through tough times. Softening the tone at home is important."
     },
     "sagittarius": {
-      "heading": "Capricorn × Sagittarius — Semi-Compatible (Earth + Fire)",
-      "tagline": "Growth in focus",
-      "description": "Sagittarius wants freedom and exploration; Capricorn wants mastery and status. You're both growth-oriented but measure success differently. When you trade cynicism for curiosity on both sides, this pairing becomes surprisingly enriching."
+      "heading": "Capricorn × Sagittarius — Semi-compatible Elements (Earth + Fire)",
+      "tagline": "Risk and restraint",
+      "description": "Sagittarius wants to expand and explore; Capricorn wants to secure and consolidate. You can play off each other well—Sagittarius spots openings; Capricorn decides which are worth the effort. It fails when Capricorn feels constantly undermined and Sagittarius feels constantly restricted."
     },
     "capricorn": {
       "heading": "Capricorn × Capricorn — Same Element (Earth + Earth)",
-      "tagline": "Power duo",
-      "description": "Two Capricorns create a relationship built on ambition, work ethic, and mutual respect. You understand each other's need for goals and progress. The challenge is remembering that closeness and fun are achievements too."
+      "tagline": "Climb together",
+      "description": "Two Capricorns together are likely to take commitments, reputation, and work very seriously. You can support each other's ambitions and be a formidable team. The weakness is emotional dryness and turning everything into a task. Vulnerability and shared playtime are essential."
     },
     "aquarius": {
-      "heading": "Capricorn × Aquarius — Semi-Compatible (Earth + Air)",
-      "tagline": "Old and new",
-      "description": "Capricorn honours tradition and structure; Aquarius honours change and innovation. You may clash over rules and risks, but there's also a shared seriousness and determination. When you align around a cause, this pairing can reshape your world."
+      "heading": "Capricorn × Aquarius — Semi-compatible Elements (Earth + Air)",
+      "tagline": "System and revolution",
+      "description": "Capricorn builds systems; Aquarius questions and redesigns them. Aquarius can stop Capricorn from becoming rigid or tradition-bound; Capricorn can help Aquarius actually implement their ideas. But if Aquarius pushes too far, Capricorn may dig in, and if Capricorn clamps down, Aquarius may detach."
     },
     "pisces": {
       "heading": "Capricorn × Pisces — Compatible Elements (Earth + Water)",
-      "tagline": "Grounded dreamers",
-      "description": "Capricorn brings practicality and containment; Pisces brings imagination and compassion. You can turn ideals into reality when you trust each other's role. The relationship feels gentle and purposeful, especially with clear boundaries and shared routines."
+      "tagline": "Grounded dream",
+      "description": "Capricorn can give Pisces structure, deadlines, and practical support; Pisces can give Capricorn imagination, empathy, and a sense that life is more than work. This can be a quietly powerful pairing when escapism and overwork are both kept in check."
     }
   },
   "aquarius": {
     "aries": {
       "heading": "Aquarius × Aries — Compatible Elements (Air + Fire)",
-      "tagline": "Rebel allies",
-      "description": "Aquarius and Aries both value independence and doing life their own way. Aries brings courage and momentum; Aquarius brings vision and long-range thinking. The bond feels energetic, pioneering, and future-focused when neither tries to dominate the other's path."
+      "tagline": "Rebels in motion",
+      "description": "Aquarius brings ideas, causes, and a detached overview; Aries brings courage and willingness to act. Together you can break patterns and try unconventional paths. Feelings may not be discussed in classic romantic language, so you'll need to check in deliberately on emotional needs."
     },
     "taurus": {
-      "heading": "Aquarius × Taurus — Semi-Compatible (Air + Earth)",
-      "tagline": "Change vs comfort",
-      "description": "Aquarius prefers innovation and flexibility; Taurus prefers stability and familiar pleasures. You can each feel like the other is \"too much\" or \"too stuck.\" With compromise, Aquarius brings fresh ideas and Taurus turns them into something lasting."
+      "heading": "Aquarius × Taurus — Semi-compatible Elements (Air + Earth)",
+      "tagline": "New versus known",
+      "description": "Aquarius wants to innovate; Taurus wants to preserve what works. Aquarius can open Taurus to new perspectives; Taurus can ground Aquarius' experiments and provide continuity. It grinds when Aquarius dismisses Taurus as boring and Taurus treats every new idea as a threat."
     },
     "gemini": {
       "heading": "Aquarius × Gemini — Same Element (Air + Air)",
-      "tagline": "Ideas on loop",
-      "description": "Aquarius and Gemini both live in the mental and social realm. Gemini brings questions and variety; Aquarius brings concepts and principles. The connection feels bright and talkative, though you'll need deliberate emotional sharing to avoid staying purely in your heads."
+      "tagline": "Mental twins",
+      "description": "Aquarius and Gemini both thrive on ideas, conversation, and variety. Gemini plays with information; Aquarius organises it into systems and theories. You can talk late and change things up often. The emotional layer needs explicit care so the bond doesn't drift into a purely mental friendship."
     },
     "cancer": {
-      "heading": "Aquarius × Cancer — Semi-Compatible (Air + Water)",
-      "tagline": "Distance and depth",
-      "description": "Cancer needs emotional closeness and security; Aquarius needs space and perspective. You can help each other grow—a wider world for Cancer, more heart for Aquarius. Honest conversations about space and reassurance keep this from feeling cold or clingy."
+      "heading": "Aquarius × Cancer — Challenging Elements (Air + Water)",
+      "tagline": "Freedom and closeness",
+      "description": "Cancer needs emotional security and clear signs of attachment; Aquarius needs independence and room to think. Cancer may feel Aquarius is distant or unpredictable; Aquarius may feel smothered by emotional expectations. Finding a rhythm of together-time and alone-time is essential."
     },
     "leo": {
-      "heading": "Aquarius × Leo — Compatible Elements (Air + Fire), Opposites",
-      "tagline": "Heart and horizon",
-      "description": "Aquarius and Leo are opposites combining individual flair with collective vision. Leo personalises and warms things; Aquarius zooms out and future-plans. When you support rather than compete with each other, the relationship feels vivid, creative, and impactful."
+      "heading": "Aquarius × Leo — Opposite Signs (Air + Fire)",
+      "tagline": "Star and constellation",
+      "description": "Aquarius and Leo oppose each other: Leo focuses on the individual; Aquarius on the group or ideal. You can balance each other—Leo gives heart and identity to Aquarius' visions; Aquarius challenges Leo to think beyond ego. Power struggles around attention, leadership, and loyalty are the main stress points."
     },
     "virgo": {
-      "heading": "Aquarius × Virgo — Clashing Elements (Air + Earth)",
-      "tagline": "Systems vs theories",
-      "description": "Virgo focuses on details and tangible outcomes; Aquarius focuses on systems and possibilities. You can either feel endlessly corrected or endlessly challenged. At your best, Virgo refines Aquarius' innovations and Aquarius prevents Virgo from getting lost in minutiae."
+      "heading": "Aquarius × Virgo — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Concept and craft",
+      "description": "Aquarius sees systems and big ideas; Virgo sees details and practical steps. Virgo can help Aquarius implement changes cleanly; Aquarius can lift Virgo's view above immediate flaws. It fails when Aquarius ignores how people actually function, or Virgo nit-picks every deviation from the plan."
     },
     "libra": {
       "heading": "Aquarius × Libra — Same Element (Air + Air)",
-      "tagline": "Kindred minds",
-      "description": "Aquarius and Libra both care about fairness, perspective, and human connection. Libra focuses on one-to-one harmony; Aquarius focuses on groups and ideals. The bond feels socially rich and intellectually stimulating, especially if you make time for raw, unpolished feelings too."
+      "tagline": "Social strategists",
+      "description": "Aquarius and Libra both care about people and principles, but in different ways. Libra focuses on one-to-one harmony; Aquarius on collective patterns and fairness. Together you can be strong on ethics, friendship, and social networks. Handling messy personal emotions requires extra intention."
     },
     "scorpio": {
-      "heading": "Aquarius × Scorpio — Clashing Elements (Air + Water)",
-      "tagline": "Detached vs intense",
-      "description": "Scorpio seeks emotional fusion; Aquarius seeks mental freedom. You may fascinate each other but struggle with control and trust. Clear agreements and respect for privacy are crucial if this pairing is going to work."
+      "heading": "Aquarius × Scorpio — Challenging Elements (Air + Water)",
+      "tagline": "Cool and intense",
+      "description": "Aquarius tends to stay mentally detached; Scorpio goes deep and wants proof of loyalty. Scorpio may feel Aquarius is never fully \"in\"; Aquarius may feel emotionally pressured or analysed. This only works when both agree on what commitment looks like and respect each other's need for space versus depth."
     },
     "sagittarius": {
       "heading": "Aquarius × Sagittarius — Compatible Elements (Air + Fire)",
-      "tagline": "Big thinkers",
-      "description": "Aquarius and Sagittarius both love ideas, growth, and pushing beyond limits. Sagittarius brings enthusiasm and philosophy; Aquarius brings innovation and a sense of the collective. The relationship feels adventurous, mentally alive, and well-suited to unconventional paths."
+      "tagline": "Big ideas, big sky",
+      "description": "Aquarius and Sagittarius both love freedom, exploration, and broad thinking. Sagittarius brings optimism and experience; Aquarius brings originality and a more fixed vision or cause. This pairing does well with travel, learning, and unconventional life choices. Day-to-day practicalities need a bit of structure."
     },
     "capricorn": {
-      "heading": "Aquarius × Capricorn — Semi-Compatible (Air + Earth)",
-      "tagline": "Reformers",
-      "description": "Capricorn builds within systems; Aquarius wants to update or disrupt them. You can clash over pace and risk, yet share a serious, long-term mindset. When aligned, this combo is excellent for reshaping careers, communities, or life structures."
+      "heading": "Aquarius × Capricorn — Semi-compatible Elements (Air + Earth)",
+      "tagline": "Ideal and institution",
+      "description": "Capricorn builds and upholds structures; Aquarius questions and reforms them. You can do serious work together if you respect each other's role—Capricorn anchors, Aquarius innovates. It goes badly if Capricorn insists on \"because that's how it's done\" and Aquarius rebels just to prove a point."
     },
     "aquarius": {
       "heading": "Aquarius × Aquarius — Same Element (Air + Air)",
-      "tagline": "Independent thinkers",
-      "description": "Two Aquarians create a cerebral, unconventional pairing rooted in shared ideals and independence. You both bring originality, curiosity, and a strong sense of individuality. The connection feels progressive, spacious, and mentally open, as long as you remember to show real feelings too."
+      "tagline": "Parallel paths",
+      "description": "Two Aquarians together often create an unconventional, spacious relationship where both keep strong individual identities. Shared values, interests, or causes matter more than traditional romance scripts. The risk is emotional distance; someone has to bring vulnerability to the table."
     },
     "pisces": {
-      "heading": "Aquarius × Pisces — Semi-Compatible (Air + Water)",
-      "tagline": "Head meets heart",
-      "description": "Aquarius leads with concepts; Pisces leads with compassion and intuition. You can broaden each other's world if you stay patient with different processing speeds. Clear communication about emotions versus ideas keeps this pairing from feeling like a mismatch."
+      "heading": "Aquarius × Pisces — Challenging Elements (Air + Water)",
+      "tagline": "Theory and feeling",
+      "description": "Aquarius thinks in concepts and systems; Pisces in moods and symbols. Aquarius may try to explain everything; Pisces may just want to be understood and held. At best, Aquarius gives language to Pisces' visions and Pisces humanises Aquarius' ideals. Miscommunication is common unless you move slowly and keep checking meaning."
     }
   },
   "pisces": {
     "aries": {
-      "heading": "Pisces × Aries — Clashing Elements (Water + Fire)",
-      "tagline": "Dreams and drive",
-      "description": "Pisces is sensitive and imaginative; Aries is direct and impulsive. You can motivate each other—Aries helps Pisces act, Pisces helps Aries empathise—but miscommunications are easy. Strong boundaries and kindness help this duo feel inspiring instead of draining."
+      "heading": "Pisces × Aries — Challenging Elements (Water + Fire)",
+      "tagline": "Dream and drive",
+      "description": "Pisces lives in feeling and imagination; Aries in direct action and immediate reality. Aries can help Pisces assert themselves and protect their boundaries; Pisces can soften Aries and deepen their empathy. This needs patience and clarity around time, money, and commitments so neither feels used or overlooked."
     },
     "taurus": {
       "heading": "Pisces × Taurus — Compatible Elements (Water + Earth)",
-      "tagline": "Soft and steady",
-      "description": "Pisces brings compassion and creativity; Taurus brings stability and practical care. Together you create a soothing, romantic, and comfortable atmosphere. The relationship thrives when you talk openly about money, responsibilities, and rest."
+      "tagline": "Soft touch, firm ground",
+      "description": "Pisces brings imagination, sensitivity, and spiritual or artistic leanings; Taurus brings stability, routine, and material reliability. Taurus can give Pisces something solid to lean on; Pisces can give Taurus a richer inner world and more emotional nuance. Escapism and financial vagueness are your main shared risks."
     },
     "gemini": {
-      "heading": "Pisces × Gemini — Semi-Compatible (Water + Air)",
-      "tagline": "Waves and words",
-      "description": "Pisces feels through situations; Gemini talks through them. You can spark each other's imagination but also misread intentions. Gentle explanations and patience with mood shifts turn this into a curious, creative pairing."
+      "heading": "Pisces × Gemini — Challenging Elements (Water + Air)",
+      "tagline": "Impression and explanation",
+      "description": "Pisces experiences life through feeling tones; Gemini through words and mental models. Gemini may try to talk everything into clarity; Pisces may feel misunderstood or dissected. When it works, Gemini helps Pisces express themselves and Pisces teaches Gemini to listen between the lines."
     },
     "cancer": {
       "heading": "Pisces × Cancer — Same Element (Water + Water)",
-      "tagline": "Safe harbour",
-      "description": "Pisces and Cancer both value emotional connection, home, and loyalty. Cancer builds the container; Pisces fills it with empathy and dreams. The bond feels caring and intuitive, though you'll want grounding habits so you don't both spiral into worry."
+      "tagline": "Shared sensitivity",
+      "description": "Pisces and Cancer both feel deeply and often sense the unspoken. Cancer leans toward family and emotional continuity; Pisces toward inspiration, spirituality, or art. You can be very supportive of each other and create a safe emotional space. The danger is mutual avoidance of practical realities."
     },
     "leo": {
-      "heading": "Pisces × Leo — Clashing Elements (Water + Fire)",
-      "tagline": "Stage and soul",
-      "description": "Leo seeks recognition and creative expression; Pisces seeks transcendence and emotional merging. You can inspire each other artistically but also hurt each other unintentionally. Honest reassurance and shared creative outlets keep this from feeling like a constant mismatch."
+      "heading": "Pisces × Leo — Challenging Elements (Water + Fire)",
+      "tagline": "Heart and haze",
+      "description": "Leo likes clear roles, recognition, and visible expression; Pisces lives in a softer, more fluid state. Leo can help Pisces find confidence and shape; Pisces can help Leo connect to compassion and subtlety. Misunderstandings crop up when Leo wants direct answers and Pisces drifts or idealises."
     },
     "virgo": {
-      "heading": "Pisces × Virgo — Compatible Elements (Water + Earth), Opposites",
-      "tagline": "Healing axis",
-      "description": "Pisces and Virgo are opposites who meet around healing, service, and making life better. Virgo manages details and routines; Pisces manages emotional and spiritual tone. The relationship feels meaningful when neither over-sacrifices and you respect each other's limits."
+      "heading": "Pisces × Virgo — Opposite Signs (Water + Earth)",
+      "tagline": "Chaos and clarity",
+      "description": "Pisces and Virgo oppose each other and describe a spectrum from dream to detail. Virgo sorts, edits, and organises; Pisces imagines, feels, and merges. Together you can balance each other—Virgo helps Pisces function in the world; Pisces helps Virgo see beyond flaws to meaning. It fails when Virgo pathologises everything and Pisces checks out."
     },
     "libra": {
-      "heading": "Pisces × Libra — Semi-Compatible (Water + Air)",
-      "tagline": "Romantic idealists",
-      "description": "Libra seeks harmony and partnership; Pisces seeks unconditional love and soul-level connection. You share a dreamy, romantic streak that can be beautiful but unrealistic if ungrounded. Clear agreements and practical planning make this pairing feel enchanted and workable."
+      "heading": "Pisces × Libra — Challenging Elements (Water + Air)",
+      "tagline": "Romantic versus rational",
+      "description": "Pisces often leans into romantic or soulful connection; Libra leans into balanced, reasonable partnership. Libra may try to negotiate what Pisces wants to feel their way through; Pisces may avoid clear decisions that Libra actually needs. This pairing can be sweet but drifty unless you name expectations."
     },
     "scorpio": {
       "heading": "Pisces × Scorpio — Same Element (Water + Water)",
-      "tagline": "Deep currents",
-      "description": "Pisces and Scorpio share emotional depth and strong intuition. Pisces brings softness and forgiveness; Scorpio brings intensity and focus. The relationship feels powerful and transformative when trust is high and control issues are addressed."
+      "tagline": "Deep waters",
+      "description": "Pisces and Scorpio both operate in emotional and invisible realms. Scorpio brings intensity, focus, and a tough shell; Pisces brings compassion, imagination, and permeability. Together you can share profound experiences and mutual protection. Power games or victim–saviour patterns need to be kept out."
     },
     "sagittarius": {
-      "heading": "Pisces × Sagittarius — Semi-Compatible (Water + Fire)",
-      "tagline": "Faith and freedom",
-      "description": "Pisces and Sagittarius are both idealistic and oriented toward meaning. Sagittarius seeks truth through experience; Pisces seeks it through feeling and connection. With respect for each other's style, this becomes a spiritually rich, growth-heavy combo."
+      "heading": "Pisces × Sagittarius — Challenging Elements (Water + Fire)",
+      "tagline": "Inner and outer quest",
+      "description": "Pisces seeks inner meaning and emotional resonance; Sagittarius seeks outer adventure and philosophical understanding. Sagittarius can help Pisces act on their dreams; Pisces can add soul and nuance to Sagittarius' ideas. Without discipline, both can neglect basic life admin."
     },
     "capricorn": {
       "heading": "Pisces × Capricorn — Compatible Elements (Water + Earth)",
-      "tagline": "Grounded mystics",
-      "description": "Capricorn offers structure and practical support; Pisces offers empathy and imaginative vision. You can help each other turn dreams into reality. The bond feels gentle, purposeful, and quietly stabilising when both commit."
+      "tagline": "Vision and structure",
+      "description": "Pisces can give Capricorn vision, creativity, and a sense of purpose beyond status; Capricorn can give Pisces structure, deadlines, and realistic support. This is strong for building something meaningful over time. The balance is lost if Pisces leans only into fantasy or Capricorn only into duty."
     },
     "aquarius": {
-      "heading": "Pisces × Aquarius — Semi-Compatible (Water + Air)",
-      "tagline": "Empath and analyst",
-      "description": "Pisces absorbs feelings; Aquarius analyses patterns. You may sometimes feel unheard or overwhelmed by each other's approach. Naming those differences and valuing both intuition and insight allows this pairing to feel wise rather than weird."
+      "heading": "Pisces × Aquarius — Challenging Elements (Water + Air)",
+      "tagline": "Feeling and theory",
+      "description": "Pisces wants emotional and spiritual resonance; Aquarius wants conceptual clarity and freedom. Aquarius may try to analyse what Pisces experiences; Pisces may feel unseen or intellectually boxed in. It helps when you share a cause or creative project that gives both a channel."
     },
     "pisces": {
       "heading": "Pisces × Pisces — Same Element (Water + Water)",
-      "tagline": "Shared dreamworld",
-      "description": "Two Pisceans form a gentle, imaginative, and empathic connection with powerful intuitive rapport. You easily slip into each other's moods and fantasies. To keep things healthy, you'll need grounding, boundaries, and practical plans so you don't float off or absorb too much pain."
+      "tagline": "Shared dreamscape",
+      "description": "Two Pisceans together create a highly sensitive, intuitive, and often creative bond. You may share spiritual interests, art, or a strong sense of empathy. The shadow is blurred boundaries, avoidance, and getting lost in each other's moods. Simple routines and clear agreements about money and time keep this gentle match grounded."
     }
   }
 };

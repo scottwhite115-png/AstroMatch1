@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { getWesternSignGlyph } from "@/lib/zodiacHelpers";
 
 /** ===== Types ===== */
 
@@ -33,7 +32,7 @@ type ChineseOverlayPattern =
 
 type SanHeTrineName = "Visionaries" | "Strategists" | "Adventurers" | "Artists";
 
-interface ConnectionBoxProps {
+interface ConnectionBoxUpdatedProps {
   // Basic profile info
   userAName: string;
   userBName: string;
@@ -66,18 +65,6 @@ interface ConnectionBoxProps {
 
   // Long-form text for dropdowns
   connectionOverviewText?: string;
-  connectionOverviewHeading?: string; // e.g. "Rat × Ox — Secret Friends (Liu He 六合)"
-  connectionOverviewTagline?: string; // e.g. "Quietly reliable bond"
-  
-  // Western compatibility (separate section)
-  westernCompatibilityHeading?: string; // e.g. "Aries × Taurus — Semi-Compatible (Fire + Earth)"
-  westernCompatibilityTagline?: string; // e.g. "Speed vs stability"
-  westernCompatibilityDescription?: string;
-  westernSignA?: string; // e.g. "Aries"
-  westernSignB?: string; // e.g. "Taurus"
-  westernElementA?: WesternElement; // e.g. "Fire"
-  westernElementB?: WesternElement; // e.g. "Earth"
-  
   aboutPartnerText?: string;
   
   // Theme
@@ -126,32 +113,31 @@ function getPrimaryLabel(
     return "Challenging Match";
   }
 
-  // 3) SAN_HE logic — top-tier harmony
+  // 3) SAN_HE logic
   if (basePattern === "SAN_HE") {
-    // We only block same-animal here. Same Western sign is allowed.
-    // Same sign pairs (Dragon/Dragon etc.) should come in as SAME_SIGN, not SAN_HE.
-    if (!sameChineseAnimal) {
-      if (elementRelation === "same") {
-        return "Soulmate Match";
-      }
+    const canUseTopTier = !sameChineseAnimal && !sameWesternSign;
 
-      if (
-        elementRelation === "compatible" ||
-        elementRelation === "semiCompatible"
-      ) {
-        return "Twin Flame Match";
-      }
-
-      if (elementRelation === "opposite") {
-        return "Challenging Match";
-      }
+    if (elementRelation === "same" && canUseTopTier) {
+      return "Soulmate Match";
     }
 
-    // Fallback if something is odd: treat as strong but not named cosmic
-    return "Challenging Match";
+    if (
+      (elementRelation === "compatible" ||
+        elementRelation === "semiCompatible") &&
+      canUseTopTier
+    ) {
+      return "Twin Flame Match";
+    }
+
+    if (elementRelation === "opposite") {
+      return "Challenging Match";
+    }
+
+    // Fallback: treat as warm but not cosmic
+    return "Secret Friends Match";
   }
 
-  // 4) LIU_HE logic — Secret Friends only lives here
+  // 4) LIU_HE logic
   if (basePattern === "LIU_HE") {
     if (
       elementRelation === "same" ||
@@ -160,7 +146,6 @@ function getPrimaryLabel(
     ) {
       return "Secret Friends Match";
     }
-    // Secret Friends under element clash
     return "Challenging Match";
   }
 
@@ -260,7 +245,7 @@ function getHeadlineSummary(
     return "Triple Harmony with supportive elements – intense, high-growth twin flame style energy.";
   }
 
-  if (primaryLabel === "Secret Friends Match" && basePattern === "LIU_HE") {
+  if (primaryLabel === "Secret Friends Match") {
     if (hasDamage) {
       return "Secret Friends pattern under tension – loyalty is there, but the dynamic needs patience.";
     }
@@ -304,7 +289,7 @@ function getHeadlineSummary(
 
 /** ===== Component ===== */
 
-export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
+export const ConnectionBoxUpdated: React.FC<ConnectionBoxUpdatedProps> = ({
   userAName,
   userBName,
   userASignLabel,
@@ -323,15 +308,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   elements,
   elementRelationOverride,
   connectionOverviewText,
-  connectionOverviewHeading,
-  connectionOverviewTagline,
-  westernCompatibilityHeading,
-  westernCompatibilityTagline,
-  westernCompatibilityDescription,
-  westernSignA,
-  westernSignB,
-  westernElementA,
-  westernElementB,
   aboutPartnerText,
   theme = "dark",
 }) => {
@@ -432,8 +408,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             <div className="flex flex-col items-center flex-1 min-w-0">
               {/* Right sign emojis */}
               <div className="flex items-center gap-1 mb-1">
-                {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
                 {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
+                {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
               </div>
               {/* Right sign label */}
               <span className={`font-bold text-sm whitespace-nowrap ${
@@ -473,17 +449,13 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Pattern breakdown chips */}
         <div className="space-y-2 text-xs leading-snug mb-4">
           <div className="flex flex-wrap gap-1 justify-center">
-            {/* Only show base pattern chip if it's a real pattern (not NO_PATTERN), or if NO_PATTERN with no overlays (show Neutral) */}
-            {/* Hide Neutral chip when there are overlays or other patterns present */}
-            {(basePattern !== "NO_PATTERN" || (basePattern === "NO_PATTERN" && overlays.length === 0)) && (
-              <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
-                theme === "light" 
-                  ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
-                  : "border-slate-600/80 bg-slate-800/80 text-slate-200"
-              }`}>
-                {baseChip}
-              </span>
-            )}
+            <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
+              theme === "light" 
+                ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
+                : "border-slate-600/80 bg-slate-800/80 text-slate-200"
+            }`}>
+              {baseChip}
+            </span>
             {isOppositeBranches && (
               <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
                 theme === "light" 
@@ -573,107 +545,18 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         </div>
 
         {/* Dropdowns - Connection Overview */}
-        {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
+        {showOverview && connectionOverviewText && (
           <div className={`rounded-2xl px-3 py-3 text-[12px] mb-3 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
           }`}>
-            <h3 className={`text-sm font-semibold mb-3 ${
+            <h3 className={`text-sm font-semibold mb-2 ${
               theme === "light" ? "text-slate-900" : "text-slate-100"
             }`}>
               Connection Overview
             </h3>
-            
-            {/* Chinese Zodiac Compatibility Section */}
-            {connectionOverviewText && (
-              <div className="mb-4">
-                {connectionOverviewHeading && (
-                  <h4 className={`text-sm font-bold mb-1.5 ${
-                    theme === "light" ? "text-slate-900" : "text-slate-100"
-                  }`}>
-                    {connectionOverviewHeading}
-                  </h4>
-                )}
-                {connectionOverviewTagline && (
-                  <p className={`text-xs font-semibold italic mb-2 ${
-                    theme === "light" ? "text-slate-700" : "text-slate-300"
-                  }`}>
-                    {connectionOverviewTagline}
-                  </p>
-                )}
-                <div className="leading-relaxed whitespace-pre-line">
-                  {connectionOverviewText}
-                </div>
-              </div>
-            )}
-            
-            {/* Western Sun Sign Compatibility Section */}
-            {westernCompatibilityDescription && (
-              <div className={connectionOverviewText ? "pt-4 border-t border-slate-300/30 dark:border-slate-600/30" : ""}>
-                {/* Western Signs Display with Icons */}
-                {westernSignA && westernSignB && (
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <div className="flex items-center gap-1">
-                      <span className="text-xl">{getWesternSignGlyph(westernSignA)}</span>
-                      <span className={`font-semibold text-sm ${
-                        theme === "light" ? "text-slate-700" : "text-slate-200"
-                      }`}>
-                        {westernSignA}
-                      </span>
-                    </div>
-                    <span className={`text-lg ${
-                      theme === "light" ? "text-pink-500" : "text-pink-400"
-                    }`}>
-                      ♥
-                    </span>
-                    <div className="flex items-center gap-1">
-                      <span className={`font-semibold text-sm ${
-                        theme === "light" ? "text-slate-700" : "text-slate-200"
-                      }`}>
-                        {westernSignB}
-                      </span>
-                      <span className="text-xl">{getWesternSignGlyph(westernSignB)}</span>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Element Info */}
-                {westernElementA && westernElementB && (
-                  <div className={`text-xs mb-2 text-center ${
-                    theme === "light" ? "text-slate-600" : "text-slate-400"
-                  }`}>
-                    {westernElementA} + {westernElementB}
-                    {elementRelation && (
-                      <span className="ml-1">
-                        {elementRelation === "same" && "· Same element"}
-                        {elementRelation === "compatible" && "· Compatible elements"}
-                        {elementRelation === "semiCompatible" && "· Semi-compatible"}
-                        {elementRelation === "opposite" && "· Clashing elements"}
-                      </span>
-                    )}
-                  </div>
-                )}
-                
-                {westernCompatibilityHeading && (
-                  <h4 className={`text-sm font-bold mb-1.5 ${
-                    theme === "light" ? "text-slate-900" : "text-slate-100"
-                  }`}>
-                    {westernCompatibilityHeading}
-                  </h4>
-                )}
-                {westernCompatibilityTagline && (
-                  <p className={`text-xs font-semibold italic mb-2 ${
-                    theme === "light" ? "text-slate-700" : "text-slate-300"
-                  }`}>
-                    {westernCompatibilityTagline}
-                  </p>
-                )}
-                <div className="leading-relaxed whitespace-pre-line">
-                  {westernCompatibilityDescription}
-                </div>
-              </div>
-            )}
+            <p className="leading-relaxed">{connectionOverviewText}</p>
           </div>
         )}
 
@@ -696,3 +579,4 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     </div>
   );
 };
+
