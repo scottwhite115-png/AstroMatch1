@@ -200,7 +200,7 @@ function baseElementPhrase(a: Element, b: Element): string {
   }
 }
 
-function aspectDescription(aspect: WestAspect): { name: string; description: string } {
+export function aspectDescription(aspect: WestAspect): { name: string; description: string } {
   switch (aspect) {
     case 'same_sign':
       return { name: 'same sign', description: 'very strong mirror effect' };

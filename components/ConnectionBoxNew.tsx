@@ -972,7 +972,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxProps> = ({
                   (westB || '').toLowerCase().trim()
                 )
               );
-              const shouldShowCompat = hasChineseCompat || hasWesternCompat || hasAnyElementInfo;
+              // Always show if we have either Chinese or Western data
+              const shouldShowCompat = hasChineseCompat || hasWesternCompat;
               
               if (!shouldShowCompat) return null;
               
