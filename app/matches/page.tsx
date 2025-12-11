@@ -1095,7 +1095,15 @@ export default function MatchesPage() {
     errorMessage?: string
   ): ConnectionBoxData => {
     console.warn(`[⚠️ Fallback] Creating fallback connection box for profile ${profile.id} (${profile.name})${errorMessage ? `: ${errorMessage}` : ''}`);
-    
+
+    // Import connection UI helpers for fallback
+    const {
+      extractChineseBase,
+      extractChineseOverlays,
+      extractWesternRelation,
+      extractPrimaryLabel,
+    } = require('@/lib/connectionUiHelpers');
+
     return {
       score: 50,
       rank: "Neutral Match",
@@ -1159,6 +1167,13 @@ export default function MatchesPage() {
       patternEmoji: "✨",
       chemistryStars: 2.5,
       stabilityStars: 2.5,
+      // NEW: Connection UI fields for ConnectionBoxTop component (fallback values)
+      connectionUI: {
+        primaryLabel: extractPrimaryLabel("Neutral Match"),
+        chineseBase: "NO_PATTERN",
+        chineseOverlays: [],
+        westernRelation: "NEUTRAL",
+      },
     };
   };
 
@@ -1173,6 +1188,35 @@ export default function MatchesPage() {
     userYearElement?: any, // WuXing type
     profileYearElement?: any // WuXing type
   ): ConnectionBoxData => {
+    // Import connection UI helpers
+    const {
+      extractChineseBase,
+      extractChineseOverlays,
+      extractWesternRelation,
+      extractPrimaryLabel,
+    } = require('@/lib/connectionUiHelpers');
+    
+    // Extract connection UI data
+    const chineseBase = extractChineseBase(simpleBox.chinesePattern || simpleBox.pattern);
+    let chineseOverlays = extractChineseOverlays(
+      simpleBox.chinesePattern || simpleBox.pattern,
+      undefined, // allPatterns not available in SimpleConnectionBox yet
+      simpleBox.chineseLine // Use chineseLine as fallback
+    );
+    
+    // If the primary pattern is LIU_CHONG, XING, LIU_HAI, or PO, add it to overlays for display
+    const primaryPattern = String(simpleBox.chinesePattern || simpleBox.pattern || '').toUpperCase();
+    if (primaryPattern.includes('LIU_CHONG') && !chineseOverlays.includes('LIU_CHONG')) {
+      chineseOverlays.push('LIU_CHONG');
+    } else if (primaryPattern.includes('XING') && !chineseOverlays.includes('XING')) {
+      chineseOverlays.push('XING');
+    } else if (primaryPattern.includes('LIU_HAI') && !chineseOverlays.includes('LIU_HAI')) {
+      chineseOverlays.push('LIU_HAI');
+    } else if (primaryPattern.includes('PO') && !chineseOverlays.includes('PO')) {
+      chineseOverlays.push('PO');
+    }
+    const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
+    const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
     // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
     const labelToRankKey: Record<string, RankKey> = {
       "Soulmate Match": "perfect",
@@ -1353,6 +1397,13 @@ export default function MatchesPage() {
       patternEmoji: simpleBox.patternEmoji,
       chemistryStars: simpleBox.chemistryStars,
       stabilityStars: simpleBox.stabilityStars,
+      // NEW: Connection UI fields for ConnectionBoxTop component
+      connectionUI: {
+        primaryLabel,
+        chineseBase,
+        chineseOverlays,
+        westernRelation,
+      },
     };
   };
 

@@ -138,3 +138,5 @@ To test the changes:
 - Pure harmony patterns (no overlays) are unaffected
 - The visual pill label and tagline already correctly reflect "Challenging Match"
 - Now the score matches the narrative
+
+

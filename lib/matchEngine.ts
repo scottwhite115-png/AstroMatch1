@@ -197,9 +197,9 @@ function getChineseBaseScore(
     return 70;                                         // Same animal + clashing elements
   }
 
-  // San He trines (NO same sign)
+  // San He trines
   if (pattern === 'SAN_HE') {
-    if (elementRelation === 'same') return 90;
+    if (elementRelation === 'same') return 90; // Will be capped if same Western sign
     if (elementRelation === 'compatible') return 88;
     if (elementRelation === 'semi') return 85;
     return 82;
@@ -400,6 +400,18 @@ export function calculateMatchScoreWithOverlays(
   score += sameSignAdjustment(sameWesternSign);
 
   score = clampToPatternBand(pattern, score);
+  
+  // Cap San He + same element + same Western sign at 84-86%
+  if (pattern === "SAN_HE" && 
+      (westernElementRelation === "SAME_ELEMENT" || westernElementRelation === "COMPATIBLE_ELEMENT") &&
+      sameWesternSign) {
+    // Cap at 86% for same element, 84% for compatible
+    if (westernElementRelation === "SAME_ELEMENT") {
+      score = Math.min(score, 86);
+    } else {
+      score = Math.min(score, 84);
+    }
+  }
   
   // Cap NO_PATTERN (Neutral) scores at 65%
   if (pattern === "NO_PATTERN" && score > 65) {

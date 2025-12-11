@@ -2,9 +2,21 @@ import React, { useState } from "react";
 import { getWesternSignGlyph } from "@/lib/zodiacHelpers";
 import { 
   getMatchLabel, 
-  type WesternElementRelation,
+  type WesternElementRelation as MatchLabelWesternRelation,
   type PrimaryMatchLabel 
 } from "@/lib/matchLabelEngine";
+import {
+  ChineseBasePattern,
+  ChineseOverlayPattern,
+  WesternElementRelation,
+  deriveArchetype,
+  deriveWesternEase,
+  getChineseBaseChip,
+  getChineseOverlayChips,
+  getWesternChip,
+  getConnectionBlurb,
+  type Chip,
+} from '@/lib/connectionUi';
 
 /** ===== Types ===== */
 
@@ -116,9 +128,27 @@ function getElementRelation(
 }
 
 /**
- * Convert ElementRelation to WesternElementRelation for the new engine
+ * Convert ElementRelation to WesternElementRelation for the match label engine
  */
-function convertToWesternRelation(elementRelation: ElementRelation): WesternElementRelation {
+function convertToWesternRelation(elementRelation: ElementRelation): MatchLabelWesternRelation {
+  switch (elementRelation) {
+    case "same":
+      return 'SAME';
+    case "compatible":
+      return 'COMPATIBLE';
+    case "semiCompatible":
+      return 'SEMI_COMPATIBLE';
+    case "opposite":
+      return 'CLASH';
+    default:
+      return 'NEUTRAL';
+  }
+}
+
+/**
+ * Convert ElementRelation to connectionUi WesternElementRelation
+ */
+function convertToConnectionUIWesternRelation(elementRelation: ElementRelation): WesternElementRelation {
   switch (elementRelation) {
     case "same":
       return 'SAME';
@@ -146,12 +176,13 @@ function getMatchLabelAndTagline(
   score?: number
 ): { primaryLabel: PrimaryLabel; tagline: string } {
   const westernRelation = convertToWesternRelation(elementRelation);
-  
+
   const result = getMatchLabel({
     chineseBase: basePattern,
     chineseOverlays: overlays,
     westernRelation,
-    score: score !== undefined ? score : 75 // Default to mid-range if no score
+    score: score !== undefined ? score : 75, // Default to mid-range if no score
+    sameWesternSign: sameWesternSign ?? false
   });
 
   return {
@@ -350,7 +381,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   const elementRelation =
     elementRelationOverride ?? getElementRelation(elements.a, elements.b);
 
-  const { primaryLabel, tagline } = getMatchLabelAndTagline(
+  const { primaryLabel: initialPrimaryLabel, tagline } = getMatchLabelAndTagline(
     basePattern,
     overlays,
     isOppositeBranches,
@@ -360,8 +391,39 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     score
   );
 
+  // NEW: Calculate chips and blurb using connectionUi helpers
+  const chineseBase: ChineseBasePattern = basePattern;
+  const chineseOverlays: ChineseOverlayPattern[] = overlays ?? [];
+  const westernRelation: WesternElementRelation = convertToConnectionUIWesternRelation(elementRelation);
+
+  const archetype = deriveArchetype(chineseBase, chineseOverlays);
+  const ease = deriveWesternEase(westernRelation);
+  
+  // hasDamage is used for blurb selection
+  const hasDamage = chineseOverlays.some(
+    o => o === 'LIU_HAI' || o === 'XING' || o === 'PO'
+  );
+  
+  // Use the label from getMatchLabel (which already handles Liu Chong → Magnetic Opposites)
+  const primaryLabel: PrimaryMatchLabel = initialPrimaryLabel;
+
+  const hasAnyOverlay = chineseOverlays.length > 0;
+
+  // 1) Base chip: regular base pattern chip
+  const baseChipNew: Chip = getChineseBaseChip(chineseBase);
+
+  // 2) Overlay chips: includes Liu Chong + damage patterns
+  const overlayChips = getChineseOverlayChips(chineseOverlays);
+  const westernChipNew = getWesternChip(elements.a, elements.b, westernRelation);
+
+  // Only show "No strong pattern" when there are no overlays at all
+  const showBaseChip = chineseBase !== 'NO_PATTERN' || !hasAnyOverlay;
+
+  const blurb = getConnectionBlurb(archetype, ease, sameWesternSign, hasDamage);
+
+  // Keep existing chip functions for backward compatibility (not used in new UI)
   const baseChip = getBasePatternChip(basePattern, sanHeTrineName);
-  const overlayChips = getOverlayChips(overlays);
+  const overlayChipsLegacy = getOverlayChips(overlays);
   const elementChip = getElementChip(
     elements.a,
     elements.b,
@@ -489,47 +551,58 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         </div>
 
         {/* Tagline under the pill */}
-        {tagline && (
+        {blurb && (
           <p className={`text-xs text-center leading-relaxed mb-3 ${
             theme === "light" ? "text-slate-600" : "text-slate-300"
           }`}>
-            {tagline}
+            {blurb}
           </p>
         )}
 
         {/* Pattern breakdown chips */}
-        <div className="space-y-2 text-xs leading-snug mb-4">
-          <div className="flex flex-wrap gap-1 justify-center">
-            {/* Only show base pattern chip if it's a real pattern (not NO_PATTERN) */}
-            {basePattern !== "NO_PATTERN" && (
-              <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
+        <div className="mt-2 flex flex-wrap justify-center gap-2 mb-4">
+          {/* base Chinese pattern chip - only show if not NO_PATTERN or if there are no overlays */}
+          {showBaseChip && (
+            <span
+              key={baseChipNew.icon + baseChipNew.label}
+              className={`px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1 ${
                 theme === "light" 
-                  ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
-                  : "border-slate-600/80 bg-slate-800/80 text-slate-200"
-              }`}>
-                {baseChip}
-              </span>
-            )}
-            {overlayChips.map((chip) => (
-              <span
-                key={chip}
-                className={`rounded-full border px-2 py-0.5 text-[10px] ${
-                  theme === "light" 
-                    ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
-                    : "border-slate-600/80 bg-slate-800/80 text-slate-200"
-                }`}
-              >
-                {chip}
-              </span>
-            ))}
-            <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
-              theme === "light" 
-                ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
-                : "border-slate-600/80 bg-slate-800/80 text-slate-200"
-            }`}>
-              {elementChip}
+                  ? "bg-slate-200 text-slate-700" 
+                  : "bg-slate-900 text-slate-200"
+              }`}
+            >
+              <span>{baseChipNew.icon}</span>
+              <span>{baseChipNew.label}</span>
             </span>
-          </div>
+          )}
+
+          {/* overlay chips, if any */}
+          {overlayChips.map((chip) => (
+            <span
+              key={chip.icon + chip.label}
+              className={`px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1 ${
+                theme === "light" 
+                  ? "bg-slate-200 text-slate-700" 
+                  : "bg-slate-900 text-slate-200"
+              }`}
+            >
+              <span>{chip.icon}</span>
+              <span>{chip.label}</span>
+            </span>
+          ))}
+
+          {/* western chip */}
+          <span
+            key={westernChipNew.icon + westernChipNew.label}
+            className={`px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1 ${
+              theme === "light" 
+                ? "bg-slate-200 text-slate-700" 
+                : "bg-slate-900 text-slate-200"
+            }`}
+          >
+            <span>{westernChipNew.icon}</span>
+            <span>{westernChipNew.label}</span>
+          </span>
         </div>
 
         {/* Action Buttons Row */}
@@ -636,13 +709,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                     {chineseHeadingWithoutSignPair}
                   </h4>
                 )}
-                {connectionOverviewTagline && (
-                  <p className={`text-xs font-semibold italic mb-2 ${
-                    theme === "light" ? "text-slate-700" : "text-slate-300"
-                  }`}>
-                    {connectionOverviewTagline}
-                  </p>
-                )}
                 <div className="leading-relaxed whitespace-pre-line">
                   {connectionOverviewText}
                 </div>
@@ -681,13 +747,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   }`}>
                     {westernHeadingWithoutSignPair}
                   </h4>
-                )}
-                {westernCompatibilityTagline && (
-                  <p className={`text-xs font-semibold italic mb-2 ${
-                    theme === "light" ? "text-slate-700" : "text-slate-300"
-                  }`}>
-                    {westernCompatibilityTagline}
-                  </p>
                 )}
                 <div className="leading-relaxed whitespace-pre-line">
                   {westernCompatibilityDescription}

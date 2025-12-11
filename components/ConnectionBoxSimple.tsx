@@ -272,6 +272,13 @@ export interface ConnectionBoxData {
   isLivelyPair?: boolean;
   wuXingA?: WuXing; // Wu Xing element for User A
   wuXingB?: WuXing; // Wu Xing element for User B
+  // NEW: Connection UI fields for ConnectionBoxTop component
+  connectionUI?: {
+    primaryLabel: string;
+    chineseBase: import('@/lib/connectionUi').ChineseBasePattern;
+    chineseOverlays: import('@/lib/connectionUi').ChineseOverlayPattern[];
+    westernRelation: import('@/lib/connectionUi').WesternElementRelation;
+  };
 }
 
 interface ConnectionBoxSimpleProps {

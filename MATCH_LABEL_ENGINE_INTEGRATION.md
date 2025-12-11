@@ -110,3 +110,5 @@ const { primaryLabel, subLabel } = getMatchLabel(context);
 ✅ All edge cases handled
 
 The new system provides more nuanced, accurate match labels that consider the full context of archetype, score, and Western compatibility together.
+
+

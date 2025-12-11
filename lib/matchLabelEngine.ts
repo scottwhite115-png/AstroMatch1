@@ -62,6 +62,7 @@ export interface MatchContext {
   chineseOverlays: ChineseOverlayPattern[]; // can be empty
   westernRelation: WesternElementRelation;
   score: number; // 0–100
+  sameWesternSign?: boolean; // Optional: true if both users have same Western sign
 }
 
 // ----------------------------
@@ -104,22 +105,26 @@ function getConnectionArchetype(
   const hasLiuChong = hasOverlay(overlays, 'LIU_CHONG');
   const hasDamage = hasAnyDamageOverlay(overlays);
 
-  // Damage overlays have highest priority
-  if (hasDamage) {
-    return 'LESSON_REPAIR';
-  }
-
-  // Then Liu Chong (Opposites)
+  // Liu Chong (Opposites) has highest priority
   if (hasLiuChong) {
     return 'OPPOSITES';
   }
 
-  // Then base pattern
+  // Liu He base pattern - prioritize this even with damage overlays
+  // Liu He + damage should still be SUPPORTIVE_ALLY (not LESSON_REPAIR)
+  if (chineseBase === 'LIU_HE') {
+    return 'SUPPORTIVE_ALLY';
+  }
+
+  // Damage overlays (but not Liu Chong, and not Liu He base)
+  if (hasDamage) {
+    return 'LESSON_REPAIR';
+  }
+
+  // Then other base patterns
   switch (chineseBase) {
     case 'SAN_HE':
       return 'TRIPLE_HARMONY';
-    case 'LIU_HE':
-      return 'SUPPORTIVE_ALLY';
     case 'SAME_SIGN':
       return 'MIRROR';
     case 'NO_PATTERN':
@@ -142,6 +147,28 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
   const hasLiuChong = hasOverlay(chineseOverlays, 'LIU_CHONG');
   const hasDamage = hasAnyDamageOverlay(chineseOverlays);
 
+  // CASE 0: Liu Chong always gets "Magnetic Opposites"
+  if (hasLiuChong) {
+    // Use appropriate sublabel based on ease
+    if (westernEase === 'EASY') {
+      return {
+        primaryLabel: 'Magnetic Opposites',
+        subLabel: taglines.magneticOpposites
+      };
+    }
+    if (westernEase === 'MEDIUM') {
+      return {
+        primaryLabel: 'Magnetic Opposites',
+        subLabel: taglines.lessonSoftened
+      };
+    }
+    // HARD ease
+    return {
+      primaryLabel: 'Magnetic Opposites',
+      subLabel: taglines.volatileOpposites
+    };
+  }
+
   // CASE 1: Heavy lesson / damage patterns first
   if (archetype === 'LESSON_REPAIR') {
     if (westernEase === 'HARD') {
@@ -158,24 +185,39 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     };
   }
 
-  // CASE 2: Opposites (Liu Chong)
-  if (archetype === 'OPPOSITES' && hasLiuChong) {
-    if (westernEase === 'HARD') {
+  // CASE 2: Opposites (Liu Chong) - This case should no longer be reached due to CASE 0 above
+  // Keeping for safety, but it should be redundant now
+  if (archetype === 'OPPOSITES') {
+    // This should already be handled by CASE 0, but keeping as fallback
+    if (westernEase === 'EASY') {
       return {
-        primaryLabel: 'Challenging Match',
-        subLabel: taglines.volatileOpposites
+        primaryLabel: 'Magnetic Opposites',
+        subLabel: taglines.magneticOpposites
       };
     }
-
+    if (westernEase === 'MEDIUM') {
+      return {
+        primaryLabel: 'Magnetic Opposites',
+        subLabel: taglines.lessonSoftened
+      };
+    }
     return {
       primaryLabel: 'Magnetic Opposites',
-      subLabel: taglines.magneticOpposites
+      subLabel: taglines.volatileOpposites
     };
   }
 
   // CASE 3: Triple Harmony (San He)
   if (archetype === 'TRIPLE_HARMONY' && !hasDamage) {
-    // Easiest, top-band San He → Soulmate
+    // San He + same element + same Western sign → Strong Harmony (not Soulmate)
+    if (westernEase === 'EASY' && context.sameWesternSign) {
+      return {
+        primaryLabel: 'Strong Harmony Match',
+        subLabel: taglines.strongHarmony
+      };
+    }
+
+    // Easiest, top-band San He (different signs) → Soulmate
     if (westernEase === 'EASY' && scoreBand === 'TOP') {
       return {
         primaryLabel: 'Soulmate Match',
@@ -201,9 +243,18 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
   }
 
   // CASE 4: Supportive Ally (Liu He)
-  if (archetype === 'SUPPORTIVE_ALLY' && !hasDamage) {
+  if (archetype === 'SUPPORTIVE_ALLY') {
+    // Rule: Only escalate to Challenging if score < 60 AND CLASH AND damage overlays
+    // All other Liu He cases → Secret Friends Match
+    if (score < 60 && westernRelation === 'CLASH' && hasDamage) {
+      return {
+        primaryLabel: 'Challenging Match',
+        subLabel: taglines.lessonHard
+      };
+    }
+
+    // Default: Secret Friends Match for all Liu He (score >= 60, or not heavy clash+damage)
     if (westernEase === 'EASY' && (scoreBand === 'TOP' || scoreBand === 'HIGH')) {
-      // Let really sweet Liu He behave like a top-tier "Secret Friends"
       return {
         primaryLabel: 'Secret Friends Match',
         subLabel: taglines.quietAlly
@@ -217,13 +268,11 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
       };
     }
 
-    // Liu He + clash, but no damage overlay - use softSteadyFriend as fallback
-    if (westernEase === 'HARD') {
-      return {
-        primaryLabel: 'Secret Friends Match',
-        subLabel: taglines.softSteadyFriend
-      };
-    }
+    // Liu He with HARD western → still Secret Friends (unless caught by the < 60 + CLASH + damage rule above)
+    return {
+      primaryLabel: 'Secret Friends Match',
+      subLabel: taglines.softSteadyFriend
+    };
   }
 
   // CASE 5: Mirror (Same sign)
@@ -235,9 +284,10 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
       };
     }
 
+    // Mirror + HARD - return Neutral Match, not Challenging
     if (westernEase === 'HARD') {
       return {
-        primaryLabel: 'Challenging Match',
+        primaryLabel: 'Neutral Match',
         subLabel: taglines.mirrorClash
       };
     }
@@ -251,6 +301,7 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
 
   // CASE 6: Open pattern (no major Chinese pattern)
   if (archetype === 'OPEN_PATTERN') {
+    // Always return Neutral Match for open patterns, regardless of ease
     if (westernEase === 'EASY') {
       return {
         primaryLabel: 'Neutral Match',
@@ -265,9 +316,9 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
       };
     }
 
-    // OPEN + HARD
+    // OPEN + HARD - still Neutral Match, not Challenging
     return {
-      primaryLabel: 'Challenging Match',
+      primaryLabel: 'Neutral Match',
       subLabel: taglines.neutralMixedSignals
     };
   }
@@ -278,3 +329,5 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
     subLabel: taglines.fallbackBalanced
   };
 }
+
+
