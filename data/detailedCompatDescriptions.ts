@@ -12,373 +12,373 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
   "rat": {
     "rat": {
       "heading": "Rat × Rat — Same Sign (同生肖)",
-      "tagline": "Quick minds, shared instincts",
-      "description": "Two Rats together notice everything: shifts in mood, money, and opportunity. You are good at adapting, saving when needed, and acting early when something looks promising. The stress comes from worry and subtle competition over control, work, or money. This match works when you agree clearly on goals and treat each other as partners, not rivals."
+      "tagline": "Quick minds, shared nerves",
+      "description": "Two Rats together create a sharp, alert partnership that notices changes in money, mood, and opportunity fast. You're both good at adapting, saving when needed, and spotting chances early. The stress comes from worry and subtle competition over who decides, who controls resources, or who plans better. This stays strong when you agree clearly on goals and treat each other as allies, not rivals."
     },
     "ox": {
       "heading": "Rat × Ox — Secret Friend (Liu He 六合)",
       "tagline": "Quietly strong team",
-      "description": "Rat and Ox form a Liu He (六合) bond known for reliability. Ox brings patience and steady effort; Rat brings timing, ideas, and an eye for risk. Together you are well suited to building a home, business, or savings base over time. Respecting Ox's slower pace and trusting Rat's sense of when to move keeps this pairing very solid."
+      "description": "Rat and Ox form a Liu He (六合) bond known for reliability and long-term building. Ox brings patience, staying power, and a willingness to shoulder heavy work; Rat brings timing, ideas, and a keen eye for risk and advantage. Together you're well suited to paying off debts, growing savings, or slowly improving your base. Respecting Ox's slower pace and trusting Rat's instincts about when to move keeps this very solid."
     },
     "tiger": {
       "heading": "Rat × Tiger — Neutral (中)",
       "tagline": "Different tempo, shared drive",
-      "description": "Rat plans and calculates; Tiger jumps and leads. Rat can help Tiger avoid obvious mistakes, while Tiger stops Rat from getting stuck in overthinking. Friction shows up when Rat quietly judges Tiger as reckless or Tiger feels Rat is negative or controlling. It works best when you divide decisions clearly and accept that you approach risk differently."
+      "description": "Rat plans carefully; Tiger prefers decisive leaps. Rat can warn Tiger away from obvious pitfalls and help structure plans; Tiger can stop Rat from getting stuck in hesitation or fear. The friction is around control and risk: Rat may quietly judge Tiger as reckless, and Tiger may see Rat as negative or restricting. Clear divisions—some areas where Tiger leads, some where Rat's say is final—help."
     },
     "rabbit": {
       "heading": "Rat × Rabbit — Punishment Pattern (Xing 刑)",
       "tagline": "Soft nerves, sharp edges",
-      "description": "Rat and Rabbit sit in a punishment (刑) relation where small hurts can slowly build. Rat is more direct and tactical; Rabbit is sensitive and avoids heavy conflict. At your best, Rat protects and organises while Rabbit keeps the atmosphere gentle and civil. At your worst, Rabbit swallows hurt and withdraws, and Rat feels blocked without knowing why."
+      "description": "Rat and Rabbit sit in a punishment (刑) relation where small slights can build into bigger hurt. Rat tends to be more direct and tactical; Rabbit is gentle, sensitive, and conflict-avoidant. At best, Rat protects and organises while Rabbit keeps the tone kind and social ties smooth. At worst, Rabbit swallows hurt instead of speaking, and Rat feels blocked by invisible resistance. Naming issues early and kindly is essential."
     },
     "dragon": {
       "heading": "Rat × Dragon — Same Trine (San He 三合)",
       "tagline": "Vision plus timing",
-      "description": "Rat and Dragon share the San He (三合) \"Visionary\" trine. Dragon brings confidence, presence, and big goals; Rat brings careful timing, negotiation, and discipline with resources. This is one of Rat's strongest combinations for ambition and progress. It only really breaks when Dragon feels constantly second-guessed or Rat feels decisions are made for show, not substance."
+      "description": "Rat and Dragon share the San He (三合) \"Visionary\" trine. Dragon brings confidence, presence, and big pushes; Rat contributes timing, negotiation skill, and discipline with resources. Together you're good at turning ambition into measurable progress. Pride and secrecy are the main risks—if Dragon feels second-guessed or Rat feels decisions are made for show, cooperation drops quickly."
     },
     "snake": {
       "heading": "Rat × Snake — Neutral (中)",
-      "tagline": "Quiet strategy, few words",
-      "description": "Rat and Snake both like to think first and talk later. Rat tracks practical details; Snake reads people and long-term patterns. You can make a strong, discreet team that handles problems before they are visible to others. Just be careful that secrecy and \"testing\" do not replace straightforward conversation."
+      "tagline": "Quiet strategy",
+      "description": "Rat and Snake both prefer to think before they speak and value discretion. Rat monitors the outer situation—money, logistics, deals—while Snake reads motives and long-term patterns. This can be a quietly effective team that rarely gets caught off guard. Problems appear when caution turns into secrecy and tests; it works best when you agree on what must always be honest, no matter what."
     },
     "horse": {
       "heading": "Rat × Horse — Clash Pair (Liu Chong 六冲)",
       "tagline": "Freedom versus security",
-      "description": "Rat and Horse form a Liu Chong (六冲) clash with a clear lifestyle gap. Horse wants movement, new experiences, and freedom; Rat wants stability, savings, and a plan. Early on, Rat admires Horse's spirit and Horse enjoys Rat's cleverness. Over time, Rat may feel exposed by constant change, while Horse feels fenced in by constant caution."
+      "description": "Rat and Horse form a Liu Chong (六冲) clash with a clear lifestyle gap. Horse wants movement, adventure, and room to change plans; Rat wants stability, savings, and predictability. At first, Rat admires Horse's courage and Horse enjoys Rat's cleverness. Over time, Rat can feel exposed by constant change, and Horse feels fenced in by constant caution. You need hard agreements about finances and freedom for this to last."
     },
     "goat": {
       "heading": "Rat × Goat — Six Harms (Liu Hai 六害)",
       "tagline": "Security versus ease",
-      "description": "Rat and Goat form a Liu Hai (六害) pair where needs quietly rub. Rat worries about money and the future; Goat worries about feeling safe, seen, and comfortable day to day. Rat can see Goat as impractical; Goat can feel judged or tightened up by Rat's focus on problems. Clear budgets and regular reassurance on both sides are essential."
+      "description": "Rat and Goat form a Liu Hai (六害) pair where your fears rub. Rat worries about the future and being caught unprepared; Goat worries about rejection, scarcity, and emotional safety. Rat may see Goat as impractical or too focused on feelings; Goat may feel judged or tightened by Rat's constant risk focus. Clear budgets, basic structure, and regular reassurance on both sides are mandatory."
     },
     "monkey": {
       "heading": "Rat × Monkey — Same Trine (San He 三合)",
-      "tagline": "Sharp, playful, opportunistic",
-      "description": "Rat and Monkey complete the San He (三合) Visionary trine. Monkey brings ideas, humour, and quick problem-solving; Rat brings structure, realism, and strong follow-through when motivated. You spot chances early and can turn some of them into real gains. The main risk is chasing too many schemes without finishing enough of them."
+      "tagline": "Fast, clever partnership",
+      "description": "Rat and Monkey complete the San He (三合) Visionary trine. Monkey brings humour, ideas, and agile problem-solving; Rat brings structure, realism, and strong follow-through when motivated. You spot chances early and can turn some into real gains, in love, money, or projects. This pairing shines when you choose a few priorities and actually finish them instead of living in endless schemes."
     },
     "rooster": {
       "heading": "Rat × Rooster — Neutral (中)",
       "tagline": "Standards and adjustments",
-      "description": "Rooster likes clear rules and visible order; Rat prefers flexible plans and quiet work-arounds. At best, Rooster sets standards and Rat finds smart ways to meet them without wasting effort. At worst, Rooster's criticism makes Rat evasive, and Rat's side-steps look dishonest. Agreeing on who decides what, and how feedback is given, keeps things fair."
+      "description": "Rooster likes clear rules and visible order; Rat prefers flexible plans and quiet work-arounds. At best, Rooster sets standards and Rat finds practical ways to meet them; at worst, Rooster's critiques make Rat evasive, and Rat's side-steps look dishonest. Agreeing who decides what, and how feedback is given, keeps this fair and functional."
     },
     "dog": {
       "heading": "Rat × Dog — Neutral (中)",
       "tagline": "Principle meets pragmatism",
-      "description": "Dog cares about what is right; Rat cares about what will actually work. Dog can stop Rat from crossing lines for convenience; Rat can stop Dog from sacrificing stability out of pure idealism. Clashes come when Dog judges Rat's survival moves or Rat dismisses Dog's concerns as naïve. Regular, practical talks about money and commitments help a lot."
+      "description": "Dog cares about loyalty and doing what feels right; Rat cares about what will actually work and keep you safe. Dog can stop Rat from crossing ethical lines for convenience; Rat can stop Dog from sacrificing your stability out of pure idealism. Clashes come when Dog judges Rat's survival moves or Rat dismisses Dog's concerns as naïve. Regular, grounded talks about money, promises, and limits are key."
     },
     "pig": {
       "heading": "Rat × Pig — Neutral (中)",
       "tagline": "Care and caution under one roof",
-      "description": "Pig is open-hearted, generous, and pleasure-oriented; Rat is cautious, alert, and future-oriented. Pig makes Rat's life feel warmer and more forgiving; Rat protects Pig from being taken advantage of and keeps plans realistic. It turns sour if Pig feels constantly policed or Rat feels forced into the \"serious one\" role all the time. Clear shared priorities—what you are allowed to enjoy, what you are saving for—make this a much steadier match."
+      "description": "Pig is open-hearted, generous, and comfort-seeking; Rat is cautious, alert, and future-oriented. Pig makes Rat's life warmer and more forgiving; Rat protects Pig from being taken advantage of and keeps plans realistic. It turns sour if Pig feels constantly monitored or Rat feels forced into the \"serious one\" role forever. Shared priorities—what you may enjoy freely, what you must save for—keep this steady."
     }
   },
   "ox": {
     "rat": {
       "heading": "Ox × Rat — Secret Friend (Liu He 六合)",
       "tagline": "Steady builder, sharp planner",
-      "description": "Ox and Rat form a Liu He (六合) pair that's practical and quietly powerful. Ox brings stamina, loyalty, and the willingness to do long, slow work; Rat brings timing, ideas, and a keen eye on risk and opportunity. Together you are well suited to paying off debts, building savings, or slowly improving your life circumstances. The match gets strained if Ox feels hustled or Rat feels their warnings are ignored."
+      "description": "Ox and Rat form a Liu He (六合) pair that's practical and quietly powerful. Ox brings stamina, loyalty, and slow, consistent effort; Rat brings good timing, negotiation skills, and an eye for both risk and opportunity. Together you're well suited to building a home, business, or savings over time. It strains if Ox feels rushed or Rat feels their warnings are ignored."
     },
     "ox": {
       "heading": "Ox × Ox — Same Sign (同生肖)",
       "tagline": "Shared grind, shared duty",
-      "description": "Two Ox together take commitments seriously and are usually prepared to work through difficult periods without flinching. You are good at building something solid over time—property, a family base, or a business. The tension comes from stubbornness and emotional reserve; neither side likes to admit mistakes or vulnerability. Making space for affection and fun, not just duty, keeps this from feeling like a lifetime of chores."
+      "description": "Two Ox together take commitments seriously and usually stick things out through hard times. You can build something solid—a home, business, or family base—through steady effort. The weak points are stubbornness and emotional reserve; neither likes admitting mistakes or vulnerability. Making space for affection and shared fun, not only duty, keeps this from feeling like endless work."
     },
     "tiger": {
       "heading": "Ox × Tiger — Neutral (中)",
       "tagline": "Slow earth, fast fire",
-      "description": "Ox moves slowly and carefully; Tiger wants quick, decisive action. Ox can keep Tiger from leaping into unrealistic plans, while Tiger can prevent Ox from getting trapped in the same routine for years. Friction appears when Tiger feels blocked or nagged, and Ox feels pushed or disrespected. Clear agreements about tempo and money make this pair much easier to live in."
+      "description": "Ox moves slowly and carefully; Tiger leaps and adjusts mid-air. Ox can keep Tiger from burning energy on unrealistic moves; Tiger can keep Ox from getting stuck in a rut. Friction builds if Tiger feels blocked and Ox feels attacked or disrespected. Clear agreements around money, tempo, and big decisions are vital."
     },
     "rabbit": {
       "heading": "Ox × Rabbit — Neutral (中)",
       "tagline": "Quiet care",
-      "description": "Ox offers reliability, practical support, and a calm physical presence; Rabbit brings tact, grace, and awareness of moods and social cues. Together you can build a peaceful, home-centred life if you both value simplicity and loyalty. Problems develop when Rabbit feels emotionally overlooked or when Ox gets tired of what they see as endless worry or indecision."
+      "description": "Ox offers reliability, patience, and physical steadiness; Rabbit brings tact, charm, and awareness of subtle moods. Together you can build a peaceful, home-centred life if loyalty and simplicity matter to you both. Problems appear when Rabbit feels emotionally overlooked or Ox feels drained by what they see as constant worry."
     },
     "dragon": {
       "heading": "Ox × Dragon — Neutral (中)",
       "tagline": "Ground versus glory",
-      "description": "Dragon pushes for big outcomes and recognition; Ox is more concerned with whether the basics are covered and the work is done properly. Ox can turn Dragon's big ideas into something measurable and real; Dragon can lift Ox's sights beyond pure survival. It goes wrong if Dragon dismisses Ox as boring or Ox sees Dragon as reckless and self-centred."
+      "description": "Dragon pushes for big outcomes and visibility; Ox wants the basics secure and done properly. Ox can turn Dragon's big ideas into something concrete; Dragon can lift Ox's sights beyond mere survival. It goes wrong if Dragon dismisses Ox as boring or Ox sees Dragon as reckless and self-involved."
     },
     "snake": {
       "heading": "Ox × Snake — Same Trine (San He 三合)",
-      "tagline": "Measured and strategic",
-      "description": "Ox and Snake share the San He (三合) Strategist trine. Ox brings patience, persistence, and a strong sense of duty; Snake contributes insight, timing, and a feel for hidden patterns. This combination is well suited for long-range planning, financial discipline, and slow but meaningful progress. It needs trust and privacy, not constant outside interference."
+      "tagline": "Patient strategists",
+      "description": "Ox and Snake share the San He (三合) \"Strategist\" trine. Ox brings endurance, loyalty, and persistence; Snake contributes insight, timing, and careful analysis. This combination suits long-range planning, financial discipline, and slow but meaningful progress. It thrives in privacy, with minimal outside interference."
     },
     "horse": {
       "heading": "Ox × Horse — Six Harms (Liu Hai 六害)",
       "tagline": "Routine versus restlessness",
-      "description": "Ox and Horse form a Liu Hai (六害) pair. Ox likes a set routine, known responsibilities, and predictable finances; Horse prefers motion, variety, and the freedom to change course. At first, Horse may enjoy Ox's grounded presence and Ox may admire Horse's spirit. Over time, Ox can feel drained trying to hold everything together, and Horse can feel tied down. You need strong agreements about freedom and shared obligations for this to work."
+      "description": "Ox and Horse form a Liu Hai (六害) pair. Ox likes routine, known responsibilities, and predictable finances; Horse prefers motion, variety, and freedom to change course. At first, Ox may admire Horse's spirit and Horse may enjoy Ox's steadiness. Over time, Ox can feel exhausted holding everything together, and Horse can feel tied down. Freedom and shared obligations must be clearly defined."
     },
     "goat": {
       "heading": "Ox × Goat — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
       "tagline": "Different needs, shared fatigue",
-      "description": "Ox and Goat sit in a Liu Chong (六冲) clash and also share a \"punishment\" (刑) pattern, so effort and emotional needs can easily feel mismatched. Ox is task-oriented, stoic, and often shows love through work; Goat is feeling-oriented, expressive, and needs emotional reassurance. Ox can give Goat real-world stability; Goat can bring softness and creativity into Ox's life. If you stop appreciating each other, Ox feels taken for granted and Goat feels emotionally abandoned."
+      "description": "Ox and Goat sit in a Liu Chong (六冲) clash and also share a punishment (刑) pattern, so effort and emotional needs can easily feel mismatched. Ox is task-oriented and shows love through work and reliability; Goat is feeling-oriented, expressive, and needs emotional reassurance and beauty. Done well, Ox protects Goat and Goat softens Ox. Done poorly, both feel unappreciated and worn out."
     },
     "monkey": {
       "heading": "Ox × Monkey — Neutral (中)",
       "tagline": "Structure and improvisation",
-      "description": "Ox prefers clear plans and steady effort; Monkey likes options, experiments, and quick adjustments. Monkey can help Ox adapt to changing conditions, and Ox can help Monkey finish what they start. The match becomes difficult if Ox labels Monkey as unreliable, or Monkey sees Ox as controlling and joyless. A simple division of roles—who sets the plan, who tweaks it—goes a long way."
+      "description": "Ox prefers clear plans and steady effort; Monkey likes options, shortcuts, and quick adjustments. Monkey can help Ox adapt to changing conditions and find smarter methods; Ox can help Monkey complete things and maintain stability. It strains when Ox labels Monkey unreliable or Monkey sees Ox as controlling and joyless."
     },
     "rooster": {
       "heading": "Ox × Rooster — Same Trine (San He 三合)",
       "tagline": "Work and standards",
-      "description": "Ox and Rooster share the San He (三合) Strategist trine. Ox supplies grinding effort and endurance; Rooster contributes organisation, standards, and attention to detail. Together you can run a household or business efficiently and steadily. The main risk is a dry atmosphere—too much criticism, not enough warmth—so remembering to praise each other matters."
+      "description": "Ox and Rooster share the San He (三合) Strategist trine. Ox supplies patient effort and reliability; Rooster brings organisation, standards, and sharp attention to detail. Together you can manage work, money, and daily life efficiently. Remember to add warmth and praise so it doesn't become all critique and duty."
     },
     "dog": {
       "heading": "Ox × Dog — Punishment Pattern (Xing 刑)",
       "tagline": "Duty versus worry",
-      "description": "Ox and Dog belong to the same \"ungrateful punishment\" (刑) set, where both can feel their efforts are not properly recognised. Ox focuses on carrying responsibilities and doing the hard work; Dog focuses on loyalty, ethics, and whether things feel right. You can quietly achieve a lot if values and goals line up, but if not, Ox may feel unfairly criticised and Dog may feel alone with their concerns. Naming mutual effort and gratitude clearly is essential."
+      "description": "Ox and Dog belong to the same \"ungrateful punishment\" (刑) set, where both can feel their efforts aren't fully recognised. Ox focuses on carrying responsibilities and tangible tasks; Dog focuses on loyalty, ethics, and whether things feel fair. You can quietly achieve a lot if values and aims align, but if not, Ox may feel unfairly criticised and Dog may feel alone with their concerns. Open gratitude and explicit acknowledgment of each other's work are essential."
     },
     "pig": {
       "heading": "Ox × Pig — Neutral (中)",
       "tagline": "Provider and comfort-seeker",
-      "description": "Ox is willing to carry responsibility; Pig wants comfort, enjoyment, and emotional warmth. Ox can give Pig a safe base and practical support; Pig can help Ox relax, receive affection, and actually enjoy the fruits of their labour. Issues arise if Pig is seen as indulgent or Ox as unromantic and rigid. Simple, shared pleasures and clear agreements about money keep this stable."
+      "description": "Ox is willing to carry responsibility and work steadily; Pig values enjoyment, comfort, and emotional warmth. Ox can give Pig a stable base; Pig can help Ox relax, receive affection, and enjoy life more. It sours if Pig is seen as indulgent or Ox as unromantic and rigid. Shared simple pleasures and clear agreements about money keep this stable."
     }
   },
   "tiger": {
     "rat": {
       "heading": "Tiger × Rat — Neutral (中)",
-      "tagline": "Bold versus cautious",
-      "description": "Tiger acts on impulse and courage; Rat plans, stores, and calculates. Tiger can pull Rat into bigger, more exciting moves; Rat can help Tiger avoid obvious pitfalls, especially around finances and timing. Tension comes when Tiger feels criticised or slowed down and Rat feels exposed by Tiger's risks. Respect for each other's role—Tiger for initiative, Rat for strategy—is essential."
+      "tagline": "Different tactics, shared courage",
+      "description": "Tiger likes to move boldly and visibly; Rat prefers subtle planning and quiet advantage. At your best, Rat can help Tiger avoid obvious traps and manage resources, while Tiger helps Rat take decisive action instead of circling the same worries. The friction comes when Tiger feels second-guessed and Rat feels dragged into risk they did not sign up for. Clear roles—who calls the shots on money, who calls the shots on timing—keep this from turning into a power struggle."
     },
     "ox": {
       "heading": "Tiger × Ox — Neutral (中)",
-      "tagline": "Force meets resistance",
-      "description": "Tiger wants to move quickly, test limits, and change course when necessary; Ox wants a clear lane and slow, steady progress. When you are aligned, Tiger opens new paths and Ox consolidates gains. When you are not, arguments repeat: Tiger feels fenced in, Ox feels under attack. Long-term, you must agree on which areas are \"go slow\" and which are \"go bold.\""
+      "tagline": "Drive meets endurance",
+      "description": "Tiger charges toward what feels right in the moment; Ox endures, step by step, regardless of mood. Ox can give Tiger the staying power and structure to see big moves through, while Tiger can stop Ox from wasting years in a situation that has already died. Stress appears when Tiger sees Ox as rigid or joyless, and Ox sees Tiger as disruptive or ungrateful. Agreeing on a few shared priorities, then letting each other handle them in your own style, makes this workable."
     },
     "tiger": {
       "heading": "Tiger × Tiger — Same Sign (同生肖)",
-      "tagline": "Double fire",
-      "description": "Two Tigers together means strong will, emotional heat, and a low tolerance for feeling controlled. You understand each other's desire for freedom, passion, and straight talk, which can make the bond intense and alive. The downside is fierce conflict—neither side backs down easily. This match needs humour, space, and a few agreed rules about how far you let anger go."
+      "tagline": "Double fire, double will",
+      "description": "Two Tigers together create a high-voltage connection full of passion, conviction, and a strong sense of justice. You usually recognise each other's courage and refusal to tolerate hypocrisy, which can feel validating and exciting. The risk is escalation: arguments, life changes, and decisions can all become bigger, faster, and more dramatic than they need to be. This match thrives when you channel your combined fire into shared causes and learn to step down instead of always needing the last, loudest move."
     },
     "rabbit": {
       "heading": "Tiger × Rabbit — Neutral (中)",
-      "tagline": "Courage and tact",
-      "description": "Tiger is direct and intense; Rabbit is gentle and conflict-averse. Tiger can stand up for Rabbit in hard situations and push life forward; Rabbit can soften Tiger's tone, smooth social situations, and tune in to emotional undercurrents. It fails when Tiger tramples Rabbit's feelings or Rabbit never actually says what they need, hoping Tiger will guess."
+      "tagline": "Bold protector, soft observer",
+      "description": "Tiger moves directly and confronts problems; Rabbit prefers diplomacy, timing, and quiet adjustments. Tiger can give Rabbit a feeling of protection and permission to say \"no\" more often, while Rabbit helps Tiger avoid unnecessary fights and social damage. If it goes wrong, Rabbit experiences Tiger as loud or insensitive, and Tiger experiences Rabbit as evasive or passive-aggressive. Naming feelings early and respecting Rabbit's need for gentler handling keeps the bond from fraying."
     },
     "dragon": {
       "heading": "Tiger × Dragon — Neutral (中)",
       "tagline": "Two leaders, one story",
-      "description": "Tiger and Dragon both like to lead and dislike being told what to do. Tiger brings raw courage and quick decisive moves; Dragon brings vision, charisma, and a sense of long-term mission. Together you can be impressive when you fight the same battles. At home, you need a clear division of territory so every conversation doesn't turn into a power contest."
+      "description": "Tiger and Dragon are both strong-willed and idealistic, with different flavours of authority. Tiger leads from moral instinct and personal courage; Dragon leads from charisma, vision, and a sense of destiny. At best, Tiger keeps Dragon honest and grounded in real ethics, while Dragon helps Tiger think bigger and use influence strategically. Rivalry over who \"owns\" the narrative or gets the spotlight is your biggest hazard, so shared missions and mutual praise matter a lot."
     },
     "snake": {
       "heading": "Tiger × Snake — Six Harms (Liu Hai 六害) · Punishment Pattern (Xing 刑)",
-      "tagline": "Complicated chemistry",
-      "description": "Tiger and Snake form a Liu Hai (六害) pair with an added punishment (刑) link in the Tiger–Snake–Monkey group. Tiger is open and impulsive; Snake is guarded, observant, and slow to trust. Attraction can be real, but misunderstandings and control issues surface easily. Without a very high level of honesty and patience, this pairing tends to feel more draining than supportive."
+      "tagline": "Quiet tests, sharp reactions",
+      "description": "Tiger and Snake form a Liu Hai (六害) harm pair and sit together in a classic \"bullying style\" punishment (刑) triangle with Monkey. Tiger is open, impulsive, and bold; Snake is controlled, observant, and slow to reveal their hand. Attraction can be intense, because each brings what the other lacks—raw courage versus deep strategy—but misunderstandings and power tensions come easily. This pairing demands careful listening and clear boundaries around secrets, jealousy, and control if it is going to stay constructive."
     },
     "horse": {
       "heading": "Tiger × Horse — Same Trine (San He 三合)",
       "tagline": "Running mates",
-      "description": "Tiger and Horse share the San He (三合) Adventurer trine. Both value freedom, movement, and the sense that life is an adventure worth chasing. Tiger brings leadership and drive; Horse brings enthusiasm, social energy, and adaptability. This is one of Tiger's easiest matches as long as you respect each other's independence and don't try to cage the other."
+      "description": "Tiger and Horse share the San He (三合) \"Adventurer\" trine, creating one of Tiger's most natural, high-energy alliances. Horse brings spontaneity, movement, and social ease; Tiger brings conviction, bravery, and the willingness to confront problems head-on. Together you're well suited to big life changes, travel, or bold career moves, as long as someone keeps basic commitments in sight. When handled badly, you can hype each other into reckless decisions; when handled well, you feel like true partners in motion."
     },
     "goat": {
       "heading": "Tiger × Goat — Neutral (中)",
-      "tagline": "Intensity and softness",
-      "description": "Tiger's blunt, strong energy can feel like a lot for Goat's gentle, artistic temperament. Tiger can protect Goat and give them courage; Goat can offer Tiger emotional understanding and a softer home environment. If Tiger views Goat as overly fragile or Goat quietly resents Tiger's tone, resentment grows. Small acts of kindness and clear words from both sides keep this workable."
+      "tagline": "Protection and sensitivity",
+      "description": "Tiger often sees themselves as a protector or pioneer; Goat is more attuned to feelings, nuance, and atmosphere. Tiger can shield Goat from harsher realities and advocate when Goat is too tired or anxious to push back. Goat, in turn, can soften Tiger's edges and keep them aware of emotional consequences. The danger is Tiger brushing off Goat's sensitivities as weakness, or Goat quietly resenting Tiger's blunt style. Honest reassurance and small, consistent acts of care keep this gentle and strong."
     },
     "monkey": {
       "heading": "Tiger × Monkey — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
-      "tagline": "Magnetic opposites",
-      "description": "Tiger and Monkey form a Liu Chong (六冲) clash and also belong to the Tiger–Snake–Monkey punishment (刑) set. Tiger moves straight; Monkey moves sideways. The attraction is strong, with humour, competition, and drama, but so are ego clashes and sudden reversals. This pairing is vivid and memorable, but rarely calm; it takes unusual maturity to turn it into a lasting, stable bond."
+      "tagline": "Competitive spark, lesson-heavy",
+      "description": "Tiger and Monkey form a Liu Chong (六冲) clash and also sit in the same \"bullying\" punishment (刑) triangle with Snake, so the chemistry is sharp, memorable, and full of tests. Tiger is bold, straightforward, and driven by instinct; Monkey is agile, witty, and driven by clever manoeuvres. You can excite and inspire each other, but you can also trigger pride, one-upmanship, and mind games if trust is low. This pairing works best when you treat each other as sparring partners with rules—clear limits, honest apologies, and no revenge plays."
     },
     "rooster": {
       "heading": "Tiger × Rooster — Neutral (中)",
-      "tagline": "Big moves, fine print",
-      "description": "Tiger focuses on big actions and immediate results; Rooster focuses on details, methods, and doing things properly. Rooster can protect Tiger from obvious errors; Tiger can stop Rooster from getting paralysed by small imperfections. The match deteriorates if Rooster's critique feels constant or Tiger dismisses all feedback as nagging."
+      "tagline": "Raw courage, sharp critique",
+      "description": "Tiger pushes forward and prefers to act; Rooster evaluates, organises, and points out flaws. Rooster can help Tiger refine their plans and avoid obvious mistakes; Tiger can help Rooster stop over-analysing and actually take risks. Conflict appears when Rooster's corrections feel like constant criticism and Tiger's moves feel reckless or dismissive. Agreeing on when feedback is welcome—and when you just need support—keeps this more constructive than combative."
     },
     "dog": {
       "heading": "Tiger × Dog — Same Trine (San He 三合)",
-      "tagline": "Allies in action",
-      "description": "Tiger and Dog share the San He (三合) Adventurer trine. Tiger brings initiative and daring; Dog brings loyalty, realism, and a strong moral compass. Dog will back Tiger in fights they believe are just, and Tiger will protect Dog fiercely. This is one of Tiger's best long-term matches when trust is honoured on both sides."
+      "tagline": "Principles and loyalty",
+      "description": "Tiger and Dog share the San He (三合) \"Defender\" trine, uniting two signs that deeply care about justice and loyalty. Dog brings steadfast support, honesty, and a strong conscience; Tiger brings courage, initiative, and the willingness to confront threats. Together, you're good at standing up for each other and for shared values, especially under pressure. The main risks are burnout from always \"fighting the good fight\" and difficulty relaxing; building simple pleasures and downtime into your life keeps this bond warm, not just righteous."
     },
     "pig": {
       "heading": "Tiger × Pig — Secret Friend (Liu He 六合)",
-      "tagline": "Soft landing for a fierce heart",
-      "description": "Tiger and Pig form a Liu He (六合) pair. Tiger offers protection, heat, and forward motion; Pig offers acceptance, humour, and emotional warmth. Pig can make Tiger feel safe enough to relax; Tiger can help Pig feel defended in a tough world. Keeping an eye on spending and over-indulgence is usually the main joint task."
+      "tagline": "Soft landing for bold moves",
+      "description": "Tiger and Pig form a Liu He (六合) secret-friend pattern, giving Tiger one of their safest, most supportive matches. Pig offers emotional warmth, generosity, and a forgiving presence that lets Tiger drop their guard; Tiger offers protection, direction, and the courage to handle what Pig would rather not face. Together you can create a life that feels both adventurous and emotionally nourishing. The main pitfall is Tiger taking Pig's kindness for granted and Pig not naming hurt until it spills over; honest, gentle conversations keep this quietly strong."
     }
   },
   "rabbit": {
     "rat": {
       "heading": "Rabbit × Rat — Punishment Pattern (Xing 刑)",
-      "tagline": "Sensitive to pressure",
-      "description": "Rabbit and Rat sit in a punishment (刑) relationship where small frictions can quietly build. Rat is more direct and tactical; Rabbit is gentle, cautious, and conflict-shy. When handled well, Rat offers practical protection and planning, and Rabbit keeps the tone kind and social ties smooth. When ignored, Rabbit starts internalising hurt and Rat feels blocked by invisible resistance."
+      "tagline": "Soft surface, sharp friction",
+      "description": "Rabbit prefers tact, timing, and keeping things smooth; Rat prefers direct strategy and quick, practical decisions. At best, Rat quietly protects Rabbit's interests and Rabbit keeps social and emotional waters calm. As a punishment (刑) pair, though, small breaches of courtesy or tone can sting and build up silently. This match only stays healthy if Rabbit names hurt instead of retreating, and Rat respects that \"how\" things are done matters as much as \"what\" gets done."
     },
     "ox": {
       "heading": "Rabbit × Ox — Neutral (中)",
-      "tagline": "Quiet stability",
-      "description": "Ox brings reliability, effort, and a solid physical presence; Rabbit brings tact, charm, and awareness of emotional atmospheres. Together you can create a peaceful, modestly comfortable life if you both value loyalty and routine. Troubles appear when Rabbit feels emotionally neglected or Ox feels exhausted by what they see as constant worry and hesitation."
+      "tagline": "Gentle heart, steady hand",
+      "description": "Rabbit is sensitive, observant, and focused on emotional climate; Ox is patient, grounded, and focused on tangible results. Ox can give Rabbit a sense of physical and financial safety, while Rabbit softens Ox's edges and brings warmth and charm into daily life. If it goes wrong, Rabbit feels emotionally overlooked, and Ox feels drained by what they see as needless worry. Clear routines plus simple, consistent affection keep this connection peaceful and reassuring for both."
     },
     "tiger": {
       "heading": "Rabbit × Tiger — Neutral (中)",
-      "tagline": "Heart and courage",
-      "description": "Rabbit anticipates moods and subtle signals; Tiger acts on instinct and bravery. Rabbit can help Tiger avoid unnecessary conflict and read the room, while Tiger can stand up for Rabbit and push life forward when Rabbit is frozen by doubt. It breaks down if Tiger treats Rabbit's sensitivity as weakness or Rabbit never clearly voices their limits."
+      "tagline": "Quiet strategy, bold moves",
+      "description": "Rabbit tends to avoid open confrontation, working with timing and subtle influence; Tiger prefers direct action and visible stands. Tiger can give Rabbit courage and protection, making it easier for Rabbit to hold boundaries and take risks. Rabbit can help Tiger avoid unnecessary conflicts and social fallout by reading the room better. Trouble comes when Rabbit experiences Tiger as loud or rough, and Tiger experiences Rabbit as evasive—stating needs calmly but plainly is key."
     },
     "rabbit": {
       "heading": "Rabbit × Rabbit — Same Sign (同生肖)",
       "tagline": "Double sensitivity",
-      "description": "Two Rabbits together create a soft, considerate atmosphere where open cruelty is rare. You are usually thoughtful about each other's feelings and home comfort. The main problem is avoidance—neither wants a difficult talk, so issues can be buried instead of solved. Treating honest conversation as an act of care, not hostility, makes this pairing much stronger."
+      "description": "Two Rabbits together create a soft, refined, and emotionally attuned partnership. You both care about harmony, kindness, and avoiding harshness, so the relationship can feel safe and aesthetically pleasing. The challenge is indirectness: hurts and resentments can linger behind polite behaviour if nothing is said out loud. This match becomes quietly strong when you treat honesty as an act of care, not a threat to peace."
     },
     "dragon": {
       "heading": "Rabbit × Dragon — Six Harms (Liu Hai 六害)",
-      "tagline": "Soft versus strong",
-      "description": "Rabbit and Dragon form a Liu Hai (六害) pair. Dragon is bold, pushy, and focused on big goals; Rabbit is understated, cautious, and tuned into nuance. Rabbit can feel overwhelmed or overridden; Dragon can feel stalled or misunderstood. When it works, Dragon uses their strength to shield, not push, and Rabbit offers grounded, tactful advice."
+      "tagline": "Dream versus drive",
+      "description": "Rabbit and Dragon form a Liu Hai (六害) harm pair where your styles easily step on each other. Dragon pushes boldly and likes decisive, sometimes dramatic moves; Rabbit prefers caution, diplomacy, and consideration of how everyone feels. Rabbit may feel swept aside or pressured; Dragon may feel blocked or \"talked down\" from momentum. This pairing only works if Dragon deliberately slows down for Rabbit's concerns and Rabbit meets Dragon halfway on bolder decisions."
     },
     "snake": {
       "heading": "Rabbit × Snake — Neutral (中)",
-      "tagline": "Quiet depth",
-      "description": "Rabbit and Snake both dislike loud drama. Snake brings depth, analysis, and a careful, sometimes secretive way of moving; Rabbit brings warmth, politeness, and social awareness. This can be a refined, private bond. It suffers when Snake withdraws into silence and Rabbit guesses instead of asking, creating distance with no clear cause."
+      "tagline": "Soft intuition, deep insight",
+      "description": "Rabbit is gentle, responsive, and socially aware; Snake is private, analytical, and quietly intense. Both notice undercurrents, but Snake tends to probe while Rabbit tends to soothe. Together you can be very perceptive about people and timing, especially if there is space for quiet and retreat. It becomes uneasy if Snake's reserve makes Rabbit anxious, or Rabbit's need for reassurance feels like pressure—explicit reassurance and trust agreements help a lot."
     },
     "horse": {
       "heading": "Rabbit × Horse — Neutral (中)",
-      "tagline": "Pace mismatch, shared goodwill",
-      "description": "Horse likes activity, change, and speaking openly; Rabbit prefers calm, safety, and familiar surroundings. When balanced, Horse pulls Rabbit into new experiences, and Rabbit offers Horse a peaceful landing place. Over time, though, Rabbit can feel worn out by constant motion and Horse can feel contained. Planning both \"out days\" and \"home days\" helps."
+      "tagline": "Comfort versus change",
+      "description": "Rabbit seeks security, familiar comforts, and emotionally safe environments; Horse seeks movement, stimulation, and fresh experiences. At best, Horse introduces Rabbit to new horizons and stops life from becoming too narrow, while Rabbit provides a gentle landing place and emotional continuity. Over time, though, Rabbit can feel unsettled by constant change, and Horse can feel tied down by Rabbit's caution. Negotiating clear boundaries around travel, spending, and quiet time is essential."
     },
     "goat": {
       "heading": "Rabbit × Goat — Same Trine (San He 三合)",
-      "tagline": "Gentle alliance",
-      "description": "Rabbit and Goat share the San He (三合) Artist trine. Both value kindness, softness, and a pleasing environment. Goat adds creativity and emotional expression; Rabbit adds diplomacy and a steadying influence. This is one of Rabbit's most comfortable matches, as long as someone takes responsibility for practical matters."
+      "tagline": "Shared softness, shared style",
+      "description": "Rabbit and Goat share the San He (三合) \"Artist\" trine, making this one of Rabbit's most natural and comforting matches. Both value beauty, kindness, and emotional sensitivity, and you usually agree on what feels \"too harsh\" in people or environments. Goat brings creativity and emotional expressiveness; Rabbit brings social finesse and refined judgement. The main risk is avoidance of hard decisions—agreements about money, work, and boundaries keep this from drifting."
     },
     "monkey": {
       "heading": "Rabbit × Monkey — Neutral (中)",
-      "tagline": "Soft heart, quick wit",
-      "description": "Monkey jokes, tests, and likes to keep things moving; Rabbit is more sensitive, observant, and easily affected by tone. Monkey can bring fun, variety, and useful ideas into Rabbit's world; Rabbit can offer emotional safety and a calming influence. The match frays when teasing cuts too deep or worries are never voiced. Clear limits around humour and honesty keep it healthy."
+      "tagline": "Calm presence, quick wit",
+      "description": "Rabbit prefers gentle, measured moves; Monkey likes mental play, experiments, and quick shifts of plan. Monkey can lift Rabbit's mood, introduce new ideas, and help negotiate tricky situations; Rabbit can stabilise Monkey's life and offer a calming, accepting presence. Problems appear when Monkey's teasing hits Rabbit's sore spots, or Rabbit's quiet disapproval makes Monkey feel judged. It works best when humour is kind and both sides take each other's sensitivities seriously."
     },
     "rooster": {
       "heading": "Rabbit × Rooster — Clash Pair (Liu Chong 六冲)",
-      "tagline": "Critique versus sensitivity",
-      "description": "Rabbit and Rooster sit in a Liu Chong (六冲) clash. Rooster is blunt, detail-focused, and quick to point out flaws; Rabbit is gentle, image-conscious, and conflict-averse. You can genuinely help each other—Rooster gives clarity and practicality, Rabbit teaches kindness and timing—but this requires real effort. Rules about how you argue and how far criticism goes are crucial."
+      "tagline": "Critique versus grace",
+      "description": "Rabbit and Rooster form a Liu Chong (六冲) clash with very different approaches to truth and standards. Rooster values direct correction, clarity, and visible order; Rabbit values tact, subtlety, and emotional safety. Rooster may see Rabbit as vague or avoidant; Rabbit may see Rooster as harsh or embarrassing in public. This match demands strict rules around tone and timing of criticism; when handled skilfully, you can combine accuracy with kindness."
     },
     "dog": {
       "heading": "Rabbit × Dog — Secret Friend (Liu He 六合)",
-      "tagline": "Safe harbour",
-      "description": "Rabbit and Dog form a Liu He (六合) pair. Dog offers loyalty, protection, and a strong sense of right and wrong; Rabbit offers warmth, charm, and emotional nuance. This often feels like a place where both can drop their guard. Being transparent about fears, money, and outside friendships keeps this bond steady."
+      "tagline": "Trusted ally",
+      "description": "Rabbit and Dog form a Liu He (六合) secret-friend pair that feels quietly safe and loyal. Dog brings honesty, moral backbone, and willingness to stand up when something is wrong; Rabbit brings tact, warmth, and emotional nuance. You tend to protect each other's vulnerabilities and share a dislike of cruelty or unfairness. This partnership deepens when Dog learns to soften delivery and Rabbit learns to speak directly, so care and truth travel together."
     },
     "pig": {
       "heading": "Rabbit × Pig — Same Trine (San He 三合)",
-      "tagline": "Easy warmth",
-      "description": "Rabbit and Pig share the San He (三合) Artist trine. Pig brings generosity, humour, and sensual enjoyment; Rabbit brings subtle care and social grace. The atmosphere is usually kind and forgiving. The main risk is drifting into comfort with no direction, so simple, shared goals help anchor the sweetness."
+      "tagline": "Comfort and kindness",
+      "description": "Rabbit and Pig share the San He (三合) Artist trine, creating a gentle, affectionate, and often very cosy connection. Pig brings generosity, emotional openness, and enjoyment of life's pleasures; Rabbit brings elegance, awareness of atmosphere, and a knack for smoothing rough edges. Together you're good at creating a home or relationship that feels safe and inviting. The challenge is over-indulgence and conflict avoidance—talking about boundaries and finances early keeps this sweet and sustainable."
     }
   },
   "dragon": {
     "rat": {
       "heading": "Dragon × Rat — Same Trine (San He 三合)",
-      "tagline": "Vision and timing",
-      "description": "Dragon and Rat belong to the San He (三合) Visionary trine. Dragon brings confidence, presence, and daring ideas; Rat brings timing, negotiation skills, and control over resources. Together you are well positioned to build something meaningful or rise socially. Pride and secrecy are the main enemies—once trust cracks, the whole structure weakens."
+      "tagline": "Ambition with timing",
+      "description": "Dragon and Rat share the San He (三合) \"Visionary\" trine, making this one of Dragon's most effective alliances. Dragon brings charisma, bold moves, and a big-picture push; Rat brings timing, negotiation skill, and careful handling of resources. Together you're good at turning big ideas into real wins, especially in career or shared projects. Friction appears when Dragon sees Rat as too cautious or suspicious, and Rat sees Dragon as grandiose or careless with risk. Regular, practical check-ins about money and pacing keep this powerful and sustainable."
     },
     "ox": {
       "heading": "Dragon × Ox — Neutral (中)",
-      "tagline": "Drive and steadiness",
-      "description": "Dragon wants acceleration and visible progress; Ox wants security and careful, step-by-step work. Ox can keep Dragon's projects grounded; Dragon can help Ox reach beyond pure survival. Conflict appears when Dragon feels suffocated or Ox feels dragged into unnecessary risk. Agreeing on where you'll play safe and where you'll stretch helps a lot."
+      "tagline": "Drive meets duty",
+      "description": "Dragon wants to move toward big outcomes and visible achievements; Ox wants to fulfil responsibilities methodically and without drama. Ox can give Dragon a grounded base, consistent effort, and loyalty when times get hard. Dragon can help Ox aim higher, seize rare chances, and avoid wasting years on something that no longer has life. Problems come when Dragon treats Ox's caution as resistance, or Ox quietly resents Dragon's appetite for change—explicit agreements about direction and pace are crucial."
     },
     "tiger": {
       "heading": "Dragon × Tiger — Neutral (中)",
-      "tagline": "Two leaders, one stage",
-      "description": "Dragon and Tiger are both strong personalities who like to lead. Dragon operates on vision and charisma; Tiger on courage and direct action. You can be a formidable team when you are on the same side. At home, though, you need clear areas of authority so every decision doesn't become a test of dominance."
+      "tagline": "Two alphas, one sky",
+      "description": "Dragon and Tiger are both strong-willed, proud, and action-oriented, but their style is different. Tiger follows instinct and moral feeling in the moment; Dragon follows vision and a sense of dramatic timing. At best, Tiger keeps Dragon honest and brave, while Dragon helps Tiger think strategically and play a longer game. Rivalry over leadership, recognition, or whose \"truth\" wins can drain you both. This match works when you consciously choose shared missions and agree to back each other publicly instead of competing."
     },
     "rabbit": {
       "heading": "Dragon × Rabbit — Six Harms (Liu Hai 六害)",
-      "tagline": "Intensity and softness",
-      "description": "Dragon and Rabbit form a Liu Hai (六害) pair. Dragon's blunt, forceful style can bruise Rabbit's finely tuned feelings; Rabbit's hesitation can frustrate Dragon. Still, Dragon can shield Rabbit in rough environments, and Rabbit can refine Dragon's approach and help with timing and presentation. Extra care in how you speak to each other is essential."
+      "tagline": "Force and finesse at odds",
+      "description": "Dragon and Rabbit form a Liu Hai (六害) harm pair, so your natural styles can bump hard. Dragon prefers decisive, visible action and can be blunt; Rabbit values subtlety, emotional safety, and carefully managed atmospheres. Rabbit may feel steamrolled or exposed by Dragon's big plays; Dragon may feel Rabbit is slowing everything down with worry and \"what will people think.\" This connection only stabilises if Dragon learns to soften delivery and Rabbit speaks up clearly instead of retreating into polite resistance."
     },
     "dragon": {
       "heading": "Dragon × Dragon — Same Sign (同生肖) · Self-Punishment (自刑)",
-      "tagline": "Magnified will",
-      "description": "Two Dragons together double the charisma, pride, and sense of destiny. You may feel drawn to big goals and public roles, and you understand each other's desire to \"do something significant.\" The self-punishment (自刑) flavour shows up as internal pressure and stubborn stand-offs when expectations aren't met. Humility, humour, and equal sharing of power keep this from burning out."
+      "tagline": "Mirror of pride",
+      "description": "Two Dragons together amplify charisma, ambition, and the belief that life should be significant. You may feel that you've finally met someone who understands big visions, big feelings, and big risks, which can be intoxicating. But as a self-punishment (自刑) pairing, the same intensity can turn inward—expectations rise, drama escalates, and neither wants to be the one who backs down or admits fault. This match becomes powerful when you share responsibility, use humour to deflate ego clashes, and agree that being kind matters more than being right."
     },
     "snake": {
       "heading": "Dragon × Snake — Neutral (中)",
-      "tagline": "Frontstage and backstage",
-      "description": "Dragon prefers the front of stage; Snake prefers working from the shadows. Dragon pushes outward, selling the vision; Snake monitors patterns, risks, and timing. This can be a very effective \"executive plus strategist\" pairing. It sours when Dragon ignores Snake's input, or Snake reacts to that by withdrawing support instead of talking."
+      "tagline": "Instinct and insight",
+      "description": "Dragon is expressive, bold, and sometimes impulsive; Snake is reserved, strategic, and slow to show their hand. Snake can help Dragon see hidden dynamics, sense who is trustworthy, and refine plans before they go public. Dragon can help Snake act sooner, take necessary risks, and avoid getting stuck in endless analysis. Tension appears when Snake's silence makes Dragon suspicious, or Dragon's theatrics make Snake withdraw—clear signals about what you're thinking prevent quiet stand-offs."
     },
     "horse": {
       "heading": "Dragon × Horse — Neutral (中)",
-      "tagline": "Charge ahead",
-      "description": "Horse loves motion and immediate experience; Dragon focuses on big pushes and visible breakthroughs. Together you can move quickly, travel far, and bring a lot of energy to shared projects. The weak spot is follow-through—once the first rush fades, both can lose interest. Simple systems and deadlines help keep wins from evaporating."
+      "tagline": "Momentum doubled",
+      "description": "Dragon and Horse both like momentum, change, and a sense that life is moving forward. Horse brings spontaneity, social mobility, and willingness to ride out uncertainty; Dragon brings focus, presence, and a stronger sense of overarching narrative. Together you can move quickly through career shifts, relocations, or big lifestyle experiments. The danger is burning out or destabilising your base if nobody is watching details and commitments. Agreeing who handles practical anchors—money, contracts, home base—keeps the adventure from eating itself."
     },
     "goat": {
       "heading": "Dragon × Goat — Neutral (中)",
-      "tagline": "Strong arm, soft heart",
-      "description": "Dragon's forceful, sometimes blunt style meets Goat's soft, artistic nature. Dragon can open doors, negotiate, and protect; Goat can soften the home atmosphere, add beauty, and offer emotional nuance. Problems appear if Dragon dismisses Goat's feelings as weakness or Goat quietly resists Dragon's plans without speaking up. Honest conversations about security and lifestyle are key."
+      "tagline": "Grandeur and gentleness",
+      "description": "Dragon is drawn to impressive projects and dramatic moments; Goat is drawn to emotional tone, aesthetics, and subtle comfort. Goat can make Dragon's world softer, more beautiful, and more humane; Dragon can protect Goat, open doors, and give courage when life feels overwhelming. Issues arise when Dragon feels weighed down by Goat's sensitivity, or Goat feels unseen in the shadow of Dragon's big plans. Making room for Goat's quieter needs and Dragon's need for recognition keeps this caring instead of lopsided."
     },
     "monkey": {
       "heading": "Dragon × Monkey — Same Trine (San He 三合)",
-      "tagline": "Big moves, clever methods",
-      "description": "Dragon and Monkey complete the San He (三合) Visionary trine. Dragon leads with bold ideas and public presence; Monkey supports with clever tactics, flexibility, and quick fixes when plans hit obstacles. You are good at spotting angles and turning them into action. This match thrives when you share credit and don't turn every disagreement into a power contest."
+      "tagline": "Creative powerhouse",
+      "description": "Dragon and Monkey complete the San He (三合) Visionary trine, creating a lively, inventive, and often very successful pairing. Monkey contributes cleverness, humour, and adaptive problem-solving; Dragon contributes confidence, authority, and the willingness to act on bold ideas. You're good at seizing opportunities others miss, especially when you combine Monkey's agility with Dragon's follow-through and presence. The main risk is overconfidence and scattered focus—too many schemes and not enough completion. Choosing a few shared priorities to commit to long-term makes this one of Dragon's strongest matches."
     },
     "rooster": {
       "heading": "Dragon × Rooster — Secret Friend (Liu He 六合)",
-      "tagline": "Standards and success",
-      "description": "Dragon and Rooster form a Liu He (六合) pair. Dragon provides direction, energy, and the big picture; Rooster refines details, spots weak points, and maintains standards. Together you can build a reputation for competence. It becomes difficult if criticism turns personal or if Dragon treats Rooster's concerns as trivial."
+      "tagline": "Showpiece and strategist",
+      "description": "Dragon and Rooster form a Liu He (六合) secret-friend pattern, giving Dragon a practical, detail-aware ally. Rooster brings organisation, standards, and a critical eye; Dragon brings vision, inspiration, and the ability to rally people. When you trust each other, Rooster keeps Dragon's world running and Dragon ensures Rooster's efforts are seen and valued. It sours if Rooster's corrections turn into constant criticism, or Dragon ignores feedback for the sake of ego. Scheduled, honest reviews—where both can speak freely—keep this partnership sharp and fair."
     },
     "dog": {
       "heading": "Dragon × Dog — Clash Pair (Liu Chong 六冲)",
-      "tagline": "Glory versus justice",
-      "description": "Dragon and Dog sit in a Liu Chong (六冲) clash. Dragon is drawn to glory, influence, and big moves; Dog is focused on fairness, loyalty, and whether things feel right. Dog may question Dragon's motives; Dragon may feel constantly judged. When values truly align, Dog keeps Dragon honest and Dragon gives Dog hope—but it is not a low-maintenance pairing."
+      "tagline": "Glory versus conscience",
+      "description": "Dragon and Dog form a Liu Chong (六冲) clash, sitting on opposite sides of questions about status and integrity. Dragon wants to advance, make an impact, and sometimes bend rules to achieve something \"worthy\"; Dog needs honesty, fairness, and peace with their own conscience. At best, Dog keeps Dragon from crossing lines they'll later regret, while Dragon helps Dog see where bold action is necessary, not just ideal behaviour. At worst, Dog sees Dragon as self-serving and Dragon sees Dog as negative or obstructive. This bond requires explicit shared principles you both refuse to break."
     },
     "pig": {
       "heading": "Dragon × Pig — Neutral (中)",
-      "tagline": "Drive and comfort",
-      "description": "Pig enjoys comfort, affection, and shared pleasures; Dragon is driven toward goals and visible progress. Pig can make Dragon's life feel warmer and more human; Dragon can prevent Pig from drifting and offer real protection. Friction arises if Pig feels ordered around or Dragon feels things are sliding into laziness. Mutual respect for both rest and ambition is needed."
+      "tagline": "Big heart, big dreams",
+      "description": "Dragon's dramatic, visionary energy and Pig's warm, generous nature can make this a kind, expansive-feeling match. Pig offers emotional support, enjoyment of the present, and a forgiving atmosphere when Dragon is under pressure. Dragon offers protection, direction, and the sense that life together is going somewhere meaningful. Problems arise when Dragon takes Pig's kindness for granted, or Pig quietly absorbs stress and resentment without naming it. Honest talks about burnout, money, and how you share responsibilities keep this from becoming \"Dragon's story, Pig's unpaid labour.\""
     }
   },
   "snake": {
     "rat": {
       "heading": "Snake × Rat — Neutral (中)",
-      "tagline": "Quiet planners",
-      "description": "Snake and Rat both think ahead and notice what others miss. Rat watches money, logistics, and external moves; Snake studies motives, timing, and longer trends. Together you can be an effective behind-the-scenes team. Suspicion grows, though, if either starts hiding too much or probing for answers instead of asking directly."
+      "tagline": "Quiet planners, different nerves",
+      "description": "Snake and Rat are both strategic and dislike wasting effort, but their stress points are different. Rat is jumpy about money, timing, and immediate risk; Snake is more focused on long-range patterns and hidden motives. At your best, Rat handles day-to-day adjustments while Snake keeps an eye on the bigger picture and deeper truth. It goes wrong when Rat reads Snake's silence as secrecy, and Snake reads Rat's activity as panic—clear, occasional check-ins on what each of you is really worried about prevent that."
     },
     "ox": {
       "heading": "Snake × Ox — Same Trine (San He 三合)",
-      "tagline": "Patient strategists",
-      "description": "Snake and Ox share the San He (三合) Strategist trine. Ox brings reliability, work ethic, and calm persistence; Snake adds insight, timing, and careful analysis. This is a strong combination for slow, steady wins—career advancement, property, or long-term plans. Respecting each other's naturally deliberate pace is important."
+      "tagline": "Slow and sure strategy",
+      "description": "Snake and Ox share the San He (三合) \"Strategist\" trine, making this one of Snake's most stable and effective pairings. Ox brings patience, loyalty, and the willingness to grind through difficult phases; Snake brings insight, timing, and a strong instinct for when to push and when to wait. Together you're well suited to long-term projects, financial discipline, and building security quietly in the background. This match deepens when you keep outside drama minimal and trust each other's way of handling pressure."
     },
     "tiger": {
       "heading": "Snake × Tiger — Six Harms (Liu Hai 六害) · Punishment Pattern (Xing 刑)",
-      "tagline": "Edge and lesson",
-      "description": "Snake and Tiger form a Liu Hai (六害) pair with an added punishment (刑) link. Tiger moves openly and fast; Snake moves selectively and guards their inner world. The attraction can be real but often comes with tests, sharp words, or power struggles. Without unusual maturity, it tends to bring more lessons than ease."
+      "tagline": "Coiled tension",
+      "description": "Snake and Tiger form a Liu Hai (六害) harm pair and sit together in the classic \"bullying-style\" punishment (刑) triangle with Monkey, so the chemistry is intense and lesson-heavy. Tiger is open, impulsive, and straightforward; Snake is controlled, guarded, and often several moves ahead mentally. Each can feel simultaneously fascinated and threatened by the other's strength, which easily turns into power tests or emotional stand-offs. This pairing only works if both agree to retire mind games and confront issues cleanly, without explosive scenes or silent manipulation."
     },
     "rabbit": {
       "heading": "Snake × Rabbit — Neutral (中)",
-      "tagline": "Subtle pair",
-      "description": "Snake and Rabbit both prefer nuance over noise. Snake offers depth and strategic thinking; Rabbit brings warmth, social grace, and an eye on harmony. This can be a quietly elegant partnership. However, if worries and doubts remain unspoken, distance appears with no clean moment to resolve it."
+      "tagline": "Depth and delicacy",
+      "description": "Snake is inward, analytical, and slow to trust; Rabbit is gentle, responsive, and tuned to social and emotional atmosphere. Rabbit can soften Snake's world, providing kindness and a graceful interface with others; Snake can give Rabbit backbone, clarity, and a stronger sense of where real danger lies. Misunderstandings come when Rabbit takes Snake's reserve as rejection, and Snake takes Rabbit's diplomacy as insincerity. Honest reassurance and a shared commitment to kindness over criticism keep this bond delicate but resilient."
     },
     "dragon": {
       "heading": "Snake × Dragon — Neutral (中)",
-      "tagline": "Brains and bravado",
-      "description": "Dragon pushes outward with force and vision; Snake steers with insight and timing. Snake can help Dragon avoid unnecessary conflicts and refine their moves; Dragon can help Snake act instead of staying in analysis mode. It fails when Dragon ignores Snake's signals or Snake responds with silent resistance instead of conversation."
+      "tagline": "Insight behind the spotlight",
+      "description": "Dragon moves boldly and likes to be seen; Snake prefers to observe quietly and act when the time is right. Snake can help Dragon sense hidden dynamics, spot who is truly supportive, and avoid naive trust in appearances. Dragon can pull Snake out of over-caution, putting their insights to use in the real world instead of just analysing. It breaks down if Dragon dismisses Snake's warnings as negativity or Snake undermines Dragon's confidence with constant doubt—respect for each other's strengths is non-negotiable."
     },
     "snake": {
       "heading": "Snake × Snake — Same Sign (同生肖)",
-      "tagline": "Inner worlds",
-      "description": "Two Snakes together create a calm, private, and often intense inner bond. You share a taste for depth, selectivity, and quiet observation. The risk is holding grudges and making assumptions instead of asking questions. This pairing improves sharply when you commit to clear, honest communication—even if it feels awkward at first."
+      "tagline": "Mirror of mystery",
+      "description": "Two Snakes together create an intense, private, and often quietly powerful connection. You both value discretion, depth, and the ability to read between the lines, which can make you feel uniquely understood. The shadow side is suspicion and over-analysis: with so much unspoken, it's easy to start imagining motives and testing each other instead of asking directly. This pairing becomes strong when you set clear rules about honesty, reassure each other openly, and use your shared insight to solve problems—not to investigate each other."
     },
     "horse": {
       "heading": "Snake × Horse — Neutral (中)",
-      "tagline": "Different speeds",
-      "description": "Horse is open, active, and fast-moving; Snake is reserved, measured, and slow to commit. Horse can help Snake experience more of life; Snake can help Horse avoid obvious mistakes and see hidden implications. The match breaks down if Horse feels judged or Snake feels dragged from one thing to the next."
+      "tagline": "Stillness and motion",
+      "description": "Snake prefers measured moves, long-range thinking, and controlled environments; Horse needs movement, variety, and a sense of open road ahead. Horse can help Snake break out of paralysis and experience more of the world; Snake can help Horse avoid avoidable crashes and spot which risks aren't worth it. Over time, though, Snake may feel exhausted by constant change, and Horse may feel constrained by Snake's caution or preference for privacy. This works when you agree on a few fixed anchors and give Horse some genuine freedom within those bounds."
     },
     "goat": {
       "heading": "Snake × Goat — Neutral (中)",
-      "tagline": "Art and insight",
-      "description": "Goat leads with feelings and aesthetics; Snake with analysis and control of timing. Goat can warm Snake and bring creativity and softness into shared spaces; Snake can offer structure and perspective when Goat is overwhelmed. Trouble starts when Goat feels emotionally dismissed or Snake feels emotionally flooded."
+      "tagline": "Quiet feelings, quiet analysis",
+      "description": "Goat is soft, creative, and emotionally expressive; Snake is subtle, observant, and more guarded about feelings. Goat can draw Snake into a warmer, more emotionally literate space; Snake can offer Goat perspective, protection, and practical guidance when things feel overwhelming. The risk is a slow slide into worry and passivity if neither wants to take decisive action. Gentle honesty about money, boundaries, and long-term plans keeps the connection from dissolving into vague anxiety."
     },
     "monkey": {
       "heading": "Snake × Monkey — Secret Friend (Liu He 六合) · Punishment Pattern (Xing 刑)",
-      "tagline": "Sharp minds, sharp lessons",
-      "description": "Snake and Monkey form a Liu He (六合) pair inside the Tiger–Snake–Monkey punishment (刑) set. Both are clever and observant, but Monkey is more playful and outwardly restless while Snake is more guarded. You can solve problems brilliantly together and understand each other's mental style. When trust is weak, though, this quickly turns into mind games."
+      "tagline": "Clever allies, sharp lessons",
+      "description": "Snake and Monkey form a Liu He (六合) secret-friend harmony but also share a \"bullying\" style punishment (刑) link with Tiger, so this is both one of Snake's smartest alliances and one of the most karmic. Monkey brings speed, humour, and improvisation; Snake brings depth, patience, and strategic focus. Together you can solve problems ingeniously and navigate complex situations better than most pairs. But if trust wobbles, the energy turns into mind games, half-truths, and point-scoring. The relationship thrives when you use your combined intelligence to support each other, not to test or outfox each other."
     },
     "rooster": {
       "heading": "Snake × Rooster — Same Trine (San He 三合)",
-      "tagline": "Precision and depth",
-      "description": "Snake and Rooster share the San He (三合) Strategist trine. Rooster brings standards, organisation, and clear critique; Snake brings depth, pattern recognition, and subtle influence. Together you are well suited to complex tasks that require both sharp thinking and careful execution. Remember to make room for affection and rest so life doesn't feel like one long project."
+      "tagline": "Precision and poise",
+      "description": "Snake and Rooster share the San He (三合) Strategist trine, favouring careful planning, standards, and clear thinking. Rooster brings organisation, direct feedback, and a focus on doing things correctly; Snake brings subtlety, timing, and the ability to see what's not being said. Together you can run projects, households, or finances with impressive efficiency and foresight. To keep it warm, you'll need to balance critique with appreciation and protect private life from turning into a never-ending improvement plan."
     },
     "dog": {
       "heading": "Snake × Dog — Neutral (中)",
-      "tagline": "Integrity and caution",
-      "description": "Dog values honesty and loyalty; Snake values privacy and sound strategy. When aligned, Dog's straightforwardness and Snake's cautious planning complement each other, especially in serious matters. If Dog suspects manipulation or Snake feels morally policed, tension grows. Agreeing on which areas must be fully transparent helps."
+      "tagline": "Principle and perception",
+      "description": "Dog is loyal, straightforward, and driven by a strong sense of right and wrong; Snake is perceptive, cautious, and more focused on nuance and long-term consequences. Dog can push Snake to act on what they know instead of staying in observation mode; Snake can help Dog see shades of grey and hidden motives behind simple stories. Tension arises when Dog sees Snake as evasive or morally ambiguous, and Snake sees Dog as rigid or self-righteous. This pairing benefits from clear shared values and the agreement that sometimes both instinct and evidence matter."
     },
     "pig": {
       "heading": "Snake × Pig — Clash Pair (Liu Chong 六冲)",
-      "tagline": "Opposite instincts",
-      "description": "Snake and Pig form a Liu Chong (六冲) pair. Snake is selective, self-protective, and analytical; Pig is open-hearted, trusting, and comfort-seeking. Attraction can be real, but disappointment can follow if expectations are unclear. Strong shared values, clear boundaries, and honest talk about money and loyalty are mandatory."
+      "tagline": "Guarded depths, open heart",
+      "description": "Snake and Pig form a Liu Chong (六冲) clash, highlighting very different ways of handling emotion and trust. Pig is open, generous, and inclined to believe the best; Snake is cautious, selective, and slow to reveal feelings or intentions. Pig may feel shut out or over-analysed, while Snake may feel overwhelmed by Pig's emotional directness or spending habits. If you can agree on basic rules around money, loyalty, and privacy—and stick to them—you can learn a lot from each other, but this is not an \"easy-mode\" pairing."
     }
   },
   "horse": {
