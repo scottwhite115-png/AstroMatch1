@@ -1900,6 +1900,26 @@ export function buildSimpleConnectionBox(
     };
   }
 
+  // ===== EXTRACT TAGLINES FROM DETAILED COMPATIBILITY DESCRIPTIONS =====
+  const { getChineseDetailedCompat, getWesternDetailedCompat } = require('@/data/detailedCompatDescriptions');
+  
+  const chineseTagline = getChineseDetailedCompat(
+    animalALabel.toLowerCase(),
+    animalBLabel.toLowerCase()
+  )?.tagline || undefined;
+  
+  const westernTagline = getWesternDetailedCompat(
+    signALabel.toLowerCase(),
+    signBLabel.toLowerCase()
+  )?.tagline || undefined;
+  
+  if (chineseTagline) {
+    console.log(`[buildSimpleConnectionBox] ✅ Chinese tagline found: "${chineseTagline}" for ${animalALabel} × ${animalBLabel}`);
+  }
+  if (westernTagline) {
+    console.log(`[buildSimpleConnectionBox] ✅ Western tagline found: "${westernTagline}" for ${signALabel} × ${signBLabel}`);
+  }
+
   return {
     matchLabel,
     score: matchEngineResult.score, // Use NEW match engine score
@@ -1907,9 +1927,11 @@ export function buildSimpleConnectionBox(
     pairLine,
     chineseLine,
     chineseDescription,
+    chineseTagline, // NEW: Tagline from detailed compatibility
     westernSignLine, // New: personality blurb
     westernLine, // Element + aspect info
     westernDescription,
+    westernTagline, // NEW: Tagline from detailed compatibility
     wuXingLine: undefined, // Remove Wu Xing element information
     overview,
     // Chinese year elements for elements line display - set to undefined to hide

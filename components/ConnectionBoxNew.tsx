@@ -128,8 +128,9 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
   const userBChineseIcon = getChineseSignGlyph(eastB);
 
   // Get compatibility descriptions from detailed compat data
-  const chineseCompat = getChineseDetailedCompat(eastA, eastB);
-  const westernCompat = getWesternDetailedCompat(westA, westB);
+  // Use normalized/lowercased sign names to ensure proper lookup
+  const chineseCompat = getChineseDetailedCompat(animalA.toLowerCase(), animalB.toLowerCase());
+  const westernCompat = getWesternDetailedCompat(westA.toLowerCase(), westB.toLowerCase());
 
   // Chinese Zodiac Compatibility
   let connectionOverviewHeading = "";
@@ -142,16 +143,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
     connectionOverviewText = chineseCompat.description;
   }
   
-  // Fallback to existing connectionBlurb if no Chinese compat data
-  if (!connectionOverviewText) {
-    connectionOverviewText = connectionBlurb || props.connectionOverview || "";
-  } else if (connectionBlurb || props.connectionOverview) {
-    // If we have compat data AND existing blurb, prepend existing blurb
-    const existingBlurb = connectionBlurb || props.connectionOverview || "";
-    if (existingBlurb) {
-      connectionOverviewText = `${existingBlurb}\n\n${connectionOverviewText}`;
-    }
-  }
+  // REMOVED: Fallback to connectionBlurb - we don't want pattern one-liners displayed
   
   // Western Sun Sign Compatibility (separate section)
   const westernCompatibilityHeading = westernCompat?.heading || "";

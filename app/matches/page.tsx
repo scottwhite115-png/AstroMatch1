@@ -1347,9 +1347,11 @@ export default function MatchesPage() {
       east_relation: simpleBox.chineseLine, // Full line: "Monkey × Rat — San He (三合) "Three Harmonies" (Same Trine: Visionaries 三会)"
       east_summary: simpleBox.chineseLine,
       east_description: simpleBox.chineseDescription || '', // Pattern-specific description
+      east_tagline: simpleBox.chineseTagline || undefined, // NEW: Tagline from detailed compatibility
       west_relation: simpleBox.westernLine, // Full line: "Aquarius × Pisces — Air–Water (semi-compatible)"
       west_summary: simpleBox.westernLine,
       west_description: simpleBox.westernDescription || '', // Western element meaning description
+      west_tagline: simpleBox.westernTagline || undefined, // NEW: Tagline from detailed compatibility
       westernSignLine: westernSignLine, // NEW: Western sun sign relationship blurb
       wuXingLine: simpleBox.wuXingLine, // Wu Xing (Five Elements) harmony line
       a: {

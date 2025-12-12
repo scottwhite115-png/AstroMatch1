@@ -98,9 +98,11 @@ export interface SimpleConnectionBox {
   pairLine: string;            // "Aquarius/Monkey × Sagittarius/Rabbit"
   chineseLine: string;         // "Monkey × Rabbit — Liu He (六合) "Six Harmonies / Secret Friends" (Cross-Trine)"
   chineseDescription?: string; // Pattern-specific description paragraph
+  chineseTagline?: string;     // NEW: Tagline from detailed compatibility (e.g. "Action and antics")
   westernSignLine: string;     // "Aquarius × Pisces — Dreamy and imaginative; Aquarius thinks in systems..."
   westernLine: string;         // "Aquarius × Pisces — Air–Water (semi-compatible)"
   westernDescription?: string; // Western element meaning line
+  westernTagline?: string;     // NEW: Tagline from detailed compatibility (e.g. "Systems and ideas")
   wuXingLine?: string;         // Optional Wu Xing (Five Elements) harmony line
   overview: string;            // blended paragraph
   // Pattern fields for taglines and star ratings

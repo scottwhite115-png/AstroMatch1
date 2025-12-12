@@ -233,9 +233,11 @@ export interface ConnectionBoxData {
   east_relation: string;
   east_summary: string;
   east_description?: string; // Pattern-specific description for Chinese compatibility
+  east_tagline?: string; // NEW: Tagline from detailed compatibility (e.g. "Action and antics")
   west_relation: string;
   west_summary: string;
   west_description?: string; // Western element meaning description
+  west_tagline?: string; // NEW: Tagline from detailed compatibility (e.g. "Systems and ideas")
   wuXingLine?: string; // NEW: Wu Xing (Five Elements) harmony line
   westernSignLine?: string; // Western sun-sign specific blurb
   // NEW: Match engine result fields
@@ -467,6 +469,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   }
   
   // Get detailed compatibility descriptions from Astrolab pages (same as CompatibilitySection)
+  // PRIORITY: Use detailed compat data as the primary source for connection overview
   const chineseDetailedCompat = data.a?.east && data.b?.east
     ? getChineseDetailedCompat(
         data.a.east.toLowerCase().trim(),
@@ -494,49 +497,114 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   const finalChineseDetailedCompat = shouldExcludeChinese ? null : chineseDetailedCompat;
   const finalWesternDetailedCompat = shouldExcludeWestern ? null : westernDetailedCompat;
   
+  // Verify updated compatibility data is being used (Rat, Ox, Tiger, Dragon, Snake)
+  if (finalChineseDetailedCompat && data.a?.east && data.b?.east) {
+    const signA = data.a.east.toLowerCase();
+    const signB = data.b.east.toLowerCase();
+    const updatedSigns = ['rat', 'ox', 'tiger', 'dragon', 'snake'];
+    if (updatedSigns.includes(signA) || updatedSigns.includes(signB)) {
+      console.log(`[ConnectionBox] ✅ Using updated compatibility data for ${signA} × ${signB}:`, {
+        heading: finalChineseDetailedCompat.heading,
+        tagline: finalChineseDetailedCompat.tagline,
+        descriptionLength: finalChineseDetailedCompat.description.length
+      });
+    }
+  }
+  
   // Use detailed compat descriptions if available, otherwise fall back to existing descriptions
   // Parse Chinese heading to extract sign pair and pattern
+  // CRITICAL: Always use detailed compat data (heading, tagline, description) when available
   const chineseOverviewParsed = finalChineseDetailedCompat ? (() => {
     const headingParts = finalChineseDetailedCompat.heading.split(/[—–]/);
     return {
-      signPair: headingParts[0]?.trim() || '',
-      patternInfo: headingParts[1]?.trim() || '',
-      tagline: finalChineseDetailedCompat.tagline || null,
-      description: finalChineseDetailedCompat.description || chineseDescription
+      fullHeading: finalChineseDetailedCompat.heading, // Store full heading from updated data
+      signPair: headingParts[0]?.trim() || (data.a?.east && data.b?.east ? `${data.a.east} × ${data.b.east}` : ''),
+      patternInfo: headingParts[1]?.trim() || null,
+      tagline: finalChineseDetailedCompat.tagline || null, // ALWAYS use tagline from detailed compat
+      description: finalChineseDetailedCompat.description || chineseDescription || '' // ALWAYS use description from detailed compat
     };
   })() : {
-    signPair: chineseHeading || '',
+    fullHeading: chineseHeading || (data.a?.east && data.b?.east ? `${data.a.east} × ${data.b.east}` : ''),
+    signPair: chineseHeading || (data.a?.east && data.b?.east ? `${data.a.east} × ${data.b.east}` : ''),
     patternInfo: null,
     tagline: null,
-    description: chineseDescription
+    description: chineseDescription || ''
   };
   
   // Parse Western heading to extract sign pair and element info
+  // CRITICAL: Always use detailed compat data (heading, tagline, description) when available
   const westernOverviewParsed = finalWesternDetailedCompat ? (() => {
     const headingParts = finalWesternDetailedCompat.heading.split(/[—–]/);
     return {
-      signPair: headingParts[0]?.trim() || '',
-      elementInfo: headingParts[1]?.trim() || '',
-      tagline: finalWesternDetailedCompat.tagline || null,
-      description: finalWesternDetailedCompat.description || westDescription
+      fullHeading: finalWesternDetailedCompat.heading, // Store full heading from updated data
+      signPair: headingParts[0]?.trim() || (data.a?.west && data.b?.west ? `${data.a.west} × ${data.b.west}` : ''),
+      elementInfo: headingParts[1]?.trim() || null,
+      tagline: finalWesternDetailedCompat.tagline || null, // ALWAYS use tagline from detailed compat
+      description: finalWesternDetailedCompat.description || westDescription || '' // ALWAYS use description from detailed compat
     };
   })() : {
-    signPair: westHeading || '',
+    fullHeading: westHeading || (data.a?.west && data.b?.west ? `${data.a.west} × ${data.b.west}` : ''),
+    signPair: westHeading || (data.a?.west && data.b?.west ? `${data.a.west} × ${data.b.west}` : ''),
     elementInfo: null,
     tagline: null,
-    description: westDescription
+    description: westDescription || ''
   };
   
-  const chineseOverviewHeading = chineseOverviewParsed.signPair + (chineseOverviewParsed.tagline ? `— ${chineseOverviewParsed.tagline}` : '');
+  // Separate heading and tagline for better display
+  const chineseOverviewHeading = chineseOverviewParsed.signPair;
+  const chineseOverviewTagline = chineseOverviewParsed.tagline;
   const chineseOverviewPattern = chineseOverviewParsed.patternInfo;
   const chineseOverviewDescription = chineseOverviewParsed.description;
   
-  const westernOverviewHeading = westernOverviewParsed.signPair + (westernOverviewParsed.tagline ? ` — ${westernOverviewParsed.tagline}` : '');
+  const westernOverviewHeading = westernOverviewParsed.signPair;
+  const westernOverviewTagline = westernOverviewParsed.tagline;
   const westernOverviewElement = westernOverviewParsed.elementInfo;
   const westernOverviewDescription = westernOverviewParsed.description;
   
-  const hasChineseSection = Boolean(chineseOverviewHeading || chineseOverviewDescription);
-  const hasWesternSection = Boolean(westernOverviewHeading || westernOverviewDescription);
+  // Always show sections if we have sign data - prioritize detailed compat descriptions
+  // Include tagline in the check so sections show even if only tagline is available
+  const hasChineseSection = Boolean(
+    data.a?.east && data.b?.east && 
+    (chineseOverviewHeading || chineseOverviewDescription || chineseOverviewPattern || chineseOverviewTagline)
+  );
+  const hasWesternSection = Boolean(
+    data.a?.west && data.b?.west && 
+    (westernOverviewHeading || westernOverviewDescription || westernOverviewElement || westernOverviewTagline)
+  );
+  
+  // CRITICAL DEBUG: Log everything to ensure taglines are found and displayed
+  console.log('🔍 [ConnectionBox] TAGLINE DEBUG:', {
+    chinese: {
+      hasData: !!(data.a?.east && data.b?.east),
+      signs: data.a?.east && data.b?.east ? `${data.a.east} × ${data.b.east}` : 'N/A',
+      detailedCompatFound: !!finalChineseDetailedCompat,
+      taglineFromData: finalChineseDetailedCompat?.tagline || 'NOT FOUND',
+      taglineInParsed: chineseOverviewTagline || 'NOT IN PARSED',
+      hasSection: hasChineseSection,
+      willRender: hasChineseSection && !!chineseOverviewTagline
+    },
+    western: {
+      hasData: !!(data.a?.west && data.b?.west),
+      signs: data.a?.west && data.b?.west ? `${data.a.west} × ${data.b.west}` : 'N/A',
+      detailedCompatFound: !!finalWesternDetailedCompat,
+      taglineFromData: finalWesternDetailedCompat?.tagline || 'NOT FOUND',
+      taglineInParsed: westernOverviewTagline || 'NOT IN PARSED',
+      hasSection: hasWesternSection,
+      willRender: hasWesternSection && !!westernOverviewTagline
+    }
+  });
+  
+  // EXPLICIT DEBUG: Log the exact tagline strings
+  if (finalChineseDetailedCompat?.tagline) {
+    console.log('✅ [ConnectionBox] Chinese tagline FOUND:', `"${finalChineseDetailedCompat.tagline}"`);
+  } else {
+    console.log('❌ [ConnectionBox] Chinese tagline NOT FOUND');
+  }
+  if (finalWesternDetailedCompat?.tagline) {
+    console.log('✅ [ConnectionBox] Western tagline FOUND:', `"${finalWesternDetailedCompat.tagline}"`);
+  } else {
+    console.log('❌ [ConnectionBox] Western tagline NOT FOUND');
+  }
   // Use tier color from classifier, but override for specific match labels
   // Always prioritize data.colorRgb (from classifier) over astroMatch.color to avoid old colors
   const isMagneticOppositesCheck = astroMatch?.chinese.relation === "opposite" || 
@@ -826,10 +894,13 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
               {/* Connection Overview Section - Removed, kept only for Astrology/education screens */}
 
-              {/* Chinese Compatibility Section */}
-              {hasChineseSection && (() => {
+              {/* Chinese Compatibility Section - ALWAYS SHOW IF WE HAVE SIGN DATA */}
+              {data.a?.east && data.b?.east && (() => {
+                // FORCE tagline to be extracted from detailed compat if available
+                const displayTagline = finalChineseDetailedCompat?.tagline || chineseOverviewTagline;
+                
                 return (
-                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2">
+                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-4">
                     <h3 className={`text-base font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
                       Chinese Overview
                     </h3>
@@ -843,6 +914,12 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     {chineseOverviewPattern && (
                       <p className={`text-sm font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
                         {makeChinesePatternsBold(chineseOverviewPattern)}
+                      </p>
+                    )}
+                    {/* TAGLINE - Display if available */}
+                    {displayTagline && (
+                      <p className={`text-sm italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
+                        {displayTagline}
                       </p>
                     )}
                     {chineseOverviewDescription && (
@@ -861,10 +938,13 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 );
               })()}
 
-              {/* Western Compatibility Section */}
-              {hasWesternSection && (() => {
+              {/* Western Compatibility Section - ALWAYS SHOW IF WE HAVE SIGN DATA */}
+              {data.a?.west && data.b?.west && (() => {
+                // FORCE tagline to be extracted from detailed compat if available
+                const displayTagline = finalWesternDetailedCompat?.tagline || westernOverviewTagline;
+                
                 return (
-                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2">
+                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-4">
                     <h3 className={`text-base font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
                       Western Overview
                     </h3>
@@ -878,6 +958,12 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     {westernOverviewElement && (
                       <p className={`text-sm font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
                         {westernOverviewElement}
+                      </p>
+                    )}
+                    {/* TAGLINE - Display if available */}
+                    {displayTagline && (
+                      <p className={`text-sm italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
+                        {displayTagline}
                       </p>
                     )}
                     {westernOverviewDescription && (

@@ -709,6 +709,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                     {chineseHeadingWithoutSignPair}
                   </h4>
                 )}
+                {/* TAGLINE - Display if available */}
+                {connectionOverviewTagline && (
+                  <p className={`text-sm italic mb-2 ${
+                    theme === "light" ? "text-black" : "text-white"
+                  }`}>
+                    {connectionOverviewTagline}
+                  </p>
+                )}
                 <div className="leading-relaxed whitespace-pre-line">
                   {connectionOverviewText}
                 </div>
@@ -747,6 +755,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   }`}>
                     {westernHeadingWithoutSignPair}
                   </h4>
+                )}
+                {/* TAGLINE - Display if available */}
+                {westernCompatibilityTagline && (
+                  <p className={`text-sm italic mb-2 ${
+                    theme === "light" ? "text-black" : "text-white"
+                  }`}>
+                    {westernCompatibilityTagline}
+                  </p>
                 )}
                 <div className="leading-relaxed whitespace-pre-line">
                   {westernCompatibilityDescription}
