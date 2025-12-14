@@ -17,8 +17,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "ox": {
       "heading": "Rat × Ox — Secret Friend (Liu He 六合)",
-      "tagline": "Quietly powerful pair",
-      "description": "Rat and Ox form a Liu He secret-friend bond that's steady and dependable. Ox brings patience, hard work, and a willingness to carry heavy responsibilities; Rat brings timing, strategy, and awareness of risk and reward. Together you're good at building something solid over time, whether that's a home, savings, or a business. Respect grows when Rat doesn't rush Ox and Ox doesn't dismiss Rat's warnings."
+      "tagline": "Quiet backbone",
+      "description": "Rat and Ox form a Liu He \"secret friend\" pattern, one of the steadiest bonds in the cycle. Ox brings endurance, patience, and a willingness to do the slow, heavy work; Rat brings strategy, timing, and clever problem-solving. The chemistry isn't always loud, but there's usually a feeling that you can rely on each other when it counts. This pairing thrives when Rat respects Ox's pace and Ox trusts Rat's instinct about when it's time to pivot."
     },
     "tiger": {
       "heading": "Rat × Tiger — Neutral (中)",
@@ -108,9 +108,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Ox and Horse form a Liu Hai harm pairing, so your natural rhythms can grind. Ox wants predictable obligations and clear structure; Horse wants mobility, stimulation, and the ability to change plans. Early on, Ox may find Horse exciting and Horse may enjoy Ox's grounding. Over time, if responsibilities aren't shared fairly, Ox feels used and Horse feels trapped."
     },
     "goat": {
-      "heading": "Ox × Goat — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
-      "tagline": "Heavy load, soft heart",
-      "description": "Ox and Goat are in a Liu Chong clash and also part of a punishment triangle, so effort and emotional needs easily misalign. Ox shows love by working, providing, and enduring; Goat needs emotional presence, reassurance, and a sense of beauty or meaning. When it's good, Ox protects Goat and Goat makes Ox's life gentler. When appreciation is missing, both feel tired and taken for granted, so open gratitude is critical."
+      "heading": "Ox × Goat — Clash Pair (Liu Chong 六冲) with a punishment overlay",
+      "tagline": "Effort and appreciation",
+      "description": "Ox and Goat form a clash pair and also sit in a punishment-style triangle with Dog, so effort and gratitude are touchy topics. Ox often shows love by working, providing, and enduring; Goat shows love by caring, soothing, and keeping emotional space soft. When the patterns run unconsciously, both can feel overworked and under-appreciated, even while they're trying hard. This pairing settles into something strong when you name what each person is actually doing, say thank you more than you think you need to, and redistribute tasks before resentment hardens."
     },
     "monkey": {
       "heading": "Ox × Monkey — Neutral (中)",
@@ -124,8 +124,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "dog": {
       "heading": "Ox × Dog — Punishment Pattern (Xing 刑)",
-      "tagline": "Responsible but resentful",
-      "description": "Ox and Dog sit together in the \"ungrateful\" punishment triangle with Goat, so both can feel that their efforts aren't fully recognised. Ox carries practical loads; Dog carries worry about fairness, danger, and promises. You can be a strong support team when you trust each other. If you never name who is doing what and why, resentment grows quietly, so you need regular, honest check-ins on shared burdens."
+      "tagline": "Duty that needs softness",
+      "description": "Dog and Ox share a punishment-style pattern that tends to load both people up with responsibility. Ox shoulders practical burdens and keeps things running; Dog shoulders worry, vigilance, and a sense of moral duty. The connection can be incredibly solid when you both feel seen for what you carry, but heavy when the only language between you is \"who has sacrificed more.\" You do best when you bring in softness on purpose—praise, humour, small pleasures—so the bond isn't built solely on endurance."
     },
     "pig": {
       "heading": "Ox × Pig — Neutral (中)",
@@ -160,9 +160,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Tiger leads from instinct and a sense of right and wrong; Dragon leads from vision and a sense of destiny or image. You can champion each other's causes and create visible impact. Without humility, this turns into a battle over who gets the final say or the glory. Shared missions and explicit mutual support keep you from sliding into rivalry."
     },
     "snake": {
-      "heading": "Tiger × Snake — Six Harms (Liu Hai 六害) · Punishment Pattern (Xing 刑)",
-      "tagline": "Volatile undercurrents",
-      "description": "Tiger and Snake form a Liu Hai harm pair and share a punishment triangle with Monkey, so attraction and tension mix. Tiger is open, impulsive, and direct; Snake is guarded, observant, and strategic. You can bring out each other's strength, but also trigger control issues and silent stand-offs. This only works with clear boundaries around jealousy, secrets, and how far tests are allowed to go."
+      "heading": "Tiger × Snake — Punishment Pattern (Xing 刑) · Bullying triangle edge",
+      "tagline": "Quiet tension, strong lessons",
+      "description": "Tiger and Snake sit in a punishment-type pattern that can create a background hum of tension even when nothing dramatic is happening. Tiger wants to act cleanly and openly; Snake wants to watch, time, and act with subtlety, and each can feel the other is undermining their natural way of moving. In the best version, you learn when to go straight through a problem and when to use finesse, and end up respecting each other's very different strengths. If you ignore the tension, it tends to show up as sharp, memorable conflicts, so honest, early conversations help more here than in most pairings."
     },
     "horse": {
       "heading": "Tiger × Horse — Same Trine (San He 三合 · Adventurer Trine)",
@@ -175,9 +175,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Tiger often steps into a protector role; Goat is attuned to feelings, atmosphere, and beauty. Tiger can shield Goat from harsher people and situations; Goat can soften Tiger's edges and remind them of emotional consequences. Problems arise when Tiger dismisses Goat's sensitivities or Goat quietly resents Tiger's bluntness. Consistent reassurance and small, concrete acts of care keep this gentle and strong."
     },
     "monkey": {
-      "heading": "Tiger × Monkey — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
-      "tagline": "Competitive electricity",
-      "description": "Tiger and Monkey form a Liu Chong clash and share the punishment triangle with Snake, so the connection is vivid and lesson-heavy. Tiger pushes straight ahead; Monkey side-steps, jokes, and strategises. You can inspire each other and keep life interesting, but also slip into one-upmanship and mind games. Clear boundaries, fair play, and no revenge stunts are essential if this is going to last."
+      "heading": "Tiger × Monkey — Clash Pair (Liu Chong 六冲) with a pressure overlay",
+      "tagline": "Competitive spark",
+      "description": "Tiger and Monkey form a classic clash pair, so the differences in style and instinct stay vivid. Tiger moves boldly and directly, with a strong sense of what feels right; Monkey moves through wit, experiments, and clever manoeuvres. There's also a traditional \"pressure\" overlay here that can push small disagreements into real tests of respect and trust if you're not paying attention. When you deliberately channel the clash into shared challenges rather than one-upmanship, the connection feels exciting and growth-heavy instead of exhausting."
     },
     "rooster": {
       "heading": "Tiger × Rooster — Neutral (中)",
@@ -190,9 +190,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Tiger and Dog share the San He Defender trine, so both care deeply about loyalty and fairness. Dog brings conscience, steadiness, and long-term commitment; Tiger brings courage, initiative, and the willingness to take risks for what matters. You tend to have each other's backs under pressure. The main risk is burnout from constant battles, so make space for simple joy and rest."
     },
     "pig": {
-      "heading": "Tiger × Pig — Secret Friend (Liu He 六合) · Break Pattern (Po 破)",
-      "tagline": "Soft landing, sharp resets",
-      "description": "Tiger and Pig form a Liu He secret-friend bond, giving Tiger one of their safest matches, but your branches also carry a Po break pattern. Pig offers warmth, patience, and emotional cushioning; Tiger offers protection, direction, and a willingness to confront what Pig avoids. When it's good, the mix of adventure and emotional safety feels rare. When Pig feels taken for granted or Tiger feels unappreciated, things can snap quickly, so honest check-ins are vital."
+      "heading": "Tiger × Pig — Secret Friend (Liu He 六合) with a turning-point edge",
+      "tagline": "Protector and healer",
+      "description": "Tiger and Pig share a Liu He secret-friend bond that often feels protective and unexpectedly tender. Tiger brings courage, decisions, and a willingness to confront what Pig might rather avoid; Pig brings warmth, forgiveness, and emotional nourishment. There is also a sharper \"turning-point\" edge in this pairing in some charts, meaning big conflicts can trigger decisive changes rather than long, slow fades. When you talk openly about limits and deal-breakers, this becomes a bond where both protection and comfort can grow over time."
     }
   },
   "rabbit": {
@@ -248,8 +248,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "dog": {
       "heading": "Rabbit × Dog — Secret Friend (Liu He 六合)",
-      "tagline": "Trusted confidants",
-      "description": "Dog and Rabbit form a Liu He (六合) secret-friend bond that often feels safe and quietly loyal. Rabbit brings tact, sensitivity, and awareness of social nuance; Dog brings honesty, protection, and a strong sense of right and wrong. You usually dislike cruelty and value kindness in similar ways. This pairing deepens when Dog softens their tone and Rabbit speaks more plainly, blending truth with gentleness."
+      "tagline": "Trusted companions",
+      "description": "Rabbit and Dog form a Liu He secret-friend pattern that often feels like \"we're on the same side.\" Rabbit brings tact, social sensitivity, and an instinct for creating a gentle atmosphere; Dog brings loyalty, moral backbone, and the courage to stand up when something isn't right. You're usually aligned on basic decency and what feels safe or unsafe in relationships. This match deepens when Dog softens their tone a little, and Rabbit swaps hints for clear words when something is wrong."
     },
     "pig": {
       "heading": "Rabbit × Pig — Same Trine (San He 三合)",
@@ -306,7 +306,7 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     "rooster": {
       "heading": "Dragon × Rooster — Secret Friend (Liu He 六合)",
       "tagline": "Front person and fixer",
-      "description": "Dragon and Rooster form a Liu He secret-friend bond that mixes vision with detail. Rooster tracks systems, deadlines, and quality; Dragon handles persuasion, leadership, and big pushes. Each makes the other look better when you trust each other's role. Problems appear when Rooster feels unacknowledged or Dragon feels micromanaged, so scheduled frank talks help."
+      "description": "Dragon and Rooster share a Liu He \"secret friend\" bond that blends charisma with precision. Dragon brings presence, vision, and a push toward big moves; Rooster brings organisation, realism, and the willingness to handle messy details. Together you can make ambitious plans actually work in practice, not just in theory. The key is credit: this pairing feels best when Dragon publicly honours Rooster's behind-the-scenes work, and Rooster respects Dragon's role at the front."
     },
     "dog": {
       "heading": "Dragon × Dog — Clash Pair (Liu Chong 六冲)",
@@ -331,9 +331,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Snake and Ox share the Strategist trine, so neither likes rushing or wasting effort. Ox brings persistence, loyalty, and a strong work ethic; Snake brings insight, timing, and a good instinct for when to push and when to wait. You're strong at long projects, financial discipline, and quiet improvements. Protecting the relationship from outside drama keeps it especially stable."
     },
     "tiger": {
-      "heading": "Snake × Tiger — Six Harms (Liu Hai 六害) · Punishment Pattern (Xing 刑)",
-      "tagline": "Coiled tension",
-      "description": "Snake and Tiger form a Liu Hai harm pairing and sit in the \"bullying\" punishment triangle with Monkey, so attraction and friction run high. Tiger is loud, bold, and immediate; Snake is controlled, layered, and slow to show their cards. You can bring out courage and depth in each other, but also trigger stubborn stand-offs and control battles. This needs clear limits around jealousy, secrets, and how far \"testing\" is allowed to go."
+      "heading": "Snake × Tiger — Punishment Pattern (Xing 刑) · Bullying triangle edge",
+      "tagline": "Quiet tension, strong lessons",
+      "description": "Tiger and Snake sit in a punishment-type pattern that can create a background hum of tension even when nothing dramatic is happening. Tiger wants to act cleanly and openly; Snake wants to watch, time, and act with subtlety, and each can feel the other is undermining their natural way of moving. In the best version, you learn when to go straight through a problem and when to use finesse, and end up respecting each other's very different strengths. If you ignore the tension, it tends to show up as sharp, memorable conflicts, so honest, early conversations help more here than in most pairings."
     },
     "rabbit": {
       "heading": "Snake × Rabbit — Neutral (中)",
@@ -361,9 +361,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Goat is emotionally expressive and seeks comfort; Snake is emotionally intense but more guarded. Goat can pull Snake into a warmer, more openly caring space; Snake can help Goat step back from anxiety and see patterns. You can end up worrying together if nobody leads. Gentle but concrete talks about money, work, and boundaries keep things from drifting into vague stress."
     },
     "monkey": {
-      "heading": "Snake × Monkey — Secret Friend (Liu He 六合) · Punishment Pattern (Xing 刑) · Break Pattern (Po 破)",
-      "tagline": "Clever team on a tightrope",
-      "description": "Snake and Monkey form a Liu He secret-friend bond, but also share both the \"bullying\" punishment triangle with Tiger and a Po break pattern, so this is high-reward, high-stakes territory. Monkey brings speed, humour, and improvisation; Snake brings depth, patience, and strategic focus. When trust is solid, you're an exceptional problem-solving duo who can navigate messy situations better than most. When trust cracks, it tends to crack hard, so clear rules on honesty and what counts as betrayal are essential."
+      "heading": "Snake × Monkey — Secret Friend (Liu He 六合) with an intense edge",
+      "tagline": "Clever team with sharp edges",
+      "description": "Snake and Monkey share a Liu He secret-friend harmony at core, so this connection is built on intelligence, timing, and the sense you can solve things together. There's also an intense overlay here from traditional charts—extra pressure and \"turning point\" energy—which means both the highs and the conflicts tend to be amplified. Snake brings depth, patience, and strategic focus; Monkey brings speed, humour, and access to information and people. When trust is solid, you're a formidable duo; when it isn't, issues rarely stay small, so clear promises about honesty and what counts as crossing the line matter more than average."
     },
     "rooster": {
       "heading": "Snake × Rooster — Same Trine (San He 三合 · Strategist Trine)",
@@ -419,8 +419,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "goat": {
       "heading": "Horse × Goat — Secret Friend (Liu He 六合)",
-      "tagline": "Support and spontaneity",
-      "description": "Horse and Goat form a Liu He secret-friend bond that mixes softness with movement. Goat brings emotional warmth, creativity, and a sense of home; Horse brings opportunities, momentum, and the courage to adjust when life isn't working. Together you can create a life that's both cosy and open. You just need to keep an eye on finances and split the practical work fairly."
+      "tagline": "Safe harbour and roaming heart",
+      "description": "Horse and Goat form a Liu He secret-friend pattern that naturally blends movement with emotional softness. Horse brings momentum, enthusiasm, and the courage to change what isn't working; Goat brings warmth, creativity, and a home base that actually feels like a landing pad. You're well-suited to a life where someone explores and someone tends the nest, as long as both roles are respected. This pairing works best when Horse checks in regularly and Goat stays honest about needs instead of quietly bracing for disappointment."
     },
     "monkey": {
       "heading": "Horse × Monkey — Neutral (中)",
@@ -450,9 +450,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Goat and Rat form a Liu Hai harm pair, so your stress points easily tangle. Goat worries about being unsupported or emotionally abandoned; Rat worries about money, timing, and survival risk. Done well, Rat quietly protects the base and Goat keeps life gentle and humane. Done badly, Goat feels judged and Rat feels they're the only adult, so simple budgets and a lot of reassurance are key."
     },
     "ox": {
-      "heading": "Goat × Ox — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
-      "tagline": "Different kinds of effort",
-      "description": "Goat and Ox sit in a clash and the \"ungrateful\" punishment triangle with Dog, so effort and appreciation often miss each other. Ox shows love by working, providing, and staying; Goat needs emotional presence, beauty, and softness. When you're conscious of that, Ox protects Goat and Goat makes Ox's world kinder and more meaningful. When you're not, both feel taken for granted and tired, so you have to say thank you out loud and often."
+      "heading": "Goat × Ox — Clash Pair (Liu Chong 六冲) with a punishment overlay",
+      "tagline": "Effort and appreciation",
+      "description": "Ox and Goat form a clash pair and also sit in a punishment-style triangle with Dog, so effort and gratitude are touchy topics. Ox often shows love by working, providing, and enduring; Goat shows love by caring, soothing, and keeping emotional space soft. When the patterns run unconsciously, both can feel overworked and under-appreciated, even while they're trying hard. This pairing settles into something strong when you name what each person is actually doing, say thank you more than you think you need to, and redistribute tasks before resentment hardens."
     },
     "tiger": {
       "heading": "Goat × Tiger — Neutral (中)",
@@ -476,8 +476,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "horse": {
       "heading": "Goat × Horse — Secret Friend (Liu He 六合)",
-      "tagline": "Safe harbour for a traveller",
-      "description": "Goat and Horse form a Liu He secret-friend bond, so there's a natural sense of \"I've got you.\" Horse brings movement, opportunities, and the courage to change what isn't working; Goat brings warmth, creativity, and a home that truly feels like a landing pad. Together you can mix adventure with real emotional safety. To avoid burnout, you'll need honest agreements about who handles which practical tasks and how far the spontaneity goes."
+      "tagline": "Safe harbour and roaming heart",
+      "description": "Horse and Goat form a Liu He secret-friend pattern that naturally blends movement with emotional softness. Horse brings momentum, enthusiasm, and the courage to change what isn't working; Goat brings warmth, creativity, and a home base that actually feels like a landing pad. You're well-suited to a life where someone explores and someone tends the nest, as long as both roles are respected. This pairing works best when Horse checks in regularly and Goat stays honest about needs instead of quietly bracing for disappointment."
     },
     "goat": {
       "heading": "Goat × Goat — Same Sign (同生肖)",
@@ -495,9 +495,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Goat wants harmony and comfort; Rooster wants clarity and efficiency. Rooster can genuinely help Goat sort out messes and manage practical life better; Goat can help Rooster soften, rest, and enjoy more than just fixing things. The danger is Rooster sounding like a constant critic and Goat sounding like a constant complaint. Balancing critique with appreciation on both sides keeps trust intact."
     },
     "dog": {
-      "heading": "Goat × Dog — Punishment Pattern (Xing 刑) · Break Pattern (Po 破)",
-      "tagline": "Shared worry with pressure points",
-      "description": "Goat and Dog share the punishment triangle with Ox and also carry a Po break pattern, so care and concern can flip into frustration quickly. Goat feels responsible for emotional tone; Dog feels responsible for everyone's safety and fairness. When you work together, you're deeply supportive, but when you don't, there's a quiet competition over who sacrifices more. Naming burdens, redistributing them, and planning actual rest prevents sudden blow-ups."
+      "heading": "Goat × Dog — Punishment Pattern (Xing 刑) with a turning-point edge",
+      "tagline": "Shared worry with sharp edges",
+      "description": "Goat and Dog share the so-called \"ungrateful\" punishment triangle with Ox, and in many charts there's also a sharper, turning-point style edge here. Goat worries about emotional safety and atmosphere; Dog worries about danger, betrayal, and whether everyone is doing the right thing. You care deeply, but if you never feel properly appreciated, small hurts can suddenly snap into bigger ruptures. Planning actual relief for both of you—and saying out loud what you value in each other—softens both the pressure and the break tendencies."
     },
     "pig": {
       "heading": "Goat × Pig — Same Trine (San He 三合 · Artist Trine)",
@@ -517,9 +517,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Monkey likes options, shortcuts, and quick pivots; Ox likes set duties, clear routines, and slow progress. Monkey can help Ox adapt and find smarter paths; Ox can help Monkey stick with things long enough to see real results. If you slip into caricature, Ox sees Monkey as flaky and Monkey sees Ox as a wet blanket. Choosing a few shared priorities and agreeing where experimentation is allowed keeps this balanced."
     },
     "tiger": {
-      "heading": "Monkey × Tiger — Clash Pair (Liu Chong 六冲) · Punishment Pattern (Xing 刑)",
+      "heading": "Monkey × Tiger — Clash Pair (Liu Chong 六冲) with a pressure overlay",
       "tagline": "Competitive spark",
-      "description": "Monkey and Tiger form a clash and share the \"bullying\" punishment triangle with Snake, so you get chemistry plus tests. Tiger pushes straight through problems; Monkey sidesteps, jokes, and manoeuvres. This can be exciting and growth-inducing if you respect each other's courage and cleverness. If you don't, it slides into one-upmanship, so clear rules about what's off-limits in arguments are crucial."
+      "description": "Tiger and Monkey form a classic clash pair, so the differences in style and instinct stay vivid. Tiger moves boldly and directly, with a strong sense of what feels right; Monkey moves through wit, experiments, and clever manoeuvres. There's also a traditional \"pressure\" overlay here that can push small disagreements into real tests of respect and trust if you're not paying attention. When you deliberately channel the clash into shared challenges rather than one-upmanship, the connection feels exciting and growth-heavy instead of exhausting."
     },
     "rabbit": {
       "heading": "Monkey × Rabbit — Neutral (中)",
@@ -532,9 +532,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Monkey and Dragon complete the Visionary trine, so you naturally energise each other. Monkey brings flexibility, lateral thinking, and improvisation; Dragon brings presence, conviction, and the push to act on shared ideas. You're well suited to bold projects or visible moves. You just need someone keeping track of resources so enthusiasm doesn't outstrip capacity."
     },
     "snake": {
-      "heading": "Monkey × Snake — Secret Friend (Liu He 六合) · Punishment Pattern (Xing 刑) · Break Pattern (Po 破)",
-      "tagline": "Clever team on a tightrope",
-      "description": "Monkey and Snake share a Liu He secret-friend harmony but also sit in the punishment triangle with Tiger and carry a Po break pattern, so this is one of Monkey's most powerful yet sensitive pairings. Snake brings depth, patience, and strategic focus; Monkey brings speed, humour, and access to information and people. When trust is strong, you're a formidable problem-solving duo. When it cracks, it tends to crack hard, so you need explicit agreements on honesty and what counts as a line you do not cross."
+      "heading": "Monkey × Snake — Secret Friend (Liu He 六合) with an intense edge",
+      "tagline": "Clever team with sharp edges",
+      "description": "Snake and Monkey share a Liu He secret-friend harmony at core, so this connection is built on intelligence, timing, and the sense you can solve things together. There's also an intense overlay here from traditional charts—extra pressure and \"turning point\" energy—which means both the highs and the conflicts tend to be amplified. Snake brings depth, patience, and strategic focus; Monkey brings speed, humour, and access to information and people. When trust is solid, you're a formidable duo; when it isn't, issues rarely stay small, so clear promises about honesty and what counts as crossing the line matter more than average."
     },
     "horse": {
       "heading": "Monkey × Horse — Neutral (中)",
@@ -562,9 +562,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Monkey is playful and opportunistic; Dog is serious about loyalty and doing the right thing. Dog can keep Monkey from crossing lines that damage trust, while Monkey helps Dog see creative, less painful options. Dog may worry that Monkey is slippery; Monkey may feel judged or policed. Clear boundaries about what's non-negotiable—and genuine freedom inside those lines—let you bring out the best in each other."
     },
     "pig": {
-      "heading": "Monkey × Pig — Six Harms (Liu Hai 六害)",
+      "heading": "Monkey × Pig — Six Harms (Liu Hai 六害) with playful–sensitive contrast",
       "tagline": "Fast talk, open heart",
-      "description": "Monkey and Pig form a Liu Hai harm pair, so the gap between styles can sting. Pig is open, generous, and emotionally direct; Monkey is quick, teasing, and sometimes too casual about words and promises. Pig may feel dismissed or taken for granted; Monkey may feel weighed down by emotional expectations. Honest agreements about how you joke, how you apologise, and how you handle money make a big difference."
+      "description": "Monkey and Pig sit in a harm-type pattern that doesn't forbid connection but makes your differences more sensitive. Pig leads with openness, generosity, and emotional availability; Monkey leads with speed, humour, and a more playful relationship to promises and plans. When you're tuned in, Monkey helps Pig laugh and adapt, and Pig helps Monkey feel loved rather than constantly \"on.\" When you're not, teasing cuts too deep and feelings get heavy fast, so having clear agreements about jokes, money, and apologies goes a long way."
     }
   },
   "rooster": {
@@ -590,8 +590,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "dragon": {
       "heading": "Rooster × Dragon — Secret Friend (Liu He 六合)",
-      "tagline": "Planner and front person",
-      "description": "Rooster and Dragon form a Liu He secret-friend bond, blending detail with drama. Rooster keeps track of the system, the schedule, and what needs improvement; Dragon handles big pushes, persuasion, and being seen. You can be a strong team in work or life if both roles are respected. The danger is Rooster feeling uncredited and Dragon feeling nagged, so explicit appreciation in both directions matters."
+      "tagline": "Front person and fixer",
+      "description": "Dragon and Rooster share a Liu He \"secret friend\" bond that blends charisma with precision. Dragon brings presence, vision, and a push toward big moves; Rooster brings organisation, realism, and the willingness to handle messy details. Together you can make ambitious plans actually work in practice, not just in theory. The key is credit: this pairing feels best when Dragon publicly honours Rooster's behind-the-scenes work, and Rooster respects Dragon's role at the front."
     },
     "snake": {
       "heading": "Rooster × Snake — Same Trine (San He 三合 · Strategist Trine)",
@@ -637,8 +637,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "ox": {
       "heading": "Dog × Ox — Punishment Pattern (Xing 刑)",
-      "tagline": "Duty that feels heavy",
-      "description": "Dog and Ox sit in the \"ungrateful\" punishment triangle with Goat, so both can feel overworked and under-recognised. Ox shoulders practical burdens; Dog shoulders worry, moral responsibility, and threat detection. When you consciously share and honour these roles, you're a tough, reliable team. When you don't, resentment builds quietly, so explicit appreciation and rebalancing of tasks are necessary."
+      "tagline": "Duty that needs softness",
+      "description": "Dog and Ox share a punishment-style pattern that tends to load both people up with responsibility. Ox shoulders practical burdens and keeps things running; Dog shoulders worry, vigilance, and a sense of moral duty. The connection can be incredibly solid when you both feel seen for what you carry, but heavy when the only language between you is \"who has sacrificed more.\" You do best when you bring in softness on purpose—praise, humour, small pleasures—so the bond isn't built solely on endurance."
     },
     "tiger": {
       "heading": "Dog × Tiger — Same Trine (San He 三合 · Defender Trine)",
@@ -647,8 +647,8 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "rabbit": {
       "heading": "Dog × Rabbit — Secret Friend (Liu He 六合)",
-      "tagline": "Trusted confidants",
-      "description": "Dog and Rabbit form a Liu He secret-friend bond that often feels safe and loyal. Rabbit brings tact and social finesse; Dog brings honesty and a readiness to guard what you build together. You usually agree that cruelty and disrespect are deal-breakers. The connection deepens when Dog softens their tone and Rabbit drops passive-aggression in favour of clear words."
+      "tagline": "Trusted companions",
+      "description": "Rabbit and Dog form a Liu He secret-friend pattern that often feels like \"we're on the same side.\" Rabbit brings tact, social sensitivity, and an instinct for creating a gentle atmosphere; Dog brings loyalty, moral backbone, and the courage to stand up when something isn't right. You're usually aligned on basic decency and what feels safe or unsafe in relationships. This match deepens when Dog softens their tone a little, and Rabbit swaps hints for clear words when something is wrong."
     },
     "dragon": {
       "heading": "Dog × Dragon — Clash Pair (Liu Chong 六冲)",
@@ -666,9 +666,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Dog and Horse share a trine that blends loyalty with motion. Horse brings energy, travel, and new paths; Dog brings commitment, stability, and a strong protective streak. Together you're willing to take risks for each other and adjust when life changes. Just be sure to rest and enjoy what you've already achieved instead of hopping to the next emergency."
     },
     "goat": {
-      "heading": "Dog × Goat — Punishment Pattern (Xing 刑) · Break Pattern (Po 破)",
-      "tagline": "Shared worry, sharp turns",
-      "description": "Dog and Goat share the \"ungrateful\" punishment triangle with Ox and carry a Po break pattern, so you care deeply but can hit breaking points fast. Goat worries about emotional safety and beauty; Dog worries about danger, betrayal, and duty. You may compete silently over who sacrifices more, then snap. Planning actual relief for both of you—and naming what you appreciate in each other—softens both the punishment and break tendencies."
+      "heading": "Dog × Goat — Punishment Pattern (Xing 刑) with a turning-point edge",
+      "tagline": "Shared worry with sharp edges",
+      "description": "Goat and Dog share the so-called \"ungrateful\" punishment triangle with Ox, and in many charts there's also a sharper, turning-point style edge here. Goat worries about emotional safety and atmosphere; Dog worries about danger, betrayal, and whether everyone is doing the right thing. You care deeply, but if you never feel properly appreciated, small hurts can suddenly snap into bigger ruptures. Planning actual relief for both of you—and saying out loud what you value in each other—softens both the pressure and the break tendencies."
     },
     "monkey": {
       "heading": "Dog × Monkey — Neutral (中)",
@@ -733,9 +733,9 @@ export const CHINESE_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Pig and Goat share the Artist trine, so the emotional tone is usually gentle, empathic, and creative. Goat brings sensitivity, aesthetics, and a desire for emotional harmony; Pig brings kindness, generosity, and a willingness to support loved ones. People can feel very cared for around you two. To avoid silent panic, you need at least a loose plan for money, work, and health."
     },
     "monkey": {
-      "heading": "Pig × Monkey — Six Harms (Liu Hai 六害)",
-      "tagline": "Play and vulnerability",
-      "description": "Pig and Monkey form a Liu Hai harm pairing, so fun and feelings easily collide. Monkey's teasing, changes of plan, or casual promises can cut deeper than intended; Pig's emotional needs or spending can feel heavy to Monkey. When both are self-aware, you can have a lot of fun and still be kind. When you're not, misunderstandings pile up, so clear rules about humour, honesty, and commitments matter."
+      "heading": "Pig × Monkey — Six Harms (Liu Hai 六害) with playful–sensitive contrast",
+      "tagline": "Fast talk, open heart",
+      "description": "Monkey and Pig sit in a harm-type pattern that doesn't forbid connection but makes your differences more sensitive. Pig leads with openness, generosity, and emotional availability; Monkey leads with speed, humour, and a more playful relationship to promises and plans. When you're tuned in, Monkey helps Pig laugh and adapt, and Pig helps Monkey feel loved rather than constantly \"on.\" When you're not, teasing cuts too deep and feelings get heavy fast, so having clear agreements about jokes, money, and apologies goes a long way."
     },
     "rooster": {
       "heading": "Pig × Rooster — Neutral (中)",

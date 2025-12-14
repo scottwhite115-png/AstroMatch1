@@ -14,17 +14,29 @@ const FourPointedStar = ({ className }: { className?: string }) => (
 // Navigation sections and pages
 const ASTROLAB_SECTIONS = [
   {
+    id: 'triple-harmony-trines',
+    label: 'Triple Harmony',
+    icon: '✨',
+    description: 'Triple Harmony trine groups table',
+  },
+  {
+    id: 'secret-friends',
+    label: 'Secret Friends',
+    icon: '🤝',
+    description: 'Secret Friends (Liu He) pairs table',
+  },
+  {
+    id: 'six-conflicts',
+    label: 'Six Conflicts',
+    icon: '⚡',
+    description: 'Six Conflicts (Liu Chong) pairs table',
+  },
+  {
     id: 'match-generator',
     label: 'Match Generator',
     icon: '🧮',
     description: 'Calculate compatibility',
     path: '/astrology/match-generator', // This is a page, not a section
-  },
-  {
-    id: 'chinese-patterns',
-    label: 'Chinese Patterns',
-    icon: '📊',
-    description: 'Traditional zodiac compatibility patterns',
   },
   {
     id: 'what-shapes-score',
@@ -131,7 +143,11 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
     }
   }, [isDrawerOpen])
 
-  const handleSectionClick = (sectionId: string) => {
+  const handleSectionClick = (sectionId: string, e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation()
+    }
+    
     // Check if this section has a path (like match-generator which is a page)
     const section = ASTROLAB_SECTIONS.find(s => s.id === sectionId)
     if (section && 'path' in section && section.path) {
@@ -142,21 +158,29 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
 
     // If we're on the main page, scroll to section
     if (pathname === '/astrology') {
-      const element = document.getElementById(sectionId)
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      } else {
+      const scrollToSection = () => {
+        const element = document.getElementById(sectionId)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          return true
+        }
+        return false
+      }
+
+      // Try immediately
+      if (!scrollToSection()) {
         // If element not found, wait a bit and try again (for dynamic content)
         setTimeout(() => {
-          const el = document.getElementById(sectionId)
-          if (el) {
-            el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          if (!scrollToSection()) {
+            // Try one more time after a longer delay
+            setTimeout(scrollToSection, 300)
           }
         }, 100)
       }
     } else {
       // Otherwise, navigate to main page with hash
       router.push(`/astrology#${sectionId}`)
+      // The page's useEffect will handle scrolling when it loads
     }
   }
 
@@ -172,12 +196,10 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
           <div className="flex-1 -ml-4">
             <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
               <div className="flex gap-0.5 min-w-max">
-                <button
-                  onClick={() => {
-                    setActiveTab('matches')
-                    router.push('/matches')
-                  }}
-                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                <Link
+                  href="/matches"
+                  onClick={() => setActiveTab('matches')}
+                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out cursor-pointer inline-block ${
                     activeTab === 'matches'
                       ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
                       : theme === "light"
@@ -193,10 +215,11 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                         : "opacity-0"
                     }`}
                   />
-                </button>
-                <button
+                </Link>
+                <Link
+                  href="/astrology"
                   onClick={() => setActiveTab('astrolab')}
-                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out cursor-pointer inline-block ${
                     activeTab === 'astrolab'
                       ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
                       : theme === "light"
@@ -212,7 +235,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                         : "opacity-0"
                     }`}
                   />
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -310,22 +333,43 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
             Sections
           </p>
           <nav className="flex gap-2 overflow-x-auto pb-1">
-            {ASTROLAB_SECTIONS.map((section) => (
-              <button
-                key={section.id}
-                type="button"
-                onClick={() => handleSectionClick(section.id)}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
-                  theme === "light"
-                    ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                    : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
-                }`}
-                title={section.description}
-              >
-                <span>{section.icon}</span>
-                <span>{section.label}</span>
-              </button>
-            ))}
+            {ASTROLAB_SECTIONS.map((section) => {
+              const sectionPath = (section as any).path
+              // If section has a path, use Link; otherwise use button for scrolling
+              if (sectionPath) {
+                return (
+                  <Link
+                    key={section.id}
+                    href={sectionPath}
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                      theme === "light"
+                        ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                        : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                    }`}
+                    title={section.description}
+                  >
+                    <span>{section.icon}</span>
+                    <span>{section.label}</span>
+                  </Link>
+                )
+              }
+              return (
+                <button
+                  key={section.id}
+                  type="button"
+                  onClick={(e) => handleSectionClick(section.id, e)}
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                    theme === "light"
+                      ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                      : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                  }`}
+                  title={section.description}
+                >
+                  <span>{section.icon}</span>
+                  <span>{section.label}</span>
+                </button>
+              )
+            })}
           </nav>
         </div>
       </div>
@@ -361,12 +405,13 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   <button
                     key={page.id}
                     type="button"
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation()
                       router.push(page.path)
                       setIsDrawerOpen(false)
                     }}
                     className={[
-                      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
+                      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors cursor-pointer",
                       isActive
                         ? theme === "light"
                           ? "bg-orange-50 text-orange-700 border border-orange-200"
@@ -405,12 +450,13 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   <button
                     key={section.id}
                     type="button"
-                    onClick={() => {
-                      handleSectionClick(section.id)
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleSectionClick(section.id, e)
                       setIsDrawerOpen(false)
                     }}
                     className={[
-                      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors",
+                      "flex w-full items-start gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors cursor-pointer",
                       isActive
                         ? theme === "light"
                           ? "bg-orange-50 text-orange-700 border border-orange-200"

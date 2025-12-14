@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useEffect } from "react"
+import Link from "next/link"
 import { useTheme } from "@/contexts/ThemeContext"
 import { getChinesePattern } from "@/lib/chinesePatternSystem"
 import { patternDefinitions } from "@/lib/chinesePatternSystem"
@@ -14,16 +15,38 @@ export default function AstrologySection() {
 
   // Scroll to section on page load if hash is present
   useEffect(() => {
-    const hash = window.location.hash.replace('#', '')
-    if (hash) {
-      const element = document.getElementById(hash)
-      if (element) {
-        setTimeout(() => {
+    const scrollToHash = () => {
+      const hash = window.location.hash.replace('#', '')
+      if (hash) {
+        const element = document.getElementById(hash)
+        if (element) {
           element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }, 100)
+          return true
+        }
       }
+      return false
     }
-    // Removed default scroll to chinese-patterns - page now loads at top
+
+    // Try scrolling immediately
+    if (!scrollToHash()) {
+      // If element not found, wait for page to render
+      setTimeout(() => {
+        if (!scrollToHash()) {
+          // Try one more time after a longer delay
+          setTimeout(scrollToHash, 300)
+        }
+      }, 100)
+    }
+
+    // Also listen for hash changes (when navigating within the page)
+    const handleHashChange = () => {
+      setTimeout(scrollToHash, 50)
+    }
+    window.addEventListener('hashchange', handleHashChange)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+    }
   }, [])
 
   return (
@@ -62,10 +85,10 @@ export default function AstrologySection() {
                           Harmony
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>88-98%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>72-98%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Same trine family. Smooth teamwork, shared direction, and naturally supportive long-term flow. Peaks at Soulmate/Twin Flame tier.
+                      High natural harmony and shared rhythm; when you're aligned, this connection moves fast and far.
                     </div>
                   </div>
                 </div>
@@ -81,10 +104,10 @@ export default function AstrologySection() {
                           Harmony
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>82-91%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>68-91%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Quiet allies. Each sign "has the other's back" and tends to protect, encourage, and stabilise the connection. Reaches Twin Flame tier at peak.
+                      Quietly strong bond that feels safe, loyal, and steady when you choose each other.
                     </div>
                   </div>
                 </div>
@@ -100,10 +123,10 @@ export default function AstrologySection() {
                           Neutral +
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>60-70%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>68-82%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Double dose of one energy. Very familiar, similar instincts. Most score 62-67%, reaching 68-70% only with strong Western support.
+                      Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.
                     </div>
                   </div>
                 </div>
@@ -122,7 +145,7 @@ export default function AstrologySection() {
                       <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>52-68%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      No big harmony or clash. Neutral pairs can climb with good Western aspects. How it feels depends on Western signs and individual charts.
+                      No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.
                     </div>
                   </div>
                 </div>
@@ -141,7 +164,7 @@ export default function AstrologySection() {
                       <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>45-62%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Opposite branches. Push–pull, strong reactions, magnetic "Opposites Attract" chemistry. Typical range 45-58%, best case 60-62%.
+                      Magnetic opposites with sharp edges; big lessons, not automatic comfort.
                     </div>
                   </div>
                 </div>
@@ -160,7 +183,7 @@ export default function AstrologySection() {
                       <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Hidden annoyances. Little frictions, misunderstandings, or mismatched needs. Can reach 54-60% with strong Western support.
+                      Sensitive pattern where small misreads can snowball; this match needs extra patience and very clear communication.
                     </div>
                   </div>
                 </div>
@@ -179,7 +202,7 @@ export default function AstrologySection() {
                       <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Tense dynamics. Lessons around fairness, blame, emotional pressure, and conflict handling. Can reach 54-60% with good Western aspects.
+                      Tension and sharp edges; situations can feel strict or demanding.
                     </div>
                   </div>
                 </div>
@@ -198,7 +221,7 @@ export default function AstrologySection() {
                       <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Breakpoints. One or both people disrupt the other's routines or comfort zone. Can reach 54-60% with strong Western support.
+                      This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.
                     </div>
                   </div>
                 </div>
@@ -209,11 +232,11 @@ export default function AstrologySection() {
           {/* Triple Harmony Trine Groups Table */}
           <div id="triple-harmony-trines" className="mb-6">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-4">Triple Harmony · 三合 (San He) Trine Groups</h2>
+              <h2 className="astrology-heading-secondary mb-4">Triple Harmony · 三合 (San He)</h2>
               
               <div className="mb-4">
                 <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
-                  These are the <strong>four trine families</strong>. Signs in the same group are your <strong>Triple Harmony</strong> connections.
+                  These are the <strong>four trine families</strong>. Signs in the same group are your <strong>Triple Harmony</strong> connections, excluding same signs.
                 </p>
               </div>
 
@@ -229,7 +252,6 @@ export default function AstrologySection() {
                 <table className="text-sm border-collapse w-full">
                   <thead className={`${theme === "light" ? "bg-gray-100" : "bg-gray-800"}`}>
                     <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
-                      <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Trine Name</th>
                       <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Theme</th>
                       <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Signs in the Group</th>
                       <th className={`p-3 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Vibe in AstroMatch</th>
@@ -238,7 +260,6 @@ export default function AstrologySection() {
                   <tbody>
                     {/* Rat–Dragon–Monkey - Visionaries (Yellow/Amber - San He tier) */}
                     <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
-                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Rat–Dragon–Monkey</td>
                       <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Visionaries</td>
                       <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
                         <span className="font-medium">Rat (子), Dragon (辰), Monkey (申)</span>
@@ -250,7 +271,6 @@ export default function AstrologySection() {
 
                     {/* Ox–Snake–Rooster - Strategists (Yellow/Amber - San He tier) */}
                     <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
-                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Ox–Snake–Rooster</td>
                       <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Strategists</td>
                       <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
                         <span className="font-medium">Ox (丑), Snake (巳), Rooster (酉)</span>
@@ -262,7 +282,6 @@ export default function AstrologySection() {
 
                     {/* Tiger–Horse–Dog - Adventurers (Yellow/Amber - San He tier) */}
                     <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
-                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Tiger–Horse–Dog</td>
                       <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Adventurers</td>
                       <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
                         <span className="font-medium">Tiger (寅), Horse (午), Dog (戌)</span>
@@ -274,7 +293,6 @@ export default function AstrologySection() {
 
                     {/* Rabbit–Goat–Pig - Artists (Yellow/Amber - San He tier) */}
                     <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"} ${theme === "light" ? "hover:bg-yellow-50" : "hover:bg-yellow-900/10"}`}>
-                      <td className={`p-3 font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-400"}`}>Rabbit–Goat–Pig</td>
                       <td className={`p-3 font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-300"}`}>Artists</td>
                       <td className={`p-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>
                         <span className="font-medium">Rabbit (卯), Goat (未), Pig (亥)</span>
@@ -391,12 +409,12 @@ export default function AstrologySection() {
               <div className="space-y-4">
                 {/* Label and Tagline Card */}
                 <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-emerald-50 border-emerald-200" : "bg-emerald-900/10 border-emerald-700/30"}`}>
-                  <div className="mb-3">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`text-base font-semibold ${theme === "light" ? "text-emerald-700" : "text-emerald-400"}`}>Label:</span>
+                  <div className="space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                      <span className={`text-base font-semibold ${theme === "light" ? "text-emerald-700" : "text-emerald-400"} whitespace-nowrap`}>Label:</span>
                       <span className={`text-base font-bold ${theme === "light" ? "text-emerald-800" : "text-emerald-300"}`}>Same Sign · 同生肖</span>
                     </div>
-                    <div className="flex items-start gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
                       <span className={`text-base font-semibold ${theme === "light" ? "text-emerald-700" : "text-emerald-400"} whitespace-nowrap`}>Tagline:</span>
                       <span className={`text-base ${theme === "light" ? "text-emerald-800" : "text-emerald-300"}`}>
                         "Same sign – double dose of one energy; high familiarity, medium harmony."
@@ -411,16 +429,16 @@ export default function AstrologySection() {
                     What it means:
                   </h3>
                   <ul className={`space-y-2 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                    <li className="flex items-start gap-2">
-                      <span className={`mt-1 ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
+                    <li className="flex items-start gap-3">
+                      <span className={`flex-shrink-0 w-4 text-center ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
                       <span>Very similar instincts and timing</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className={`mt-1 ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
+                    <li className="flex items-start gap-3">
+                      <span className={`flex-shrink-0 w-4 text-center ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
                       <span>You understand each other's moods quickly</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className={`mt-1 ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
+                    <li className="flex items-start gap-3">
+                      <span className={`flex-shrink-0 w-4 text-center ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>•</span>
                       <span>But it isn't automatically as "karmically special" as Triple Harmony or Secret Friends</span>
                     </li>
                   </ul>
@@ -1011,82 +1029,6 @@ export default function AstrologySection() {
             </div>
           </div>
 
-          {/* Chinese Zodiac Compatibility Guide */}
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-4">Chinese Zodiac Compatibility Guide</h2>
-
-              <div className="mb-6">
-                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <h3 className={`text-base font-bold mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>The Four Trines</h3>
-                  
-                  {/* Compact card layout for mobile */}
-                  <div className="space-y-3">
-                    {/* 1st Trine - Visionaries */}
-                    <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className={`text-sm font-semibold ${theme === "light" ? "text-gray-900" : "text-white"}`}>1st Trine – Visionaries</h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap font-medium">Same Trine</span>
-                      </div>
-                      <p className={`text-sm mb-1 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Rat • Dragon • Monkey</p>
-                      <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Ambitious, magnetic, and quick-minded. You share intuition, creativity, and drive — natural leaders who thrive on excitement and challenge.</p>
-                    </div>
-
-                    {/* 2nd Trine - Strategists */}
-                    <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className={`text-sm font-semibold ${theme === "light" ? "text-gray-900" : "text-white"}`}>2nd Trine – Strategists</h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap font-medium">Same Trine</span>
-                      </div>
-                      <p className={`text-sm mb-1 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Ox • Snake • Rooster</p>
-                      <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Disciplined, wise, and self-reliant. You value loyalty, logic, and refinement — a steady, enduring rhythm built on trust and respect.</p>
-                    </div>
-
-                    {/* 3rd Trine - Adventurers */}
-                    <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className={`text-sm font-semibold ${theme === "light" ? "text-gray-900" : "text-white"}`}>3rd Trine – Adventurers</h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap font-medium">Same Trine</span>
-                      </div>
-                      <p className={`text-sm mb-1 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Tiger • Horse • Dog</p>
-                      <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Passionate, loyal, and freedom-loving. Courageous spirits who follow their heart — driven by ideals, justice, and authenticity.</p>
-                    </div>
-
-                    {/* 4th Trine - Artists */}
-                    <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className={`text-sm font-semibold ${theme === "light" ? "text-gray-900" : "text-white"}`}>4th Trine – Artists</h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap font-medium">Same Trine</span>
-                      </div>
-                      <p className={`text-sm mb-1 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Rabbit • Goat • Pig</p>
-                      <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Gentle, romantic, and intuitive. Sensitive souls who seek beauty, peace, and emotional understanding in love and life.</p>
-                    </div>
-
-                    {/* Cross-Trine */}
-                    <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className={`text-sm font-semibold ${theme === "light" ? "text-gray-900" : "text-white"}`}>Cross-Trine</h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-yellow-500/20 text-yellow-600 dark:text-yellow-300 whitespace-nowrap font-medium">Cross-Trine</span>
-                      </div>
-                      <p className={`text-sm mb-1 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Mixed Trines</p>
-                      <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>You move to different tempos. Connection comes from curiosity and compromise — attraction through contrast, growth through patience.</p>
-                    </div>
-
-                    {/* Natural Enemies */}
-                    <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                      <div className="flex items-start justify-between gap-2 mb-1">
-                        <h3 className={`text-sm font-semibold ${theme === "light" ? "text-gray-900" : "text-white"}`}>Natural Enemies</h3>
-                        <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-300 whitespace-nowrap font-medium">Opposing</span>
-                      </div>
-                      <p className={`text-sm mb-1 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Rat–Horse • Ox–Goat • Tiger–Monkey • Rabbit–Rooster • Dragon–Dog • Snake–Pig</p>
-                      <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Opposing instincts — sparks can fly, but friction grows easily. These pairs often teach each other powerful life lessons, not comfort.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Five Elements Reference Section */}
           <div id="five-elements" className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
@@ -1097,26 +1039,41 @@ export default function AstrologySection() {
                   <h3 className={`text-base font-bold mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>The Five Elements</h3>
                   
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-                    <div className={`p-3 rounded-lg border text-center ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                    <Link 
+                      href="/astrology/five-elements/wood"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
                       <div className="text-2xl mb-1">🌳</div>
                       <div className="text-sm font-semibold text-green-500">Wood (木)</div>
-                    </div>
-                    <div className={`p-3 rounded-lg border text-center ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/fire"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
                       <div className="text-2xl mb-1">🔥</div>
                       <div className="text-sm font-semibold text-orange-500">Fire (火)</div>
-                    </div>
-                    <div className={`p-3 rounded-lg border text-center ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/earth"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
                       <div className="text-2xl mb-1">⛰️</div>
                       <div className="text-sm font-semibold text-yellow-600">Earth (土)</div>
-                    </div>
-                    <div className={`p-3 rounded-lg border text-center ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/metal"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
                       <div className="text-2xl mb-1">⚙️</div>
                       <div className={`text-sm font-semibold ${theme === "light" ? "text-gray-500" : "text-gray-300"}`}>Metal (金)</div>
-                    </div>
-                    <div className={`p-3 rounded-lg border text-center ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/water"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
                       <div className="text-2xl mb-1">💧</div>
                       <div className="text-sm font-semibold text-blue-500">Water (水)</div>
-                    </div>
+                    </Link>
                   </div>
 
                   <h4 className={`text-sm font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Two Key Relationship Cycles:</h4>
