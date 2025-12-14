@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
 import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
@@ -9,6 +10,7 @@ import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 export default function ScorpioPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem()
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function ScorpioPage() {
           {/* Content */}
           <div className={`space-y-6 ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>
             <div className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-              October 23 – November 21
+              {sunSignSystem === 'sidereal' ? 'November 17 – December 15' : 'October 23 – November 21'}
             </div>
 
             <div>

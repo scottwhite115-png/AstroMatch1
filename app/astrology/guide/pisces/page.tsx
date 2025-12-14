@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
 import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
@@ -9,6 +10,7 @@ import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 export default function PiscesPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem()
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function PiscesPage() {
           {/* Content */}
           <div className={`space-y-6 ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>
             <div className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-              February 19 – March 20
+              {sunSignSystem === 'sidereal' ? 'March 15 – April 12' : 'February 19 – March 20'}
             </div>
 
             <div>

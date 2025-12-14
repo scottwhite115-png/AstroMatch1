@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
@@ -9,6 +10,7 @@ import { CompatibilitySection } from "@/app/astrology/_components/CompatibilityS
 export default function TaurusPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem()
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function TaurusPage() {
           {/* Content */}
           <div className={`space-y-6 ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>
             <div className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-              April 20 – May 20
+              {sunSignSystem === 'sidereal' ? 'May 15 – June 14' : 'April 20 – May 20'}
             </div>
 
             <div>

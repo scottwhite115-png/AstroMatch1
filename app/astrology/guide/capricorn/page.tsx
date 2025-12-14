@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
 import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
@@ -9,6 +10,7 @@ import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 export default function CapricornPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem()
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function CapricornPage() {
           {/* Content */}
           <div className={`space-y-6 ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>
             <div className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-              December 22 – January 19
+              {sunSignSystem === 'sidereal' ? 'January 15 – February 12' : 'December 22 – January 19'}
             </div>
 
             <div>

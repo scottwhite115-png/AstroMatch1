@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { SunSignCompatibilityTable } from "@/components/SunSignCompatibilityTable"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 import { CompatibilitySection } from "@/app/astrology/_components/CompatibilitySection"
@@ -9,6 +10,7 @@ import { CompatibilitySection } from "@/app/astrology/_components/CompatibilityS
 export default function AriesPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem()
 
   return (
     <div
@@ -48,7 +50,7 @@ export default function AriesPage() {
           {/* Content */}
           <div className={`space-y-6 ${theme === "light" ? "text-gray-800" : "text-white/80"}`}>
             <div className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-              March 21 – April 19
+              {sunSignSystem === 'sidereal' ? 'April 13 – May 14' : 'March 21 – April 19'}
             </div>
 
             <div>
