@@ -160,7 +160,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
                     }`}
-                    style={{ fontSize: '1.5rem', lineHeight: '2rem' }}
+                    style={{ fontSize: '1.5rem', lineHeight: '2rem', fontWeight: 'bold' }}
                     placeholder="Title"
                   />
                 </div>
