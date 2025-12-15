@@ -608,14 +608,16 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           {/* western chip */}
           <span
             key={westernChipNew.icon + westernChipNew.label}
-            className={`${westernChipNew.label.includes('–') ? 'px-1' : 'px-3'} py-1.5 rounded-full text-base inline-flex items-center justify-center gap-1 ${
+            className={`py-1.5 rounded-full text-base inline-flex items-center justify-center gap-1 ${
               theme === "light" 
                 ? "bg-slate-200 text-slate-700" 
                 : "bg-slate-900 text-slate-200"
             }`}
             style={{
-              maxWidth: westernChipNew.label.includes('–') ? '150px' : 'fit-content',
-              width: westernChipNew.label.includes('–') ? 'auto' : 'fit-content',
+              paddingLeft: westernChipNew.label.includes('–') ? '8px' : '12px',
+              paddingRight: westernChipNew.label.includes('–') ? '8px' : '12px',
+              maxWidth: 'fit-content',
+              width: 'fit-content',
               minWidth: 'min-content',
               display: 'inline-flex',
               flexWrap: 'wrap',
@@ -629,7 +631,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               style={{ 
                 textWrap: 'balance',
                 wordBreak: 'break-word',
-                maxWidth: westernChipNew.label.includes('–') ? '130px' : '100%',
+                maxWidth: '100%',
                 minWidth: 0,
                 flex: '1 1 auto',
               }}
