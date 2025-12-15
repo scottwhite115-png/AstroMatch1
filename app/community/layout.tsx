@@ -82,7 +82,7 @@ export default function CommunityLayout({
               <CommunityTabs />
             </div>
             {showTopicChips && (
-              <div className="mr-4">
+              <div className="mr-3">
                 <NewPostButton topic={currentTopic} />
               </div>
             )}
