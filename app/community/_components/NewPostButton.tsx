@@ -116,10 +116,10 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     type="submit"
                     form="create-post-form"
                     disabled={isPending}
-                    className={`rounded-full px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+                    className={`rounded-full px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 border ${
                       theme === "light"
-                        ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                        : "text-slate-300 hover:text-slate-50 hover:bg-slate-800/60"
+                        ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100 border-gray-300"
+                        : "text-slate-300 hover:text-slate-50 hover:bg-slate-800/60 border-slate-600"
                     }`}
                   >
                     {isPending ? "Posting..." : "Post"}
