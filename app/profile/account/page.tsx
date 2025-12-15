@@ -114,6 +114,7 @@ export default function AccountPage({
   const [instantMessageEnabled, setInstantMessageEnabled] = useState(true)
   const [friendFinderEnabled, setFriendFinderEnabled] = useState(false)
   const [sunSignSystem, setSunSignSystemState] = useState<SunSignSystem>("tropical")
+  const [isStaff, setIsStaff] = useState(false)
   const [linkedAccounts, setLinkedAccounts] = useState({
     google: false,
     apple: false,
@@ -198,6 +199,17 @@ export default function AccountPage({
     const savedPreferences = loadNotificationPreferences()
     setPushNotifications(savedPreferences)
 
+    // Check if user is staff (ADMIN or OWNER) to show Backoffice tab
+    async function checkStaffStatus() {
+      try {
+        const res = await fetch('/api/admin/check-access')
+        const data = await res.json()
+        setIsStaff(data.hasAccess && (data.role === 'ADMIN' || data.role === 'OWNER'))
+      } catch (error) {
+        setIsStaff(false)
+      }
+    }
+    checkStaffStatus()
   }, [])
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -474,6 +486,19 @@ export default function AccountPage({
                 Account
                 <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 via-orange-500 to-red-500 rounded-full`} />
               </button>
+              {isStaff && (
+                <button
+                  onClick={() => router.push("/admin")}
+                  className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
+                    theme === "light"
+                      ? "text-gray-600 hover:text-gray-900"
+                      : "text-gray-400 hover:text-gray-200"
+                  }`}
+                >
+                  Backoffice
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
+                </button>
+              )}
           </div>
         </div>
 

@@ -148,6 +148,7 @@ export default function AstrologyProfilePage({
 
   const [activeTab, setActiveTab] = useState<"edit" | "view">("edit")
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const [isStaff, setIsStaff] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [savedSuccessfully, setSavedSuccessfully] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(true)
@@ -345,6 +346,20 @@ export default function AstrologyProfilePage({
     }
     window.addEventListener("switchToEditTab", handleSwitchToEdit)
     return () => window.removeEventListener("switchToEditTab", handleSwitchToEdit)
+  }, [])
+
+  // Check if user is staff (ADMIN or OWNER) to show Backoffice tab
+  useEffect(() => {
+    async function checkStaffStatus() {
+      try {
+        const res = await fetch('/api/admin/check-access')
+        const data = await res.json()
+        setIsStaff(data.hasAccess && (data.role === 'ADMIN' || data.role === 'OWNER'))
+      } catch (error) {
+        setIsStaff(false)
+      }
+    }
+    checkStaffStatus()
   }, [])
 
   // Scroll handler for sticky name header in view tab
@@ -2683,6 +2698,19 @@ export default function AstrologyProfilePage({
                 Account
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
               </button>
+              {isStaff && (
+                <button
+                  onClick={() => router.push("/admin")}
+                  className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
+                    theme === "light"
+                      ? "text-gray-600 hover:text-gray-900"
+                      : "text-gray-400 hover:text-gray-200"
+                  }`}
+                >
+                  Backoffice
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
+                </button>
+              )}
           </div>
         </div>
 
