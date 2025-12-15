@@ -1,6 +1,8 @@
 import prisma from "@/lib/prisma";
 import { PostCardClient } from "./PostCardClient";
 import { getCurrentUserProfile } from "@/lib/currentProfile";
+import { getCurrentProfileWithRole } from "@/lib/auth-helpers";
+import { getAllBlockedRelationships } from "@/lib/utils/block-helpers";
 
 type PostListProps = {
   topic: string;
@@ -37,11 +39,37 @@ export async function PostList({ topic }: PostListProps) {
     let currentUserProfile: any = null;
 
     try {
+      // Get current user and their role (for moderation)
+      const viewer = await getCurrentProfileWithRole();
+      const canModerate = viewer && (viewer.role === "ADMIN" || viewer.role === "OWNER");
+
+      // Get all blocked relationships (both directions)
+      let blockedUserIds: string[] = [];
+      if (viewer) {
+        const { all } = await getAllBlockedRelationships(viewer.id);
+        blockedUserIds = all;
+      }
+
+      // Build where clause
+      const whereClause: any = { topic };
+      
+      // Filter hidden posts for non-staff
+      if (!canModerate) {
+        whereClause.isHidden = false;
+      }
+
+      // Exclude blocked users (both who viewer blocked and who blocked viewer)
+      if (blockedUserIds.length > 0) {
+        whereClause.authorId = {
+          notIn: blockedUserIds
+        };
+      }
+
       const result = await withTimeout(
         Promise.all([
           getCurrentUserProfile().catch(() => null),
           prisma.post.findMany({
-            where: { topic },
+            where: whereClause,
             orderBy: { createdAt: "desc" },
             take: 50,
             include: {
