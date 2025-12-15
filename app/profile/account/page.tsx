@@ -942,7 +942,7 @@ export default function AccountPage({
             {/* App Version Section */}
             <div className={`p-4 ${theme === "light" ? "bg-purple-100" : "bg-purple-500/10"} backdrop-blur-sm rounded-lg text-center`}>
               <div className={`${theme === "light" ? "!text-black/60" : "!text-white/60"} text-sm mb-1`}>App Version</div>
-              <div className={`${theme === "light" ? "!text-black/95" : "!text-white/95"} font-medium`}>1.0.0 (Build 2024.03)</div>
+              <div className={`${theme === "light" ? "!text-black/95" : "!text-white/95"} font-medium`}>1.1.3 (Build 2025.12)</div>
               <div className={`${theme === "light" ? "!text-black/50" : "!text-white/50"} text-xs mt-2`}>© 2025 Cosmic Connections</div>
             </div>
           </div>

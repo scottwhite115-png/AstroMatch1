@@ -20,6 +20,18 @@ enum NotificationType {
   COMMENT_REPLY
 }
 
+enum Role {
+  USER
+  ADMIN
+  OWNER
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
 // Enums for San He Live Chat
 enum SanHeHouse {
   VISIONARIES // Rat · Dragon · Monkey
@@ -51,6 +63,13 @@ model profiles {
   last_active    DateTime @default(now())
   created_at     DateTime @default(now())
   updated_at     DateTime @default(now())
+
+  // Admin and moderation fields
+  role            Role          @default(USER)
+  isStaff         Boolean       @default(false)
+  showStaffBadge  Boolean       @default(true)
+  status          AccountStatus @default(ACTIVE)
+  suspensionEndsAt DateTime?
 
   posts         Post[]
   comments      Comment[]
@@ -86,6 +105,7 @@ model Post {
   countryCode  String? // ISO 2-letter country code, optional
   likeCount    Int      @default(0)
   commentCount Int      @default(0)
+  isHidden     Boolean  @default(false) // Moderation: hide post without deleting
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
