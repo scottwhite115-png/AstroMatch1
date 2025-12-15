@@ -88,7 +88,7 @@ export default function CommunityLayout({
                 <Link
                   key={topic.id}
                   href={`/community/${topic.id}`}
-                  className={`whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium transition-colors duration-300 ${
+                  className={`whitespace-nowrap rounded-full px-3 py-1 text-base font-medium transition-colors duration-300 ${
                     isActive
                       ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white"
                       : theme === "light"
