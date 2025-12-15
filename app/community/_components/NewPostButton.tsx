@@ -99,18 +99,18 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
             <div className="min-h-screen">
               <div className="mx-auto max-w-2xl px-4 py-6">
                 {/* Header */}
-                <div className="flex items-center justify-end mb-4">
+                <div className="flex items-center justify-start mb-4">
                   <button
                     type="button"
                     onClick={() => {
                       setOpen(false);
                       resetForm();
                     }}
-                    className={`text-sm font-medium ${
+                    className={`text-xl font-medium ${
                       theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-300 hover:text-slate-50"
                     }`}
                   >
-                    ✕ Close
+                    ✕
                   </button>
                 </div>
 
