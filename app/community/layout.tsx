@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContext";
 import { COMMUNITY_TOPICS } from "./topics";
 import { CommunityTabs } from "./_components/CommunityTabs";
+import { NewPostButton } from "./_components/NewPostButton";
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -22,6 +23,11 @@ export default function CommunityLayout({
   
   // Show topic chips only for Stories & Q&A tab (not Live)
   const showTopicChips = !pathname.startsWith('/community/live');
+  
+  // Determine current topic from pathname
+  const currentTopic = pathname.startsWith('/community/') 
+    ? pathname.split('/')[2] || 'general-astrology'
+    : 'general-astrology';
 
   return (
     <div className={`min-h-screen ${
@@ -70,33 +76,48 @@ export default function CommunityLayout({
             Stories, questions and live chats about your signs.
           </p>
 
-          {/* Stories & Q&A | Live Tabs */}
-          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-            <CommunityTabs />
+          {/* Stories & Q&A | Live Tabs with New Post Button */}
+          <div className="flex items-center justify-between gap-4">
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+              <CommunityTabs />
+            </div>
+            {showTopicChips && (
+              <NewPostButton topic={currentTopic} />
+            )}
           </div>
         </header>
 
         {/* Topic navigation chips - Only show for Stories & Q&A */}
         {showTopicChips && (
-          <nav className="mb-3 flex gap-2 overflow-x-auto pb-1 px-3">
+          <nav className="mb-3 flex gap-2 overflow-x-auto pb-1 px-3" style={{ WebkitOverflowScrolling: 'touch' }}>
             {COMMUNITY_TOPICS.map((topic) => {
               const isActive = pathname === `/community/${topic.id}`;
+              const borderWidth = '1px';
+              const shadowSize = isActive ? '0 10px 15px -3px rgba(249, 115, 22, 0.3), 0 4px 6px -4px rgba(249, 115, 22, 0.3)' : '0 10px 15px -3px transparent, 0 4px 6px -4px transparent';
+              
               return (
                 <Link
                   key={topic.id}
                   href={`/community/${topic.id}`}
-                  className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium transition-colors duration-300 shadow-lg ${
+                  className={`whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium transition-colors duration-300 ${
                     isActive
-                      ? "border-orange-500 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white shadow-orange-500/30"
+                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white"
                       : theme === "light"
-                        ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 shadow-transparent"
-                        : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80 shadow-transparent"
+                        ? "bg-white text-gray-700"
+                        : "bg-slate-900/60 text-slate-200"
                   }`}
                   style={{ 
                     minWidth: 'fit-content',
                     flexShrink: 0,
-                    willChange: 'color, background-color, border-color',
-                    transform: 'translateZ(0)'
+                    border: isActive 
+                      ? `${borderWidth} solid rgb(249, 115, 22)` 
+                      : theme === "light" 
+                        ? `${borderWidth} solid rgb(209, 213, 219)` 
+                        : `${borderWidth} solid rgb(51, 65, 85)`,
+                    boxShadow: shadowSize,
+                    WebkitTapHighlightColor: 'transparent',
+                    touchAction: 'manipulation',
+                    userSelect: 'none'
                   }}
                 >
                   {topic.label}
@@ -113,4 +134,3 @@ export default function CommunityLayout({
     </div>
   );
 }
-
