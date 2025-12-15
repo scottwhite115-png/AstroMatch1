@@ -1,273 +1,325 @@
-"use client"
+// app/admin/users/page.tsx
+import { prisma } from "@/lib/prisma"
+import Link from "next/link"
+import { requireStaff } from "@/lib/auth-helpers"
 
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { useTheme } from "@/contexts/ThemeContext"
+export const dynamic = "force-dynamic"
 
-const ArrowLeft = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <path d="M19 12H5M12 19l-7-7 7-7" />
-  </svg>
-)
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams?: { q?: string; role?: string; status?: string }
+}) {
+  const admin = await requireStaff()
 
-const Ban = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
-  </svg>
-)
+  const q = (searchParams?.q ?? "").trim()
+  const roleFilter = searchParams?.role as "USER" | "ADMIN" | "OWNER" | undefined
+  const statusFilter = searchParams?.status as
+    | "ACTIVE"
+    | "SUSPENDED"
+    | "BANNED"
+    | undefined
 
-const Clock = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
-  </svg>
-)
+  const where: any = {}
 
-const CheckCircle = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-    <polyline points="22 4 12 14.01 9 11.01" />
-  </svg>
-)
-
-interface User {
-  id: string
-  display_name: string | null
-  email: string | null
-  western_sign: string | null
-  chinese_sign: string | null
-  status: "ACTIVE" | "SUSPENDED" | "BANNED"
-  suspensionEndsAt: string | null
-  role: "USER" | "ADMIN" | "OWNER"
-  created_at: string
-}
-
-export default function AdminUsersPage() {
-  const router = useRouter()
-  const { theme } = useTheme()
-  const [users, setUsers] = useState<User[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [actionLoading, setActionLoading] = useState(false)
-
-  useEffect(() => {
-    loadUsers()
-  }, [])
-
-  async function loadUsers() {
-    try {
-      const res = await fetch("/api/admin/users")
-      const data = await res.json()
-      if (data.users) {
-        setUsers(data.users)
-      }
-    } catch (error) {
-      console.error("Failed to load users:", error)
-    } finally {
-      setIsLoading(false)
-    }
+  if (q) {
+    where.OR = [
+      { email: { contains: q, mode: "insensitive" } },
+      { display_name: { contains: q, mode: "insensitive" } },
+    ]
   }
 
-  async function handleSuspendUser(userId: string, days: number) {
-    if (!confirm(`Suspend user for ${days} days?`)) return
-    
-    setActionLoading(true)
-    try {
-      const res = await fetch("/api/admin/users/suspend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, days })
-      })
-      
-      if (res.ok) {
-        await loadUsers()
-        setSelectedUser(null)
-        alert(`User suspended for ${days} days`)
-      }
-    } catch (error) {
-      console.error("Suspend failed:", error)
-      alert("Failed to suspend user")
-    } finally {
-      setActionLoading(false)
-    }
+  if (roleFilter) {
+    where.role = roleFilter
   }
 
-  async function handleBanUser(userId: string, permanent: boolean) {
-    if (!confirm(permanent ? "Permanently ban this user?" : "Ban this user?")) return
-    
-    setActionLoading(true)
-    try {
-      const res = await fetch("/api/admin/users/ban", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, permanent })
-      })
-      
-      if (res.ok) {
-        await loadUsers()
-        setSelectedUser(null)
-        alert(permanent ? "User permanently banned" : "User banned")
-      }
-    } catch (error) {
-      console.error("Ban failed:", error)
-      alert("Failed to ban user")
-    } finally {
-      setActionLoading(false)
-    }
+  if (statusFilter) {
+    where.status = statusFilter
   }
 
-  async function handleUnbanUser(userId: string) {
-    if (!confirm("Unban this user?")) return
-    
-    setActionLoading(true)
-    try {
-      const res = await fetch("/api/admin/users/unban", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId })
-      })
-      
-      if (res.ok) {
-        await loadUsers()
-        setSelectedUser(null)
-        alert("User unbanned")
-      }
-    } catch (error) {
-      console.error("Unban failed:", error)
-      alert("Failed to unban user")
-    } finally {
-      setActionLoading(false)
-    }
-  }
-
-  const getStatusBadge = (status: string, suspensionEndsAt: string | null) => {
-    if (status === "BANNED") {
-      return <span className="px-2 py-1 text-xs font-bold rounded bg-red-500 text-white">BANNED</span>
-    }
-    if (status === "SUSPENDED") {
-      const endsAt = suspensionEndsAt ? new Date(suspensionEndsAt) : null
-      return (
-        <span className="px-2 py-1 text-xs font-bold rounded bg-yellow-500 text-white">
-          SUSPENDED {endsAt ? `until ${endsAt.toLocaleDateString()}` : ""}
-        </span>
-      )
-    }
-    return <span className="px-2 py-1 text-xs font-bold rounded bg-green-500 text-white">ACTIVE</span>
-  }
-
-  if (isLoading) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
-        <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    )
-  }
+  const profiles = await prisma.profiles.findMany({
+    where,
+    orderBy: { created_at: "desc" },
+    take: 50,
+  })
 
   return (
-    <div className={`min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
-      {/* Header */}
-      <div className="px-4 py-4 border-b border-gray-200 dark:border-white/10">
-        <div className="flex items-center gap-4 max-w-7xl mx-auto">
-          <button
-            onClick={() => router.push("/admin")}
-            className={`p-2 rounded-lg transition-colors ${
-              theme === "light" 
-                ? "text-gray-700 hover:bg-gray-100" 
-                : "text-white/80 hover:bg-white/10"
-            }`}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <h1 className={`text-2xl font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900 p-8">
+      <div className="max-w-7xl mx-auto space-y-6">
+        {/* Header */}
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
             User Management
           </h1>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+            Signed in as {admin.email} · {admin.role}
+          </p>
         </div>
-      </div>
 
-      {/* Users List */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="space-y-4">
-          {users.map((user) => (
-            <div
-              key={user.id}
-              className={`p-4 rounded-xl border ${
-                theme === "light"
-                  ? "bg-white border-gray-200"
-                  : "bg-slate-800/40 border-indigo-500/20"
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className={`font-bold ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                      {user.display_name || "Anonymous"}
-                    </h3>
-                    {getStatusBadge(user.status, user.suspensionEndsAt)}
-                    {user.role !== "USER" && (
-                      <span className="px-2 py-1 text-xs font-bold rounded bg-purple-500 text-white">
-                        {user.role}
-                      </span>
-                    )}
-                  </div>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-                    {user.western_sign && user.chinese_sign ? `${user.western_sign} ${user.chinese_sign}` : "Signs not set"}
-                  </p>
-                  <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/50"}`}>
-                    {user.email || "No email"}
-                  </p>
-                </div>
+        {/* Back to Dashboard */}
+        <div>
+          <Link
+            href="/admin"
+            className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
 
-                <div className="flex items-center gap-2">
-                  {user.status === "ACTIVE" && (
-                    <>
-                      <button
-                        onClick={() => handleSuspendUser(user.id, 7)}
-                        disabled={actionLoading || user.role === "OWNER"}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          theme === "light"
-                            ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-                            : "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
-                        } disabled:opacity-50 disabled:cursor-not-allowed`}
-                      >
-                        <Clock className="w-4 h-4 inline mr-1" />
-                        Suspend 7d
-                      </button>
-                      <button
-                        onClick={() => handleBanUser(user.id, false)}
-                        disabled={actionLoading || user.role === "OWNER"}
-                        className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                          theme === "light"
-                            ? "bg-red-100 text-red-700 hover:bg-red-200"
-                            : "bg-red-500/20 text-red-400 hover:bg-red-500/30"
-                        } disabled:opacity-50 disabled:cursor-not-allowed`}
-                      >
-                        <Ban className="w-4 h-4 inline mr-1" />
-                        Ban
-                      </button>
-                    </>
-                  )}
-                  {(user.status === "SUSPENDED" || user.status === "BANNED") && (
-                    <button
-                      onClick={() => handleUnbanUser(user.id)}
-                      disabled={actionLoading}
-                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                        theme === "light"
-                          ? "bg-green-100 text-green-700 hover:bg-green-200"
-                          : "bg-green-500/20 text-green-400 hover:bg-green-500/30"
-                      } disabled:opacity-50 disabled:cursor-not-allowed`}
-                    >
-                      <CheckCircle className="w-4 h-4 inline mr-1" />
-                      Unban
-                    </button>
-                  )}
-                </div>
-              </div>
+        {/* Filters */}
+        <form className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
+          <div className="flex flex-wrap items-end gap-4">
+            <div className="flex-1 min-w-[200px]">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Search
+              </label>
+              <input
+                type="text"
+                name="q"
+                defaultValue={q}
+                placeholder="Email or name..."
+                className="w-full rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
             </div>
-          ))}
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Role
+              </label>
+              <select
+                name="role"
+                defaultValue={roleFilter ?? ""}
+                className="rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="">All roles</option>
+                <option value="USER">User</option>
+                <option value="ADMIN">Admin</option>
+                <option value="OWNER">Owner</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Status
+              </label>
+              <select
+                name="status"
+                defaultValue={statusFilter ?? ""}
+                className="rounded-md border border-gray-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+              >
+                <option value="">All statuses</option>
+                <option value="ACTIVE">Active</option>
+                <option value="SUSPENDED">Suspended</option>
+                <option value="BANNED">Banned</option>
+              </select>
+            </div>
+
+            <button
+              type="submit"
+              className="rounded-md bg-purple-600 hover:bg-purple-700 px-4 py-2 text-sm font-medium text-white transition-colors"
+            >
+              Apply Filters
+            </button>
+          </div>
+        </form>
+
+        {/* Results Count */}
+        <div className="text-sm text-gray-600 dark:text-gray-400">
+          Showing {profiles.length} user{profiles.length !== 1 ? "s" : ""}
+        </div>
+
+        {/* Users Table */}
+        <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200 dark:divide-slate-700">
+              <thead className="bg-gray-50 dark:bg-slate-700">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    User
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Signs
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Role
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Status
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Joined
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white dark:bg-slate-800 divide-y divide-gray-200 dark:divide-slate-700">
+                {profiles.map((p) => (
+                  <tr key={p.id} className="hover:bg-gray-50 dark:hover:bg-slate-700/50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        {/* Avatar */}
+                        {p.photo_url ? (
+                          <img
+                            src={p.photo_url}
+                            alt={p.display_name || "User"}
+                            className="w-10 h-10 rounded-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white font-semibold">
+                            {p.display_name?.[0]?.toUpperCase() || "?"}
+                          </div>
+                        )}
+                        
+                        <div>
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            {p.display_name || "Unnamed User"}
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
+                            {p.email}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-1">
+                        {p.east_west_code && (
+                          <span className="text-xs px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 w-fit">
+                            {p.east_west_code}
+                          </span>
+                        )}
+                        {p.chinese_sign && (
+                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                            {p.chinese_sign}
+                          </span>
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          p.role === "OWNER"
+                            ? "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400"
+                            : p.role === "ADMIN"
+                            ? "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400"
+                            : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                        }`}
+                      >
+                        {p.role}
+                      </span>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {p.status === "ACTIVE" && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+                          Active
+                        </span>
+                      )}
+                      {p.status === "SUSPENDED" && (
+                        <div className="flex flex-col gap-1">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 w-fit">
+                            Suspended
+                          </span>
+                          {p.suspensionEndsAt && (
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              Until {new Date(p.suspensionEndsAt).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {p.status === "BANNED" && (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400">
+                          Banned
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                      {p.created_at
+                        ? new Date(p.created_at).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })
+                        : "N/A"}
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                      <Link
+                        href={`/admin/users/${p.id}`}
+                        className="text-purple-600 dark:text-purple-400 hover:text-purple-900 dark:hover:text-purple-300 font-medium"
+                      >
+                        View Details →
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+
+                {profiles.length === 0 && (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="px-6 py-12 text-center text-sm text-gray-500 dark:text-gray-400"
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <svg
+                          className="w-12 h-12 text-gray-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                          />
+                        </svg>
+                        <p className="font-medium">No users found</p>
+                        <p className="text-xs">Try adjusting your filters</p>
+                      </div>
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Stats Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Total Users</div>
+            <div className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+              {profiles.length}
+            </div>
+          </div>
+          
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Active</div>
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400 mt-1">
+              {profiles.filter((p) => p.status === "ACTIVE").length}
+            </div>
+          </div>
+          
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Suspended</div>
+            <div className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-1">
+              {profiles.filter((p) => p.status === "SUSPENDED").length}
+            </div>
+          </div>
+          
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-gray-200 dark:border-slate-700 p-4">
+            <div className="text-sm text-gray-600 dark:text-gray-400">Banned</div>
+            <div className="text-2xl font-bold text-red-600 dark:text-red-400 mt-1">
+              {profiles.filter((p) => p.status === "BANNED").length}
+            </div>
+          </div>
         </div>
       </div>
     </div>
   )
 }
-
