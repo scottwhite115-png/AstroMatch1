@@ -36,7 +36,7 @@ export default function CommunityLayout({
       <div className="mx-auto max-w-4xl">
         {/* AstroLounge Header */}
         <header className="mb-4">
-          <div className="px-3 pt-2 pb-2 flex items-center justify-between">
+          <div className="px-3 pt-2 pb-1 flex items-center justify-between">
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
