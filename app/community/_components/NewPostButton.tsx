@@ -75,11 +75,15 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all border-2 ${
+        className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
           theme === "light"
-            ? "bg-transparent border-emerald-600 text-emerald-600 hover:bg-emerald-50"
-            : "bg-transparent border-emerald-500 text-emerald-400 hover:bg-emerald-950/30"
+            ? "bg-transparent text-emerald-600 hover:bg-emerald-50"
+            : "bg-transparent text-emerald-400 hover:bg-emerald-950/30"
         }`}
+        style={{
+          border: theme === "light" ? "2px solid #059669" : "2px solid #10b981",
+          borderColor: theme === "light" ? "#059669" : "#10b981"
+        }}
       >
         <span>＋</span>
         <span>New post</span>
