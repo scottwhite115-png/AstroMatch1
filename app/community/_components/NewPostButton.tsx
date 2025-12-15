@@ -99,7 +99,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
           {/* Modal */}
           <div className={`fixed inset-0 z-50 flex items-start justify-center p-4 overflow-y-auto`}>
             <div 
-              className={`w-full max-w-lg rounded-2xl p-4 sm:p-6 shadow-xl border my-8 ${
+              className={`w-full max-w-lg rounded-2xl p-4 sm:p-6 shadow-xl border mt-2 mb-8 ${
                 theme === "light"
                   ? "bg-white border-gray-200 text-gray-900"
                   : "bg-slate-900 border-slate-700 text-slate-50"
