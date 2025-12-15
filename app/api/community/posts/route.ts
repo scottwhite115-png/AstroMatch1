@@ -149,6 +149,44 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Get user profile with moderation status
+    const profile = await prisma.profiles.findUnique({
+      where: { id: user.id },
+      select: {
+        id: true,
+        display_name: true,
+        east_west_code: true,
+        chinese_sign: true,
+        status: true,
+        suspensionEndsAt: true,
+      },
+    })
+
+    if (!profile) {
+      return NextResponse.json(
+        { error: "Profile not found" },
+        { status: 404 }
+      )
+    }
+
+    // MODERATION GUARD: Prevent suspended/banned users from posting
+    if (profile.status === "SUSPENDED") {
+      return NextResponse.json(
+        {
+          error: "Your account is suspended from posting and messaging.",
+          suspensionEndsAt: profile.suspensionEndsAt,
+        },
+        { status: 403 }
+      )
+    }
+
+    if (profile.status === "BANNED") {
+      return NextResponse.json(
+        { error: "Your account has been banned." },
+        { status: 403 }
+      )
+    }
+
     const body = await request.json()
     const { topic, type, title, content } = body
 
@@ -185,24 +223,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: "Content must be between 10 and 10000 characters" },
         { status: 400 }
-      )
-    }
-
-    // Get user profile for language/country
-    const profile = await prisma.profiles.findUnique({
-      where: { id: user.id },
-      select: {
-        id: true,
-        display_name: true,
-        east_west_code: true,
-        chinese_sign: true,
-      },
-    })
-
-    if (!profile) {
-      return NextResponse.json(
-        { error: "Profile not found" },
-        { status: 404 }
       )
     }
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@/lib/supabase/server"
 import { prisma } from "@/lib/prisma"
+import { checkModerationStatus, moderationErrorResponse } from "@/lib/moderation-guard"
 
 type RouteContext = {
   params: Promise<{ postId: string }>
@@ -19,6 +20,13 @@ export async function POST(
         { error: "Unauthorized" },
         { status: 401 }
       )
+    }
+
+    // MODERATION GUARD: Check if user is suspended/banned
+    const moderationCheck = await checkModerationStatus(user.id)
+    if (!moderationCheck.allowed) {
+      const errorResponse = moderationErrorResponse(moderationCheck)
+      if (errorResponse) return errorResponse
     }
 
     const { postId } = await context.params
