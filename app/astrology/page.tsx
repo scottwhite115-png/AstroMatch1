@@ -59,7 +59,7 @@ export default function AstrologySection() {
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8" ref={scrollContainerRef}>
           {/* Compatibility Guides Section */}
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
+          <div className="mt-2">
 
           {/* Combined Chinese Pattern Ranking & Relationship Patterns */}
           <div id="chinese-patterns" className="mb-6">
