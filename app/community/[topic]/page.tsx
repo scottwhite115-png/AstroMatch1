@@ -1,7 +1,6 @@
 import { COMMUNITY_TOPICS } from "../topics";
 import { notFound } from "next/navigation";
 import { PostList } from "../_components/PostList";
-import { NewPostButton } from "../_components/NewPostButton";
 import { Suspense } from "react";
 
 export default async function TopicPage({ 
@@ -16,10 +15,6 @@ export default async function TopicPage({
 
     return (
       <div className="mt-2 space-y-3">
-        <div className="flex items-center justify-end gap-3 mb-3">
-          <NewPostButton topic={topic.id} />
-        </div>
-
         <Suspense fallback={
           <div className="mt-4 text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-slate-300"></div>
