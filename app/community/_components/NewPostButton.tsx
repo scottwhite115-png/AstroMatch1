@@ -116,7 +116,11 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     type="submit"
                     form="create-post-form"
                     disabled={isPending}
-                    className="rounded-full px-6 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-white shadow-lg transition-colors"
+                    className={`rounded-full px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 ${
+                      theme === "light"
+                        ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                        : "text-slate-300 hover:text-slate-50 hover:bg-slate-800/60"
+                    }`}
                   >
                     {isPending ? "Posting..." : "Post"}
                   </button>
