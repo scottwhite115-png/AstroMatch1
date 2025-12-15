@@ -122,12 +122,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Topic selector */}
-                <div className="space-y-2">
-                  <label className={`text-sm font-medium ${
-                    theme === "light" ? "text-gray-700" : "text-slate-300"
-                  }`}>
-                    Topic
-                  </label>
+                <div>
                   <select
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
@@ -162,12 +157,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                 </div>
 
                 {/* Content */}
-                <div className="space-y-2">
-                  <label className={`text-sm font-medium ${
-                    theme === "light" ? "text-gray-700" : "text-slate-300"
-                  }`}>
-                    Post
-                  </label>
+                <div>
                   <textarea
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
