@@ -616,7 +616,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             style={{
               paddingLeft: westernChipNew.label.includes('–') ? '8px' : '12px',
               paddingRight: westernChipNew.label.includes('–') ? '8px' : '12px',
-              maxWidth: westernChipNew.label.includes('–') ? '190px' : 'fit-content',
+              maxWidth: westernChipNew.label.includes('–') ? '240px' : 'fit-content',
               width: 'fit-content',
               minWidth: 'min-content',
               display: 'inline-flex',
