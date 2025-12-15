@@ -168,10 +168,10 @@ export function getWesternChip(
       };
 
     case 'SEMI_COMPATIBLE':
-      // e.g. "Air + Water · Mixed elements – can work with effort"
+      // e.g. "Air + Water · Mixed elements – can work with effort –"
       return {
         icon: '',
-        label: `${pair} · Mixed elements – can work with effort`,
+        label: `${pair} · Mixed elements – can work with effort –`,
       };
 
     case 'NEUTRAL':
@@ -183,10 +183,10 @@ export function getWesternChip(
 
     case 'CLASH':
     default:
-      // e.g. "Air + Earth · Clash elements – attraction and tension"
+      // e.g. "Air + Earth · Clash elements – attraction and tension –"
       return {
         icon: '',
-        label: `${pair} · Clash elements – attraction and tension`,
+        label: `${pair} · Clash elements – attraction and tension –`,
       };
   }
 }
@@ -200,66 +200,67 @@ export function getConnectionBlurb(
   switch (archetype) {
     case 'TRIPLE_HARMONY':
       if (ease === 'EASY') {
-        if (sameWesternSign) {
-          return 'Deeply compatible match with a natural flow and very similar outlook. It tends to feel more supportive than dramatic, but you\'ll need to stay conscious about emotional closeness, not just ideas and plans.';
-        }
-        return 'Deeply compatible match with a natural flow. It tends to feel more supportive than dramatic, which makes long-term plans easier to grow into together.';
+        return 'Same-tribe match with easy flow; more supportive than dramatic, so building a life together tends to feel simpler.';
       }
       if (ease === 'MEDIUM') {
-        return 'Strong underlying bond with a few style differences to work around. When you stay curious about each other\'s way of doing things, this can feel both steady and alive.';
+        return 'Strong same-tribe bond with some style differences; it works when you stay curious about each other instead of assuming your way is right.';
       }
-      return 'Deep connection with very different ways of thinking and working. Powerful when you agree on a shared goal; draining when you pull in different directions.';
+      return 'Deep same-tribe connection with real friction; powerful when you chase a shared goal, draining when you keep pulling in different directions.';
 
     case 'SUPPORTIVE_ALLY':
       // Blurb C: Secret Friends + lesson overlay (has damage)
       if (hasDamage) {
-        return 'Supportive, ally-style connection with lesson energy underneath. You can be very good for each other, but patterns repeat until you talk honestly about what isn\'t working and change how you both respond.';
+        return 'Supportive, friendship connection with lessons underneath; you\'re good for each other, but patterns repeat until you speak up and change how you respond.';
       }
       
       // Blurb A: Clean Secret Friends with easy elements (EASY, no damage)
       if (ease === 'EASY') {
-        return 'Soft, steady ally-style connection with a warm, friend-like tone. You\'re good at quietly backing each other up when life is stressful, not just when things are fun.';
+        return 'Soft, steady friendship bond with a warm, friend-like tone; you quietly back each other up when life is stressful.';
       }
       
       // Blurb B: Secret Friends with mixed elements (MEDIUM, no damage)
-      return 'Grounded ally-style match with a few differences in pace and priorities. You\'re still on the same side, but it works best when you spell out what support actually looks like for each of you.';
+      if (ease === 'MEDIUM') {
+        return 'Grounded friendship match with different pace or priorities; naming what support looks like for each of you keeps it smooth.';
+      }
+      // HARD (no damage)
+      return 'Friendship bond with more friction around needs and timing; it works when you\'re upfront about limits instead of expecting mind-reading.';
 
     case 'OPPOSITES':
       if (ease === 'EASY') {
-        return 'Magnetic, opposite-style connection with strong spark. It works best when you enjoy your differences instead of trying to fix each other.';
+        return 'Magnetic opposite-style match with strong spark; it works when you enjoy your differences instead of trying to fix each other.';
       }
       if (ease === 'MEDIUM') {
-        return 'Magnetic opposites with both spark and friction. You\'ll stretch each other\'s comfort zones, so clear talk about differences keeps things feeling fair.';
+        return 'Magnetic opposites with both spark and friction; you stretch each other\'s comfort zones, so clear talk about differences keeps things feeling fair.';
       }
       // HARD
-      return 'Intense magnetic opposites; attraction and conflict sit close together, so you\'ll need clear boundaries to stop drama outweighing the good stuff.';
+      return 'Intense magnetic opposites where attraction and conflict sit close; clear boundaries stop drama from outweighing the good stuff.';
 
     case 'LESSON_REPAIR':
       if (ease === 'EASY') {
-        return 'Lesson-heavy connection with real heart underneath. You can grow a lot together if you\'re willing to name problems early and work on them as a team.';
+        return 'Lesson-heavy connection with genuine care; you grow together if you name problems early and tackle them as a team.';
       }
       if (ease === 'MEDIUM') {
-        return 'Connection with both pull and pressure. Patterns tend to repeat until you talk honestly about what isn\'t working and make different choices together.';
+        return 'Connection with both pull and pressure; similar issues return until you talk honestly and choose to handle them differently.';
       }
-      return 'Intense, lesson-driven match that can be unforgettable and exhausting. It demands clear boundaries, emotional honesty, and regular reality checks about whether it still feels good for both of you.';
+      return 'Intense, lesson-driven match; unforgettable but tiring unless you have firm boundaries, honesty, and regular check-ins about how it feels.';
 
     case 'MIRROR':
       if (ease === 'EASY') {
-        return 'Recognisable, mirror-style match where you see a lot of yourself in the other. That makes feeling understood easier, but it also doubles your shared habits.';
+        return 'Mirror-style match where you see a lot of yourself; feeling understood is easier, but your shared habits get doubled.';
       }
       if (ease === 'MEDIUM') {
-        return 'Strong familiarity and similar instincts. You often "get" each other quickly, but you can also amplify each other\'s patterns, good and bad.';
+        return 'Strong familiarity and similar instincts; you \'get\' each other quickly but also amplify each other\'s patterns, good and bad.';
       }
-      return 'Mirror-clash connection – very similar nature but very different needs. It can feel confronting when you dislike traits in them that you also carry yourself.';
+      return 'Mirror-clash connection—very similar nature but different needs; it can sting when traits you dislike in them also belong to you.';
 
     case 'OPEN_PATTERN':
     default:
       if (ease === 'EASY') {
-        return 'Open-ended connection with a light, easy flow. There\'s space to grow into something meaningful if you keep showing up and communicating clearly.';
+        return 'Open-ended connection with light, easy flow; it can deepen if you keep showing up and communicating clearly.';
       }
       if (ease === 'MEDIUM') {
-        return 'Balanced match without a fixed script. How this goes depends less on fate and more on the everyday choices you make with each other.';
+        return 'Balanced match with no fixed script; it\'s shaped more by daily choices than by any built-in pattern.';
       }
-      return 'Free-form connection with some built-in friction. It can still work well if you\'re both honest about differences and willing to adjust over time.';
+      return 'Free-form connection with some friction; it works when you\'re honest about differences and willing to adjust over time.';
   }
 }

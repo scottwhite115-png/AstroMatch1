@@ -102,6 +102,14 @@ interface ConnectionBoxProps {
   
   aboutPartnerText?: string;
   
+  // Profile details
+  age?: number;
+  city?: string;
+  occupation?: string;
+  height?: string;
+  interests?: {[category: string]: string[]};
+  relationshipGoals?: string[];
+  
   // Theme
   theme?: "light" | "dark";
 }
@@ -373,6 +381,12 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   westernElementA,
   westernElementB,
   aboutPartnerText,
+  age,
+  city,
+  occupation,
+  height,
+  interests,
+  relationshipGoals,
   theme = "dark",
 }) => {
   const [showOverview, setShowOverview] = useState(false);
@@ -495,11 +509,11 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             <div className="flex flex-col items-center flex-1 min-w-0">
               {/* Left sign emojis */}
               <div className="flex items-center gap-1 mb-1">
-                {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
-                {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
+                {userAWestIcon && <span className="text-3xl">{userAWestIcon}</span>}
+                {userAChineseIcon && <span className="text-3xl">{userAChineseIcon}</span>}
               </div>
               {/* Left sign label */}
-              <span className={`font-bold text-sm whitespace-nowrap ${
+              <span className={`font-bold text-base whitespace-nowrap ${
                 theme === "light" ? "text-slate-700" : "text-slate-200"
               }`}>
                 {userASignLabel}
@@ -507,7 +521,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             </div>
             
             {/* Heart icon in the center */}
-            <span className={`text-lg flex-shrink-0 self-center ${
+            <span className={`text-2xl flex-shrink-0 self-center ${
               theme === "light" ? "text-pink-500" : "text-pink-400"
             }`}>
               ♥
@@ -517,11 +531,11 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             <div className="flex flex-col items-center flex-1 min-w-0">
               {/* Right sign emojis */}
               <div className="flex items-center gap-1 mb-1">
-                {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
-                {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
+                {userBWestIcon && <span className="text-3xl">{userBWestIcon}</span>}
+                {userBChineseIcon && <span className="text-3xl">{userBChineseIcon}</span>}
               </div>
               {/* Right sign label */}
-              <span className={`font-bold text-sm whitespace-nowrap ${
+              <span className={`font-bold text-base whitespace-nowrap ${
                 theme === "light" ? "text-slate-700" : "text-slate-200"
               }`}>
                 {userBSignLabel}
@@ -533,7 +547,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Primary label pill */}
         <div className="mb-2 flex justify-center">
           <div 
-            className={`inline-flex items-center rounded-full px-4 py-2 text-sm font-bold shadow-lg whitespace-nowrap border-2 ${
+            className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 ${
               theme === "light" ? "bg-white" : "bg-slate-900"
             }`}
             style={{
@@ -543,7 +557,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           >
             <span>{primaryLabel}</span>
             {typeof score === "number" && (
-              <span className="ml-2 text-xs opacity-80">
+              <span className="ml-2 text-base opacity-80" style={{ fontWeight: 'bold' }}>
                 {score}%
               </span>
             )}
@@ -552,7 +566,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Tagline under the pill */}
         {blurb && (
-          <p className={`text-xs text-center leading-relaxed mb-3 ${
+          <p className={`text-lg text-center leading-relaxed mb-3 ${
             theme === "light" ? "text-slate-600" : "text-slate-300"
           }`}>
             {blurb}
@@ -565,7 +579,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           {showBaseChip && (
             <span
               key={baseChipNew.icon + baseChipNew.label}
-              className={`px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1 ${
+              className={`px-3 py-1 rounded-full text-base inline-flex items-center gap-1 ${
                 theme === "light" 
                   ? "bg-slate-200 text-slate-700" 
                   : "bg-slate-900 text-slate-200"
@@ -580,7 +594,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           {overlayChips.map((chip) => (
             <span
               key={chip.icon + chip.label}
-              className={`px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1 ${
+              className={`px-3 py-1 rounded-full text-base inline-flex items-center gap-1 ${
                 theme === "light" 
                   ? "bg-slate-200 text-slate-700" 
                   : "bg-slate-900 text-slate-200"
@@ -594,14 +608,51 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           {/* western chip */}
           <span
             key={westernChipNew.icon + westernChipNew.label}
-            className={`px-3 py-1 rounded-full text-[11px] inline-flex items-center gap-1 ${
+            className={`${westernChipNew.label.includes('–') ? 'px-1' : 'px-3'} py-1.5 rounded-full text-base inline-flex items-center justify-center gap-1 ${
               theme === "light" 
                 ? "bg-slate-200 text-slate-700" 
                 : "bg-slate-900 text-slate-200"
             }`}
+            style={{
+              maxWidth: 'fit-content',
+              width: 'fit-content',
+              minWidth: 'min-content',
+              display: 'inline-flex',
+              flexWrap: 'wrap',
+              textAlign: 'center',
+              lineHeight: '1.3',
+            }}
           >
-            <span>{westernChipNew.icon}</span>
-            <span>{westernChipNew.label}</span>
+            {westernChipNew.icon && <span className="flex-shrink-0">{westernChipNew.icon}</span>}
+            <span 
+              className="whitespace-normal text-center"
+              style={{ 
+                textWrap: 'balance',
+                wordBreak: 'break-word',
+                maxWidth: '100%',
+                minWidth: 0,
+                flex: '1 1 auto',
+              }}
+            >
+              {(() => {
+                // Split label at "·" to help with balancing
+                const parts = westernChipNew.label.split(' · ');
+                if (parts.length === 2) {
+                  return (
+                    <>
+                      <span className="whitespace-nowrap">{parts[0]}</span>
+                      {parts[1] && (
+                        <>
+                          <span className="mx-1">·</span>
+                          <span>{parts[1]}</span>
+                        </>
+                      )}
+                    </>
+                  );
+                }
+                return westernChipNew.label;
+              })()}
+            </span>
           </span>
         </div>
 
@@ -671,39 +722,39 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Dropdowns - Connection Overview */}
         {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
-          <div className={`rounded-2xl px-3 py-3 text-[12px] mb-3 ${
+          <div className={`rounded-2xl px-2 py-2 text-lg mb-3 relative z-20 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
           }`}>
             {/* Chinese Zodiac Compatibility Section */}
             {connectionOverviewText && (
-              <div className="mb-4">
+              <div className="mb-2">
                 {/* Chinese Signs Display with Icons */}
                 {chineseAnimalA && chineseAnimalB && userAChineseIcon && userBChineseIcon && (
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="text-xl">{userAChineseIcon}</span>
-                    <span className={`font-semibold text-base ${
+                    <span className="text-3xl">{userAChineseIcon}</span>
+                    <span className={`font-semibold text-xl ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalA}
                     </span>
-                    <span className={`text-lg ${
+                    <span className={`text-2xl ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
                     </span>
-                    <span className={`font-semibold text-base ${
+                    <span className={`font-semibold text-xl ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalB}
                     </span>
-                    <span className="text-xl">{userBChineseIcon}</span>
+                    <span className="text-3xl">{userBChineseIcon}</span>
                   </div>
                 )}
                 
                 {chineseHeadingWithoutSignPair && (
-                  <h4 className={`text-sm font-bold mb-1.5 ${
+                  <h4 className={`text-xl font-bold mb-1.5 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {chineseHeadingWithoutSignPair}
@@ -711,7 +762,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
                 {/* TAGLINE - Display if available */}
                 {connectionOverviewTagline && (
-                  <p className={`text-sm italic mb-2 ${
+                  <p className={`text-xl italic mb-2 ${
                     theme === "light" ? "text-black" : "text-white"
                   }`}>
                     {connectionOverviewTagline}
@@ -725,32 +776,32 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             
             {/* Western Sun Sign Compatibility Section */}
             {westernCompatibilityDescription && (
-              <div className={connectionOverviewText ? "pt-4" : ""}>
+              <div className={connectionOverviewText ? "pt-2" : ""}>
                 {/* Western Signs Display with Icons */}
                 {westernSignA && westernSignB && (
                   <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="text-xl">{getWesternSignGlyph(westernSignA)}</span>
-                    <span className={`font-semibold text-base ${
+                    <span className="text-3xl">{getWesternSignGlyph(westernSignA)}</span>
+                    <span className={`font-semibold text-xl ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignA}
                     </span>
-                    <span className={`text-lg ${
+                    <span className={`text-2xl ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
                     </span>
-                    <span className={`font-semibold text-base ${
+                    <span className={`font-semibold text-xl ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignB}
                     </span>
-                    <span className="text-xl">{getWesternSignGlyph(westernSignB)}</span>
+                    <span className="text-3xl">{getWesternSignGlyph(westernSignB)}</span>
                   </div>
                 )}
                 
                 {westernHeadingWithoutSignPair && (
-                  <h4 className={`text-sm font-bold mb-1.5 ${
+                  <h4 className={`text-xl font-bold mb-1.5 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {westernHeadingWithoutSignPair}
@@ -758,7 +809,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
                 {/* TAGLINE - Display if available */}
                 {westernCompatibilityTagline && (
-                  <p className={`text-sm italic mb-2 ${
+                  <p className={`text-xl italic mb-2 ${
                     theme === "light" ? "text-black" : "text-white"
                   }`}>
                     {westernCompatibilityTagline}
@@ -773,18 +824,163 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         )}
 
         {/* Dropdowns - About Partner */}
-        {showAbout && aboutPartnerText && (
-          <div className={`rounded-2xl px-3 py-3 text-[12px] ${
+        {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height) && (
+          <div className={`rounded-2xl px-3 py-3 text-sm space-y-4 relative z-20 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
           }`}>
-            <h3 className={`text-sm font-semibold mb-2 ${
-              theme === "light" ? "text-slate-900" : "text-slate-100"
-            }`}>
-              About {userBName}
-            </h3>
-            <p className="leading-relaxed">{aboutPartnerText}</p>
+            {/* About Me */}
+            {aboutPartnerText && (
+              <div>
+                <h4 
+                  className="text-base font-semibold mb-1.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  About me
+                </h4>
+                <p className="leading-relaxed text-2xl font-bold">{aboutPartnerText}</p>
+              </div>
+            )}
+
+            {/* Relationship Goals */}
+            {relationshipGoals && relationshipGoals.length > 0 && (
+              <div>
+                <h4 
+                  className="text-base font-semibold mb-1.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  Relationship Goals
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {relationshipGoals.map((goal: string, index: number) => (
+                    <span
+                      key={index}
+                      className={`px-2 py-0.5 rounded-full text-xl font-medium ${
+                        theme === "light"
+                          ? "text-slate-800"
+                          : "text-slate-200"
+                      }`}
+                      style={{
+                        background: theme === "light"
+                          ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
+                          : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
+                        border: `1.5px solid ${gradientColors.start}`,
+                        boxShadow: `0 2px 4px ${gradientColors.start}20`
+                      }}
+                    >
+                      {goal}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Interests */}
+            {interests && Object.keys(interests).length > 0 && (
+              <div>
+                <h4 
+                  className="text-base font-semibold mb-1.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  Interests
+                </h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {Object.entries(interests).map(([category, interestList]) =>
+                    (interestList as string[]).map((interest: string, index: number) => (
+                      <span
+                        key={`${category}-${index}`}
+                        className={`px-2 py-0.5 rounded-full text-xl font-medium ${
+                          theme === "light"
+                            ? "text-slate-800"
+                            : "text-slate-200"
+                        }`}
+                        style={{
+                          background: theme === "light"
+                            ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
+                            : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
+                          border: `1.5px solid ${gradientColors.start}`,
+                          boxShadow: `0 2px 4px ${gradientColors.start}20`
+                        }}
+                      >
+                        {interest}
+                      </span>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Essentials - Location, Occupation, Age, Height */}
+            {(city || occupation || age || height) && (
+              <div>
+                <h4 
+                  className="text-base font-semibold mb-1.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}
+                >
+                  Essentials
+                </h4>
+                <div className="space-y-1 text-xl">
+                  {/* Location */}
+                  {city && (
+                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      </svg>
+                      <span>{city}</span>
+                    </div>
+                  )}
+                  {/* Occupation */}
+                  {occupation && (
+                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
+                      </svg>
+                      <span>{occupation}</span>
+                    </div>
+                  )}
+                  {/* Age */}
+                  {age && (
+                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <path d="M16 2v4M8 2v4M3 10h18"/>
+                      </svg>
+                      <span>{age} years old</span>
+                    </div>
+                  )}
+                  {/* Height */}
+                  {height && (
+                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
+                      </svg>
+                      <span>{height}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

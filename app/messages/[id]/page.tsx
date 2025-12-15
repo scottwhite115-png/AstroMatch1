@@ -417,12 +417,12 @@ export default function ChatPage() {
   }
 
   return (
-    <div className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} min-h-screen w-full fixed inset-0 flex flex-col`}>
+    <div className={`${theme === "light" ? "bg-white" : "bg-zinc-900"} min-h-screen w-full fixed inset-0 flex flex-col`}>
       {/* Header */}
-      <div className={`flex items-center justify-center px-4 pt-2 relative z-10 ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`} style={{ minHeight: '60px' }}>
+      <div className={`flex items-center justify-center px-4 pt-2 relative z-10 ${theme === "light" ? "bg-white" : "bg-zinc-900"}`} style={{ minHeight: '60px' }}>
         <button
           onClick={() => router.push("/messages")}
-          className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-800/50"} absolute left-4 p-2 rounded-lg transition-colors`}
+          className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-blue-900/50"} absolute left-4 p-2 rounded-lg transition-colors`}
         >
           <ChevronLeft className="w-7 h-7" />
         </button>
@@ -447,7 +447,7 @@ export default function ChatPage() {
             variant="ghost"
             size="icon"
             onClick={() => setShowMenu(!showMenu)}
-            className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-800/50"}`}
+            className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-blue-900/50"}`}
           >
             <MoreVertical className="w-5 h-5" />
           </Button>
@@ -479,7 +479,7 @@ export default function ChatPage() {
       </div>
 
       {/* Tabs */}
-      <div className={`flex px-5 ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} relative z-10`}>
+      <div className={`flex px-5 ${theme === "light" ? "bg-white" : "bg-zinc-900"} relative z-10`}>
         <button
           onClick={() => setActiveTab("chat")}
           className={`flex-1 pb-1.5 pt-0.5 text-center font-semibold transition-all duration-300 relative ${
@@ -544,7 +544,7 @@ export default function ChatPage() {
           </div>
 
           {/* Input */}
-          <div className={`py-3 pb-32 relative z-10 ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
+          <div className={`py-3 pb-32 relative z-10 ${theme === "light" ? "bg-white" : "bg-zinc-900"}`}>
             <input
               ref={fileInputRef}
               type="file"
@@ -557,13 +557,13 @@ export default function ChatPage() {
             <div className="px-4 pb-2 flex gap-2">
               <Button
                 onClick={() => fileInputRef.current?.click()}
-                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-slate-900/50 border border-indigo-400/20 hover:bg-slate-800/80 text-white/80"}`}
+                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-blue-900/50 border border-indigo-400/20 hover:bg-blue-800/80 text-white/80"}`}
               >
                 <Image className="w-5 h-5" />
               </Button>
               <Button
                 onClick={() => setShowGifPicker(!showGifPicker)}
-                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-slate-900/50 border border-indigo-400/20 hover:bg-slate-800/80 text-white/80"}`}
+                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-blue-900/50 border border-indigo-400/20 hover:bg-blue-800/80 text-white/80"}`}
               >
                 <Gif className="w-5 h-5" />
               </Button>
@@ -578,7 +578,7 @@ export default function ChatPage() {
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Type a message..."
                 style={{ fontSize: '20px' }}
-                className={`w-full px-4 py-3 pr-14 outline-none ${theme === "light" ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 border-t border-gray-200" : "bg-slate-900/50 border border-indigo-400/20 text-white/95 placeholder:text-white/50 border-t"}`}
+                className={`w-full px-4 py-3 pr-14 outline-none ${theme === "light" ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 border-t border-gray-200" : "bg-blue-900/50 border border-indigo-400/20 text-white/95 placeholder:text-white/50 border-t"}`}
               />
               <Button
                 onClick={handleSend}
@@ -617,11 +617,11 @@ export default function ChatPage() {
           </div>
 
           {/* Compatibility Section */}
-          <div className={`px-4 py-4 ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
+          <div className={`px-4 py-4 ${theme === "light" ? "bg-white" : "bg-zinc-900"}`}>
             {compatBox ? (
               <>
                 {/* Compatibility Insights Box - No Percentages */}
-                <div className="bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 px-4 py-4 rounded-xl shadow-lg shadow-indigo-950/30 relative">
+                <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 px-4 py-4 rounded-xl shadow-lg shadow-indigo-950/30 relative">
                   <div className="flex items-center gap-2 mb-3">
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -706,7 +706,7 @@ export default function ChatPage() {
 
           {/* About Section */}
           <div className="px-4 pb-4">
-            <div className="bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
+            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -721,7 +721,7 @@ export default function ChatPage() {
 
           {/* Relationship Goals Section */}
           <div className="px-4 pb-4">
-            <div className="bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
+            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -743,7 +743,7 @@ export default function ChatPage() {
 
           {/* Interests Section */}
           <div className="px-4 pb-4">
-            <div className="bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
+            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -765,7 +765,7 @@ export default function ChatPage() {
 
           {/* Essentials Section */}
           <div className="px-4 pb-4">
-            <div className="bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
+            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
               <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
                 <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -896,7 +896,7 @@ export default function ChatPage() {
               <h3 className="text-xl font-bold !text-white/95">Send a GIF</h3>
               <button
                 onClick={() => setShowGifPicker(false)}
-                className="p-2 hover:bg-slate-800/50 rounded-full transition-colors"
+                className="p-2 hover:bg-blue-900/50 rounded-full transition-colors"
               >
                 <X className="w-5 h-5 !text-white/80" />
               </button>
@@ -913,7 +913,7 @@ export default function ChatPage() {
                   searchGifs(e.target.value)
                 }}
                 placeholder="Search GIFs..."
-                className="w-full pl-10 pr-4 py-3 rounded-xl outline-none bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder:!text-white/50"
+                className="w-full pl-10 pr-4 py-3 rounded-xl outline-none bg-blue-900/50 border border-indigo-400/20 !text-white/95 placeholder:!text-white/50"
               />
             </div>
 
@@ -934,7 +934,7 @@ export default function ChatPage() {
                     <button
                       key={gif.id}
                       onClick={() => sendGif(gif.images.fixed_height.url)}
-                      className="relative aspect-square rounded-xl overflow-hidden hover:opacity-80 transition-opacity bg-slate-900/50"
+                      className="relative aspect-square rounded-xl overflow-hidden hover:opacity-80 transition-opacity bg-blue-900/50"
                     >
                       <img
                         src={gif.images.fixed_height.url}

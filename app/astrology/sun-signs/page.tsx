@@ -1,14 +1,29 @@
 "use client"
 
 import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
 import { useTheme } from "@/contexts/ThemeContext"
 import { useSunSignSystem } from "@/lib/hooks/useSunSign"
+import { getSunSignSystem, setSunSignSystem, type SunSignSystem } from "@/lib/sunSignCalculator"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
 
 export default function SunSignsPage() {
   const router = useRouter()
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
+  const [sunSignSystemState, setSunSignSystemState] = useState<SunSignSystem>("tropical")
+
+  useEffect(() => {
+    const currentSystem = getSunSignSystem()
+    setSunSignSystemState(currentSystem)
+  }, [sunSignSystem])
+
+  const toggleSunSignSystem = () => {
+    const newSystem: SunSignSystem = sunSignSystemState === "tropical" ? "sidereal" : "tropical"
+    setSunSignSystemState(newSystem)
+    setSunSignSystem(newSystem)
+    window.dispatchEvent(new Event("sunSignSystemChanged"))
+  }
         // Sun sign data with both tropical and sidereal dates
   const sunSigns = [
     { 
@@ -101,6 +116,43 @@ export default function SunSignsPage() {
               </h1>
             </div>
 
+          {/* Zodiac System Toggle */}
+          <div className={`mb-6 p-4 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
+            <div className="mb-3">
+              <div className={`${theme === "light" ? "text-gray-900" : "text-white"} font-medium mb-2`}>
+                Zodiac System
+              </div>
+              <div className={`${theme === "light" ? "text-gray-600" : "text-white/60"} text-sm mb-2`}>
+                Choose between the Tropical (Western) or Sidereal (Vedic) zodiac calendar. This allows you to view profiles through each system.
+              </div>
+              <div className={`${theme === "light" ? "text-gray-500" : "text-white/50"} text-xs`}>
+                • Tropical: Based on seasons (e.g., Aries: Mar 21 - Apr 19)
+                <br />
+                • Sidereal: Based on constellations (~23 days earlier)
+              </div>
+            </div>
+            <div className="flex items-center justify-between">
+              <div className={`${theme === "light" ? "text-gray-700" : "text-white/70"} text-sm font-medium`}>
+                {sunSignSystemState === "tropical" ? "Tropical (Western)" : "Sidereal (Vedic)"}
+              </div>
+              <button
+                onClick={toggleSunSignSystem}
+                className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors ${
+                  sunSignSystemState === "sidereal"
+                    ? theme === "light" ? "bg-gray-300" : "bg-gray-600"
+                    : theme === "light" ? "bg-transparent border border-gray-300" : "bg-transparent border border-white/30"
+                }`}
+              >
+                <span
+                  className={`inline-block w-5 h-5 bg-white rounded-full shadow-md transition-all ${
+                    sunSignSystemState === "sidereal" ? "translate-x-6" : "translate-x-0.5"
+                  } ${sunSignSystemState !== "sidereal" && theme === "light" ? "border border-gray-300" : ""}`}
+                  style={sunSignSystemState !== "sidereal" ? { position: 'absolute', top: '50%', transform: 'translateY(-50%) translateX(2px)' } : {}}
+                />
+              </button>
+            </div>
+          </div>
+
           {/* Sun Signs List */}
           <div className="space-y-3 mb-6">
             {sunSigns.map((sign) => (
@@ -121,7 +173,7 @@ export default function SunSignsPage() {
                         {sign.name}
                       </h3>
                       <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        {sunSignSystem === 'sidereal' ? sign.siderealDates : sign.tropicalDates}
+                        {sunSignSystemState === 'sidereal' ? sign.siderealDates : sign.tropicalDates}
                       </p>
                     </div>
                   </div>

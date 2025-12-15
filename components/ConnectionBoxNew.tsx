@@ -191,6 +191,12 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
       westernElementA={elementA}
       westernElementB={elementB}
       aboutPartnerText={aboutPartnerText}
+      age={props.age}
+      city={props.city}
+      occupation={props.occupation}
+      height={props.height}
+      interests={props.interests}
+      relationshipGoals={props.relationshipGoals}
       theme={theme}
     />
   );

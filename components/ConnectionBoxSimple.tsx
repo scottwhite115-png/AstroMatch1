@@ -735,13 +735,28 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   const labelColorStyle = matchColor.colorStyle;
   const hasProfileDetails = Boolean(
     data.aboutMeText ||
-    data.age ||
-    data.occupation ||
+    (data.selectedRelationshipGoals && data.selectedRelationshipGoals.length > 0) ||
+    (data.selectedOrganizedInterests && Object.keys(data.selectedOrganizedInterests).length > 0) ||
     data.city ||
-    data.height ||
-    data.children ||
-    data.religion
+    data.occupation ||
+    data.age ||
+    data.height
   );
+  
+  // DEBUG: Log profile data being received
+  console.log('[ConnectionBoxSimple] Profile data check:', {
+    hasProfileDetails,
+    aboutMeText: !!data.aboutMeText,
+    relationshipGoals: data.selectedRelationshipGoals?.length || 0,
+    interests: data.selectedOrganizedInterests ? Object.keys(data.selectedOrganizedInterests).length : 0,
+    city: !!data.city,
+    occupation: !!data.occupation,
+    age: !!data.age,
+    height: !!data.height,
+    showProfile,
+    selectedRelationshipGoals: data.selectedRelationshipGoals,
+    selectedOrganizedInterests: data.selectedOrganizedInterests
+  });
   
   // FINAL DEBUG: Log everything before render
   console.log('[ConnectionBox] FINAL VALUES:', {
@@ -901,36 +916,36 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 
                 return (
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-4">
-                    <h3 className={`text-base font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
+                    <h3 className={`text-sm font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
                       Chinese Overview
                     </h3>
                     {chineseOverviewHeading && (
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className={`text-sm font-semibold ${theme === "light" ? "text-slate-700" : "text-slate-300"} flex-1`}>
+                        <h4 className={`text-xs font-semibold ${theme === "light" ? "text-slate-700" : "text-slate-300"} flex-1`}>
                           {makeChinesePatternsBold(chineseOverviewHeading)}
                         </h4>
                       </div>
                     )}
                     {chineseOverviewPattern && (
-                      <p className={`text-sm font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
+                      <p className={`text-xs font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
                         {makeChinesePatternsBold(chineseOverviewPattern)}
                       </p>
                     )}
                     {/* TAGLINE - Display if available */}
                     {displayTagline && (
-                      <p className={`text-sm italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
+                      <p className={`text-xs italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
                         {displayTagline}
                       </p>
                     )}
                     {chineseOverviewDescription && (
-                      <p className={`text-sm ${theme === "light" ? "text-slate-600" : "text-slate-400"} leading-relaxed`}>
+                      <p className={`text-xs ${theme === "light" ? "text-slate-600" : "text-slate-400"} leading-relaxed`}>
                         {makeChinesePatternsBold(chineseOverviewDescription)}
                       </p>
                     )}
                     
                     {/* Chinese Year Elements - displayed under the Chinese connection */}
                     {chineseElementPair && (
-                      <p className={`text-sm mt-2 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <p className={`text-xs mt-2 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
                         {chineseElementPair.heading}
                       </p>
                     )}
@@ -945,29 +960,29 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 
                 return (
                   <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-4">
-                    <h3 className={`text-base font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
+                    <h3 className={`text-sm font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
                       Western Overview
                     </h3>
                     {westernOverviewHeading && (
                       <div className="flex items-start justify-between gap-2">
-                        <h4 className={`text-sm font-semibold ${theme === "light" ? "text-slate-700" : "text-slate-300"} flex-1`}>
+                        <h4 className={`text-xs font-semibold ${theme === "light" ? "text-slate-700" : "text-slate-300"} flex-1`}>
                           {westernOverviewHeading}
                         </h4>
                       </div>
                     )}
                     {westernOverviewElement && (
-                      <p className={`text-sm font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
+                      <p className={`text-xs font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
                         {westernOverviewElement}
                       </p>
                     )}
                     {/* TAGLINE - Display if available */}
                     {displayTagline && (
-                      <p className={`text-sm italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
+                      <p className={`text-xs italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
                         {displayTagline}
                       </p>
                     )}
                     {westernOverviewDescription && (
-                      <p className={`text-sm ${theme === "light" ? "text-slate-600" : "text-slate-400"} leading-relaxed`}>
+                      <p className={`text-xs ${theme === "light" ? "text-slate-600" : "text-slate-400"} leading-relaxed`}>
                         {westernOverviewDescription}
                       </p>
                     )}
@@ -1069,6 +1084,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
               <>
                 <div className={`h-px ${theme === "light" ? "bg-black/10" : "bg-white/10"}`} />
                 <div className="space-y-4 pb-2">
+                  {/* About Me */}
                   {data.aboutMeText && (
                     <div>
                       <h4
@@ -1092,7 +1108,83 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                       </p>
                     </div>
                   )}
-                  {(data.age || data.occupation || data.city || data.height || data.children || data.religion) && (
+
+                  {/* Relationship Goals */}
+                  {data.selectedRelationshipGoals && data.selectedRelationshipGoals.length > 0 && (
+                    <div>
+                      <h4
+                        className="text-base font-semibold mb-2 flex items-center gap-2"
+                        style={{ color: primaryColor }}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                        >
+                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        Relationship Goals
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {data.selectedRelationshipGoals.map((goal: string, index: number) => (
+                          <span
+                            key={index}
+                            className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              theme === "light"
+                                ? "bg-gray-100 text-gray-800"
+                                : "bg-gray-800 text-gray-200"
+                            }`}
+                            style={{ border: `1px solid ${primaryColor}` }}
+                          >
+                            {goal}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Interests */}
+                  {data.selectedOrganizedInterests && Object.keys(data.selectedOrganizedInterests).length > 0 && (
+                    <div>
+                      <h4
+                        className="text-base font-semibold mb-2 flex items-center gap-2"
+                        style={{ color: primaryColor }}
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke={primaryColor}
+                          strokeWidth="2"
+                        >
+                          <path d="M12 2v20M2 12h20"/>
+                        </svg>
+                        Interests
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(data.selectedOrganizedInterests).map(([category, interests]) =>
+                          (interests as string[]).map((interest: string, index: number) => (
+                            <span
+                              key={`${category}-${index}`}
+                              className={`px-3 py-1 rounded-full text-sm font-medium ${
+                                theme === "light"
+                                  ? "bg-gray-100 text-gray-800"
+                                  : "bg-gray-800 text-gray-200"
+                              }`}
+                              style={{ border: `1px solid ${primaryColor}` }}
+                            >
+                              {interest}
+                            </span>
+                          ))
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Essentials - Location, Occupation, Age, Height */}
+                  {(data.city || data.occupation || data.age || data.height) && (
                     <div>
                       <h4
                         className="text-base font-semibold mb-3 flex items-center gap-2"
@@ -1110,15 +1202,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         Essentials
                       </h4>
                       <div className="space-y-2 text-base">
-                        {data.age && (
-                          <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
-                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                              <path d="M16 2v4M8 2v4M3 10h18"/>
-                            </svg>
-                            <span>{data.age} years old</span>
-                          </div>
-                        )}
+                        {/* Location */}
                         {data.city && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
                             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
@@ -1132,6 +1216,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                             </span>
                           </div>
                         )}
+                        {/* Occupation */}
                         {data.occupation && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
                             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
@@ -1140,29 +1225,23 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                             <span>{data.occupation}</span>
                           </div>
                         )}
+                        {/* Age */}
+                        {data.age && (
+                          <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
+                              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                              <path d="M16 2v4M8 2v4M3 10h18"/>
+                            </svg>
+                            <span>{data.age} years old</span>
+                          </div>
+                        )}
+                        {/* Height */}
                         {data.height && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
                             <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
                               <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
                             </svg>
                             <span>{data.height}</span>
-                          </div>
-                        )}
-                        {data.children && (
-                          <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
-                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                            <span>{data.children}</span>
-                          </div>
-                        )}
-                        {data.religion && (
-                          <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
-                              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                            </svg>
-                            <span>{data.religion}</span>
                           </div>
                         )}
                       </div>

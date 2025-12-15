@@ -760,8 +760,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
   "aries": {
     "aries": {
       "heading": "Aries × Aries — Same Element (Fire + Fire)",
-      "tagline": "Double ignition",
-      "description": "Two Aries together create a fast, direct, high-energy connection that rarely feels dull. You both prefer movement over overthinking and generally respect clear, straightforward behaviour. Because you're so similar, your partner often acts like a mirror—reflecting both your courage and your impatience back at you. That makes it easy to feel understood, but also means arguments can spark and flare quickly. This pairing works best when you agree on simple, fair rules for conflict and both cool off before saying the one thing that lands too hard."
+      "tagline": "Bold mirror",
+      "description": "Two Aries together make a fast, direct, high-energy connection. You both like to move quickly, speak plainly, and push for what you want, which can feel refreshingly honest. The friction comes when neither wants to slow down, back down, or apologise first. Taking turns leading—and treating compromise as teamwork, not defeat—keeps this from burning out."
     },
     "taurus": {
       "heading": "Aries × Taurus — Semi-compatible Elements (Fire + Earth)",
@@ -827,8 +827,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "taurus": {
       "heading": "Taurus × Taurus — Same Element (Earth + Earth)",
-      "tagline": "Double ground",
-      "description": "Two Taurus together usually create a calm, sensual, materially focused relationship. You likely agree on the importance of security, good food, and simple pleasures, and you tend to be loyal once you commit. The mirror effect here is strong: you see your own steadiness, but also your resistance to change, reflected back at you in stereo. That can feel reassuring, but it can also make it harder to recognise when you've both dug in for too long. This pairing thrives when you periodically review your routines and goals instead of assuming today's comfort will last forever by itself."
+      "tagline": "Shared ground",
+      "description": "Two Taureans often build a steady, sensual, comfort-driven bond. You both value loyalty, consistency, and simple pleasures, which can make life together feel safe and solid. The risk is getting stuck in ruts or digging in when change is clearly needed. Inviting some surprise and updating old habits helps protect what you've built instead of threatening it."
     },
     "gemini": {
       "heading": "Taurus × Gemini — Semi-compatible Elements (Earth + Air)",
@@ -894,8 +894,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "gemini": {
       "heading": "Gemini × Gemini — Same Element (Air + Air)",
-      "tagline": "Double changeability",
-      "description": "Two Geminis together create a very mobile, mentally active connection with lots of talk and shifting interests. You're good at staying curious, adjusting plans, and avoiding stagnation. It genuinely feels like being with someone who thinks in a similar rhythm—a conversational mirror that finishes your jokes and jumps topics the way you do. The risk is scattering your energy over too many projects and keeping everything at the level of stories or banter. This pairing shines when you commit to a few shared goals and practice emotional honesty, not just cleverness."
+      "tagline": "Mental loop",
+      "description": "Two Geminis together feel like an ongoing conversation—ideas, jokes, and sudden topic changes. You both crave variety and mental stimulation, so boredom is rare. The challenge is skimming the surface or dodging heavier feelings when things get messy. Making space for emotions that can't be fixed with banter keeps this from feeling scattered over time."
     },
     "cancer": {
       "heading": "Gemini × Cancer — Semi-compatible Elements (Air + Water)",
@@ -961,8 +961,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "cancer": {
       "heading": "Cancer × Cancer — Same Element (Water + Water)",
-      "tagline": "Shared tides",
-      "description": "Two Cancers together create a highly sensitive, intuitive, and family-focused bond. You often sense each other's moods without many words and may share similar priorities around home, loyalty, and care. You also mirror each other's emotional patterns, including worry, defensiveness, or retreat, which can amplify whatever mood is in the room. That's soothing when you're aligned, but it can trap you in loops of unspoken hurt if no one wants to be \"the one who starts a difficult conversation.\" This match is strongest when you bring feelings into the open gently and agree not to use silence as a weapon."
+      "tagline": "Emotional echo",
+      "description": "Two Cancers tend to form a very feeling-centred, home-focused relationship. You both sense moods quickly and show care through small, thoughtful gestures. The tenderness is real, but if neither names hurt directly, resentment can quietly build. Gentle, clear honesty lets your softness become a strength instead of a sore spot."
     },
     "leo": {
       "heading": "Cancer × Leo — Challenging Elements (Water + Fire)",
@@ -1028,8 +1028,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "leo": {
       "heading": "Leo × Leo — Same Element (Fire + Fire)",
-      "tagline": "Mirror of pride",
-      "description": "Two Leos together create a bright, expressive, and often theatrically romantic bond. You both care about loyalty, generosity, and being able to feel proud of the life you're building. It really can feel like sharing the stage with someone who shines in a similar way—a mirror that reflects both your warmth and your need for recognition. The upside is big-hearted gestures and shared creativity; the downside is drama and a reluctance to admit fault when that shared pride gets triggered. This pairing matures when you both learn that humility and listening don't dim your light—they protect it."
+      "tagline": "Shared spotlight",
+      "description": "Two Leos create a warm, expressive, larger-than-life pairing. You usually appreciate loyalty, generosity, and a bit of drama or glamour, and can genuinely hype each other up. Tension appears when both want the spotlight, or pride makes it hard to admit hurt. Taking turns being \"on stage\" and letting soft moments in keeps this feeling golden, not competitive."
     },
     "virgo": {
       "heading": "Leo × Virgo — Semi-compatible Elements (Fire + Earth)",
@@ -1095,8 +1095,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "virgo": {
       "heading": "Virgo × Virgo — Same Element (Earth + Earth)",
-      "tagline": "Double analyst",
-      "description": "Two Virgos together create a thoughtful, service-oriented, and improvement-focused bond. You're likely good at problem-solving, daily routines, and quietly taking care of what needs doing. You also mirror each other's self-criticism and tendency to focus on flaws, which can make life feel like a never-ending review meeting if you're not careful. That shared eye for detail is powerful when pointed at real problems and genuinely supportive when aimed at growth. Building in time where nothing has to be optimised keeps this connection kind, not just efficient."
+      "tagline": "Refined focus",
+      "description": "Two Virgos together can build a careful, thoughtful, quietly service-oriented bond. You share standards around work, health, or how life \"should\" run, and may feel genuinely seen in your efforts. The danger is turning the relationship into a project and focusing more on what's wrong than what's working. Naming what's \"good enough\" and celebrating small wins stops care from turning into constant critique."
     },
     "libra": {
       "heading": "Virgo × Libra — Semi-compatible Elements (Earth + Air)",
@@ -1162,8 +1162,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "libra": {
       "heading": "Libra × Libra — Same Element (Air + Air)",
-      "tagline": "Mirror of grace",
-      "description": "Two Libras together often create a refined, socially aware, and peace-seeking connection. You usually share an eye for beauty, fairness, and how things feel between people. The mirror effect is obvious: you see your own strengths in charm and diplomacy reflected back, along with your own hesitation, people-pleasing, or indecision. That can make the relationship feel exquisitely sensitive to tone but slow to address real problems. This match deepens when you agree that honest, even slightly awkward conversations are part of harmony, not a threat to it."
+      "tagline": "Balanced mirror",
+      "description": "Two Libras often create a socially graceful, harmony-focused match. You both care about fairness, atmosphere, and how people feel, which can make you a considerate team. The downside is indecision or smoothing things over instead of saying what you actually want. This works best when you risk honest preferences, not just politeness."
     },
     "scorpio": {
       "heading": "Libra × Scorpio — Challenging Elements (Air + Water)",
@@ -1229,8 +1229,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "scorpio": {
       "heading": "Scorpio × Scorpio — Same Element (Water + Water)",
-      "tagline": "Double depth",
-      "description": "Two Scorpios together create an intense, private, and potentially transformative relationship. You both take loyalty seriously and prefer a few deep bonds to many shallow ones. It's very much a mirror of your own intensity: your passion, insight, and loyalty are doubled, but so are your suspicion, jealousy, or tendency to test people. That can make the connection feel fated and hard to walk away from, even when it's difficult. To keep it healthy, you both need a commitment to transparency, no secret games, and a willingness to forgive rather than store ammunition."
+      "tagline": "Deep reflection",
+      "description": "Two Scorpios together can form a loyal, intense, all-or-nothing connection. You may quickly sense each other's fears and desires, and there's often a strong pull toward emotional and physical depth. The challenge is guardedness, pride, or holding on to hurt for too long. Choosing transparency over tests, and softness over control at key moments, keeps this powerful rather than punishing."
     },
     "sagittarius": {
       "heading": "Scorpio × Sagittarius — Challenging Elements (Water + Fire)",
@@ -1296,8 +1296,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "sagittarius": {
       "heading": "Sagittarius × Sagittarius — Same Element (Fire + Fire)",
-      "tagline": "Double wanderer",
-      "description": "Two Sagittarians together create a relationship full of movement, ideas, and plans for what's next. You tend to value freedom, honesty, and some sense that life is an adventure, not just a routine. Your partner acts like a mirror for your optimism and restlessness—doubling both the enthusiasm and the tendency to avoid boredom at any cost. That can be exhilarating, but it can also make it easy to dodge hard conversations or long-haul commitments. This pairing works best when you make a few shared promises sacred and give yourselves plenty of space inside that frame."
+      "tagline": "Shared horizon",
+      "description": "Two Sagittarians often create a free-spirited, adventurous, big-picture bond. You're likely to enjoy learning, exploring, or taking risks together, and you usually give each other more freedom than most. The pitfall is restlessness or dodging emotional detail in favour of the next quest. This thrives when you keep the humour but also stay present for the harder conversations."
     },
     "capricorn": {
       "heading": "Sagittarius × Capricorn — Semi-compatible Elements (Fire + Earth)",
@@ -1363,8 +1363,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "capricorn": {
       "heading": "Capricorn × Capricorn — Same Element (Earth + Earth)",
-      "tagline": "Double strategist",
-      "description": "Two Capricorns together create a serious, quietly ambitious partnership. You both value reliability, long-term planning, and the ability to withstand difficulty without falling apart. You also see your own work ethic, caution, and emotional reserve mirrored back at you, which can validate your approach but also make it harder to soften. That makes you a formidable team in work, finances, or family responsibilities, but it can push emotional life to the bottom of the list. You have to schedule joy, rest, and affection on purpose so the relationship doesn't feel like a shared job description."
+      "tagline": "Joint ascent",
+      "description": "Two Capricorns can build a serious, ambitious, quietly resilient partnership. You often respect each other's work ethic, reliability, and long-term plans, and may feel relieved to be understood on pressure and duty. The risk is letting life become all goals and responsibilities with little room for softness. Protecting time for rest, affection, and small joys keeps this from feeling like a job."
     },
     "aquarius": {
       "heading": "Capricorn × Aquarius — Semi-compatible Elements (Earth + Air)",
@@ -1431,7 +1431,7 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     "aquarius": {
       "heading": "Aquarius × Aquarius — Same Element (Air + Air)",
       "tagline": "Shared wavelength",
-      "description": "Two Aquarians together often create a relationship that feels like a friendship, a think tank, and a shared experiment all at once. You're likely to value independence, ideas, and doing things in a way that feels authentic rather than conventional. You mirror each other's detachment and unconventional streak, which can feel validating but can also make deep emotional sharing easy to postpone. That sameness is liberating, especially if you've both felt \"different\" elsewhere. To avoid drifting into distance, you'll need to consciously practise vulnerability and not treat feelings as a glitch in the system."
+      "description": "Two Aquarians often create a bond that feels like friendship, a think tank, and a shared experiment. You value independence, ideas, and doing life in your own way rather than following the script. That sameness can be liberating, especially if you've both felt \"different\" elsewhere, but it also makes it easy to postpone deeper emotional sharing. Practising vulnerability on purpose stops this from drifting into polite distance."
     },
     "pisces": {
       "heading": "Aquarius × Pisces — Semi-compatible Elements (Air + Water)",
@@ -1497,8 +1497,8 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
     },
     "pisces": {
       "heading": "Pisces × Pisces — Same Element (Water + Water)",
-      "tagline": "Shared sea",
-      "description": "Two Pisces together create a very fluid, intuitive, and emotionally porous connection. You may feel deeply understood in ways that are hard to explain, sharing dreams, moods, or creative impulses almost wordlessly. The mirror here is emotional and spiritual: you see your own sensitivity, compassion, and escapist habits reflected back at you. That's beautiful when it leads to mutual gentleness and creativity, but risky if no one wants to be the grounded one. This pairing thrives when you bring in a bit of earth—clear agreements, routines, or outside structure—so your shared imagination has somewhere safe to land."
+      "tagline": "Dream pool",
+      "description": "Two Pisceans together can form a sensitive, imaginative, almost psychic-feeling link. You both pick up subtle emotional currents and may retreat into shared fantasy, art, or escape when life feels harsh. The challenge is staying grounded with money, boundaries, and clear plans when neither wants to be the \"practical one.\" Building simple routines and honest agreements gives you an anchor so the dream doesn't drift too far."
     }
   }
 };

@@ -146,6 +146,7 @@ function getTierGradientColors(tier: string): { start: string; end: string } {
   return { start: '#94a3b8', end: '#94a3b8' }; // slate-400
 }
 
+
 export default function MatchProfileCard({
   profile,
   connectionBoxData,
@@ -249,55 +250,71 @@ export default function MatchProfileCard({
 
       {/* Connection Box - Only shown when at least one toggle is open */}
       {(showProfile || showElements) && (
-        <div className="px-2 mt-auto">
-          {connectionBoxData ? (
-            <ConnectionBoxNew
-              tier={newTier}
-              score={connectionBoxData.score}
-              westA={westA}
-              eastA={eastA}
-              westB={westB}
-              eastB={eastB}
-              chineseLine={chineseLine}
-              sunMatchBlurb={connectionBoxData.westernSignLine || ""}
-              westernLine={westernLine}
-              wuXingLine={wuXingLine}
-              chineseElementA={connectionBoxData.a?.chineseElement}
-              chineseElementB={connectionBoxData.b?.chineseElement}
-              connectionBlurb={connectionBlurb || undefined}
-              theme={theme}
-              aboutMe={profile.aboutMe}
-              age={profile.age}
-              city={profile.city}
-              occupation={profile.occupation}
-              height={profile.height}
-              children={profile.children}
-              religion={profile.religion}
-              chinesePattern={connectionBoxData.chinesePattern}
-              westAspect={connectionBoxData.westAspect}
-              westElementRelation={connectionBoxData.westElementRelation}
-              isChineseOpposite={connectionBoxData.isChineseOpposite}
-              isLivelyPair={connectionBoxData.isLivelyPair}
-              showProfile={showProfile}
-              showElements={showElements}
-              // energyRatings={energyRatings} // REMOVED - using match engine stars instead
-              // NEW: Pass match engine fields
-              patternFullLabel={connectionBoxData.patternFullLabel}
-              pillLabel={connectionBoxData.pillLabel}
-              baseTagline={connectionBoxData.baseTagline}
-              patternEmoji={connectionBoxData.patternEmoji}
-              pattern={connectionBoxData.pattern}
-              chemistryStars={connectionBoxData.chemistryStars}
-              stabilityStars={connectionBoxData.stabilityStars}
-              // Action handlers
-              onPass={onPass}
-              onLike={onLike}
-              onMessage={onMessageClick}
-              onViewProfile={() => setShowProfile(!showProfile)}
-            />
-          ) : (
-            <div className="p-4 text-center text-gray-500">Loading connection data...</div>
-          )}
+        <div className={`px-2 mt-auto pb-32 relative ${
+          theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+        }`} style={{
+          // Extend padding beyond card boundaries to match page background during swipes
+          position: 'relative',
+          marginLeft: '-1rem',
+          marginRight: '-1rem',
+          marginBottom: '-1rem',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          paddingBottom: 'calc(8rem + 1rem)',
+        }}>
+          {/* Connection box with higher z-index so dropdowns appear above padding */}
+          <div className="relative" style={{ zIndex: 10 }}>
+            {connectionBoxData ? (
+              <ConnectionBoxNew
+                tier={newTier}
+                score={connectionBoxData.score}
+                westA={westA}
+                eastA={eastA}
+                westB={westB}
+                eastB={eastB}
+                chineseLine={chineseLine}
+                sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                westernLine={westernLine}
+                wuXingLine={wuXingLine}
+                chineseElementA={connectionBoxData.a?.chineseElement}
+                chineseElementB={connectionBoxData.b?.chineseElement}
+                connectionBlurb={connectionBlurb || undefined}
+                theme={theme}
+                aboutMe={profile.aboutMe}
+                age={profile.age}
+                city={profile.city}
+                occupation={profile.occupation}
+                height={profile.height}
+                children={profile.children}
+                religion={profile.religion}
+                chinesePattern={connectionBoxData.chinesePattern}
+                westAspect={connectionBoxData.westAspect}
+                westElementRelation={connectionBoxData.westElementRelation}
+                isChineseOpposite={connectionBoxData.isChineseOpposite}
+                isLivelyPair={connectionBoxData.isLivelyPair}
+                showProfile={showProfile}
+                showElements={showElements}
+                // NEW: Pass match engine fields
+                patternFullLabel={connectionBoxData.patternFullLabel}
+                pillLabel={connectionBoxData.pillLabel}
+                baseTagline={connectionBoxData.baseTagline}
+                patternEmoji={connectionBoxData.patternEmoji}
+                pattern={connectionBoxData.pattern}
+                chemistryStars={connectionBoxData.chemistryStars}
+                stabilityStars={connectionBoxData.stabilityStars}
+                // Pass relationship goals and interests
+                relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+                interests={profile.interests || profile.selectedOrganizedInterests}
+                // Action handlers
+                onPass={onPass}
+                onLike={onLike}
+                onMessage={onMessageClick}
+                onViewProfile={() => setShowProfile(!showProfile)}
+              />
+            ) : (
+              <div className="p-4 text-center text-gray-500">Loading connection data...</div>
+            )}
+          </div>
         </div>
       )}
     </div>

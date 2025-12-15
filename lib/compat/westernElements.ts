@@ -74,6 +74,7 @@ export function getElementRelation(
 // ---------------- Specific Sign Pairings ----------------
 // Import combined pairings from separate files
 import { getWesternPairLines } from "./westernPairLines";
+import { getWesternDetailedCompat } from "@/data/detailedCompatDescriptions";
 
 // ---------------- PURE descriptive meanings (Tone E) ----------------
 
@@ -162,7 +163,18 @@ export function getWesternPatternLines(
     throw new Error(`Unknown signs passed: ${signA}, ${signB}`);
   }
 
-  // Check for sign-specific pairings first
+  // PRIORITY: Use detailed compatibility descriptions from detailedCompatDescriptions.ts
+  // This ensures we use the updated same-sign pair descriptions
+  const detailedCompat = getWesternDetailedCompat(signA.toLowerCase(), signB.toLowerCase());
+  
+  if (detailedCompat) {
+    return {
+      heading: detailedCompat.heading,
+      description: detailedCompat.description,
+    };
+  }
+
+  // Fallback: Check for sign-specific pairings from westernPairLines
   const specificPairing = getWesternPairLines(signA, signB);
   if (specificPairing) {
     return {
@@ -171,7 +183,7 @@ export function getWesternPatternLines(
     };
   }
 
-  // Fall back to element-based descriptions
+  // Final fallback: element-based descriptions
   const { relationType } = getElementRelation(elementA, elementB);
   const description = getWesternElementMeaning(elementA, elementB);
   

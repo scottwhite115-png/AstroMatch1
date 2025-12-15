@@ -233,11 +233,11 @@ export function getMatchLabel(context: MatchContext): MatchLabelResult {
       };
     }
 
-    // San He + element clash → deep but intense (could use Twin Flame tagline)
+    // San He + element clash → still Strong Harmony (San He never gets Challenging Match)
     if (westernEase === 'HARD') {
       return {
-        primaryLabel: 'Challenging Match',
-        subLabel: taglines.twinFlame
+        primaryLabel: 'Strong Harmony Match',
+        subLabel: taglines.strongHarmony
       };
     }
   }

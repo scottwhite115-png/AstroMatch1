@@ -27,7 +27,7 @@ const ASTROLAB_SECTIONS = [
   },
   {
     id: 'six-conflicts',
-    label: 'Six Conflicts',
+    label: 'Magnetic Opposites',
     icon: '⚡',
     description: 'Six Conflicts (Liu Chong) pairs table',
   },
@@ -43,12 +43,6 @@ const ASTROLAB_SECTIONS = [
     label: 'Match Engine',
     icon: '⚙️',
     description: 'How compatibility scores work',
-  },
-  {
-    id: 'sun-sign-compatibility',
-    label: 'Sun Sign Compatibility',
-    icon: '☀️',
-    description: 'Element compatibility chart',
   },
   {
     id: 'five-elements',
@@ -240,42 +234,8 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
             </div>
           </div>
           
-          {/* Right side: Drawer toggle button and Theme Toggle */}
+          {/* Right side: Theme Toggle */}
           <div className="flex items-center gap-2 ml-2">
-            {/* Drawer Toggle Button */}
-            <button
-              ref={drawerButtonRef}
-              type="button"
-              onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-              className={`inline-flex h-9 w-9 items-center justify-center rounded-full border transition-colors ${
-                theme === "light"
-                  ? "border-gray-200 hover:bg-gray-100"
-                  : "border-slate-700 hover:bg-slate-800"
-              }`}
-              aria-label={isDrawerOpen ? "Close menu" : "Open menu"}
-            >
-              {/* List icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className={theme === "light" ? "text-gray-700" : "text-slate-300"}
-              >
-                <line x1="8" y1="6" x2="21" y2="6" />
-                <line x1="8" y1="12" x2="21" y2="12" />
-                <line x1="8" y1="18" x2="21" y2="18" />
-                <line x1="3" y1="6" x2="3.01" y2="6" />
-                <line x1="3" y1="12" x2="3.01" y2="12" />
-                <line x1="3" y1="18" x2="3.01" y2="18" />
-              </svg>
-            </button>
-            
             {/* Theme Toggle Button */}
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}

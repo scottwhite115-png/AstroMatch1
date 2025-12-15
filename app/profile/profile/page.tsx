@@ -172,6 +172,7 @@ export default function AstrologyProfilePage({
   const [selectedPromptCategory2, setSelectedPromptCategory2] = useState("Dating")
   const [selectedDeepPrompts2, setSelectedDeepPrompts2] = useState<string[]>([])
   const [deepPromptAnswers2, setDeepPromptAnswers2] = useState<{[key: string]: string}>({})
+  const [showHeightDropdown, setShowHeightDropdown] = useState(false)
   
   // Connection box state - using new engine
   const [connectionBoxData, setConnectionBoxData] = useState<ConnectionBoxData | null>(null)
@@ -212,7 +213,7 @@ export default function AstrologyProfilePage({
   const handleImageTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
       // Two fingers - prepare for zoom but don't open modal yet
-      e.preventDefault()
+      // Note: Don't call preventDefault here - rely on CSS touch-action instead
       e.stopPropagation()
       lastZoomDistanceRef.current = getDistance(e.touches)
       lastTwoFingerMidpointRef.current = getTwoFingerMidpoint(e.touches)
@@ -224,7 +225,7 @@ export default function AstrologyProfilePage({
 
   const handleImageTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
-      e.preventDefault()
+      // Note: Don't call preventDefault here - rely on CSS touch-action instead
       e.stopPropagation()
       
       // Initialize distance tracking on first two-finger touch
@@ -258,7 +259,7 @@ export default function AstrologyProfilePage({
       lastTwoFingerMidpointRef.current = currentMidpoint
     } else if (e.touches.length === 1 && zoomScale > 1) {
       // Pan when zoomed in - Full photo exploration
-      e.preventDefault()
+      // Note: Don't call preventDefault here - rely on CSS touch-action instead
       e.stopPropagation()
       const touch = e.touches[0]
       const deltaX = touch.clientX - lastTouchPosRef.current.x
@@ -285,7 +286,7 @@ export default function AstrologyProfilePage({
 
   const handleZoomTouchMove = (e: React.TouchEvent) => {
     if (e.touches.length === 2) {
-      e.preventDefault()
+      // Note: Don't call preventDefault here - rely on CSS touch-action instead
       const distance = getDistance(e.touches)
       if (lastZoomDistanceRef.current > 0) {
         const scaleFactor = distance / lastZoomDistanceRef.current
@@ -391,16 +392,19 @@ export default function AstrologyProfilePage({
       if (showDeepPromptsDropdown2 && !(event.target as Element).closest('.deep-prompts-dropdown-container-2')) {
         setShowDeepPromptsDropdown2(false)
       }
+      if (showHeightDropdown && !(event.target as Element).closest('.height-dropdown-container')) {
+        setShowHeightDropdown(false)
+      }
     }
 
-    if (showMatchDropdown || showInterestsDropdown || showRelationshipGoalsDropdown || showPromptsDropdown || showRomanticPromptsDropdown || showDeepPromptsDropdown || showDeepPromptsDropdown2) {
+    if (showMatchDropdown || showInterestsDropdown || showRelationshipGoalsDropdown || showPromptsDropdown || showRomanticPromptsDropdown || showDeepPromptsDropdown || showDeepPromptsDropdown2 || showHeightDropdown) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [showMatchDropdown, showInterestsDropdown, showRelationshipGoalsDropdown, showPromptsDropdown, showRomanticPromptsDropdown, showDeepPromptsDropdown, showDeepPromptsDropdown2])
+  }, [showMatchDropdown, showInterestsDropdown, showRelationshipGoalsDropdown, showPromptsDropdown, showRomanticPromptsDropdown, showDeepPromptsDropdown, showDeepPromptsDropdown2, showHeightDropdown])
 
   const [name, setName] = useState("")
 
@@ -3228,6 +3232,69 @@ export default function AstrologyProfilePage({
             <div
               className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
             >
+              <SectionHeader
+                label="Height"
+              />
+              <div className="relative height-dropdown-container">
+                <button
+                  type="button"
+                  onClick={() => setShowHeightDropdown(!showHeightDropdown)}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
+                    theme === "light"
+                      ? "bg-gray-100 hover:bg-gray-200 text-gray-900"
+                      : "bg-slate-800/50 hover:bg-slate-800/70 text-slate-200"
+                  }`}
+                >
+                  <span className={selectedHeight ? "font-medium" : theme === "light" ? "text-gray-500" : "text-slate-400"}>
+                    {selectedHeight || "Select height"}
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${showHeightDropdown ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                {showHeightDropdown && (
+                  <div
+                    className={`mt-2 rounded-lg border max-h-64 overflow-y-auto ${
+                      theme === "light"
+                        ? "bg-white border-gray-200"
+                        : "bg-slate-900/50 border-indigo-400/20"
+                    }`}
+                  >
+                    <div className="p-2 space-y-1">
+                      {heightOptions.map((height) => {
+                        const isSelected = selectedHeight === height
+                        return (
+                          <button
+                            key={height}
+                            type="button"
+                            onClick={() => {
+                              handleHeightSelect(height)
+                              setShowHeightDropdown(false)
+                            }}
+                            className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                              isSelected
+                                ? theme === "light"
+                                  ? "bg-purple-100 text-purple-900"
+                                  : "bg-purple-500/20 text-purple-300"
+                                : theme === "light"
+                                ? "text-gray-700 hover:bg-gray-100"
+                                : "text-slate-300 hover:bg-slate-800/50"
+                            }`}
+                          >
+                            {height}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
               <GenderSection
                 value={genderOrientation.gender.toLowerCase() as "man" | "woman" | "other" | ""}
                 onChange={(value) => {
@@ -3254,55 +3321,6 @@ export default function AstrologyProfilePage({
                   }
                 }}
               />
-            </div>
-
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
-              <SectionHeader
-                label="Distance"
-              />
-              <div className="space-y-3">
-                <div className="relative pt-6">
-                  {/* Track background */}
-                  <div
-                    className={`rounded-full ${theme === "starlight" ? "bg-white/20" : "bg-gray-400/60"}`}
-                    style={{ height: "3px" }}
-                  />
-                  
-                  <input
-                    type="range"
-                    min="0"
-                    max="200"
-                    value={distanceRadius}
-                    onChange={(e) => handleDistanceChange(Number(e.target.value))}
-                    className="absolute top-3 left-0 w-full h-6 bg-transparent appearance-none cursor-pointer
-                            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
-                            [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2
-                            [&::-webkit-slider-thumb]:border-gray-500/40 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer
-                            [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform
-                            [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6
-                            [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2
-                            [&::-moz-range-thumb]:border-gray-500/40 [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:cursor-pointer
-                            [&::-moz-range-thumb]:hover:scale-110 [&::-moz-range-thumb]:transition-transform"
-                  />
-                  
-                  {/* Value display above thumb */}
-                  <div
-                    className={`absolute -top-2 text-sm font-semibold ${theme === "starlight" ? "text-white" : "text-white/70"}`}
-                    style={{
-                      left: `${(distanceRadius / 200) * 100}%`,
-                      transform: "translateX(-50%)",
-                    }}
-                  >
-                    {distanceRadius}km
-                  </div>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>0km</span>
-                  <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>200km</span>
-                </div>
-              </div>
             </div>
 
             <div
@@ -3380,6 +3398,55 @@ export default function AstrologyProfilePage({
                 <div className="flex justify-between text-xs text-white/50">
                   <span>18</span>
                   <span>80</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Distance"
+              />
+              <div className="space-y-3">
+                <div className="relative pt-6">
+                  {/* Track background */}
+                  <div
+                    className={`rounded-full ${theme === "starlight" ? "bg-white/20" : "bg-gray-400/60"}`}
+                    style={{ height: "3px" }}
+                  />
+                  
+                  <input
+                    type="range"
+                    min="0"
+                    max="200"
+                    value={distanceRadius}
+                    onChange={(e) => handleDistanceChange(Number(e.target.value))}
+                    className="absolute top-3 left-0 w-full h-6 bg-transparent appearance-none cursor-pointer
+                            [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
+                            [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border-2
+                            [&::-webkit-slider-thumb]:border-gray-500/40 [&::-webkit-slider-thumb]:shadow-lg [&::-webkit-slider-thumb]:cursor-pointer
+                            [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform
+                            [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6
+                            [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-2
+                            [&::-moz-range-thumb]:border-gray-500/40 [&::-moz-range-thumb]:shadow-lg [&::-moz-range-thumb]:cursor-pointer
+                            [&::-moz-range-thumb]:hover:scale-110 [&::-moz-range-thumb]:transition-transform"
+                  />
+                  
+                  {/* Value display above thumb */}
+                  <div
+                    className={`absolute -top-2 text-sm font-semibold ${theme === "starlight" ? "text-white" : "text-white/70"}`}
+                    style={{
+                      left: `${(distanceRadius / 200) * 100}%`,
+                      transform: "translateX(-50%)",
+                    }}
+                  >
+                    {distanceRadius}km
+                  </div>
+                </div>
+                <div className="flex justify-between text-xs">
+                  <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>0km</span>
+                  <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>200km</span>
                 </div>
               </div>
             </div>

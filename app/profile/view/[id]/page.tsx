@@ -6,7 +6,11 @@ import { useTheme } from "@/contexts/ThemeContext"
 import { explainMatchAndScore } from "@/lib/matchExplainAndScore"
 import { computeMatchWithNewEngine } from "@/lib/matchEngineAdapter"
 import { evaluateMatch } from "@/engine/astromatch-engine"
-import { type West, type East } from "@/lib/matchEngine"
+import { type West, type East, getWuXingYearElement, type WuXing } from "@/lib/matchEngine"
+import { buildConnectionBox } from "@/lib/compat/engine"
+import type { UserProfile, SimpleConnectionBox } from "@/lib/compat/types"
+import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
+import type { RankKey } from "@/data/rankTheme"
 import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
 import { getBothSunSignsFromBirthdate, getSavedSunSigns, getDisplaySunSign } from "@/lib/sunSignCalculator"
 import { useSunSignSystem } from "@/lib/hooks/useSunSign"
@@ -105,6 +109,18 @@ const testProfiles: Record<string, any> = {
       { question: "My ideal Sunday", answer: "Brunch with friends, followed by a long walk on the beach and ending with a good movie." },
       { question: "I'm looking for", answer: "Someone who can make me laugh, values honesty, and loves to explore new places." }
     ],
+    relationshipGoals: ["Soul mate", "Best friend", "Intimate connection"],
+    selectedRelationshipGoals: ["Soul mate", "Best friend", "Intimate connection"],
+    interests: {
+      "Arts & Culture": ["Museums", "Photography", "Concerts"],
+      "Fitness & Wellness": ["Yoga", "Hiking", "Meditation"],
+      "Food & Drink": ["Cooking", "Wine Tasting"]
+    },
+    selectedOrganizedInterests: {
+      "Arts & Culture": ["Museums", "Photography", "Concerts"],
+      "Fitness & Wellness": ["Yoga", "Hiking", "Meditation"],
+      "Food & Drink": ["Cooking", "Wine Tasting"]
+    },
     distance: 2,
   },
   "2": {
@@ -258,11 +274,248 @@ export default function ProfileViewPage() {
     return () => window.removeEventListener('sunSignSystemChanged', handleSystemChange)
   }, [])
   
-  // Build compatibility box using new match engine
+  // Helper function to convert SimpleConnectionBox to ConnectionBoxData (same as matches page)
+  const convertSimpleToConnectionBoxData = (
+    simpleBox: SimpleConnectionBox,
+    userWest: string,
+    userEast: string,
+    profileWest: string,
+    profileEast: string,
+    profile: any,
+    userYearElement?: any, // WuXing type
+    profileYearElement?: any // WuXing type
+  ): ConnectionBoxData => {
+    // Import connection UI helpers
+    const {
+      extractChineseBase,
+      extractChineseOverlays,
+      extractWesternRelation,
+      extractPrimaryLabel,
+    } = require('@/lib/connectionUiHelpers');
+    
+    // Extract connection UI data
+    const chineseBase = extractChineseBase(simpleBox.chinesePattern || simpleBox.pattern);
+    let chineseOverlays = extractChineseOverlays(
+      simpleBox.chinesePattern || simpleBox.pattern,
+      undefined, // allPatterns not available in SimpleConnectionBox yet
+      simpleBox.chineseLine // Use chineseLine as fallback
+    );
+    
+    // If the primary pattern is LIU_CHONG, XING, LIU_HAI, or PO, add it to overlays for display
+    const primaryPattern = String(simpleBox.chinesePattern || simpleBox.pattern || '').toUpperCase();
+    if (primaryPattern.includes('LIU_CHONG') && !chineseOverlays.includes('LIU_CHONG')) {
+      chineseOverlays.push('LIU_CHONG');
+    } else if (primaryPattern.includes('XING') && !chineseOverlays.includes('XING')) {
+      chineseOverlays.push('XING');
+    } else if (primaryPattern.includes('LIU_HAI') && !chineseOverlays.includes('LIU_HAI')) {
+      chineseOverlays.push('LIU_HAI');
+    } else if (primaryPattern.includes('PO') && !chineseOverlays.includes('PO')) {
+      chineseOverlays.push('PO');
+    }
+    const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
+    const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
+    
+    // Map match label to rank key
+    const labelToRankKey: Record<string, RankKey> = {
+      "Soulmate Match": "perfect",
+      "Twin Flame Match": "excellent",
+      "Excellent Match": "excellent",
+      "Favourable Match": "good",
+      "Good Friends": "good",
+      "Good Friends Match": "good",
+      "Opposites Attract": "fair",
+      "Magnetic Opposites": "fair",
+      "Neutral Match": "fair",
+      "Difficult Match": "challenging",
+    };
+    
+    const rankKey = labelToRankKey[simpleBox.matchLabel] || "neutral";
+    
+    // Map label to tier
+    const labelToTier = (label: string): string => {
+      if (label === "SOULMATE" || label === "SOULMATE MATCH" || label === "Soulmate Match") return "Soulmate";
+      if (label === "TWIN FLAME" || label === "TWIN FLAME MATCH" || label === "Twin Flame Match") return "Twin Flame";
+      if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
+      if (label === "Favourable Match") return "Favourable";
+      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
+      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
+      if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
+      return "Neutral";
+    };
+    
+    // Extract emoji and color from label
+    const labelToEmoji: Record<string, string> = {
+      "SOULMATE": "💫",
+      "SOULMATE MATCH": "💫",
+      "Soulmate Match": "💫",
+      "TWIN FLAME": "🔥",
+      "TWIN FLAME MATCH": "🔥",
+      "Twin Flame Match": "🔥",
+      "HARMONIOUS": "✨",
+      "HARMONIOUS MATCH": "✨",
+      "Excellent Match": "✨",
+      "Favourable Match": "✨",
+      "Good Friends": "✨",
+      "Good Friends Match": "✨",
+      "OPPOSITES_ATTRACT": "⚡",
+      "OPPOSITES ATTRACT": "⚡",
+      "Opposites Attract": "⚡",
+      "Magnetic Opposites": "⚡",
+      "NEUTRAL": "✨",
+      "NEUTRAL MATCH": "✨",
+      "Neutral Match": "✨",
+      "DIFFICULT": "💔",
+      "DIFFICULT MATCH": "💔",
+      "Difficult Match": "💔",
+    };
+    
+    const labelToColor: Record<string, string> = {
+      "SOULMATE": "rgb(212, 175, 55)",
+      "SOULMATE MATCH": "rgb(212, 175, 55)",
+      "Soulmate Match": "rgb(212, 175, 55)",
+      "TWIN FLAME": "rgb(255, 140, 0)",
+      "TWIN FLAME MATCH": "rgb(255, 140, 0)",
+      "Twin Flame Match": "rgb(255, 140, 0)",
+      "HARMONIOUS": "rgb(219, 39, 119)",
+      "HARMONIOUS MATCH": "rgb(219, 39, 119)",
+      "Excellent Match": "rgb(219, 39, 119)",
+      "Favourable Match": "rgb(219, 39, 119)",
+      "Good Friends": "rgb(34, 139, 34)",
+      "Good Friends Match": "rgb(34, 139, 34)",
+      "OPPOSITES_ATTRACT": "rgb(239, 68, 68)",
+      "OPPOSITES ATTRACT": "rgb(239, 68, 68)",
+      "Opposites Attract": "rgb(239, 68, 68)",
+      "Magnetic Opposites": "rgb(239, 68, 68)",
+      "NEUTRAL": "rgb(34, 139, 34)",
+      "NEUTRAL MATCH": "rgb(34, 139, 34)",
+      "Neutral Match": "rgb(34, 139, 34)",
+      "DIFFICULT": "rgb(239, 68, 68)",
+      "DIFFICULT MATCH": "rgb(239, 68, 68)",
+      "Difficult Match": "rgb(239, 68, 68)",
+    };
+    
+    const tier = labelToTier(simpleBox.matchLabel);
+    
+    // Generate Western sun sign relationship blurb
+    const westernSignLine = getSunMatchBlurb(
+      userWest as WesternSign,
+      profileWest as WesternSign
+    );
+    
+    return {
+      score: simpleBox.score,
+      rank: simpleBox.matchLabel,
+      rankLabel: simpleBox.matchLabel,
+      rankKey: rankKey as any,
+      emoji: labelToEmoji[simpleBox.matchLabel] || "🌟",
+      colorRgb: labelToColor[simpleBox.matchLabel] || "rgb(34, 139, 34)",
+      connectionLabel: simpleBox.headingLine,
+      tagline: simpleBox.matchLabel,
+      east_tagline: simpleBox.chineseLine,
+      tags: [],
+      // Map overview from SimpleConnectionBox to both insight and longformBody
+      insight: simpleBox.overview || '',
+      longformBody: simpleBox.overview || '',
+      east_relation: simpleBox.chineseLine,
+      east_summary: simpleBox.chineseLine,
+      east_description: simpleBox.chineseDescription || '',
+      west_relation: simpleBox.westernLine,
+      west_summary: simpleBox.westernLine,
+      west_description: simpleBox.westernDescription || '',
+      west_tagline: simpleBox.westernTagline || undefined,
+      westernSignLine: westernSignLine,
+      wuXingLine: simpleBox.wuXingLine,
+      a: {
+        west: userWest,
+        east: userEast,
+        westGlyph: getWesternSignGlyph(userWest),
+        eastGlyph: getChineseSignGlyph(userEast),
+        chineseElement: userYearElement
+      },
+      b: {
+        west: profileWest,
+        east: profileEast,
+        westGlyph: getWesternSignGlyph(profileWest),
+        eastGlyph: getChineseSignGlyph(profileEast),
+        chineseElement: profileYearElement
+      },
+      tier: tier as any,
+      aboutMeText: profile.aboutMe || profile.aboutMeText,
+      age: profile.age,
+      occupation: profile.occupation,
+      city: profile.city,
+      distance: profile.distance,
+      height: profile.height,
+      children: profile.children,
+      religion: profile.religion,
+      selectedDeepPrompts: profile.prompts?.map((p: any) => p.question),
+      deepPromptAnswers: profile.prompts?.reduce((acc: any, p: any) => {
+        acc[p.question] = p.answer;
+        return acc;
+      }, {}),
+      selectedRelationshipGoals: profile.relationshipGoals || profile.selectedRelationshipGoals,
+      selectedOrganizedInterests: profile.interests || profile.selectedOrganizedInterests,
+      chinesePattern: simpleBox.chinesePattern,
+      westAspect: simpleBox.westAspect,
+      westElementRelation: simpleBox.westElementRelation,
+      isChineseOpposite: simpleBox.isChineseOpposite,
+      isLivelyPair: simpleBox.isLivelyPair,
+      wuXingA: userYearElement as WuXing,
+      wuXingB: profileYearElement as WuXing,
+      pillLabel: simpleBox.pillLabel,
+      pattern: simpleBox.pattern,
+      patternFullLabel: simpleBox.patternFullLabel,
+      baseTagline: simpleBox.baseTagline,
+      patternEmoji: simpleBox.patternEmoji,
+      chemistryStars: simpleBox.chemistryStars,
+      stabilityStars: simpleBox.stabilityStars,
+      connectionUI: {
+        primaryLabel,
+        chineseBase,
+        chineseOverlays,
+        westernRelation,
+      },
+    };
+  };
+
+  // Build compatibility box using latest match engine (same as matches page)
   useEffect(() => {
     if (!userZodiacSigns.western || !userZodiacSigns.chinese || !profile) return
     
     try {
+      // Get user profile for new engine
+      const userProfile: UserProfile = {
+        sunSign: userZodiacSigns.western.toLowerCase() as any,
+        animal: userZodiacSigns.chinese.toLowerCase() as any,
+      };
+      
+      // Get user's Wu Xing year element from birthdate
+      let userYearElement: any;
+      try {
+        const userBirthInfo = localStorage.getItem("userBirthInfo");
+        if (userBirthInfo) {
+          const birthInfo = JSON.parse(userBirthInfo);
+          if (birthInfo.birthdate) {
+            const userBirthDate = new Date(birthInfo.birthdate);
+            const userYear = userBirthDate.getFullYear();
+            userYearElement = getWuXingYearElement(userYear);
+          }
+        } else {
+          // Fallback: Use a default year for the Chinese animal
+          const animalToDefaultYear: Record<string, number> = {
+            'rat': 1996, 'ox': 1997, 'tiger': 1998, 'rabbit': 1999,
+            'dragon': 2000, 'snake': 2001, 'horse': 2002, 'goat': 2003,
+            'monkey': 2004, 'rooster': 2005, 'dog': 2006, 'pig': 2007,
+          };
+          const userAnimal = userZodiacSigns.chinese.toLowerCase();
+          const defaultYear = animalToDefaultYear[userAnimal] || 1987;
+          userYearElement = getWuXingYearElement(defaultYear);
+        }
+      } catch (error) {
+        console.error('[Profile View] Error calculating user Wu Xing year element:', error);
+      }
+      
       // Get profile's zodiac signs
       const profileTropical = capitalizeSign(profileSunSigns.tropical || profile.westernSign || 'Gemini') as West
       const profileEastern = capitalizeSign(profile.easternSign || 'Rat')
@@ -276,103 +529,73 @@ export default function ProfileViewPage() {
         : (savedUserSunSigns.tropical ?? userZodiacSigns.western)
       const userDisplayWestCapitalized = capitalizeSign(userDisplayWest)
       
-      // Calculate compatibility between user and profile
-      const newEngineResult = computeMatchWithNewEngine(
-        userZodiacSigns.western as any,
-        userZodiacSigns.chinese as any,
-        profileTropical as any,
-        profileEastern as any
-      )
-
-      const astroMatch = evaluateMatch(
-        userZodiacSigns.western as any,
-        userZodiacSigns.chinese as any,
-        profileTropical as any,
-        profileEastern as any
-      )
-
-      const legacyResult = explainMatchAndScore(
-        userZodiacSigns.western as any,
-        userZodiacSigns.chinese as any,
-        profileTropical as any,
-        profileEastern as any
-      )
-      
-      const result = {
-        score: newEngineResult.score,
-        rankKey: newEngineResult.rankKey,
-        rankLabel: newEngineResult.rankLabel,
-        emoji: newEngineResult.emoji,
-        colorRgb: newEngineResult.colorRgb,
-        connectionLabel: newEngineResult.connectionLabel,
-        east_relation: newEngineResult.east_relation,
-        east_summary: newEngineResult.east_summary,
-        west_relation: newEngineResult.west_relation,
-        west_summary: newEngineResult.west_summary,
-        tagline: newEngineResult.tagline,
-        east_tagline: newEngineResult.east_tagline,
-        tags: newEngineResult.tags || [],
-        hasOverride: legacyResult.hasOverride,
-        hasLongform: legacyResult.hasLongform,
-        tier: newEngineResult.tier,
+      // Calculate profile's Wu Xing year element from birthdate
+      let profileYearElement: any;
+      try {
+        if (profile.birthdate) {
+          const profileBirthDate = new Date(profile.birthdate);
+          const profileYear = profileBirthDate.getFullYear();
+          profileYearElement = getWuXingYearElement(profileYear);
+        }
+      } catch (error) {
+        console.error('[Profile View] Error calculating profile Wu Xing year element:', error);
       }
       
-      const badgeTags = astroMatch.badges?.length ? astroMatch.badges : []
-      const combinedTags = Array.from(new Set([...(result.tags ?? []), ...badgeTags]))
-      const rankLabelDisplay = `${astroMatch.tier} Match`
-
-      const boxData: ConnectionBoxData = {
-        score: astroMatch.score,
-        rank: rankLabelDisplay,
-        rankLabel: rankLabelDisplay,
-        rankKey: result.rankKey,  // Pass the rankKey for theme styling
-        emoji: result.emoji,
-        colorRgb: newEngineResult.colorRgb || astroMatch.color,  // Use classifier color first
-        connectionLabel: result.connectionLabel,
-        tagline: result.tagline,
-        east_tagline: result.east_tagline || result.tagline,
-        tags: combinedTags,
-        east_relation: result.east_relation,
-        east_summary: result.east_summary,
-        west_relation: result.west_relation,
-        west_summary: result.west_summary,
-        tier: result.tier,
-        astroMatch,
-        a: {
-          west: userDisplayWestCapitalized,
-          east: userZodiacSigns.chinese,
-          westGlyph: getWesternSignGlyph(userDisplayWestCapitalized),
-          eastGlyph: getChineseSignGlyph(userZodiacSigns.chinese)
-        },
-        b: {
-          west: profileDisplayWestCapitalized,
-          east: profileEastern,
-          westGlyph: getWesternSignGlyph(profileDisplayWestCapitalized),
-          eastGlyph: getChineseSignGlyph(profileEastern)
-        },
-        // Add essentials data
-        age: profile.age,
-        occupation: profile.occupation,
-        city: profile.city,
-        distance: profile.distance || 2, // Use profile distance or default to 2 km
-        height: profile.height,
-        children: profile.children,
-        religion: profile.religion,
-        // Add profile sections
-        aboutMeText: profile.aboutMeText || profile.aboutMe,
-        selectedDeepPrompts: profile.prompts?.map((p: any) => p.question) || [],
-        deepPromptAnswers: profile.prompts?.reduce((acc: any, p: any) => {
-          acc[p.question] = p.answer;
-          return acc;
-        }, {}) || {},
+      // Use buildConnectionBox (latest version) which includes overview paragraph
+      const profileForNewEngine: UserProfile = {
+        sunSign: (profileSunSigns.tropical || profile.westernSign || 'Gemini').toLowerCase() as any,
+        animal: profile.easternSign.toLowerCase() as any,
+      };
+      
+      const simpleBox = buildConnectionBox(
+        userProfile,
+        profileForNewEngine,
+        userYearElement,
+        profileYearElement
+      );
+      
+      if (!simpleBox) {
+        console.error('[Profile View] buildConnectionBox returned undefined');
+        return;
       }
+      
+      // Convert to ConnectionBoxData format
+      const boxData = convertSimpleToConnectionBoxData(
+        simpleBox,
+        userDisplayWestCapitalized,
+        userZodiacSigns.chinese,
+        profileDisplayWestCapitalized,
+        profileEastern,
+        profile,
+        userYearElement,
+        profileYearElement
+      );
       
       setConnectionBoxData(boxData)
-      console.log('[Profile View] ✨ Enhanced Match Engine Active')
+      console.log('[Profile View] ✨ Latest Match Engine Active')
       console.log('[Profile View] Connection box:', boxData)
-      console.log('[Profile View] User signs:', userZodiacSigns)
-      console.log('[Profile View] Profile signs:', { western: profileDisplayWestCapitalized, eastern: profileEastern })
-      console.log('[Profile View] Score breakdown:', result.debug)
+      console.log('[Profile View] Profile data:', {
+        relationshipGoals: profile.relationshipGoals || profile.selectedRelationshipGoals,
+        interests: profile.interests || profile.selectedOrganizedInterests,
+        aboutMeText: profile.aboutMe || profile.aboutMeText,
+        city: profile.city,
+        occupation: profile.occupation,
+        age: profile.age,
+        height: profile.height
+      })
+      console.log('[Profile View] Box data profile fields:', {
+        selectedRelationshipGoals: boxData.selectedRelationshipGoals,
+        selectedOrganizedInterests: boxData.selectedOrganizedInterests,
+        aboutMeText: boxData.aboutMeText,
+        city: boxData.city,
+        occupation: boxData.occupation,
+        age: boxData.age,
+        height: boxData.height
+      })
+      console.log('[Profile View] Score:', simpleBox.score, 'Label:', simpleBox.matchLabel)
+      if (simpleBox.overview) {
+        console.log('[Profile View] Overview:', simpleBox.overview.substring(0, 100) + '...')
+      }
     } catch (error) {
       console.error("[Profile View] Error building connection box:", error)
     }

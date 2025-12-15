@@ -393,7 +393,7 @@ export default function PhotoCarouselWithGestures({
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
+    // Note: Don't call preventDefault here - causes passive listener errors
     
     if (isZoomed) {
       // Reset zoom
@@ -409,7 +409,7 @@ export default function PhotoCarouselWithGestures({
   };
 
   const handleWheel = (e: React.WheelEvent) => {
-    e.preventDefault();
+    // Note: Don't call preventDefault here - causes passive listener errors
     
     const delta = e.deltaY > 0 ? 0.9 : 1.1;
     let newScale = scale * delta;

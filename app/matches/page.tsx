@@ -112,6 +112,18 @@ const TEST_PROFILES = [
       { question: "My simple pleasures", answer: "Sunday morning markets and spontaneous road trips." },
       { question: "I'm looking for", answer: "Someone who appreciates art, nature, and authentic connection." }
     ],
+    relationshipGoals: ["Soul mate", "Best friend", "Intimate connection"],
+    selectedRelationshipGoals: ["Soul mate", "Best friend", "Intimate connection"],
+    interests: {
+      "Arts & Culture": ["Museums", "Art Galleries", "Photography"],
+      "Food & Drink": ["Wine Tasting", "Fine Dining"],
+      "Travel": ["Art Tours", "Cultural Experiences"]
+    },
+    selectedOrganizedInterests: {
+      "Arts & Culture": ["Museums", "Art Galleries", "Photography"],
+      "Food & Drink": ["Wine Tasting", "Fine Dining"],
+      "Travel": ["Art Tours", "Cultural Experiences"]
+    },
     distance: 5,
   },
   {
@@ -133,6 +145,18 @@ const TEST_PROFILES = [
       { question: "Favorite philosopher", answer: "Simone de Beauvoir for her fearless honesty." },
       { question: "Looking for", answer: "Someone who challenges my thinking." }
     ],
+    relationshipGoals: ["Intellectual connection", "Deep conversations", "Mutual growth"],
+    selectedRelationshipGoals: ["Intellectual connection", "Deep conversations", "Mutual growth"],
+    interests: {
+      "Intellectual": ["Philosophy", "Debates", "Reading"],
+      "Arts & Culture": ["Literature", "Theater"],
+      "Food & Drink": ["Coffee", "Wine"]
+    },
+    selectedOrganizedInterests: {
+      "Intellectual": ["Philosophy", "Debates", "Reading"],
+      "Arts & Culture": ["Literature", "Theater"],
+      "Food & Drink": ["Coffee", "Wine"]
+    },
     distance: 8,
   },
   // 1973 - Ox (Water)
@@ -1383,6 +1407,9 @@ export default function MatchesPage() {
         acc[p.question] = p.answer;
         return acc;
       }, {}),
+      // Relationship goals and interests (matching profile view page)
+      selectedRelationshipGoals: profile.relationshipGoals || profile.selectedRelationshipGoals,
+      selectedOrganizedInterests: profile.interests || profile.selectedOrganizedInterests,
       // Pattern fields for taglines
       chinesePattern: simpleBox.chinesePattern,
       westAspect: simpleBox.westAspect,
@@ -2339,6 +2366,7 @@ export default function MatchesPage() {
 
   // Swipe handlers
   const onTouchStart = (e: React.TouchEvent) => {
+    // Don't call preventDefault - use CSS touch-action instead
     const touch = e.targetTouches[0]
     setTouchEnd(null)
     setTouchStart(touch.clientX)
@@ -2352,6 +2380,7 @@ export default function MatchesPage() {
   }
 
   const onTouchMove = (e: React.TouchEvent) => {
+    // Don't call preventDefault - use CSS touch-action instead
     if (touchStart === null) return
     const currentTouch = e.targetTouches[0]
     const diff = currentTouch.clientX - touchStart
@@ -3310,8 +3339,11 @@ export default function MatchesPage() {
                   : ('auto' as const),
                 cursor: !isTouchDevice ? (isDragging ? 'grabbing' : 'grab') : 'default',
                 // Use a pseudo-element or mask to hide the bottom card below this one
-                backgroundColor: 'transparent'
-              }}
+                backgroundColor: 'transparent',
+                WebkitTouchCallout: 'none',
+                WebkitUserSelect: 'none',
+                userSelect: 'none'
+              } as React.CSSProperties}
               onTouchStart={isTouchDevice ? onTouchStart : undefined}
               onTouchMove={isTouchDevice ? onTouchMove : undefined}
               onTouchEnd={isTouchDevice ? onTouchEnd : undefined}
