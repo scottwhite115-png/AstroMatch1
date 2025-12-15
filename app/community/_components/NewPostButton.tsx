@@ -131,43 +131,6 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Type selector */}
-                <div className="space-y-2">
-                  <label className={`text-xs font-medium ${
-                    theme === "light" ? "text-gray-700" : "text-slate-300"
-                  }`}>
-                    Type
-                  </label>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => setType("STORY")}
-                      className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
-                        type === "STORY"
-                          ? "bg-purple-500 text-white"
-                          : theme === "light"
-                            ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                      }`}
-                    >
-                      📖 Story
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setType("QUESTION")}
-                      className={`flex-1 px-3 py-2 text-xs font-medium rounded-lg transition-colors ${
-                        type === "QUESTION"
-                          ? "bg-blue-500 text-white"
-                          : theme === "light"
-                            ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                            : "bg-slate-800 text-slate-300 hover:bg-slate-700"
-                      }`}
-                    >
-                      ❓ Question
-                    </button>
-                  </div>
-                </div>
-
                 {/* Topic selector */}
                 <div className="space-y-1">
                   <label className={`text-xs font-medium ${
