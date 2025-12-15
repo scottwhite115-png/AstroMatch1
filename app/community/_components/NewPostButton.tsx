@@ -97,15 +97,19 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
           />
           
           {/* Modal */}
-          <div className={`fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4`} style={{ WebkitOverflowScrolling: 'touch' }}>
-            <div 
-              className={`w-full max-w-lg rounded-2xl p-4 sm:p-6 shadow-xl border mt-2 mb-8 max-h-[calc(100vh-4rem)] overflow-y-auto ${
-                theme === "light"
-                  ? "bg-white border-gray-200 text-gray-900"
-                  : "bg-slate-900 border-slate-700 text-slate-50"
-              }`}
-              onClick={(e) => e.stopPropagation()}
-            >
+          <div 
+            className={`fixed inset-0 z-50 overflow-y-auto`} 
+            style={{ WebkitOverflowScrolling: 'touch' }}
+          >
+            <div className="min-h-screen flex items-start justify-center p-4 pt-2">
+              <div 
+                className={`w-full max-w-lg rounded-2xl p-4 sm:p-6 shadow-xl border my-4 ${
+                  theme === "light"
+                    ? "bg-white border-gray-200 text-gray-900"
+                    : "bg-slate-900 border-slate-700 text-slate-50"
+                }`}
+                onClick={(e) => e.stopPropagation()}
+              >
               <div className="flex items-center justify-between mb-4">
                 <h2 className={`text-base font-semibold ${
                   theme === "light" ? "text-gray-900" : "text-slate-50"
@@ -259,6 +263,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   </button>
                 </div>
               </form>
+              </div>
             </div>
           </div>
         </>
