@@ -106,7 +106,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                       setOpen(false);
                       resetForm();
                     }}
-                    className={`text-4xl font-medium ml-2 ${
+                    className={`text-4xl font-medium ml-3 ${
                       theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-300 hover:text-slate-50"
                     }`}
                   >
