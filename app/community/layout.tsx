@@ -85,16 +85,18 @@ export default function CommunityLayout({
                 <Link
                   key={topic.id}
                   href={`/community/${topic.id}`}
-                  className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium transition-colors duration-300 ${
+                  className={`whitespace-nowrap rounded-full border px-3 py-1 text-sm font-medium transition-colors duration-300 shadow-lg ${
                     isActive
-                      ? "border-orange-500 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30"
+                      ? "border-orange-500 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white shadow-orange-500/30"
                       : theme === "light"
-                        ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                        : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                        ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50 shadow-transparent"
+                        : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80 shadow-transparent"
                   }`}
                   style={{ 
                     minWidth: 'fit-content',
-                    flexShrink: 0
+                    flexShrink: 0,
+                    willChange: 'color, background-color, border-color',
+                    transform: 'translateZ(0)'
                   }}
                 >
                   {topic.label}
