@@ -614,8 +614,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 : "bg-slate-900 text-slate-200"
             }`}
             style={{
-              maxWidth: westernChipNew.label.includes('–') ? '140px' : 'fit-content',
-              width: 'fit-content',
+              maxWidth: westernChipNew.label.includes('–') ? '150px' : 'fit-content',
+              width: westernChipNew.label.includes('–') ? 'auto' : 'fit-content',
               minWidth: 'min-content',
               display: 'inline-flex',
               flexWrap: 'wrap',
@@ -629,7 +629,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               style={{ 
                 textWrap: 'balance',
                 wordBreak: 'break-word',
-                maxWidth: '100%',
+                maxWidth: westernChipNew.label.includes('–') ? '130px' : '100%',
                 minWidth: 0,
                 flex: '1 1 auto',
               }}
