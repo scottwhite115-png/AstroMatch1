@@ -155,11 +155,12 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     maxLength={200}
-                    className={`w-full rounded-xl border px-4 py-3 text-2xl outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                    className={`w-full rounded-xl border px-4 py-4 text-2xl outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
                     }`}
+                    style={{ fontSize: '1.5rem', lineHeight: '2rem' }}
                     placeholder="Title"
                   />
                 </div>
