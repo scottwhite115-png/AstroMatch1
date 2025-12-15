@@ -1,0 +1,129 @@
+// This is your Prisma schema file
+// Manually defined based on existing Supabase schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model profiles {
+  id             String    @id @db.Uuid
+  display_name   String?
+  west_east      String?   // Legacy combined field, kept for backward compatibility
+  western_sign    String?   // e.g. "Aquarius", "Leo", "Pisces"
+  chinese_sign   String?   // e.g. "Monkey", "Rabbit", "Rat"
+  east_west_code String?   // e.g. "Aquarius Monkey" or your combo key
+  photo_url      String?
+  email          String?
+  phone          String?
+  email_verified Boolean   @default(false)
+  phone_verified Boolean   @default(false)
+  lat            Float?
+  lon            Float?
+  last_active    DateTime  @default(now())
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @default(now())
+
+  posts          Post[]
+}
+
+model preferences {
+  user_id    String   @id @db.Uuid
+  age_min    Int      @default(18)
+  age_max    Int      @default(99)
+  updated_at DateTime @default(now())
+}
+
+model conversations {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user1_id        String   @db.Uuid
+  user2_id        String   @db.Uuid
+  is_new_match    Boolean  @default(true)
+  last_message_at DateTime @default(now())
+  created_at      DateTime @default(now())
+
+  @@unique([user1_id, user2_id])
+  @@index([user1_id])
+  @@index([user2_id])
+  @@index([is_new_match])
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  topic     String   // e.g. "general-astrology", "western-sun-signs", "chinese-astrology", "vedic-astrology", "compatibility-and-synastry", "astromatch-feedback"
+  authorId  String   @db.Uuid
+  author    profiles @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments  Comment[]
+  likes     PostLike[]
+
+  @@index([topic, createdAt])
+  @@index([authorId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Optional parent for replies to comments (1-level nesting is enough)
+  parentId  String?
+  parent    Comment? @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[] @relation("CommentToComment")
+
+  authorId  String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likes     CommentLike[]
+
+  @@index([postId, createdAt])
+  @@index([authorId])
+}
+
+model PostLike {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model CommentLike {
+  id         String   @id @default(cuid())
+  commentId  String
+  comment    Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId     String
+  createdAt  DateTime @default(now())
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   // who should be notified
+  actorId   String   // who triggered it
+  type      String   // "POST_REPLY" | "COMMENT_REPLY"
+  postId    String?
+  commentId String?
+  createdAt DateTime @default(now())
+  readAt    DateTime?
+
+  @@index([userId, createdAt])
+  @@index([userId, readAt])
+}

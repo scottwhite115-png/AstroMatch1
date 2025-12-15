@@ -4,6 +4,7 @@ import { Suspense } from "react"
 import { COMMUNITY_TOPICS } from "../../topics"
 import { ThreadPageClient } from "./_components/ThreadPageClient"
 import { getCurrentProfileWithRole } from "@/lib/auth-helpers"
+import { getAllBlockedRelationships } from "@/lib/utils/block-helpers"
 
 type PageProps = {
   params: Promise<{
@@ -19,6 +20,13 @@ export default async function ThreadPage({ params }: PageProps) {
   const currentProfile = await getCurrentProfileWithRole()
   const canModerate = currentProfile?.role === "ADMIN" || currentProfile?.role === "OWNER"
 
+  // Get blocked relationships
+  let blockedUserIds: string[] = []
+  if (currentProfile) {
+    const { all } = await getAllBlockedRelationships(currentProfile.id)
+    blockedUserIds = all
+  }
+
   // Validate topic
   const topicData = COMMUNITY_TOPICS.find((t) => t.id === topic)
   if (!topicData) {
@@ -31,10 +39,27 @@ export default async function ThreadPage({ params }: PageProps) {
     whereClause.isHidden = false
   }
 
+  // Build comments where clause (exclude blocked users)
+  const commentsWhere: any = {
+    parentId: null, // Top-level comments only
+  }
+  if (blockedUserIds.length > 0) {
+    commentsWhere.authorId = {
+      notIn: blockedUserIds
+    }
+  }
+
+  // Build replies where clause (exclude blocked users)
+  const repliesWhere: any = {}
+  if (blockedUserIds.length > 0) {
+    repliesWhere.authorId = {
+      notIn: blockedUserIds
+    }
+  }
+
   // Fetch post with comments
   const post = await prisma.post.findUnique({
     where: whereClause,
-    where: { id: postId },
     include: {
       author: {
         select: {
@@ -47,9 +72,7 @@ export default async function ThreadPage({ params }: PageProps) {
         },
       },
       comments: {
-        where: {
-          parentId: null, // Top-level comments only
-        },
+        where: commentsWhere,
         include: {
           author: {
             select: {
@@ -62,6 +85,7 @@ export default async function ThreadPage({ params }: PageProps) {
             },
           },
           replies: {
+            where: repliesWhere,
             include: {
               author: {
                 select: {

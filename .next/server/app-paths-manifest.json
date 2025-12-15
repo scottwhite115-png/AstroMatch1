@@ -1,7 +1,10 @@
 {
-  "/astrology/chinese-zodiac/page": "app/astrology/chinese-zodiac/page.js",
-  "/astrology/guide/next/rat/page": "app/astrology/guide/next/rat/page.js",
-  "/astrology/page": "app/astrology/page.js",
-  "/astrology/guide/next/monkey/page": "app/astrology/guide/next/monkey/page.js",
-  "/matches/page": "app/matches/page.js"
+  "/api/admin/check-access/route": "app/api/admin/check-access/route.js",
+  "/profile/account/page": "app/profile/account/page.js",
+  "/profile/profile/page": "app/profile/profile/page.js",
+  "/messages/[id]/page": "app/messages/[id]/page.js",
+  "/matches/page": "app/matches/page.js",
+  "/messages/page": "app/messages/page.js",
+  "/community/page": "app/community/page.js",
+  "/community/[topic]/page": "app/community/[topic]/page.js"
 }

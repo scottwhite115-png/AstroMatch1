@@ -1,0 +1,43 @@
+{
+  "name": "astromatch",
+  "version": "1.0.0",
+  "description": "Astrological compatibility matching app",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "taskmaster init --prd docs/PRD.md --out tasks",
+"tasks": "taskmaster sync"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "@types/node": "^20.8.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.52.0",
+    "eslint-config-next": "^14.0.0",
+    "task-master-cli": "^1.0.0"
+  },
+  "keywords": [
+    "astrology",
+    "compatibility",
+    "matching",
+    "zodiac"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}
+{
+    "scripts": {
+      "tasks:init": "taskmaster init --prd docs/PRD.md --out tasks",
+      "tasks": "taskmaster sync"
+    }
+  }
+  

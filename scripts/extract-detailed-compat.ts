@@ -3,6 +3,10 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const chineseSigns = ['rat', 'ox', 'tiger', 'rabbit', 'dragon', 'snake', 'horse', 'goat', 'monkey', 'rooster', 'dog', 'pig'];
 const westernSigns = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces'];
@@ -21,7 +25,7 @@ function extractCompatibility(content: string): Record<string, CompatibilityEntr
   const compat: Record<string, CompatibilityEntry> = {};
   
   // Match pattern: <h3>Sign × Sign — Pattern</h3> followed by <p>Tagline</p> and <p>Description</p>
-  const regex = /<h3[^>]*>\s*([^—]+)—([^<]+)<\/h3>\s*<p[^>]*>\s*([^<]+)<\/p>\s*<p[^>]*>\s*([^<]+)<\/p>/gs;
+  const regex = /<h3[^>]*>\s*([^—]+)—([^<]+)<\/h3>[\s\S]*?<p[^>]*>\s*([^<]+)<\/p>[\s\S]*?<p[^>]*>\s*([^<]+)<\/p>/g;
   
   let match;
   while ((match = regex.exec(content)) !== null) {

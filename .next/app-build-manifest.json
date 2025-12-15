@@ -6,20 +6,55 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
+    ],
+    "/matches/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/matches/page.js"
+    ],
     "/astrology/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/astrology/page.js"
+    ],
+    "/astrology/five-elements/earth/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/astrology/five-elements/earth/page.js"
     ],
     "/astrology/sun-signs/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/astrology/sun-signs/page.js"
     ],
-    "/astrology/guide/aquarius/page": [
+    "/astrology/combinations/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/aquarius/page.js"
+      "static/chunks/app/astrology/combinations/page.js"
+    ],
+    "/astrology/chinese-zodiac/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/astrology/chinese-zodiac/page.js"
+    ],
+    "/profile/profile/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/profile/profile/page.js"
+    ],
+    "/profile/account/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/profile/account/page.js"
+    ],
+    "/messages/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/messages/page.js"
     ],
     "/community/layout": [
       "static/chunks/webpack.js",
@@ -36,65 +71,30 @@
       "static/chunks/main-app.js",
       "static/chunks/app/community/[topic]/page.js"
     ],
-    "/profile/profile/page": [
+    "/community/live/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/profile/profile/page.js"
-    ],
-    "/matches/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/matches/page.js"
-    ],
-    "/messages/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/messages/page.js"
+      "static/chunks/app/community/live/page.js"
     ],
     "/messages/[id]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/messages/[id]/page.js"
     ],
-    "/astrology/guide/leo/page": [
+    "/community/live/[house]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/leo/page.js"
+      "static/chunks/app/community/live/[house]/page.js"
     ],
-    "/community/live/page": [
+    "/api/community/live/join/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/community/live/page.js"
+      "static/chunks/app/api/community/live/join/route.js"
     ],
-    "/astrology/chinese-zodiac/page": [
+    "/api/admin/check-access/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/astrology/chinese-zodiac/page.js"
-    ],
-    "/astrology/guide/next/pig/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/next/pig/page.js"
-    ],
-    "/astrology/guide/next/rooster/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/next/rooster/page.js"
-    ],
-    "/astrology/guide/next/goat/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/next/goat/page.js"
-    ],
-    "/astrology/guide/next/rat/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/next/rat/page.js"
-    ],
-    "/astrology/guide/next/monkey/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/astrology/guide/next/monkey/page.js"
+      "static/chunks/app/api/admin/check-access/route.js"
     ]
   }
 }
