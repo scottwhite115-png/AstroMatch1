@@ -146,12 +146,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                 </div>
 
                 {/* Title */}
-                <div className="space-y-2">
-                  <label className={`text-sm font-medium ${
-                    theme === "light" ? "text-gray-700" : "text-slate-300"
-                  }`}>
-                    Title
-                  </label>
+                <div>
                   <input
                     type="text"
                     value={title}
