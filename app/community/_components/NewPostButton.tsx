@@ -180,7 +180,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                         : "bg-slate-950/60 text-slate-50"
                     }`}
                     style={{ touchAction: 'manipulation', fontSize: '1.5rem', lineHeight: '2rem' }}
-                    placeholder="Share your question, experience, or insight with the community..."
+                    placeholder="....."
                   />
                 </div>
 
