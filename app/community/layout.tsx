@@ -79,19 +79,24 @@ export default function CommunityLayout({
         {/* Topic navigation chips - Only show for Stories & Q&A */}
         {showTopicChips && (
           <nav className="mb-3 flex gap-2 overflow-x-auto pb-1 px-3">
-            {COMMUNITY_TOPICS.map((topic) => (
-              <Link
-                key={topic.id}
-                href={`/community/${topic.id}`}
-                className={`whitespace-nowrap rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-                  theme === "light"
-                    ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                    : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
-                }`}
-              >
-                {topic.hashtag}
-              </Link>
-            ))}
+            {COMMUNITY_TOPICS.map((topic) => {
+              const isActive = pathname === `/community/${topic.id}`;
+              return (
+                <Link
+                  key={topic.id}
+                  href={`/community/${topic.id}`}
+                  className={`whitespace-nowrap rounded-full border px-3 py-1 text-xs font-medium transition-all duration-300 ${
+                    isActive
+                      ? "border-orange-500 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white shadow-lg shadow-orange-500/30"
+                      : theme === "light"
+                        ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                        : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                  }`}
+                >
+                  {topic.hashtag}
+                </Link>
+              );
+            })}
           </nav>
         )}
 
