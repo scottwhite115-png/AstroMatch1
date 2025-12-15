@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContext";
 import { COMMUNITY_TOPICS } from "./topics";
 import { CommunityTabs } from "./_components/CommunityTabs";
-import { NewPostButton } from "./_components/NewPostButton";
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -23,11 +22,6 @@ export default function CommunityLayout({
   
   // Show topic chips only for Stories & Q&A tab (not Live)
   const showTopicChips = !pathname.startsWith('/community/live');
-  
-  // Determine current topic from pathname
-  const currentTopic = pathname.startsWith('/community/') 
-    ? pathname.split('/')[2] || 'general-astrology'
-    : 'general-astrology';
 
   return (
     <div className={`min-h-screen ${
@@ -76,14 +70,9 @@ export default function CommunityLayout({
             Stories, questions and live chats about your signs.
           </p>
 
-          {/* Stories & Q&A | Live Tabs with New Post Button */}
-          <div className="flex items-center justify-between gap-4">
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-              <CommunityTabs />
-            </div>
-            {showTopicChips && (
-              <NewPostButton topic={currentTopic} />
-            )}
+          {/* Stories & Q&A | Live Tabs */}
+          <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+            <CommunityTabs />
           </div>
         </header>
 
