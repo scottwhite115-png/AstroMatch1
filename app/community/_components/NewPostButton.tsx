@@ -87,53 +87,43 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
 
       {open && (
         <>
-          {/* Backdrop */}
+          {/* Full Screen Page */}
           <div 
-            className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            onClick={() => {
-              setOpen(false);
-              resetForm();
-            }}
-          />
-          
-          {/* Modal */}
-          <div 
-            className={`fixed inset-0 z-50 overflow-y-auto`} 
+            className={`fixed inset-0 z-50 overflow-y-auto ${
+              theme === "light" 
+                ? "bg-white" 
+                : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+            }`} 
             style={{ WebkitOverflowScrolling: 'touch' }}
           >
-            <div className="min-h-screen flex items-start justify-center p-4 pt-2">
-              <div 
-                className={`w-full max-w-lg rounded-2xl p-4 sm:p-6 shadow-xl border my-4 ${
-                  theme === "light"
-                    ? "bg-white border-gray-200 text-gray-900"
-                    : "bg-slate-900 border-slate-700 text-slate-50"
-                }`}
-                onClick={(e) => e.stopPropagation()}
-              >
-              <div className="flex items-center justify-between mb-4">
-                <h2 className={`text-base font-semibold ${
-                  theme === "light" ? "text-gray-900" : "text-slate-50"
-                }`}>
-                  Create a post
-                </h2>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setOpen(false);
-                    resetForm();
-                  }}
-                  className={`text-xs ${
-                    theme === "light" ? "text-gray-400 hover:text-gray-600" : "text-slate-400 hover:text-slate-200"
-                  }`}
-                >
-                  Close
-                </button>
-              </div>
+            <div className="min-h-screen">
+              <div className="mx-auto max-w-2xl px-4 py-6">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className={`text-xl font-bold ${
+                    theme === "light" ? "text-gray-900" : "text-slate-50"
+                  }`}>
+                    Create a post
+                  </h2>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setOpen(false);
+                      resetForm();
+                    }}
+                    className={`text-sm font-medium ${
+                      theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-300 hover:text-slate-50"
+                    }`}
+                  >
+                    ✕ Close
+                  </button>
+                </div>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Form */}
+                <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Topic selector */}
-                <div className="space-y-1">
-                  <label className={`text-xs font-medium ${
+                <div className="space-y-2">
+                  <label className={`text-sm font-medium ${
                     theme === "light" ? "text-gray-700" : "text-slate-300"
                   }`}>
                     Topic
@@ -141,7 +131,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   <select
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                    className={`w-full rounded-xl border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
@@ -156,8 +146,8 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                 </div>
 
                 {/* Title */}
-                <div className="space-y-1">
-                  <label className={`text-xs font-medium ${
+                <div className="space-y-2">
+                  <label className={`text-sm font-medium ${
                     theme === "light" ? "text-gray-700" : "text-slate-300"
                   }`}>
                     Title
@@ -167,7 +157,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     maxLength={200}
-                    className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                    className={`w-full rounded-xl border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
@@ -177,8 +167,8 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                 </div>
 
                 {/* Content */}
-                <div className="space-y-1">
-                  <label className={`text-xs font-medium ${
+                <div className="space-y-2">
+                  <label className={`text-sm font-medium ${
                     theme === "light" ? "text-gray-700" : "text-slate-300"
                   }`}>
                     Post
@@ -186,8 +176,8 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   <textarea
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    rows={6}
-                    className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 resize-none ${
+                    rows={10}
+                    className={`w-full rounded-xl border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 resize-none ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
@@ -202,14 +192,14 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   </p>
                 )}
 
-                <div className="flex items-center justify-end gap-2 pt-2">
+                <div className="flex items-center justify-end gap-3 pt-4">
                   <button
                     type="button"
                     onClick={() => {
                       setOpen(false);
                       resetForm();
                     }}
-                    className={`rounded-full px-3 py-1.5 text-xs font-medium ${
+                    className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
                       theme === "light"
                         ? "text-gray-600 hover:bg-gray-100"
                         : "text-slate-300 hover:bg-slate-800/60"
@@ -220,7 +210,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   <button
                     type="submit"
                     disabled={isPending}
-                    className="rounded-full px-4 py-1.5 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-white shadow-sm transition-colors"
+                    className="rounded-full px-6 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-white shadow-lg transition-colors"
                   >
                     {isPending ? "Posting..." : "Post"}
                   </button>
