@@ -99,7 +99,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
             <div className="min-h-screen">
               <div className="mx-auto max-w-2xl px-4 py-6">
                 {/* Header */}
-                <div className="flex items-center justify-start mb-4 -mt-2">
+                <div className="flex items-center justify-between mb-4 -mt-2">
                   <button
                     type="button"
                     onClick={() => {
@@ -112,10 +112,18 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   >
                     ✕
                   </button>
+                  <button
+                    type="submit"
+                    form="create-post-form"
+                    disabled={isPending}
+                    className="rounded-full px-6 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-white shadow-lg transition-colors"
+                  >
+                    {isPending ? "Posting..." : "Post"}
+                  </button>
                 </div>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form id="create-post-form" onSubmit={handleSubmit} className="space-y-5">
                 {/* Topic selector */}
                 <div>
                   <select
@@ -171,30 +179,6 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     {error}
                   </p>
                 )}
-
-                <div className="flex items-center justify-end gap-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setOpen(false);
-                      resetForm();
-                    }}
-                    className={`rounded-full px-5 py-2.5 text-sm font-medium transition-colors ${
-                      theme === "light"
-                        ? "text-gray-600 hover:bg-gray-100"
-                        : "text-slate-300 hover:bg-slate-800/60"
-                    }`}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isPending}
-                    className="rounded-full px-6 py-2.5 text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-60 text-white shadow-lg transition-colors"
-                  >
-                    {isPending ? "Posting..." : "Post"}
-                  </button>
-                </div>
               </form>
               </div>
             </div>
