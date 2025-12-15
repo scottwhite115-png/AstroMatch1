@@ -97,7 +97,7 @@ export default function CommunityLayout({
                     flexShrink: 0
                   }}
                 >
-                  {topic.hashtag}
+                  {topic.label}
                 </Link>
               );
             })}
