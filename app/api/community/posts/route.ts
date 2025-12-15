@@ -19,6 +19,19 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    // Check if user is staff (ADMIN or OWNER) - they can see hidden posts
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    
+    let canViewHidden = false
+    if (user) {
+      const profile = await prisma.profiles.findUnique({
+        where: { id: user.id },
+        select: { role: true }
+      })
+      canViewHidden = profile?.role === "ADMIN" || profile?.role === "OWNER"
+    }
+
     // Build where clause
     const where: any = {}
     if (topic) {
@@ -26,6 +39,10 @@ export async function GET(request: NextRequest) {
     }
     if (cursor) {
       where.createdAt = { lt: new Date(cursor) }
+    }
+    // Hide hidden posts from regular users
+    if (!canViewHidden) {
+      where.isHidden = false
     }
 
     // Build orderBy
