@@ -99,7 +99,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
             <div className="min-h-screen">
               <div className="mx-auto max-w-2xl px-4 py-6">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4">
                   <h2 className={`text-xl font-bold ${
                     theme === "light" ? "text-gray-900" : "text-slate-50"
                   }`}>
