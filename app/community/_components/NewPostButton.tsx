@@ -140,12 +140,12 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   <select
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    className={`w-full rounded-xl border px-4 py-4 text-xl outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                    className={`w-full rounded-xl border px-4 py-4 text-xl font-bold outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
                     }`}
-                    style={{ fontSize: '1.25rem', lineHeight: '1.75rem' }}
+                    style={{ fontSize: '1.25rem', lineHeight: '1.75rem', fontWeight: 'bold' }}
                   >
                     {COMMUNITY_TOPICS.map((t) => (
                       <option key={t.id} value={t.id} style={{ fontSize: '0.875rem', padding: '8px' }}>
