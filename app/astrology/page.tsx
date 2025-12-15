@@ -929,9 +929,6 @@ export default function AstrologySection() {
               <h2 className="astrology-heading-secondary mb-4">Five Elements (五行)</h2>
 
               <div className="mb-6">
-                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <h3 className={`text-base font-bold mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>The Five Elements</h3>
-                  
                   <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
                     <Link 
                       href="/astrology/five-elements/wood"
@@ -1086,8 +1083,6 @@ export default function AstrologySection() {
                       <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>No strong help or clash from the elements; other parts of the chart matter more.</span>
                     </div>
                   </div>
-                </div>
-              </div>
             </div>
           </div>
 
