@@ -29,9 +29,6 @@ export function CommunityTopicClient({ topic, metadata }: CommunityTopicClientPr
               <span>{metadata.icon}</span>
               <span>{metadata.label}</span>
             </h1>
-            <p className="text-xs text-slate-400">
-              {metadata.description}
-            </p>
           </div>
           <NewPostButton
             topic={topic}

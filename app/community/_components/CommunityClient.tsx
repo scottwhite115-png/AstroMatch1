@@ -226,11 +226,6 @@ export function CommunityClient({ initialTopic = "relationship" }: { initialTopi
                     <span className="mt-[1px] text-base">{topic.icon}</span>
                     <span className="flex flex-col">
                       <span className="font-medium">{topic.label}</span>
-                      <span className={`text-xs ${
-                        theme === "light" ? "text-gray-500" : "text-slate-500"
-                      }`}>
-                        {topic.description}
-                      </span>
                     </span>
                   </button>
                 );
@@ -250,11 +245,6 @@ export function CommunityClient({ initialTopic = "relationship" }: { initialTopi
             <span>{activeTopic.icon}</span>
             <span>{activeTopic.label}</span>
           </h1>
-          <p className={`text-sm ${
-            theme === "light" ? "text-gray-600" : "text-slate-400"
-          }`}>
-            {activeTopic.description}
-          </p>
         </section>
 
         {/* Posts feed - Server component will be rendered here */}

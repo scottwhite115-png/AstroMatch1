@@ -21,7 +21,6 @@ export default async function TopicPage({
             <h2 className="text-sm font-semibold text-slate-50">
               {topic.hashtag}
             </h2>
-            <p className="text-xs text-slate-400">{topic.description}</p>
           </div>
           <NewPostButton topic={topic.id} />
         </div>
