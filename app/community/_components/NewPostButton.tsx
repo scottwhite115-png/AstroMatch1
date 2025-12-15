@@ -162,7 +162,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
                     }`}
-                    placeholder="Give your post a clear, interesting title..."
+                    placeholder="Title"
                   />
                 </div>
 
