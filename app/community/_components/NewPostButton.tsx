@@ -89,14 +89,17 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
         <>
           {/* Full Screen Page */}
           <div 
-            className={`fixed inset-0 z-50 overflow-y-auto ${
+            className={`fixed inset-0 z-50 overflow-y-scroll ${
               theme === "light" 
                 ? "bg-white" 
                 : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
             }`} 
-            style={{ WebkitOverflowScrolling: 'touch' }}
+            style={{ 
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain'
+            }}
           >
-            <div className="min-h-screen">
+            <div className="min-h-screen pb-96">
               <div className="mx-auto max-w-2xl px-4 py-6">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-4 -mt-2">
@@ -176,6 +179,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                         ? "bg-white text-gray-900"
                         : "bg-slate-950/60 text-slate-50"
                     }`}
+                    style={{ touchAction: 'manipulation' }}
                     placeholder="Share your question, experience, or insight with the community..."
                   />
                 </div>
