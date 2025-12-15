@@ -1,45 +1,30 @@
 import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+import { getCurrentProfileWithRole } from "@/lib/auth-helpers"
 
 export async function GET(req: NextRequest) {
   try {
-    // Get user from auth header or cookie
-    const authHeader = req.headers.get("authorization")
-    const token = authHeader?.replace("Bearer ", "")
+    const profile = await getCurrentProfileWithRole()
     
-    if (!token) {
-      return NextResponse.json({ authorized: false, error: "No token" }, { status: 401 })
+    if (!profile) {
+      return NextResponse.json({ authorized: false, error: "Not authenticated" }, { status: 401 })
     }
 
-    // Verify token and get user
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-    
-    if (authError || !user) {
-      return NextResponse.json({ authorized: false, error: "Invalid token" }, { status: 401 })
+    // Check account status
+    if (profile.status === "BANNED") {
+      return NextResponse.json({ authorized: false, error: "Account banned" }, { status: 403 })
     }
 
-    // Get user profile with role
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role, isStaff, status")
-      .eq("id", user.id)
-      .single()
-
-    if (profileError || !profile) {
-      return NextResponse.json({ authorized: false, error: "Profile not found" }, { status: 404 })
+    if (profile.status === "SUSPENDED") {
+      return NextResponse.json({ authorized: false, error: "Account suspended" }, { status: 403 })
     }
 
-    // Check if user is ADMIN or OWNER
+    // Check if user is ADMIN or OWNER (with auto-promotion already handled)
     if (profile.role === "ADMIN" || profile.role === "OWNER") {
       return NextResponse.json({ 
         authorized: true, 
         role: profile.role,
-        isStaff: profile.isStaff
+        isStaff: profile.isStaff,
+        status: profile.status
       })
     }
 
