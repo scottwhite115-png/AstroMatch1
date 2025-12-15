@@ -99,7 +99,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
             <div className="min-h-screen">
               <div className="mx-auto max-w-2xl px-4 py-6">
                 {/* Header */}
-                <div className="flex items-center justify-start mb-4">
+                <div className="flex items-center justify-start mb-4 -mt-2">
                   <button
                     type="button"
                     onClick={() => {
