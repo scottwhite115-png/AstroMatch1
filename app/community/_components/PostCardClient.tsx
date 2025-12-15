@@ -49,7 +49,7 @@ export function PostCardClient({ post, currentUserProfile }: PostCardClientProps
           : "bg-slate-900/60 border-slate-700 hover:border-slate-600"
       }`}
     >
-      {/* Header: Type badge + Topic hashtag */}
+      {/* Header: Type badge */}
       <div className="flex items-center justify-between gap-2 mb-2">
         <div className="flex items-center gap-2">
           {/* Type badge */}
@@ -66,13 +66,6 @@ export function PostCardClient({ post, currentUserProfile }: PostCardClientProps
               {post.type === "QUESTION" ? "Question" : "Story"}
             </span>
           )}
-          
-          {/* Topic hashtag */}
-          <span className={`text-[10px] font-medium ${
-            theme === "light" ? "text-gray-500" : "text-slate-500"
-          }`}>
-            #{post.topic.replace(/-/g, " ")}
-          </span>
         </div>
       </div>
 

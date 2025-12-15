@@ -16,12 +16,7 @@ export default async function TopicPage({
 
     return (
       <div className="mt-2 space-y-3">
-        <div className="flex items-center justify-between gap-3">
-          <div>
-            <h2 className="text-sm font-semibold text-slate-50">
-              {topic.hashtag}
-            </h2>
-          </div>
+        <div className="flex items-center justify-end gap-3 mb-3">
           <NewPostButton topic={topic.id} />
         </div>
 

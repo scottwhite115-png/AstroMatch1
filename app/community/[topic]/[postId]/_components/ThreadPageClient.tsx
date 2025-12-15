@@ -149,13 +149,6 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
             }`}>
               {post.type === "QUESTION" ? "Question" : "Story"}
             </span>
-
-            {/* Topic chip */}
-            <span className={`text-[10px] font-medium ${
-              theme === "light" ? "text-gray-500" : "text-slate-500"
-            }`}>
-              {topicData.hashtag}
-            </span>
           </div>
 
           {/* 3-Dot Menu */}
