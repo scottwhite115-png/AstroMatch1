@@ -1,7 +1,8 @@
 {
-  "/profile/account/page": "app/profile/account/page.js",
+  "/astrology/page": "app/astrology/page.js",
   "/matches/page": "app/matches/page.js",
-  "/messages/[id]/page": "app/messages/[id]/page.js",
-  "/profile/profile/page": "app/profile/profile/page.js",
-  "/messages/page": "app/messages/page.js"
+  "/messages/page": "app/messages/page.js",
+  "/community/[topic]/page": "app/community/[topic]/page.js",
+  "/community/live/page": "app/community/live/page.js",
+  "/community/page": "app/community/page.js"
 }
