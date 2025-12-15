@@ -133,7 +133,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                   <select
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    className={`w-full rounded-xl border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                    className={`w-full rounded-xl border px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
@@ -154,7 +154,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     maxLength={200}
-                    className={`w-full rounded-xl border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
+                    className={`w-full rounded-xl border px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
@@ -169,7 +169,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     rows={10}
-                    className={`w-full rounded-xl border px-4 py-3 text-base outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 resize-none ${
+                    className={`w-full rounded-xl border px-4 py-3 text-lg outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 resize-none ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-900"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
