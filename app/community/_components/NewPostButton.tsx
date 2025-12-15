@@ -171,7 +171,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     rows={10}
-                    className={`w-full rounded-xl px-4 py-3 text-lg outline-none resize-none ${
+                    className={`w-full rounded-xl px-4 py-3 text-xl outline-none resize-none ${
                       theme === "light"
                         ? "bg-white text-gray-900"
                         : "bg-slate-950/60 text-slate-50"
