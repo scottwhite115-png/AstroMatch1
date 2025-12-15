@@ -929,41 +929,41 @@ export default function AstrologySection() {
               <h2 className="astrology-heading-secondary mb-4">Five Elements (五行)</h2>
 
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-                    <Link 
-                      href="/astrology/five-elements/wood"
-                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                    >
-                      <div className="text-2xl mb-1">🌳</div>
-                      <div className="text-sm font-semibold text-green-500">Wood (木)</div>
-                    </Link>
-                    <Link 
-                      href="/astrology/five-elements/fire"
-                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                    >
-                      <div className="text-2xl mb-1">🔥</div>
-                      <div className="text-sm font-semibold text-orange-500">Fire (火)</div>
-                    </Link>
-                    <Link 
-                      href="/astrology/five-elements/earth"
-                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                    >
-                      <div className="text-2xl mb-1">⛰️</div>
-                      <div className="text-sm font-semibold text-yellow-600">Earth (土)</div>
-                    </Link>
-                    <Link 
-                      href="/astrology/five-elements/metal"
-                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                    >
-                      <div className="text-2xl mb-1">⚙️</div>
-                      <div className={`text-sm font-semibold ${theme === "light" ? "text-gray-500" : "text-gray-300"}`}>Metal (金)</div>
-                    </Link>
-                    <Link 
-                      href="/astrology/five-elements/water"
-                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                    >
-                      <div className="text-2xl mb-1">💧</div>
-                      <div className="text-sm font-semibold text-blue-500">Water (水)</div>
-                    </Link>
+                <Link 
+                  href="/astrology/five-elements/wood"
+                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                >
+                  <div className="text-2xl mb-1">🌳</div>
+                  <div className="text-sm font-semibold text-green-500">Wood (木)</div>
+                </Link>
+                <Link 
+                  href="/astrology/five-elements/fire"
+                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                >
+                  <div className="text-2xl mb-1">🔥</div>
+                  <div className="text-sm font-semibold text-orange-500">Fire (火)</div>
+                </Link>
+                <Link 
+                  href="/astrology/five-elements/earth"
+                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                >
+                  <div className="text-2xl mb-1">⛰️</div>
+                  <div className="text-sm font-semibold text-yellow-600">Earth (土)</div>
+                </Link>
+                <Link 
+                  href="/astrology/five-elements/metal"
+                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                >
+                  <div className="text-2xl mb-1">⚙️</div>
+                  <div className={`text-sm font-semibold ${theme === "light" ? "text-gray-500" : "text-gray-300"}`}>Metal (金)</div>
+                </Link>
+                <Link 
+                  href="/astrology/five-elements/water"
+                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                >
+                  <div className="text-2xl mb-1">💧</div>
+                  <div className="text-sm font-semibold text-blue-500">Water (水)</div>
+                </Link>
               </div>
 
               <h4 className={`text-sm font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Two Key Relationship Cycles:</h4>
@@ -1002,64 +1002,64 @@ export default function AstrologySection() {
               {/* Compatibility Table */}
               <div className="overflow-x-auto mb-4">
                 <table className="w-full text-xs border-collapse">
-                      <thead>
-                        <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
-                          <th className={`p-2 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>A \ B</th>
-                          <th className="p-2 text-center font-semibold text-green-500">Wood</th>
-                          <th className="p-2 text-center font-semibold text-orange-500">Fire</th>
-                          <th className="p-2 text-center font-semibold text-yellow-600">Earth</th>
-                          <th className={`p-2 text-center font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</th>
-                          <th className="p-2 text-center font-semibold text-blue-500">Water</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {/* Wood Row */}
-                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                          <td className="p-2 font-semibold text-green-500">Wood</td>
-                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                        </tr>
-                        {/* Fire Row */}
-                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                          <td className="p-2 font-semibold text-orange-500">Fire</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                        </tr>
-                        {/* Earth Row */}
-                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                          <td className="p-2 font-semibold text-yellow-600">Earth</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                        </tr>
-                        {/* Metal Row */}
-                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                          <td className={`p-2 font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                        </tr>
-                        {/* Water Row */}
-                        <tr>
-                          <td className="p-2 font-semibold text-blue-500">Water</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <thead>
+                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                      <th className={`p-2 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>A \ B</th>
+                      <th className="p-2 text-center font-semibold text-green-500">Wood</th>
+                      <th className="p-2 text-center font-semibold text-orange-500">Fire</th>
+                      <th className="p-2 text-center font-semibold text-yellow-600">Earth</th>
+                      <th className={`p-2 text-center font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</th>
+                      <th className="p-2 text-center font-semibold text-blue-500">Water</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {/* Wood Row */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                      <td className="p-2 font-semibold text-green-500">Wood</td>
+                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                    </tr>
+                    {/* Fire Row */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                      <td className="p-2 font-semibold text-orange-500">Fire</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                    </tr>
+                    {/* Earth Row */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                      <td className="p-2 font-semibold text-yellow-600">Earth</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                    </tr>
+                    {/* Metal Row */}
+                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                      <td className={`p-2 font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                    </tr>
+                    {/* Water Row */}
+                    <tr>
+                      <td className="p-2 font-semibold text-blue-500">Water</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
 
               {/* Legend */}
