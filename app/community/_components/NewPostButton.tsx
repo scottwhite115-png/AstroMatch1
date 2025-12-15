@@ -77,7 +77,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
         onClick={() => setOpen(true)}
         className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all border-2 ${
           theme === "light"
-            ? "bg-transparent border-emerald-500 text-emerald-600 hover:bg-emerald-50"
+            ? "bg-transparent border-emerald-600 text-emerald-600 hover:bg-emerald-50"
             : "bg-transparent border-emerald-500 text-emerald-400 hover:bg-emerald-950/30"
         }`}
       >
