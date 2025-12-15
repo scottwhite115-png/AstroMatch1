@@ -1083,6 +1083,7 @@ export default function AstrologySection() {
                       <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>No strong help or clash from the elements; other parts of the chart matter more.</span>
                     </div>
                   </div>
+              </div>
             </div>
           </div>
 
