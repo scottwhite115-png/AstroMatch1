@@ -200,12 +200,12 @@ export function getConnectionBlurb(
   switch (archetype) {
     case 'TRIPLE_HARMONY':
       if (ease === 'EASY') {
-        return 'Same-tribe match with easy flow; more supportive than dramatic, so building a life together tends to feel simpler.';
+        return 'Same-trine match with easy flow; more supportive than dramatic, so building a life together tends to feel simpler.';
       }
       if (ease === 'MEDIUM') {
-        return 'Strong same-tribe bond with some style differences; it works when you stay curious about each other instead of assuming your way is right.';
+        return 'Strong same-trine bond with some style differences; it works when you stay curious about each other instead of assuming your way is right.';
       }
-      return 'Deep same-tribe connection with real friction; powerful when you chase a shared goal, draining when you keep pulling in different directions.';
+      return 'Deep same-trine connection with real friction; powerful when you chase a shared goal, draining when you keep pulling in different directions.';
 
     case 'SUPPORTIVE_ALLY':
       // Blurb C: Secret Friends + lesson overlay (has damage)

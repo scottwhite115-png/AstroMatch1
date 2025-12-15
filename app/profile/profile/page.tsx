@@ -2659,8 +2659,8 @@ export default function AstrologyProfilePage({
         </div>
 
         {/* Horizontal Tabs Navigation */}
-        <div className="px-5 pt-1 pb-2">
-          <div className="flex justify-center gap-8">
+        <div className="px-3 pt-1 pb-2">
+          <div className="flex justify-start gap-8">
               <button
                 onClick={() => router.push("/profile/profile")}
                 className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${

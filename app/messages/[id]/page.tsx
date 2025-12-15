@@ -5,10 +5,15 @@ import { useRouter, useParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/contexts/ThemeContext"
 import { getConversation, createConversation, updateConversation, type Conversation } from "@/lib/utils/conversations"
-import { buildConnectionBoxFromAstro, deriveElement, deriveTrine } from "@/lib/compat/engine"
-import type { UserAstro, ConnectionBox } from "@/lib/compat/types"
-import { getWesternSignEmoji, getChineseSignEmoji } from '@/lib/utils/emojis'
-import { LabelPill } from "@/ui/LabelPill"
+import { buildConnectionBox } from "@/lib/compat/engine"
+import type { UserProfile, SimpleConnectionBox } from "@/lib/compat/types"
+import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
+import { getBothSunSignsFromBirthdate, getSavedSunSigns } from "@/lib/sunSignCalculator"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
+import { getWuXingYearElement, type WuXing } from "@/lib/matchEngine"
+import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
+import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
+import MatchProfileCard from "@/components/MatchProfileCard"
 
 const ArrowLeft = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -107,8 +112,9 @@ export default function ChatPage() {
   const menuRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [compatBox, setCompatBox] = useState<ConnectionBox | null>(null)
-  const [userAstro, setUserAstro] = useState<UserAstro | null>(null)
+  const [connectionBoxData, setConnectionBoxData] = useState<ConnectionBoxData | null>(null)
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const sunSignSystem = useSunSignSystem()
   
   // User's zodiac signs for matching
   const [userZodiacSigns, setUserZodiacSigns] = useState<{western: string, chinese: string}>({
@@ -130,25 +136,6 @@ export default function ChatPage() {
         western: userWesternSign,
         chinese: userChineseSign
       })
-      
-      // Build UserAstro for new engine
-      try {
-        // Get user gender from localStorage
-        const userGender = localStorage.getItem("userGender") || "unspecified"
-        const astro: UserAstro = {
-          west_sign: userWesternSign.toLowerCase() as any,
-          east_sign: userChineseSign.toLowerCase() as any,
-          element: deriveElement(userWesternSign),
-          trine: deriveTrine(userChineseSign),
-          gender: userGender as any
-        }
-        setUserAstro(astro)
-        
-        console.log("[Messages] User zodiac signs loaded:", { western: userWesternSign, chinese: userChineseSign })
-        console.log("[Messages] User astro:", astro)
-      } catch (error) {
-        console.error("[Messages] Error creating UserAstro:", error)
-      }
     } else {
       // Default fallback if no signs in localStorage
       console.warn("[Messages] No user signs in localStorage, using default Leo-Rabbit")
@@ -156,35 +143,283 @@ export default function ChatPage() {
         western: 'leo',
         chinese: 'rabbit'
       })
-      
-      const astro: UserAstro = {
-        west_sign: 'leo',
-        east_sign: 'rabbit',
-        element: deriveElement('leo'),
-        trine: deriveTrine('rabbit'),
-        gender: 'unspecified'
-      }
-      setUserAstro(astro)
     }
   }, [])
   
-  // Build compatibility box when user signs are available
+  // Helper function to convert SimpleConnectionBox to ConnectionBoxData (same as profile view page)
+  const convertSimpleToConnectionBoxData = (
+    simpleBox: SimpleConnectionBox,
+    userWest: string,
+    userEast: string,
+    profileWest: string,
+    profileEast: string,
+    profile: any,
+    userYearElement?: any,
+    profileYearElement?: any
+  ): ConnectionBoxData => {
+    const {
+      extractChineseBase,
+      extractChineseOverlays,
+      extractWesternRelation,
+      extractPrimaryLabel,
+    } = require('@/lib/connectionUiHelpers');
+    
+    const chineseBase = extractChineseBase(simpleBox.chinesePattern || simpleBox.pattern);
+    let chineseOverlays = extractChineseOverlays(
+      simpleBox.chinesePattern || simpleBox.pattern,
+      undefined,
+      simpleBox.chineseLine
+    );
+    
+    const primaryPattern = String(simpleBox.chinesePattern || simpleBox.pattern || '').toUpperCase();
+    if (primaryPattern.includes('LIU_CHONG') && !chineseOverlays.includes('LIU_CHONG')) {
+      chineseOverlays.push('LIU_CHONG');
+    } else if (primaryPattern.includes('XING') && !chineseOverlays.includes('XING')) {
+      chineseOverlays.push('XING');
+    } else if (primaryPattern.includes('LIU_HAI') && !chineseOverlays.includes('LIU_HAI')) {
+      chineseOverlays.push('LIU_HAI');
+    } else if (primaryPattern.includes('PO') && !chineseOverlays.includes('PO')) {
+      chineseOverlays.push('PO');
+    }
+    const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
+    const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
+    
+    const labelToRankKey: Record<string, any> = {
+      "Soulmate Match": "perfect",
+      "Twin Flame Match": "excellent",
+      "Excellent Match": "excellent",
+      "Favourable Match": "good",
+      "Good Friends": "good",
+      "Good Friends Match": "good",
+      "Opposites Attract": "fair",
+      "Magnetic Opposites": "fair",
+      "Neutral Match": "fair",
+      "Difficult Match": "challenging",
+    };
+    
+    const rankKey = labelToRankKey[simpleBox.matchLabel] || "neutral";
+    
+    const labelToTier = (label: string): string => {
+      if (label === "SOULMATE" || label === "SOULMATE MATCH" || label === "Soulmate Match") return "Soulmate";
+      if (label === "TWIN FLAME" || label === "TWIN FLAME MATCH" || label === "Twin Flame Match") return "Twin Flame";
+      if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
+      if (label === "Favourable Match") return "Favourable";
+      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
+      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
+      if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
+      return "Neutral";
+    };
+    
+    const labelToEmoji: Record<string, string> = {
+      "SOULMATE": "💫", "SOULMATE MATCH": "💫", "Soulmate Match": "💫",
+      "TWIN FLAME": "🔥", "TWIN FLAME MATCH": "🔥", "Twin Flame Match": "🔥",
+      "HARMONIOUS": "✨", "HARMONIOUS MATCH": "✨", "Excellent Match": "✨",
+      "Favourable Match": "✨", "Good Friends": "✨", "Good Friends Match": "✨",
+      "OPPOSITES_ATTRACT": "⚡", "OPPOSITES ATTRACT": "⚡", "Opposites Attract": "⚡", "Magnetic Opposites": "⚡",
+      "NEUTRAL": "✨", "NEUTRAL MATCH": "✨", "Neutral Match": "✨",
+      "DIFFICULT": "💔", "DIFFICULT MATCH": "💔", "Difficult Match": "💔",
+    };
+    
+    const labelToColor: Record<string, string> = {
+      "SOULMATE": "rgb(212, 175, 55)", "SOULMATE MATCH": "rgb(212, 175, 55)", "Soulmate Match": "rgb(212, 175, 55)",
+      "TWIN FLAME": "rgb(255, 140, 0)", "TWIN FLAME MATCH": "rgb(255, 140, 0)", "Twin Flame Match": "rgb(255, 140, 0)",
+      "HARMONIOUS": "rgb(219, 39, 119)", "HARMONIOUS MATCH": "rgb(219, 39, 119)", "Excellent Match": "rgb(219, 39, 119)",
+      "Favourable Match": "rgb(219, 39, 119)", "Good Friends": "rgb(34, 139, 34)", "Good Friends Match": "rgb(34, 139, 34)",
+      "OPPOSITES_ATTRACT": "rgb(239, 68, 68)", "OPPOSITES ATTRACT": "rgb(239, 68, 68)", "Opposites Attract": "rgb(239, 68, 68)", "Magnetic Opposites": "rgb(239, 68, 68)",
+      "NEUTRAL": "rgb(34, 139, 34)", "NEUTRAL MATCH": "rgb(34, 139, 34)", "Neutral Match": "rgb(34, 139, 34)",
+      "DIFFICULT": "rgb(239, 68, 68)", "DIFFICULT MATCH": "rgb(239, 68, 68)", "Difficult Match": "rgb(239, 68, 68)",
+    };
+    
+    const tier = labelToTier(simpleBox.matchLabel);
+    const westernSignLine = getSunMatchBlurb(userWest as WesternSign, profileWest as WesternSign);
+    
+    return {
+      score: simpleBox.score,
+      rank: simpleBox.matchLabel,
+      rankLabel: simpleBox.matchLabel,
+      rankKey: rankKey as any,
+      emoji: labelToEmoji[simpleBox.matchLabel] || "🌟",
+      colorRgb: labelToColor[simpleBox.matchLabel] || "rgb(34, 139, 34)",
+      connectionLabel: simpleBox.headingLine,
+      tagline: simpleBox.matchLabel,
+      east_tagline: simpleBox.chineseLine,
+      tags: [],
+      insight: simpleBox.overview || '',
+      longformBody: simpleBox.overview || '',
+      east_relation: simpleBox.chineseLine,
+      east_summary: simpleBox.chineseLine,
+      east_description: simpleBox.chineseDescription || '',
+      west_relation: simpleBox.westernLine,
+      west_summary: simpleBox.westernLine,
+      west_description: simpleBox.westernDescription || '',
+      west_tagline: simpleBox.westernTagline || undefined,
+      westernSignLine: westernSignLine,
+      wuXingLine: simpleBox.wuXingLine,
+      a: {
+        west: userWest,
+        east: userEast,
+        westGlyph: getWesternSignGlyph(userWest),
+        eastGlyph: getChineseSignGlyph(userEast),
+        chineseElement: userYearElement
+      },
+      b: {
+        west: profileWest,
+        east: profileEast,
+        westGlyph: getWesternSignGlyph(profileWest),
+        eastGlyph: getChineseSignGlyph(profileEast),
+        chineseElement: profileYearElement
+      },
+      tier: tier as any,
+      aboutMeText: profile.aboutMe || profile.aboutMeText,
+      age: profile.age,
+      occupation: profile.occupation,
+      city: profile.city,
+      distance: profile.distance,
+      height: profile.height,
+      children: profile.children,
+      religion: profile.religion,
+      selectedDeepPrompts: profile.prompts?.map((p: any) => p.question),
+      deepPromptAnswers: profile.prompts?.reduce((acc: any, p: any) => {
+        acc[p.question] = p.answer;
+        return acc;
+      }, {}),
+      selectedRelationshipGoals: profile.relationshipGoals || profile.selectedRelationshipGoals,
+      selectedOrganizedInterests: profile.interests || profile.selectedOrganizedInterests,
+      chinesePattern: simpleBox.chinesePattern,
+      westAspect: simpleBox.westAspect,
+      westElementRelation: simpleBox.westElementRelation,
+      isChineseOpposite: simpleBox.isChineseOpposite,
+      isLivelyPair: simpleBox.isLivelyPair,
+      wuXingA: userYearElement as WuXing,
+      wuXingB: profileYearElement as WuXing,
+      pillLabel: simpleBox.pillLabel,
+      pattern: simpleBox.pattern,
+      patternFullLabel: simpleBox.patternFullLabel,
+      baseTagline: simpleBox.baseTagline,
+      patternEmoji: simpleBox.patternEmoji,
+      chemistryStars: simpleBox.chemistryStars,
+      stabilityStars: simpleBox.stabilityStars,
+      connectionUI: {
+        primaryLabel,
+        chineseBase,
+        chineseOverlays,
+        westernRelation,
+      },
+    };
+  };
+  
+  // Build compatibility box using latest match engine
   useEffect(() => {
-    if (userAstro) {
-      // Using hardcoded Gemini-Dragon for demo conversation
-      // In production, get these from the conversation object
-      const profileAstro: UserAstro = {
-        west_sign: 'gemini',
-        east_sign: 'dragon',
-        element: deriveElement('gemini'),
-        trine: deriveTrine('dragon')
+    if (!userZodiacSigns.western || !userZodiacSigns.chinese || !conversation) return
+    
+    try {
+      const userProfile: UserProfile = {
+        sunSign: userZodiacSigns.western.toLowerCase() as any,
+        animal: userZodiacSigns.chinese.toLowerCase() as any,
+      };
+      
+      // Get user's Wu Xing year element
+      let userYearElement: any;
+      try {
+        const userBirthInfo = localStorage.getItem("userBirthInfo");
+        if (userBirthInfo) {
+          const birthInfo = JSON.parse(userBirthInfo);
+          if (birthInfo.birthdate) {
+            const userBirthDate = new Date(birthInfo.birthdate);
+            const userYear = userBirthDate.getFullYear();
+            userYearElement = getWuXingYearElement(userYear);
+          }
+        }
+      } catch (error) {
+        console.error('[Messages] Error calculating user Wu Xing year element:', error);
       }
       
-      const box = buildConnectionBoxFromAstro(userAstro, profileAstro)
-      setCompatBox(box)
-      console.log('[Messages] Compat box:', box)
+      // Get profile's zodiac signs (hardcoded for demo, should come from conversation in production)
+      // In production, these should be stored in the conversation object
+      const profileWesternSign = (conversation as any).westernSign || 'Gemini'
+      const profileEasternSign = (conversation as any).easternSign || 'Dragon'
+      const profileBirthdate = (conversation as any).birthdate || '1996-05-21'
+      const profileSunSigns = getBothSunSignsFromBirthdate(profileBirthdate)
+      const profileTropical = capitalizeSign(profileSunSigns.tropical || profileWesternSign) as any
+      const profileEastern = capitalizeSign(profileEasternSign)
+      const profileDisplayWest = sunSignSystem === 'sidereal'
+        ? (profileSunSigns.sidereal || profileWesternSign)
+        : (profileSunSigns.tropical || profileWesternSign)
+      const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
+      const savedUserSunSigns = getSavedSunSigns()
+      const userDisplayWest = sunSignSystem === 'sidereal'
+        ? (savedUserSunSigns.sidereal ?? userZodiacSigns.western)
+        : (savedUserSunSigns.tropical ?? userZodiacSigns.western)
+      const userDisplayWestCapitalized = capitalizeSign(userDisplayWest)
+      
+      // Calculate profile's Wu Xing year element
+      let profileYearElement: any;
+      try {
+        if (profileBirthdate) {
+          const profileBirthDate = new Date(profileBirthdate);
+          const profileYear = profileBirthDate.getFullYear();
+          profileYearElement = getWuXingYearElement(profileYear);
+        }
+      } catch (error) {
+        console.error('[Messages] Error calculating profile Wu Xing year element:', error);
+      }
+      
+      const profileForNewEngine: UserProfile = {
+        sunSign: (profileSunSigns.tropical || profileWesternSign).toLowerCase() as any,
+        animal: profileEasternSign.toLowerCase() as any,
+      };
+      
+      const simpleBox = buildConnectionBox(
+        userProfile,
+        profileForNewEngine,
+        userYearElement,
+        profileYearElement
+      );
+      
+      if (!simpleBox) {
+        console.error('[Messages] buildConnectionBox returned undefined');
+        return;
+      }
+      
+      // Create profile object with all necessary fields
+      const profile = {
+        aboutMe: (conversation as any).aboutMe,
+        aboutMeText: (conversation as any).aboutMe,
+        age: (conversation as any).age || 28,
+        occupation: (conversation as any).occupation,
+        city: (conversation as any).city,
+        height: (conversation as any).height,
+        children: (conversation as any).children,
+        religion: (conversation as any).religion,
+        prompts: (conversation as any).prompts,
+        relationshipGoals: (conversation as any).relationshipGoals,
+        selectedRelationshipGoals: (conversation as any).relationshipGoals,
+        interests: (conversation as any).interests,
+        selectedOrganizedInterests: (conversation as any).interests,
+        westernSign: profileDisplayWestCapitalized,
+        easternSign: profileEastern,
+        birthdate: profileBirthdate,
+      };
+      
+      const boxData = convertSimpleToConnectionBoxData(
+        simpleBox,
+        userDisplayWestCapitalized,
+        userZodiacSigns.chinese,
+        profileDisplayWestCapitalized,
+        profileEastern,
+        profile,
+        userYearElement,
+        profileYearElement
+      );
+      
+      setConnectionBoxData(boxData)
+      console.log('[Messages] ✨ Latest Match Engine Active')
+      console.log('[Messages] Connection box:', boxData)
+    } catch (error) {
+      console.error('[Messages] Error building connection box:', error);
     }
-  }, [userAstro])
+  }, [userZodiacSigns, conversation, sunSignSystem])
 
   useEffect(() => {
     let conv = getConversation(userId)
@@ -417,12 +652,12 @@ export default function ChatPage() {
   }
 
   return (
-    <div className={`${theme === "light" ? "bg-white" : "bg-zinc-900"} min-h-screen w-full fixed inset-0 flex flex-col`}>
+    <div className={`${theme === "light" ? "bg-white" : "bg-slate-900"} min-h-screen w-full fixed inset-0 flex flex-col`}>
       {/* Header */}
-      <div className={`flex items-center justify-center px-4 pt-2 relative z-10 ${theme === "light" ? "bg-white" : "bg-zinc-900"}`} style={{ minHeight: '60px' }}>
+      <div className={`flex items-center justify-center px-4 pt-2 relative z-10 ${theme === "light" ? "bg-white" : "bg-slate-900"}`} style={{ minHeight: '60px' }}>
         <button
           onClick={() => router.push("/messages")}
-          className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-blue-900/50"} absolute left-4 p-2 rounded-lg transition-colors`}
+          className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-900/50"} absolute left-4 p-2 rounded-lg transition-colors`}
         >
           <ChevronLeft className="w-7 h-7" />
         </button>
@@ -447,7 +682,7 @@ export default function ChatPage() {
             variant="ghost"
             size="icon"
             onClick={() => setShowMenu(!showMenu)}
-            className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-blue-900/50"}`}
+            className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-900/50"}`}
           >
             <MoreVertical className="w-5 h-5" />
           </Button>
@@ -479,7 +714,7 @@ export default function ChatPage() {
       </div>
 
       {/* Tabs */}
-      <div className={`flex px-5 ${theme === "light" ? "bg-white" : "bg-zinc-900"} relative z-10`}>
+      <div className={`flex px-5 ${theme === "light" ? "bg-white" : "bg-slate-900"} relative z-10`}>
         <button
           onClick={() => setActiveTab("chat")}
           className={`flex-1 pb-1.5 pt-0.5 text-center font-semibold transition-all duration-300 relative ${
@@ -522,10 +757,10 @@ export default function ChatPage() {
                       className={`rounded-2xl ${msg.image || msg.gif ? "p-0 overflow-hidden" : "px-4 py-2"}`}
                       style={{
                         background: msg.sent 
-                          ? '#0891B2' 
+                          ? 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)' 
                           : theme === "light" 
-                            ? '#CFFAFE'
-                            : 'rgba(8, 145, 178, 0.2)'
+                            ? '#e0e7ff'
+                            : 'rgba(99, 102, 241, 0.3)'
                       }}
                     >
                       {msg.image ? (
@@ -544,7 +779,7 @@ export default function ChatPage() {
           </div>
 
           {/* Input */}
-          <div className={`py-3 pb-32 relative z-10 ${theme === "light" ? "bg-white" : "bg-zinc-900"}`}>
+          <div className={`py-3 pb-32 relative z-10 ${theme === "light" ? "bg-white" : "bg-slate-900"}`}>
             <input
               ref={fileInputRef}
               type="file"
@@ -557,13 +792,13 @@ export default function ChatPage() {
             <div className="px-4 pb-2 flex gap-2">
               <Button
                 onClick={() => fileInputRef.current?.click()}
-                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-blue-900/50 border border-indigo-400/20 hover:bg-blue-800/80 text-white/80"}`}
+                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-slate-900/50 border border-indigo-400/20 hover:bg-slate-800/80 text-white/80"}`}
               >
                 <Image className="w-5 h-5" />
               </Button>
               <Button
                 onClick={() => setShowGifPicker(!showGifPicker)}
-                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-blue-900/50 border border-indigo-400/20 hover:bg-blue-800/80 text-white/80"}`}
+                className={`rounded-full w-12 h-12 p-0 ${theme === "light" ? "bg-gray-200 hover:bg-gray-300 text-gray-700" : "bg-slate-900/50 border border-indigo-400/20 hover:bg-slate-800/80 text-white/80"}`}
               >
                 <Gif className="w-5 h-5" />
               </Button>
@@ -578,7 +813,7 @@ export default function ChatPage() {
                 onKeyPress={(e) => e.key === "Enter" && handleSend()}
                 placeholder="Type a message..."
                 style={{ fontSize: '20px' }}
-                className={`w-full px-4 py-3 pr-14 outline-none ${theme === "light" ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 border-t border-gray-200" : "bg-blue-900/50 border border-indigo-400/20 text-white/95 placeholder:text-white/50 border-t"}`}
+                className={`w-full px-4 py-3 pr-14 outline-none ${theme === "light" ? "bg-gray-100 text-gray-900 placeholder:text-gray-500 border-t border-gray-200" : "bg-slate-900/50 border border-indigo-400/20 text-white/95 placeholder:text-white/50 border-t"}`}
               />
               <Button
                 onClick={handleSend}
@@ -595,195 +830,37 @@ export default function ChatPage() {
           </div>
         </>
       ) : (
-        /* Profile View */
-        <div className="flex-1 overflow-y-auto relative z-10 pb-24">
-          {/* Profile Photo - Full Width */}
-          <div className="relative w-full aspect-[3/4]">
-            <img
-              src={conversation.userPhoto || "/placeholder.svg"}
-              alt={conversation.userName}
-              className="w-full h-full object-cover"
+        /* Profile View - Same design as discover section */
+        <div className="flex-1 overflow-y-auto relative z-10 pb-32">
+          {conversation && (
+            <MatchProfileCard
+              profile={{
+                id: parseInt(userId) || 0,
+                name: conversation.userName,
+                age: (conversation as any).age || 28,
+                photos: (conversation as any).photos || [conversation.userPhoto || "/placeholder.svg"],
+                aboutMe: (conversation as any).aboutMe,
+                occupation: (conversation as any).occupation,
+                city: (conversation as any).city,
+                height: (conversation as any).height,
+                children: (conversation as any).children,
+                religion: (conversation as any).religion,
+                prompts: (conversation as any).prompts,
+                westernSign: connectionBoxData?.b?.west || 'Gemini',
+                easternSign: connectionBoxData?.b?.east || 'Dragon',
+                relationshipGoals: (conversation as any).relationshipGoals || (conversation as any).selectedRelationshipGoals,
+                selectedRelationshipGoals: (conversation as any).relationshipGoals || (conversation as any).selectedRelationshipGoals,
+                interests: (conversation as any).interests || (conversation as any).selectedOrganizedInterests,
+                selectedOrganizedInterests: (conversation as any).interests || (conversation as any).selectedOrganizedInterests,
+              }}
+              connectionBoxData={connectionBoxData || undefined}
+              theme={theme}
+              onPhotoChange={(index) => setCurrentPhotoIndex(index)}
+              onMessageClick={() => {}}
+              onPass={() => {}}
+              onLike={() => {}}
             />
-            
-            {/* Profile Info Overlay */}
-            <div className="absolute bottom-0 left-0 right-0 px-5 py-6 bg-gradient-to-t from-black/70 via-black/50 to-transparent">
-              <div className="!text-white/95 font-semibold text-3xl mb-1">
-                {conversation.userName}
-              </div>
-              <div className="!text-white/95 text-lg font-semibold">
-                ♊ Gemini • 🐉 Dragon
-              </div>
-            </div>
-          </div>
-
-          {/* Compatibility Section */}
-          <div className={`px-4 py-4 ${theme === "light" ? "bg-white" : "bg-zinc-900"}`}>
-            {compatBox ? (
-              <>
-                {/* Compatibility Insights Box - No Percentages */}
-                <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 px-4 py-4 rounded-xl shadow-lg shadow-indigo-950/30 relative">
-                  <div className="flex items-center gap-2 mb-3">
-                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                    </svg>
-                    <h2 className="text-lg font-bold bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 bg-clip-text text-transparent">
-                      Your Connection
-                    </h2>
-                  </div>
-
-                  {/* Zodiac Signs Display */}
-                  <div className="flex items-center justify-center gap-3 mb-4 pb-3 border-b border-white/10">
-                    {/* User's Signs */}
-                    <div className="text-center">
-                      <div className="text-2xl">{getWesternSignEmoji(userZodiacSigns.western.charAt(0).toUpperCase() + userZodiacSigns.western.slice(1))}</div>
-                      <div className="text-xs text-white/70 mt-1">{userZodiacSigns.western.charAt(0).toUpperCase() + userZodiacSigns.western.slice(1)}</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl">{getChineseSignEmoji(userZodiacSigns.chinese.charAt(0).toUpperCase() + userZodiacSigns.chinese.slice(1))}</div>
-                      <div className="text-xs text-white/70 mt-1">{userZodiacSigns.chinese.charAt(0).toUpperCase() + userZodiacSigns.chinese.slice(1)}</div>
-                    </div>
-
-                    {/* Heart Separator */}
-                    <div className="text-purple-400 text-2xl px-2">♥</div>
-
-                    {/* Profile's Signs */}
-                    <div className="text-center">
-                      <div className="text-2xl">{getWesternSignEmoji('Gemini')}</div>
-                      <div className="text-xs text-white/70 mt-1">Gemini</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl">{getChineseSignEmoji('Dragon')}</div>
-                      <div className="text-xs text-white/70 mt-1">Dragon</div>
-                    </div>
-                  </div>
-
-              {/* Insights & Recommendations */}
-              <div className="space-y-4">
-            {/* Fusion Intro */}
-            <div className="text-center mb-4">
-              <div className="flex justify-center mb-1">
-                {compatBox.tier ? (
-                  <LabelPill
-                    tier={compatBox.tier}
-                    label={compatBox.rankLabel || compatBox.rank}
-                  />
-                ) : (
-                  <span className="font-semibold text-lg text-purple-300">
-                    {compatBox.label}
-                  </span>
-                )}
-              </div>
-              <p className="text-sm text-white/80 italic">
-                {compatBox.fusion}
-              </p>
-            </div>
-                
-                {/* Chinese Zodiac */}
-                <div className="text-center mb-3">
-                  <p className="font-medium text-white/90 mb-1">
-                    <strong>{compatBox.summary.chinese_heading}</strong>
-                  </p>
-                  <p className="text-sm text-white/70 italic">
-                    {compatBox.summary.chinese_line}
-                  </p>
-                </div>
-                
-                {/* Western Zodiac */}
-                <div className="text-center">
-                  <p className="text-sm text-white/90">
-                    <strong>{compatBox.summary.western_heading}</strong> ({compatBox.summary.western_line})
-                  </p>
-                </div>
-              </div>
-                </div>
-              </>
-            ) : (
-              <div className="text-center py-4">
-                <p className="text-sm text-white/60 italic">Analyzing your connection...</p>
-              </div>
-            )}
-          </div>
-
-          {/* About Section */}
-          <div className="px-4 pb-4">
-            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span className="bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">About</span>
-              </h3>
-              <p className="text-white/90 text-base leading-relaxed">
-                Adventure seeker with a passion for meaningful conversations. I believe in living authentically and finding magic in everyday moments.
-              </p>
-            </div>
-          </div>
-
-          {/* Relationship Goals Section */}
-          <div className="px-4 pb-4">
-            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span className="bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">Relationship goals</span>
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {["Life companion", "Best friend", "Adventure partner"].map((goal) => (
-                  <span
-                    key={goal}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white shadow-lg"
-                  >
-                    {goal}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Interests Section */}
-          <div className="px-4 pb-4">
-            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span className="bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">Interests</span>
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {["Photography", "Yoga", "Cooking", "Travel", "Art", "Music"].map((interest) => (
-                  <span
-                    key={interest}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white shadow-lg"
-                  >
-                    {interest}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Essentials Section */}
-          <div className="px-4 pb-4">
-            <div className="bg-blue-900/40 backdrop-blur-md border border-indigo-500/20 p-4 rounded-xl shadow-lg shadow-indigo-950/30">
-              <h3 className="text-lg font-bold mb-3 flex items-center gap-2">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#a855f7" strokeWidth="2">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-                <span className="bg-gradient-to-r from-purple-400 to-purple-500 bg-clip-text text-transparent">Essentials</span>
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {["Marketing Manager", "165 cm", "Want children", "Christian", "New York, NY"].map((essential) => (
-                  <span
-                    key={essential}
-                    className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white shadow-lg"
-                  >
-                    {essential}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       )}
 
@@ -888,7 +965,7 @@ export default function ChatPage() {
           onClick={() => setShowGifPicker(false)}
         >
           <div
-            className="w-full max-w-2xl bg-zinc-900 rounded-t-3xl p-6 pb-8 max-h-[70vh] flex flex-col"
+            className="w-full max-w-2xl bg-slate-900 rounded-t-3xl p-6 pb-8 max-h-[70vh] flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
@@ -896,7 +973,7 @@ export default function ChatPage() {
               <h3 className="text-xl font-bold !text-white/95">Send a GIF</h3>
               <button
                 onClick={() => setShowGifPicker(false)}
-                className="p-2 hover:bg-blue-900/50 rounded-full transition-colors"
+                className="p-2 hover:bg-slate-900/50 rounded-full transition-colors"
               >
                 <X className="w-5 h-5 !text-white/80" />
               </button>
@@ -913,7 +990,7 @@ export default function ChatPage() {
                   searchGifs(e.target.value)
                 }}
                 placeholder="Search GIFs..."
-                className="w-full pl-10 pr-4 py-3 rounded-xl outline-none bg-blue-900/50 border border-indigo-400/20 !text-white/95 placeholder:!text-white/50"
+                className="w-full pl-10 pr-4 py-3 rounded-xl outline-none bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder:!text-white/50"
               />
             </div>
 
@@ -934,7 +1011,7 @@ export default function ChatPage() {
                     <button
                       key={gif.id}
                       onClick={() => sendGif(gif.images.fixed_height.url)}
-                      className="relative aspect-square rounded-xl overflow-hidden hover:opacity-80 transition-opacity bg-blue-900/50"
+                      className="relative aspect-square rounded-xl overflow-hidden hover:opacity-80 transition-opacity bg-slate-900/50"
                     >
                       <img
                         src={gif.images.fixed_height.url}
