@@ -35,6 +35,7 @@ interface PostAdminActionsProps {
   postId: string
   authorId: string
   authorName?: string
+  isHidden?: boolean // Whether post is currently hidden
   canModerate: boolean // true if current user is ADMIN or OWNER
   theme?: "light" | "dark"
   onActionComplete?: () => void
@@ -44,6 +45,7 @@ export function PostAdminActions({
   postId,
   authorId,
   authorName = "this user",
+  isHidden = false,
   canModerate,
   theme = "light",
   onActionComplete,
@@ -74,28 +76,34 @@ export function PostAdminActions({
 
   if (!canModerate) return null
 
-  async function handleHidePost() {
-    if (!confirm("Hide this post? It will no longer be visible to users.")) return
+  async function handleToggleHidePost() {
+    const action = isHidden ? "unhide" : "hide"
+    const confirmMsg = isHidden
+      ? "Unhide this post? It will become visible to all users."
+      : "Hide this post? It will no longer be visible to users."
+    
+    if (!confirm(confirmMsg)) return
 
     setLoading(true)
     try {
       const res = await fetch("/api/admin/posts/hide", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postId, hide: true }),
+        body: JSON.stringify({ postId, hide: !isHidden }),
       })
 
       if (res.ok) {
-        alert("Post hidden successfully")
+        const data = await res.json()
+        alert(data.message || `Post ${action}d successfully`)
         setIsOpen(false)
         onActionComplete?.()
       } else {
         const error = await res.json()
-        alert(`Failed to hide post: ${error.error}`)
+        alert(`Failed to ${action} post: ${error.error}`)
       }
     } catch (error) {
-      console.error("Hide post error:", error)
-      alert("Failed to hide post")
+      console.error(`${action} post error:`, error)
+      alert(`Failed to ${action} post`)
     } finally {
       setLoading(false)
     }
@@ -168,10 +176,10 @@ export function PostAdminActions({
               Moderation Actions
             </div>
 
-            {/* Hide post */}
+            {/* Hide/Unhide post */}
             <button
               disabled={loading}
-              onClick={handleHidePost}
+              onClick={handleToggleHidePost}
               className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-colors text-left ${
                 theme === "light"
                   ? "text-gray-700 hover:bg-gray-100 disabled:text-gray-400"
@@ -179,7 +187,7 @@ export function PostAdminActions({
               }`}
             >
               <EyeOff className="w-4 h-4 flex-shrink-0" />
-              <span>Hide post</span>
+              <span>{isHidden ? "Unhide post" : "Hide post"}</span>
             </button>
 
             {/* Divider */}
