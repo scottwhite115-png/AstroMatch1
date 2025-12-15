@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { COMMUNITY_TOPICS } from "../../topics"
 import { ThreadPageClient } from "./_components/ThreadPageClient"
+import { getCurrentProfileWithRole } from "@/lib/auth-helpers"
 
 type PageProps = {
   params: Promise<{
@@ -14,14 +15,25 @@ type PageProps = {
 export default async function ThreadPage({ params }: PageProps) {
   const { topic, postId } = await params
 
+  // Get current user for moderation
+  const currentProfile = await getCurrentProfileWithRole()
+  const canModerate = currentProfile?.role === "ADMIN" || currentProfile?.role === "OWNER"
+
   // Validate topic
   const topicData = COMMUNITY_TOPICS.find((t) => t.id === topic)
   if (!topicData) {
     return notFound()
   }
 
+  // Filter hidden posts for non-staff
+  const whereClause: any = { id: postId }
+  if (!canModerate) {
+    whereClause.isHidden = false
+  }
+
   // Fetch post with comments
   const post = await prisma.post.findUnique({
+    where: whereClause,
     where: { id: postId },
     include: {
       author: {
@@ -81,6 +93,7 @@ export default async function ThreadPage({ params }: PageProps) {
     content: post.content,
     topic: post.topic,
     type: post.type,
+    isHidden: post.isHidden,
     createdAt: post.createdAt.toISOString(),
     likeCount: post.likeCount,
     commentCount: post.commentCount,
@@ -129,7 +142,12 @@ export default async function ThreadPage({ params }: PageProps) {
         <p className="text-sm text-slate-400">Loading post...</p>
       </div>
     }>
-      <ThreadPageClient post={formattedPost} topicData={topicData} />
+      <ThreadPageClient 
+        post={formattedPost} 
+        topicData={topicData}
+        currentUserId={currentProfile?.id || null}
+        canModerate={canModerate}
+      />
     </Suspense>
   )
 }
