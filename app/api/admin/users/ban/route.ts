@@ -1,61 +1,48 @@
-import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prisma"
+import { requireStaff } from "@/lib/auth-helpers"
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+export async function POST(req: Request) {
+  // ADMIN or OWNER only - auto-checks role and account status
+  const admin = await requireStaff()
 
-export async function POST(req: NextRequest) {
-  try {
-    const { userId, permanent } = await req.json()
-
-    if (!userId) {
-      return NextResponse.json({ error: "Missing userId" }, { status: 400 })
-    }
-
-    // Check admin access
-    const authHeader = req.headers.get("authorization")
-    const token = authHeader?.replace("Bearer ", "")
-    
-    if (!token) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
-    
-    if (authError || !user) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 401 })
-    }
-
-    // Verify admin role
-    const { data: adminProfile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single()
-
-    if (!adminProfile || (adminProfile.role !== "ADMIN" && adminProfile.role !== "OWNER")) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
-    }
-
-    // Update user status
-    const { error: updateError } = await supabase
-      .from("profiles")
-      .update({
-        status: "BANNED",
-        suspensionEndsAt: null
-      })
-      .eq("id", userId)
-
-    if (updateError) {
-      throw updateError
-    }
-
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error("Ban user error:", error)
-    return NextResponse.json({ error: "Server error" }, { status: 500 })
+  const body = await req.json().catch(() => null)
+  if (!body) {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 })
   }
+
+  const { userId, permanent } = body as { userId?: string; permanent?: boolean }
+
+  if (!userId) {
+    return NextResponse.json({ error: "userId is required" }, { status: 400 })
+  }
+
+  // Verify user exists and is not OWNER
+  const user = await prisma.profiles.findUnique({ 
+    where: { id: userId },
+    select: { id: true, role: true }
+  })
+
+  if (!user) {
+    return NextResponse.json({ error: "User not found" }, { status: 404 })
+  }
+
+  if (user.role === "OWNER") {
+    return NextResponse.json({ error: "Cannot ban OWNER" }, { status: 403 })
+  }
+
+  // Update user status to BANNED
+  await prisma.profiles.update({
+    where: { id: userId },
+    data: {
+      status: "BANNED",
+      suspensionEndsAt: null,
+    },
+  })
+
+  return NextResponse.json({ 
+    ok: true,
+    message: permanent ? "User permanently banned" : "User banned" 
+  })
 }
 
