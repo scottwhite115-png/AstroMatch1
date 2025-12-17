@@ -27,6 +27,12 @@ const ChevronRight = ({ className }: { className?: string }) => (
   </svg>
 );
 
+const MessageCircle = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
+  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" className={className} style={style}>
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+  </svg>
+);
+
 // Helper to get tier gradient colors
 // Helper to get pattern-based solid color for borders, text, etc.
 function getPatternColor(pattern?: string): string {
@@ -439,9 +445,41 @@ export default function ProfilePhotoCarouselWithRanking({
 
         {/* Photo Navigation Arrows removed (touch-only navigation) */}
 
+        {/* Chat Button - Top Right */}
+        {onMessageClick && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onMessageClick();
+            }}
+            className="absolute top-4 right-4 z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            style={{
+              backgroundColor: 'transparent',
+              borderWidth: '2px',
+              borderStyle: 'solid',
+              borderColor: connectionBoxData 
+                ? getPatternColor(connectionBoxData.pattern)
+                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)"),
+              backdropFilter: 'blur(10px)',
+              boxShadow: theme === "light" 
+                ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
+                : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+            }}
+            aria-label="Open chat"
+          >
+            <MessageCircle 
+              className="w-7 h-7" 
+              style={{ 
+                stroke: "white",
+                fill: "none"
+              }} 
+            />
+          </button>
+        )}
+
         {/* Ranking Badge - Top Right (if badgePosition is "top-right") */}
         {connectionBoxData && badgePosition === "top-right" && (
-          <div className="absolute top-4 right-4 z-20">
+          <div className="absolute top-4 z-20" style={{ right: onMessageClick ? '72px' : '16px' }}>
             <div 
               className="px-4 py-2 rounded-full flex items-center gap-2"
               style={{

@@ -521,7 +521,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             </div>
             
             {/* Heart icon in the center */}
-            <span className={`text-2xl flex-shrink-0 self-center ${
+            <span className={`text-xl flex-shrink-0 self-center ${
               theme === "light" ? "text-pink-500" : "text-pink-400"
             }`}>
               ♥
@@ -552,7 +552,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             }`}
             style={{
               borderColor: gradientColors.start,
-              color: theme === "light" ? gradientColors.start : "white",
+              color: "black",
             }}
           >
             <span>{primaryLabel}</span>
@@ -582,7 +582,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               className={`px-3 py-1 rounded-full text-base inline-flex items-center gap-1 ${
                 theme === "light" 
                   ? "bg-slate-200 text-slate-700" 
-                  : "bg-slate-900 text-slate-200"
+                  : "bg-slate-900 text-slate-200 border border-slate-600"
               }`}
             >
               <span>{baseChipNew.icon}</span>
@@ -597,7 +597,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               className={`px-3 py-1 rounded-full text-base inline-flex items-center gap-1 ${
                 theme === "light" 
                   ? "bg-slate-200 text-slate-700" 
-                  : "bg-slate-900 text-slate-200"
+                  : "bg-slate-900 text-slate-200 border border-slate-600"
               }`}
             >
               <span>{chip.icon}</span>
@@ -611,12 +611,12 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             className={`py-1.5 rounded-full text-base inline-flex items-center justify-center gap-1 ${
               theme === "light" 
                 ? "bg-slate-200 text-slate-700" 
-                : "bg-slate-900 text-slate-200"
+                : "bg-slate-900 text-slate-200 border border-slate-600"
             }`}
             style={{
-              paddingLeft: westernChipNew.label.includes('–') ? '8px' : '12px',
-              paddingRight: westernChipNew.label.includes('–') ? '8px' : '12px',
-              maxWidth: westernChipNew.label.includes('–') ? '240px' : 'fit-content',
+              paddingLeft: (westernChipNew.label.includes('–') || westernChipNew.label.includes(' · ')) ? '8px' : '12px',
+              paddingRight: (westernChipNew.label.includes('–') || westernChipNew.label.includes(' · ')) ? '8px' : '12px',
+              maxWidth: (westernChipNew.label.includes('–') || westernChipNew.label.includes(' · ')) ? '240px' : 'fit-content',
               width: 'fit-content',
               minWidth: 'min-content',
               display: 'inline-flex',
@@ -660,7 +660,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Action Buttons Row */}
         <div className="mt-4 mb-4">
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex justify-center gap-10">
             {/* Profile Button */}
             <button
               onClick={() => {
@@ -671,14 +671,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   setShowAbout(false);
                 }
               }}
-              className={`inline-flex items-center justify-center rounded-full px-1.5 py-2 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
+              className={`inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
               style={{
                 borderColor: gradientColors.start,
               }}
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" style={{ stroke: theme === "light" ? "#000000" : "#ffffff" }}>
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" style={{ stroke: "black" }}>
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
@@ -694,34 +694,15 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   setShowOverview(false);
                 }
               }}
-              className={`inline-flex items-center justify-center rounded-full px-1.5 py-2 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
+              className={`inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
               style={{
                 borderColor: gradientColors.start,
               }}
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" strokeWidth="2" style={{ stroke: theme === "light" ? "#000000" : "#ffffff" }}>
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" strokeWidth="2" style={{ stroke: "black" }}>
                 <path d="M12 2L14.09 8.26L22 9.27L17 14.14L18.18 22.02L12 18.77L5.82 22.02L7 14.14L2 9.27L9.91 8.26L12 2Z" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-
-            {/* Chat Button */}
-            <button
-              onClick={() => {
-                if (onMessage) {
-                  onMessage()
-                }
-              }}
-              className={`inline-flex items-center justify-center rounded-full px-1.5 py-2 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
-                theme === "light" ? "bg-white" : "bg-slate-900"
-              }`}
-              style={{
-                borderColor: gradientColors.start,
-              }}
-            >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" strokeWidth="2" style={{ stroke: theme === "light" ? "#000000" : "#ffffff" }}>
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
               </svg>
             </button>
           </div>
@@ -762,7 +743,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                     }`}>
                       {chineseAnimalA}
                     </span>
-                    <span className={`text-2xl ${
+                    <span className={`text-xl ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
@@ -809,7 +790,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                     }`}>
                       {westernSignA}
                     </span>
-                    <span className={`text-2xl ${
+                    <span className={`text-xl ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
