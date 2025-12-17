@@ -2,13 +2,23 @@
 // Complete auth helper with auto-promotion and auto-unban
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 import { createClient } from "@/lib/supabase/server";
 
 const ownerEmail = process.env.ASTROMATCH_OWNER_EMAIL;
 
 export type Role = "USER" | "ADMIN" | "OWNER";
 export type AccountStatus = "ACTIVE" | "SUSPENDED" | "BANNED";
+
+// Safe Prisma accessor
+async function getPrisma() {
+  try {
+    const prismaModule = await import("@/lib/prisma");
+    return prismaModule.default || prismaModule.prisma;
+  } catch (error) {
+    console.warn('[auth-helpers] Prisma not available');
+    return null;
+  }
+}
 
 /**
  * Normalize account status - auto-unban if suspension expired
@@ -19,13 +29,20 @@ async function normalizeAccountStatus(profile: any) {
     profile.suspensionEndsAt &&
     new Date(profile.suspensionEndsAt) <= new Date()
   ) {
-    profile = await prisma.profiles.update({
-      where: { id: profile.id },
-      data: {
-        status: "ACTIVE",
-        suspensionEndsAt: null,
-      },
-    });
+    const prisma = await getPrisma();
+    if (prisma) {
+      try {
+        profile = await prisma.profiles.update({
+          where: { id: profile.id },
+          data: {
+            status: "ACTIVE",
+            suspensionEndsAt: null,
+          },
+        });
+      } catch (error) {
+        console.warn('[normalizeAccountStatus] Update failed:', error);
+      }
+    }
   }
   return profile;
 }
@@ -45,60 +62,71 @@ export async function getCurrentProfileWithRole() {
 
   if (error || !user) return null;
 
-  // Find profile by Supabase auth user ID
-  let profile = await prisma.profiles.findUnique({
-    where: { id: user.id },
-  });
-
-  if (!profile) {
-    // Create profile if doesn't exist
-    profile = await prisma.profiles.create({
-      data: {
-        id: user.id,
-        email: user.email ?? "",
-        role: "USER",
-        status: "ACTIVE",
-        isStaff: false,
-        showStaffBadge: true,
-      },
-    });
+  const prisma = await getPrisma();
+  if (!prisma) {
+    console.warn('[getCurrentProfileWithRole] Prisma not available, returning null');
+    return null;
   }
 
-  // Auto-promote OWNER based on env email
-  if (
-    ownerEmail &&
-    user.email &&
-    user.email.toLowerCase() === ownerEmail.toLowerCase()
-  ) {
-    if (profile.role !== "OWNER") {
-      profile = await prisma.profiles.update({
-        where: { id: profile.id },
+  try {
+    // Find profile by Supabase auth user ID
+    let profile = await prisma.profiles.findUnique({
+      where: { id: user.id },
+    });
+
+    if (!profile) {
+      // Create profile if doesn't exist
+      profile = await prisma.profiles.create({
         data: {
-          role: "OWNER",
-          isStaff: true,
+          id: user.id,
+          email: user.email ?? "",
+          role: "USER",
+          status: "ACTIVE",
+          isStaff: false,
+          showStaffBadge: true,
         },
       });
-    } else if (!profile.isStaff) {
-      // Ensure owner has staff flag
+    }
+
+    // Auto-promote OWNER based on env email
+    if (
+      ownerEmail &&
+      user.email &&
+      user.email.toLowerCase() === ownerEmail.toLowerCase()
+    ) {
+      if (profile.role !== "OWNER") {
+        profile = await prisma.profiles.update({
+          where: { id: profile.id },
+          data: {
+            role: "OWNER",
+            isStaff: true,
+          },
+        });
+      } else if (!profile.isStaff) {
+        // Ensure owner has staff flag
+        profile = await prisma.profiles.update({
+          where: { id: profile.id },
+          data: { isStaff: true },
+        });
+      }
+    }
+
+    // Ensure ADMIN/OWNER are flagged as staff
+    if ((profile.role === "ADMIN" || profile.role === "OWNER") && !profile.isStaff) {
       profile = await prisma.profiles.update({
         where: { id: profile.id },
         data: { isStaff: true },
       });
     }
+
+    // Auto-unban if suspension expired
+    profile = await normalizeAccountStatus(profile);
+
+    return profile;
+  } catch (error) {
+    console.warn('[getCurrentProfileWithRole] Database query failed:', error);
+    return null;
   }
-
-  // Ensure ADMIN/OWNER are flagged as staff
-  if ((profile.role === "ADMIN" || profile.role === "OWNER") && !profile.isStaff) {
-    profile = await prisma.profiles.update({
-      where: { id: profile.id },
-      data: { isStaff: true },
-    });
-  }
-
-  // Auto-unban if suspension expired
-  profile = await normalizeAccountStatus(profile);
-
-  return profile;
 }
 
 /**

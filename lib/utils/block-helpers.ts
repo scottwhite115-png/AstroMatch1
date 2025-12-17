@@ -1,56 +1,98 @@
 // lib/utils/block-helpers.ts
-import { prisma } from "@/lib/prisma"
+
+// Safe Prisma accessor
+async function getPrisma() {
+  try {
+    const prismaModule = await import("@/lib/prisma");
+    return prismaModule.default || prismaModule.prisma;
+  } catch (error) {
+    console.warn('[block-helpers] Prisma not available');
+    return null;
+  }
+}
 
 /**
  * Check if userA has blocked userB
  */
 export async function isUserBlocked(blockerId: string, blockedId: string): Promise<boolean> {
-  const block = await prisma.userBlock.findUnique({
-    where: {
-      blockerId_blockedId: {
-        blockerId,
-        blockedId,
+  const prisma = await getPrisma();
+  if (!prisma) return false;
+  
+  try {
+    const block = await prisma.userBlock.findUnique({
+      where: {
+        blockerId_blockedId: {
+          blockerId,
+          blockedId,
+        },
       },
-    },
-  })
-  return !!block
+    })
+    return !!block
+  } catch (error) {
+    console.warn('[isUserBlocked] Query failed:', error);
+    return false;
+  }
 }
 
 /**
  * Check if there's a mutual block between two users (either direction)
  */
 export async function isBlockedEitherWay(userA: string, userB: string): Promise<boolean> {
-  const blocks = await prisma.userBlock.findMany({
-    where: {
-      OR: [
-        { blockerId: userA, blockedId: userB },
-        { blockerId: userB, blockedId: userA },
-      ],
-    },
-  })
-  return blocks.length > 0
+  const prisma = await getPrisma();
+  if (!prisma) return false;
+  
+  try {
+    const blocks = await prisma.userBlock.findMany({
+      where: {
+        OR: [
+          { blockerId: userA, blockedId: userB },
+          { blockerId: userB, blockedId: userA },
+        ],
+      },
+    })
+    return blocks.length > 0
+  } catch (error) {
+    console.warn('[isBlockedEitherWay] Query failed:', error);
+    return false;
+  }
 }
 
 /**
  * Get all user IDs that the current user has blocked
  */
 export async function getBlockedUserIds(userId: string): Promise<string[]> {
-  const blocks = await prisma.userBlock.findMany({
-    where: { blockerId: userId },
-    select: { blockedId: true },
-  })
-  return blocks.map((b) => b.blockedId)
+  const prisma = await getPrisma();
+  if (!prisma) return [];
+  
+  try {
+    const blocks = await prisma.userBlock.findMany({
+      where: { blockerId: userId },
+      select: { blockedId: true },
+    })
+    return blocks.map((b) => b.blockedId)
+  } catch (error) {
+    console.warn('[getBlockedUserIds] Query failed:', error);
+    return [];
+  }
 }
 
 /**
  * Get all user IDs who have blocked the current user
  */
 export async function getBlockedByUserIds(userId: string): Promise<string[]> {
-  const blocks = await prisma.userBlock.findMany({
-    where: { blockedId: userId },
-    select: { blockerId: true },
-  })
-  return blocks.map((b) => b.blockerId)
+  const prisma = await getPrisma();
+  if (!prisma) return [];
+  
+  try {
+    const blocks = await prisma.userBlock.findMany({
+      where: { blockedId: userId },
+      select: { blockerId: true },
+    })
+    return blocks.map((b) => b.blockerId)
+  } catch (error) {
+    console.warn('[getBlockedByUserIds] Query failed:', error);
+    return [];
+  }
 }
 
 /**

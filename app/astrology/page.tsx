@@ -59,7 +59,7 @@ export default function AstrologySection() {
 
         <div className="px-4 pt-2 pb-3 sm:px-6 lg:px-8" ref={scrollContainerRef}>
           {/* Compatibility Guides Section */}
-          <div className="mt-2">
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
 
           {/* Combined Chinese Pattern Ranking & Relationship Patterns */}
           <div id="chinese-patterns" className="mb-6">
@@ -928,158 +928,164 @@ export default function AstrologySection() {
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
               <h2 className="astrology-heading-secondary mb-4">Five Elements (五行)</h2>
 
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-                <Link 
-                  href="/astrology/five-elements/wood"
-                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                >
-                  <div className="text-2xl mb-1">🌳</div>
-                  <div className="text-sm font-semibold text-green-500">Wood (木)</div>
-                </Link>
-                <Link 
-                  href="/astrology/five-elements/fire"
-                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                >
-                  <div className="text-2xl mb-1">🔥</div>
-                  <div className="text-sm font-semibold text-orange-500">Fire (火)</div>
-                </Link>
-                <Link 
-                  href="/astrology/five-elements/earth"
-                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                >
-                  <div className="text-2xl mb-1">⛰️</div>
-                  <div className="text-sm font-semibold text-yellow-600">Earth (土)</div>
-                </Link>
-                <Link 
-                  href="/astrology/five-elements/metal"
-                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                >
-                  <div className="text-2xl mb-1">⚙️</div>
-                  <div className={`text-sm font-semibold ${theme === "light" ? "text-gray-500" : "text-gray-300"}`}>Metal (金)</div>
-                </Link>
-                <Link 
-                  href="/astrology/five-elements/water"
-                  className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
-                >
-                  <div className="text-2xl mb-1">💧</div>
-                  <div className="text-sm font-semibold text-blue-500">Water (水)</div>
-                </Link>
-              </div>
-
-              <h4 className={`text-sm font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Two Key Relationship Cycles:</h4>
-              
-              <div className="space-y-4 mb-6">
-                {/* Generating Cycle */}
-                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h5 className="text-sm font-semibold text-green-500">Generating / Supportive (生, Shēng)</h5>
-                    <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap">Supportive</span>
+              <div className="mb-6">
+                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-white border-gray-200" : "bg-white/5 border-white/10"}`}>
+                  <h3 className={`text-base font-bold mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>The Five Elements</h3>
+                  
+                  <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
+                    <Link 
+                      href="/astrology/five-elements/wood"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
+                      <div className="text-2xl mb-1">🌳</div>
+                      <div className="text-sm font-semibold text-green-500">Wood (木)</div>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/fire"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
+                      <div className="text-2xl mb-1">🔥</div>
+                      <div className="text-sm font-semibold text-orange-500">Fire (火)</div>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/earth"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
+                      <div className="text-2xl mb-1">⛰️</div>
+                      <div className="text-sm font-semibold text-yellow-600">Earth (土)</div>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/metal"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
+                      <div className="text-2xl mb-1">⚙️</div>
+                      <div className={`text-sm font-semibold ${theme === "light" ? "text-gray-500" : "text-gray-300"}`}>Metal (金)</div>
+                    </Link>
+                    <Link 
+                      href="/astrology/five-elements/water"
+                      className={`p-3 rounded-lg border text-center transition-all hover:scale-105 cursor-pointer block relative z-10 ${theme === "light" ? "bg-gray-50 border-gray-200 hover:bg-gray-100" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                    >
+                      <div className="text-2xl mb-1">💧</div>
+                      <div className="text-sm font-semibold text-blue-500">Water (水)</div>
+                    </Link>
                   </div>
-                  <p className={`text-sm mb-2 ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Each element feeds the next:</p>
-                  <div className={`text-sm font-mono p-2 rounded ${theme === "light" ? "bg-gray-100 text-gray-800" : "bg-black/20 text-white/80"}`}>
-                    Wood → Fire → Earth → Metal → Water → Wood
+
+                  <h4 className={`text-sm font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Two Key Relationship Cycles:</h4>
+                  
+                  <div className="space-y-4 mb-6">
+                    {/* Generating Cycle */}
+                    <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h5 className="text-sm font-semibold text-green-500">Generating / Supportive (生, Shēng)</h5>
+                        <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap">Supportive</span>
+                      </div>
+                      <p className={`text-sm mb-2 ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Each element feeds the next:</p>
+                      <div className={`text-sm font-mono p-2 rounded ${theme === "light" ? "bg-gray-100 text-gray-800" : "bg-black/20 text-white/80"}`}>
+                        Wood → Fire → Earth → Metal → Water → Wood
+                      </div>
+                      <p className={`text-xs mt-2 italic ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Elements in this cycle support and nourish each other.</p>
+                    </div>
+
+                    {/* Controlling Cycle */}
+                    <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <h5 className="text-sm font-semibold text-red-500">Controlling / Challenging (克, Kè)</h5>
+                        <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-300 whitespace-nowrap">Challenging</span>
+                      </div>
+                      <p className={`text-sm mb-2 ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Each element checks or restrains another:</p>
+                      <div className={`text-sm font-mono p-2 rounded ${theme === "light" ? "bg-gray-100 text-gray-800" : "bg-black/20 text-white/80"}`}>
+                        Wood → Earth → Water → Fire → Metal → Wood
+                      </div>
+                      <p className={`text-xs mt-2 italic ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Elements in this cycle create tension and challenges.</p>
+                    </div>
                   </div>
-                  <p className={`text-xs mt-2 italic ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Elements in this cycle support and nourish each other.</p>
-                </div>
 
-                {/* Controlling Cycle */}
-                <div className={`p-4 rounded-lg border ${theme === "light" ? "bg-gray-50 border-gray-200" : "bg-white/5 border-white/10"}`}>
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <h5 className="text-sm font-semibold text-red-500">Controlling / Challenging (克, Kè)</h5>
-                    <span className="text-xs px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-300 whitespace-nowrap">Challenging</span>
+                  <h4 className={`text-sm font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Element Compatibility Chart</h4>
+                  <p className={`text-xs mb-4 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Rows = Person A's element • Columns = Person B's element</p>
+
+                  {/* Compatibility Table */}
+                  <div className="overflow-x-auto mb-4">
+                    <table className="w-full text-xs border-collapse">
+                      <thead>
+                        <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
+                          <th className={`p-2 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>A \ B</th>
+                          <th className="p-2 text-center font-semibold text-green-500">Wood</th>
+                          <th className="p-2 text-center font-semibold text-orange-500">Fire</th>
+                          <th className="p-2 text-center font-semibold text-yellow-600">Earth</th>
+                          <th className={`p-2 text-center font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</th>
+                          <th className="p-2 text-center font-semibold text-blue-500">Water</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Wood Row */}
+                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                          <td className="p-2 font-semibold text-green-500">Wood</td>
+                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                        </tr>
+                        {/* Fire Row */}
+                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                          <td className="p-2 font-semibold text-orange-500">Fire</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                        </tr>
+                        {/* Earth Row */}
+                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                          <td className="p-2 font-semibold text-yellow-600">Earth</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                        </tr>
+                        {/* Metal Row */}
+                        <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
+                          <td className={`p-2 font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                        </tr>
+                        {/* Water Row */}
+                        <tr>
+                          <td className="p-2 font-semibold text-blue-500">Water</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
+                          <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
+                          <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
-                  <p className={`text-sm mb-2 ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>Each element checks or restrains another:</p>
-                  <div className={`text-sm font-mono p-2 rounded ${theme === "light" ? "bg-gray-100 text-gray-800" : "bg-black/20 text-white/80"}`}>
-                    Wood → Earth → Water → Fire → Metal → Wood
+
+                  {/* Legend */}
+                  <div className="space-y-2 text-xs">
+                    <h5 className={`font-semibold mb-2 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Legend:</h5>
+                    <div className="flex items-start gap-2">
+                      <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-300 whitespace-nowrap">Same</span>
+                      <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>Strong resonance; similar pace and priorities.</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap">Supportive (生 Shēng)</span>
+                      <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>One element feeds the other; easier flow and teamwork.</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-300 whitespace-nowrap">Challenging (克 Kè)</span>
+                      <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>More tests and friction; can still be constructive with maturity.</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-600 dark:text-gray-300 whitespace-nowrap">Neutral</span>
+                      <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>No strong help or clash from the elements; other parts of the chart matter more.</span>
+                    </div>
                   </div>
-                  <p className={`text-xs mt-2 italic ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Elements in this cycle create tension and challenges.</p>
-                </div>
-              </div>
-
-              <h4 className={`text-sm font-bold mb-3 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Element Compatibility Chart</h4>
-              <p className={`text-xs mb-4 ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>Rows = Person A's element • Columns = Person B's element</p>
-
-              {/* Compatibility Table */}
-              <div className="overflow-x-auto mb-4">
-                <table className="w-full text-xs border-collapse">
-                  <thead>
-                    <tr className={`border-b ${theme === "light" ? "border-gray-300" : "border-white/20"}`}>
-                      <th className={`p-2 text-left font-semibold ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>A \ B</th>
-                      <th className="p-2 text-center font-semibold text-green-500">Wood</th>
-                      <th className="p-2 text-center font-semibold text-orange-500">Fire</th>
-                      <th className="p-2 text-center font-semibold text-yellow-600">Earth</th>
-                      <th className={`p-2 text-center font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</th>
-                      <th className="p-2 text-center font-semibold text-blue-500">Water</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* Wood Row */}
-                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                      <td className="p-2 font-semibold text-green-500">Wood</td>
-                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                    </tr>
-                    {/* Fire Row */}
-                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                      <td className="p-2 font-semibold text-orange-500">Fire</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                    </tr>
-                    {/* Earth Row */}
-                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                      <td className="p-2 font-semibold text-yellow-600">Earth</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                    </tr>
-                    {/* Metal Row */}
-                    <tr className={`border-b ${theme === "light" ? "border-gray-200" : "border-white/10"}`}>
-                      <td className={`p-2 font-semibold ${theme === "light" ? "text-gray-600" : "text-gray-300"}`}>Metal</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                    </tr>
-                    {/* Water Row */}
-                    <tr>
-                      <td className="p-2 font-semibold text-blue-500">Water</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-red-500/20 text-red-600 dark:text-red-300">Challenging</td>
-                      <td className="p-2 text-center bg-green-500/20 text-green-600 dark:text-green-300">Supportive</td>
-                      <td className="p-2 text-center bg-purple-500/20 text-purple-600 dark:text-purple-300">Same</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Legend */}
-              <div className="space-y-2 text-xs">
-                <h5 className={`font-semibold mb-2 ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>Legend:</h5>
-                <div className="flex items-start gap-2">
-                  <span className="px-2 py-0.5 rounded bg-purple-500/20 text-purple-600 dark:text-purple-300 whitespace-nowrap">Same</span>
-                  <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>Strong resonance; similar pace and priorities.</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="px-2 py-0.5 rounded bg-green-500/20 text-green-600 dark:text-green-300 whitespace-nowrap">Supportive (生 Shēng)</span>
-                  <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>One element feeds the other; easier flow and teamwork.</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="px-2 py-0.5 rounded bg-red-500/20 text-red-600 dark:text-red-300 whitespace-nowrap">Challenging (克 Kè)</span>
-                  <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>More tests and friction; can still be constructive with maturity.</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="px-2 py-0.5 rounded bg-gray-500/20 text-gray-600 dark:text-gray-300 whitespace-nowrap">Neutral</span>
-                  <span className={theme === "light" ? "text-gray-700" : "text-white/70"}>No strong help or clash from the elements; other parts of the chart matter more.</span>
                 </div>
               </div>
             </div>

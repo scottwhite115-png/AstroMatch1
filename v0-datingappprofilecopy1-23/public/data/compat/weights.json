@@ -1,0 +1,8 @@
+{
+  "west_weight": 0.55,
+  "east_weight": 0.45,
+  "synergy_bonus": 6,
+  "same_trine_bonus": 4,
+  "conflict_penalty": -6
+}
+

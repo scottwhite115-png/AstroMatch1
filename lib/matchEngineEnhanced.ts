@@ -3,16 +3,20 @@
 
 import {
   ChinesePattern,
-  WesternElement,
   WuXingElement,
-  WesternElementRelation,
-  WesternAspectRelation,
-  WuXingRelation,
   MatchInput,
   MatchResult,
   calculateMatchScore,
   buildMatchResult,
-  ChineseAnimal,
+  computeWuXingRelation,
+  getWuXingYearElement,
+} from './matchEngine';
+import type { 
+  WesternElement,
+  WesternElementRelation,
+  WesternAspectRelation,
+  WuXingRelation,
+  ChineseAnimal 
 } from './matchEngine';
 
 /** ===== Enhanced Types for Base/Overlay System ===== */
@@ -319,7 +323,7 @@ export function normalizeChineseAnimal(animal: string): ChineseAnimal {
 
 /** ===== Export enhanced types and functions ===== */
 
-export {
+export type {
   WesternElement,
   WesternElementRelation,
   WesternAspectRelation,

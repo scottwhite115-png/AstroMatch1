@@ -3,8 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
-import { ChatRegionScope, SanHeHouse } from "@prisma/client"
 import { getHouseBySlug } from "../houses"
+
+// Local type definitions instead of importing from Prisma
+type ChatRegionScope = "GLOBAL" | "REGIONAL" | "LOCAL" | "NEAR_ME" | "COUNTRY"
+type SanHeHouse = "VISIONARIES" | "STRATEGISTS" | "ADVENTURERS" | "ARTISTS"
 import { formatDistanceToNow } from "date-fns"
 
 type Message = {
@@ -53,7 +56,7 @@ export default function SanHeHousePage({ params }: Props) {
   }, [params])
 
   const house = getHouseBySlug(houseSlug)
-  const regionScope = (searchParams.get("scope") as ChatRegionScope) || ChatRegionScope.GLOBAL
+  const regionScope = (searchParams.get("scope") as ChatRegionScope) || "GLOBAL"
 
   // Auto-scroll to bottom
   const scrollToBottom = () => {

@@ -1336,6 +1336,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
   }, [])
 
   // Helper function to convert SimpleConnectionBox to ConnectionBoxData
+  // Updated to match the matches page version for consistency
   const convertSimpleToConnectionBoxData = (
     simpleBox: any, // SimpleConnectionBox type
     userWest: string,
@@ -1345,15 +1346,45 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     userYearElement?: any,
     profileYearElement?: any
   ): ConnectionBoxData => {
-    // Map match label to rank key
+    // Import connection UI helpers
+    const {
+      extractChineseBase,
+      extractChineseOverlays,
+      extractWesternRelation,
+      extractPrimaryLabel,
+    } = require('@/lib/connectionUiHelpers');
+    
+    // Extract connection UI data
+    const chineseBase = extractChineseBase(simpleBox.chinesePattern || simpleBox.pattern);
+    let chineseOverlays = extractChineseOverlays(
+      simpleBox.chinesePattern || simpleBox.pattern,
+      undefined, // allPatterns not available in SimpleConnectionBox yet
+      simpleBox.chineseLine // Use chineseLine as fallback
+    );
+    
+    // If the primary pattern is LIU_CHONG, XING, LIU_HAI, or PO, add it to overlays for display
+    const primaryPattern = String(simpleBox.chinesePattern || simpleBox.pattern || '').toUpperCase();
+    if (primaryPattern.includes('LIU_CHONG') && !chineseOverlays.includes('LIU_CHONG')) {
+      chineseOverlays.push('LIU_CHONG');
+    } else if (primaryPattern.includes('XING') && !chineseOverlays.includes('XING')) {
+      chineseOverlays.push('XING');
+    } else if (primaryPattern.includes('LIU_HAI') && !chineseOverlays.includes('LIU_HAI')) {
+      chineseOverlays.push('LIU_HAI');
+    } else if (primaryPattern.includes('PO') && !chineseOverlays.includes('PO')) {
+      chineseOverlays.push('PO');
+    }
+    const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
+    const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
+    
+    // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
     const labelToRankKey: Record<string, string> = {
       "Soulmate Match": "perfect",
       "Twin Flame Match": "excellent",
       "Excellent Match": "excellent",
       "Harmonious Match": "excellent",
       "Favourable Match": "good",
-      "Good Friends": "good",
-      "Good Friends Match": "good",
+      "Good Friends": "good", // Now maps to good
+      "Good Friends Match": "good", // Now maps to good
       "Opposites Attract": "fair",
       "Magnetic Opposites": "fair",
       "Neutral Match": "fair",
@@ -1362,46 +1393,69 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     
     const rankKey = labelToRankKey[simpleBox.matchLabel] || "neutral";
     
-    // Map label to tier
+    // Map label to tier (updated to support new match engine labels)
     const labelToTier = (label: string): any => {
-      if (label === "Soulmate Match") return "Soulmate";
-      if (label === "Twin Flame Match") return "Twin Flame";
-      if (label === "Excellent Match" || label === "Harmonious Match") return "Excellent";
+      // New match engine labels (from matchLabels.ts)
+      if (label === "SOULMATE" || label === "SOULMATE MATCH" || label === "Soulmate Match") return "Soulmate";
+      if (label === "TWIN FLAME" || label === "TWIN FLAME MATCH" || label === "Twin Flame Match") return "Twin Flame";
+      if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
       if (label === "Favourable Match") return "Favourable";
-      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
-      if (label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
-      if (label === "Neutral Match") return "Neutral";
-      if (label === "Difficult Match") return "Difficult";
+      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable"; // Maps to Favourable
+      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
+      if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
       return "Neutral";
     };
     
-    // Extract emoji and color from label
+    // Extract emoji and color from label (updated to support new match engine)
     const labelToEmoji: Record<string, string> = {
+      "SOULMATE": "💫",
+      "SOULMATE MATCH": "💫",
       "Soulmate Match": "💫",
+      "TWIN FLAME": "🔥",
+      "TWIN FLAME MATCH": "🔥",
       "Twin Flame Match": "🔥",
+      "HARMONIOUS": "✨",
+      "HARMONIOUS MATCH": "✨",
       "Excellent Match": "✨",
-      "Harmonious Match": "✨",
       "Favourable Match": "✨",
       "Good Friends": "✨",
       "Good Friends Match": "✨",
+      "OPPOSITES_ATTRACT": "⚡",
+      "OPPOSITES ATTRACT": "⚡",
       "Opposites Attract": "⚡",
       "Magnetic Opposites": "⚡",
+      "NEUTRAL": "✨",
+      "NEUTRAL MATCH": "✨",
       "Neutral Match": "✨",
+      "DIFFICULT": "💔",
+      "DIFFICULT MATCH": "💔",
       "Difficult Match": "💔",
     };
     
     const labelToColor: Record<string, string> = {
-      "Soulmate Match": "rgb(212, 175, 55)",
-      "Twin Flame Match": "rgb(255, 140, 0)",
-      "Excellent Match": "rgb(219, 39, 119)",
-      "Harmonious Match": "rgb(219, 39, 119)",
-      "Favourable Match": "rgb(219, 39, 119)",
-      "Good Friends": "rgb(34, 139, 34)",
-      "Good Friends Match": "rgb(34, 139, 34)",
-      "Opposites Attract": "rgb(239, 68, 68)",
-      "Magnetic Opposites": "rgb(239, 68, 68)",
-      "Neutral Match": "rgb(34, 139, 34)",
-      "Difficult Match": "rgb(239, 68, 68)",
+      "SOULMATE": "rgb(212, 175, 55)",                // Gold
+      "SOULMATE MATCH": "rgb(212, 175, 55)",          // Gold
+      "Soulmate Match": "rgb(212, 175, 55)",          // Gold
+      "TWIN FLAME": "rgb(255, 140, 0)",               // Astromatch Orange
+      "TWIN FLAME MATCH": "rgb(255, 140, 0)",         // Astromatch Orange
+      "Twin Flame Match": "rgb(255, 140, 0)",         // Astromatch Orange
+      "HARMONIOUS": "rgb(219, 39, 119)",              // Hot Pink
+      "HARMONIOUS MATCH": "rgb(219, 39, 119)",        // Hot Pink
+      "Excellent Match": "rgb(219, 39, 119)",         // Hot Pink
+      "Favourable Match": "rgb(219, 39, 119)",        // Hot Pink (same as Excellent)
+      "Good Friends": "rgb(34, 139, 34)",             // Green
+      "Good Friends Match": "rgb(34, 139, 34)",       // Green
+      "OPPOSITES_ATTRACT": "rgb(239, 68, 68)",        // Red
+      "OPPOSITES ATTRACT": "rgb(239, 68, 68)",        // Red
+      "Opposites Attract": "rgb(239, 68, 68)",        // Red
+      "Magnetic Opposites": "rgb(239, 68, 68)",       // Red (same as Opposites Attract)
+      "NEUTRAL": "rgb(34, 139, 34)",                  // Green
+      "NEUTRAL MATCH": "rgb(34, 139, 34)",            // Green
+      "Neutral Match": "rgb(34, 139, 34)",            // Green
+      "DIFFICULT": "rgb(239, 68, 68)",                // Red
+      "DIFFICULT MATCH": "rgb(239, 68, 68)",          // Red
+      "Difficult Match": "rgb(239, 68, 68)",          // Red
     };
     
     const tier = labelToTier(simpleBox.matchLabel);
@@ -1419,44 +1473,48 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       rankKey: rankKey as any,
       emoji: labelToEmoji[simpleBox.matchLabel] || "🌟",
       colorRgb: labelToColor[simpleBox.matchLabel] || "rgb(34, 139, 34)",
-      connectionLabel: simpleBox.headingLine,
+      connectionLabel: simpleBox.headingLine, // "Harmonious Match · 76%"
       tagline: simpleBox.matchLabel,
       east_tagline: simpleBox.chineseLine,
       tags: [],
+      // NEW: Map overview from SimpleConnectionBox to both insight and longformBody
       insight: simpleBox.overview || '',
       longformBody: simpleBox.overview || '',
-      east_relation: simpleBox.chineseLine,
+      // Use the full formatted lines from the new engine for display
+      east_relation: simpleBox.chineseLine, // Full line: "Monkey × Rat — San He (三合) "Three Harmonies" (Same Trine: Visionaries 三会)"
       east_summary: simpleBox.chineseLine,
-      east_description: simpleBox.chineseDescription || '',
-      west_relation: simpleBox.westernLine,
+      east_description: simpleBox.chineseDescription || '', // Pattern-specific description
+      east_tagline: simpleBox.chineseTagline || undefined, // NEW: Tagline from detailed compatibility
+      west_relation: simpleBox.westernLine, // Full line: "Aquarius × Pisces — Air–Water (semi-compatible)"
       west_summary: simpleBox.westernLine,
-      west_description: simpleBox.westernDescription || '',
-      westernSignLine: westernSignLine,
-      wuXingLine: simpleBox.wuXingLine,
+      west_description: simpleBox.westernDescription || '', // Western element meaning description
+      west_tagline: simpleBox.westernTagline || undefined, // NEW: Tagline from detailed compatibility
+      westernSignLine: westernSignLine, // NEW: Western sun sign relationship blurb
+      wuXingLine: simpleBox.wuXingLine, // Wu Xing (Five Elements) harmony line
       a: {
         west: userWest,
         east: userEast,
         westGlyph: getWesternSignGlyph(userWest),
         eastGlyph: getChineseSignGlyph(userEast),
-        chineseElement: userYearElement
+        chineseElement: userYearElement // Wu Xing year element
       },
       b: {
         west: profileWest,
         east: profileEast,
         westGlyph: getWesternSignGlyph(profileWest),
         eastGlyph: getChineseSignGlyph(profileEast),
-        chineseElement: profileYearElement
+        chineseElement: profileYearElement // Wu Xing year element
       },
       tier: tier as any,
-      // Pattern fields from SimpleConnectionBox
+      // Pattern fields for taglines
       chinesePattern: simpleBox.chinesePattern,
       westAspect: simpleBox.westAspect,
       westElementRelation: simpleBox.westElementRelation,
       isChineseOpposite: simpleBox.isChineseOpposite,
       isLivelyPair: simpleBox.isLivelyPair,
-      wuXingA: userYearElement,
-      wuXingB: profileYearElement,
-      // Match engine result fields
+      wuXingA: userYearElement, // Wu Xing element for User A
+      wuXingB: profileYearElement, // Wu Xing element for User B
+      // NEW: Match engine result fields from simpleBox
       pillLabel: simpleBox.pillLabel,
       pattern: simpleBox.pattern,
       patternFullLabel: simpleBox.patternFullLabel,
@@ -1464,6 +1522,13 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       patternEmoji: simpleBox.patternEmoji,
       chemistryStars: simpleBox.chemistryStars,
       stabilityStars: simpleBox.stabilityStars,
+      // NEW: Connection UI fields for ConnectionBoxTop component
+      connectionUI: {
+        primaryLabel,
+        chineseBase,
+        chineseOverlays,
+        westernRelation,
+      },
     }
   }
 
@@ -1632,7 +1697,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
                 />
               </svg>
               <span className="font-bold text-base bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
-                AstroLibrary
+                AstroLab
               </span>
             </div>
 

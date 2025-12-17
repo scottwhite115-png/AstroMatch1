@@ -7,10 +7,15 @@ import { useState, useEffect } from "react"
 // import { preloadBlurbs } from "@/lib/blurbLookup"
 
 export function Providers({ children }: { children: ReactNode }) {
-  const [mounted, setMounted] = useState(false)
+  // Always start as mounted on client to prevent blank screen
+  const [mounted, setMounted] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
-    setMounted(true)
+    // Ensure mounted is true on client
+    if (typeof window !== 'undefined') {
+      setMounted(true)
+    }
   }, [])
 
   // Temporarily disabled - 4.9MB JSON file causes white screen on mobile
@@ -18,7 +23,25 @@ export function Providers({ children }: { children: ReactNode }) {
   //   preloadBlurbs()
   // }, [])
 
-  if (!mounted) {
+  if (error) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className="text-center max-w-md">
+          <p className="text-white text-lg mb-2">Error Loading App</p>
+          <p className="text-white/60 text-sm mb-4">{error.message}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-3 bg-purple-600 text-white rounded-lg"
+          >
+            Reload
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Always render on client - don't block
+  if (typeof window === 'undefined') {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
@@ -28,6 +51,7 @@ export function Providers({ children }: { children: ReactNode }) {
     )
   }
 
+  // On client, always render immediately
   return (
     <ErrorBoundary>
       <ThemeProvider>{children}</ThemeProvider>

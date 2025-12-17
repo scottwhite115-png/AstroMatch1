@@ -34,11 +34,19 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className={`font-sans ${inter.variable} ${playfair.variable} lg:pl-64`} suppressHydrationWarning>
-        <Providers>
-          {children}
-          <NavigationWrapper />
-        </Providers>
+      <body className={`font-sans ${inter.variable} ${playfair.variable} lg:pl-64 min-h-screen`} suppressHydrationWarning>
+        <div id="app-root">
+          <Providers>
+            {children}
+            <NavigationWrapper />
+          </Providers>
+        </div>
+        <noscript>
+          <div style={{ padding: '20px', textAlign: 'center', background: 'white', color: 'black' }}>
+            <h1>JavaScript Required</h1>
+            <p>Please enable JavaScript to use AstroMatch.</p>
+          </div>
+        </noscript>
       </body>
     </html>
   )

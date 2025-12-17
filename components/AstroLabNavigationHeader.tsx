@@ -273,7 +273,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
               <Link
                 key={page.id}
                 href={page.path}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                   theme === "light"
                     ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                     : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
@@ -301,7 +301,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   <Link
                     key={section.id}
                     href={sectionPath}
-                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                         : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
@@ -318,7 +318,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   key={section.id}
                   type="button"
                   onClick={(e) => handleSectionClick(section.id, e)}
-                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
                     theme === "light"
                       ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                       : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"

@@ -994,192 +994,324 @@ export default function AccountPage({
             {/* Modal Content - Scrollable */}
             <div className="overflow-y-auto p-6 space-y-6">
               <div className="text-sm text-gray-600">
-                <strong>Effective Date:</strong> 11th October 2025
+                <strong>Last Updated:</strong> 17 December 2025
               </div>
 
               <p className="text-gray-900">
-                Welcome to <strong>AstroMatch</strong>, a dating and astrology-based app ("the App", "we", "us", or
-                "our").
+                AstroMatch is a dating and astrology-based application (the "App"). This Privacy Policy explains how AstroMatch ("AstroMatch," "we," "us," "our") collects, uses, shares, and protects information about you, and the choices you have.
               </p>
               <p className="text-gray-900">
-                Your privacy is important to us. This Privacy Policy explains how we collect, use, store, and protect
-                your information when you use AstroMatch.
+                This policy applies when you use our App, websites, and related services (collectively, the "Services").
               </p>
 
               {/* Section 1 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Information We Collect</h3>
-                <p className="text-gray-900 mb-3">
-                  We collect information that helps us provide you with the best experience possible. This includes:
-                </p>
-
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">1.1. Information You Provide</h4>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-4">
-                  <li>
-                    <strong>Account details:</strong> Name, date of birth, email, gender, and any profile information
-                    you choose to share.
-                  </li>
-                  <li>
-                    <strong>Optional birth details:</strong> Time and place of birth (if you choose to add them for more
-                    accurate astrological matching).
-                  </li>
-                  <li>
-                    <strong>Preferences:</strong> Match settings, compatibility interests, and profile preferences.
-                  </li>
-                  <li>
-                    <strong>User content:</strong> Photos, bios, and chat messages shared within the app.
-                  </li>
-                  <li>
-                    <strong>Support requests:</strong> Information you send when contacting our support team.
-                  </li>
-                </ul>
-
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">1.2. Automatically Collected Information</h4>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">1) Who We Are (Controller) and How to Contact Us</h3>
                 <p className="text-gray-900 mb-2">
-                  When you use AstroMatch, we automatically collect limited technical information, such as:
+                  AstroMatch is the entity responsible for processing your personal information (the "data controller" in many regions).
                 </p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-4">
-                  <li>Device type, operating system, and app version</li>
-                  <li>IP address and general location (country or region)</li>
-                  <li>Usage logs (e.g., feature interactions, crash data, and diagnostics)</li>
-                </ul>
-
-                <h4 className="text-lg font-semibold text-gray-900 mb-2">1.3. Cookies and Analytics</h4>
+                <p className="text-gray-900 mb-2">
+                  <strong>Privacy Contact:</strong> astromatchchat@gmail.com
+                </p>
+                <p className="text-gray-900 mb-2">
+                  <strong>Controller details:</strong> Harry Bundock Lawyer and Solicitor
+                </p>
                 <p className="text-gray-900">
-                  We may use analytics tools and cookies to understand user behaviour and improve the app experience.
-                  These do not identify you personally.
+                  If required by local law, we may appoint a local representative (for example, in the EEA/UK). If appointed, those details will be listed in this section.
                 </p>
               </div>
 
               {/* Section 2 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">2. How We Use Your Information</h3>
-                <p className="text-gray-900 mb-2">We use your information to:</p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Create and manage your AstroMatch profile</li>
-                  <li>Match you with compatible users based on your astrological data and preferences</li>
-                  <li>Enable chatting and connection between users</li>
-                  <li>Improve app functionality, performance, and safety</li>
-                  <li>Communicate with you about updates, matches, and support</li>
-                  <li>Comply with legal obligations</li>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">2) Information We Collect</h3>
+                <p className="text-gray-900 mb-3">
+                  We collect information in three ways: (A) you provide it, (B) we collect it automatically, and (C) we receive it from others.
+                </p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">A. Information you provide</h4>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-4">
+                  <li><strong>Account and profile details:</strong> name (or display name), email, date of birth, gender (if provided), profile text, interests, preferences, and settings.</li>
+                  <li><strong>Photos and media:</strong> profile photos and other media you choose to upload.</li>
+                  <li><strong>Optional birth details:</strong> birth time and birth location (if you choose to provide them) for astrological features.</li>
+                  <li><strong>Messages and interactions:</strong> chat messages and content you send, and metadata about messages (e.g., time sent, delivery status).</li>
+                  <li><strong>Community content (if enabled):</strong> posts, comments, reports, and other contributions.</li>
+                  <li><strong>Support communications:</strong> information you provide when you contact us (including attachments).</li>
                 </ul>
-                <p className="text-gray-900 font-semibold">We will never sell your personal data.</p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">B. Information collected automatically</h4>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-4">
+                  <li><strong>Device and app data:</strong> device type, operating system, app version, language, time zone, and unique device/app identifiers.</li>
+                  <li><strong>Log and usage data:</strong> feature usage, clicks, pages/screens viewed, crash logs, diagnostic events, and performance data.</li>
+                  <li><strong>Network and approximate location:</strong> IP address and inferred approximate location (e.g., city/region/country).</li>
+                  <li><strong>Precise location (optional):</strong> if you enable location permissions, we may collect precise location for features such as showing nearby users or distance. You can disable this in device settings.</li>
+                </ul>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">C. Information from others</h4>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-4">
+                  <li><strong>Other users:</strong> reports you submit about other users, or reports submitted about you; content that others share with you (e.g., messages).</li>
+                  <li><strong>App stores and platforms:</strong> basic purchase/transaction confirmations for in-app purchases (we generally do not receive your full payment card details; those are handled by Apple/Google or their payment processors).</li>
+                  <li><strong>Service providers:</strong> we may receive fraud, security, or analytics signals from vendors that help us operate and protect the Services.</li>
+                </ul>
               </div>
 
               {/* Section 3 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">3. How We Store and Protect Your Data</h3>
-                <p className="text-gray-900 mb-3">
-                  AstroMatch uses Superbase for secure data storage and industry-standard encryption to protect your
-                  information.
+                <h3 className="text-xl font-bold text-gray-900 mb-3">3) Sensitive Information</h3>
+                <p className="text-gray-900">
+                  Some information used in a dating app context may be considered sensitive in certain countries (for example: date of birth, precise location, messages, and content that may reveal sexual life/sexual orientation if you choose to share it).
                 </p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900">
-                  <li>
-                    Your data is stored on secure servers located in regions compliant with applicable privacy laws.
-                  </li>
-                  <li>Access to personal data is limited to authorised personnel.</li>
-                  <li>Sensitive information (such as passwords) is hashed or encrypted.</li>
-                  <li>We regularly review our systems to maintain security and compliance.</li>
-                </ul>
+                <p className="text-gray-900 mt-2">
+                  Where required, we process sensitive information only with your consent or another lawful basis permitted by law, and we provide controls to limit what you share publicly.
+                </p>
               </div>
 
               {/* Section 4 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">4. Data Sharing and Disclosure</h3>
-                <p className="text-gray-900 mb-2">We only share your information when necessary:</p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900">
-                  <li>
-                    <strong>With other users:</strong> Only the details you choose to make visible in your profile or
-                    chat.
-                  </li>
-                  <li>
-                    <strong>With service providers:</strong> For functions like hosting, analytics, or customer support
-                    — all under strict confidentiality agreements.
-                  </li>
-                  <li>
-                    <strong>When required by law:</strong> To comply with legal or regulatory obligations, or to prevent
-                    harm or fraud.
-                  </li>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">4) How We Use Your Information</h3>
+                <p className="text-gray-900 mb-2">We use information to operate, improve, secure, and personalize the Services, including to:</p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
+                  <li><strong>Provide the Services:</strong> create accounts, display profiles, enable matching, and enable chat and community features.</li>
+                  <li><strong>Astrology and compatibility features:</strong> calculate compatibility and provide astrological insights based on information you provide (including optional birth details).</li>
+                  <li><strong>Safety and integrity:</strong> detect, prevent, and investigate spam, fraud, harassment, and other harmful activity; enforce our Terms; respond to reports; and protect users.</li>
+                  <li><strong>Support:</strong> respond to requests, troubleshoot issues, and provide customer assistance.</li>
+                  <li><strong>Improve and develop:</strong> understand usage trends, fix bugs, improve features, and develop new functionality.</li>
+                  <li><strong>Communications:</strong> send service-related messages (e.g., account notices, security alerts) and, where permitted, marketing communications you can opt out of.</li>
+                  <li><strong>Legal compliance:</strong> comply with applicable laws, lawful requests, and regulatory obligations.</li>
                 </ul>
+                <p className="text-gray-900">
+                  We do not sell your personal information in the traditional sense. Some jurisdictions define "sell" or "share" broadly (including certain advertising-related disclosures). See Section 10 (Region Notices) for related rights.
+                </p>
               </div>
 
               {/* Section 5 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">5. International Data Transfers</h3>
-                <p className="text-gray-900 mb-2">AstroMatch may process data in multiple countries.</p>
-                <p className="text-gray-900">
-                  If your data is transferred outside your home country, we ensure it is protected by comparable privacy
-                  standards, consistent with the Australian Privacy Act and international regulations like the GDPR.
-                </p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">5) Legal Bases for Processing (EEA/UK/Switzerland and similar regions)</h3>
+                <p className="text-gray-900 mb-2">Where required, we rely on one or more of the following legal bases:</p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900">
+                  <li><strong>Contract necessity:</strong> to provide the Services you request (e.g., account, matching, chat).</li>
+                  <li><strong>Consent:</strong> for optional data (e.g., birth time/location), precise location (where required), certain analytics, and advertising/marketing where required.</li>
+                  <li><strong>Legitimate interests:</strong> to secure and improve the Services, prevent abuse, and operate our business (balanced against your rights).</li>
+                  <li><strong>Legal obligation:</strong> to comply with laws and lawful requests.</li>
+                  <li><strong>Vital interests:</strong> to protect someone's safety where necessary.</li>
+                </ul>
               </div>
 
               {/* Section 6 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">6. Your Rights and Choices</h3>
-                <p className="text-gray-900 mb-2">Depending on your location, you may have rights to:</p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Access, correct, or delete your personal data</li>
-                  <li>Withdraw consent for optional data (like birth time)</li>
-                  <li>Request a copy of your data</li>
-                  <li>Object to processing or data sharing</li>
-                  <li>Close your account at any time via the app settings</li>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">6) How We Share Information</h3>
+                <p className="text-gray-900 mb-3">We share information only as described below:</p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">A. With other users (your choices)</h4>
+                <p className="text-gray-900 mb-3">
+                  We share information you choose to display on your profile and through your interactions (e.g., chat messages). Your profile visibility and settings control what others can see.
+                </p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">B. With service providers (processors)</h4>
+                <p className="text-gray-900 mb-2">We use vendors to help run the Services, such as:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-3">
+                  <li>Hosting and databases (e.g., Supabase and associated infrastructure providers)</li>
+                  <li>Analytics and crash reporting</li>
+                  <li>Customer support tools</li>
+                  <li>Content moderation and safety tooling</li>
+                  <li>Email and communications tooling</li>
+                  <li>Payment and subscription support (typically via Apple/Google)</li>
                 </ul>
+                <p className="text-gray-900 mb-3">
+                  These providers are permitted to process personal information only to perform services for us under contractual confidentiality and security obligations.
+                </p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">C. For legal, safety, and enforcement reasons</h4>
+                <p className="text-gray-900 mb-2">We may disclose information if we believe it is reasonably necessary to:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-3">
+                  <li>comply with law, regulation, legal process, or lawful government requests;</li>
+                  <li>enforce our Terms and policies;</li>
+                  <li>detect, prevent, or address fraud, security, or technical issues; or</li>
+                  <li>protect the rights, property, and safety of AstroMatch, our users, or the public.</li>
+                </ul>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">D. Business transfers</h4>
                 <p className="text-gray-900">
-                  To exercise these rights, please contact us at{" "}
-                  <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">
-                    astromatchchat@gmail.com
-                  </a>
+                  If we are involved in a merger, acquisition, financing, reorganization, bankruptcy, or sale of company assets, information may be transferred as part of that transaction, subject to standard protections.
                 </p>
               </div>
 
               {/* Section 7 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">7. Data Retention</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">7) International Data Transfers</h3>
                 <p className="text-gray-900 mb-2">
-                  We retain your data for as long as your account is active or as needed to provide our services.
+                  AstroMatch may process and store information in countries other than where you live. When we transfer personal information internationally, we use appropriate safeguards as required by law, which may include:
                 </p>
-                <p className="text-gray-900">
-                  If you delete your account, we will remove or anonymise your personal information within a reasonable
-                  timeframe, unless required by law to retain it.
-                </p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900">
+                  <li>adequacy decisions (where recognized),</li>
+                  <li>contractual protections such as Standard Contractual Clauses (SCCs),</li>
+                  <li>or other lawful transfer mechanisms.</li>
+                </ul>
               </div>
 
               {/* Section 8 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">8. Children's Privacy</h3>
-                <p className="text-gray-900 mb-2">AstroMatch is intended for users 18 years and older.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">8) Data Security</h3>
+                <p className="text-gray-900 mb-2">
+                  We use administrative, technical, and physical safeguards designed to protect personal information, including:
+                </p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-3">
+                  <li>access controls and least-privilege practices,</li>
+                  <li>encryption in transit and, where applicable, at rest,</li>
+                  <li>hashed password storage (where passwords are used),</li>
+                  <li>monitoring and logging for security events.</li>
+                </ul>
                 <p className="text-gray-900">
-                  We do not knowingly collect data from minors. If we become aware of such data, we delete it promptly.
+                  No system is 100% secure. You are responsible for keeping your login credentials confidential and using device-level security.
                 </p>
               </div>
 
               {/* Section 9 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">9. Third-Party Links</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">9) Data Retention</h3>
                 <p className="text-gray-900 mb-2">
-                  AstroMatch may contain links to third-party websites or services (e.g., payment gateways).
+                  We retain personal information for as long as necessary to provide the Services and for legitimate business purposes, including safety and legal compliance.
                 </p>
+                <p className="text-gray-900 mb-2"><strong>Typical retention principles:</strong></p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
+                  <li><strong>Account data:</strong> retained while your account is active.</li>
+                  <li><strong>Deletion:</strong> when you request deletion, we delete or anonymize personal information within a reasonable timeframe, subject to: legal requirements, dispute resolution and enforcement needs, safety and abuse-prevention records (e.g., reports, sanctions), and limited backup retention (which may persist for a period before being overwritten).</li>
+                </ul>
                 <p className="text-gray-900">
-                  We are not responsible for their privacy practices, and we encourage you to review their policies.
+                  Some information may be retained in de-identified or aggregated form.
                 </p>
               </div>
 
               {/* Section 10 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">10. Changes to This Policy</h3>
-                <p className="text-gray-900 mb-2">We may update this Privacy Policy from time to time.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">10) Your Rights and Choices (Including Region Notices)</h3>
+                
+                <h4 className="text-lg font-semibold text-gray-900 mb-2 mt-4">A. Global controls</h4>
+                <p className="text-gray-900 mb-2">You can:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-3">
+                  <li>access and update profile information in the App,</li>
+                  <li>withdraw optional information (e.g., birth time),</li>
+                  <li>control permissions (e.g., location, notifications) in device settings,</li>
+                  <li>opt out of marketing emails using the unsubscribe link (where applicable),</li>
+                  <li>request access, deletion, or a copy of your data by contacting us.</li>
+                </ul>
                 <p className="text-gray-900 mb-2">
-                  The latest version will always be available within the app settings and on our website.
+                  <strong>Email:</strong> astromatchchat@gmail.com
                 </p>
-                <p className="text-gray-900">Material changes will be clearly communicated.</p>
+                <p className="text-gray-900 mb-4">
+                  We may need to verify your identity before fulfilling requests.
+                </p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">B. EEA/UK/Switzerland (GDPR / UK GDPR)</h4>
+                <p className="text-gray-900 mb-2">Subject to applicable law, you may have the right to:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
+                  <li>access, correct, delete, and port your data;</li>
+                  <li>restrict or object to certain processing (including profiling in some cases);</li>
+                  <li>withdraw consent (where processing is based on consent);</li>
+                  <li>lodge a complaint with your local data protection authority.</li>
+                </ul>
+                <p className="text-gray-900 mb-4">
+                  <strong>Profiling/automated decisions:</strong> AstroMatch uses algorithms to suggest matches and compatibility insights. This is not intended to produce legal or similarly significant effects. You can adjust preferences and controls within the App.
+                </p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">C. United States (including California CCPA/CPRA and other state laws)</h4>
+                <p className="text-gray-900 mb-2">Depending on your state, you may have rights to:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
+                  <li>know/access what personal information we collected, used, or disclosed;</li>
+                  <li>delete personal information (with legal exceptions);</li>
+                  <li>correct inaccurate information;</li>
+                  <li>obtain a portable copy of certain data;</li>
+                  <li>opt out of certain targeted advertising uses.</li>
+                </ul>
+                <p className="text-gray-900 mb-2">
+                  <strong>Sale/Share:</strong> We do not sell personal information for money. If we use advertising or analytics tools that are considered "sharing" under certain laws, you may request an opt-out by contacting us. We will honor applicable opt-out requests where required.
+                </p>
+                <p className="text-gray-900 mb-4">
+                  <strong>Non-discrimination:</strong> We will not discriminate against you for exercising privacy rights.
+                </p>
+
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">D. Brazil (LGPD), Canada (PIPEDA), and other regions</h4>
+                <p className="text-gray-900">
+                  You may have similar rights to access, correct, delete, and object to processing, subject to local law.
+                </p>
               </div>
 
               {/* Section 11 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">11. Contact Us</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">11) Advertising, Analytics, and Tracking</h3>
                 <p className="text-gray-900 mb-2">
-                  If you have questions or concerns about this Privacy Policy, or how your data is handled, please
-                  contact:
+                  We may use analytics tools to understand usage and improve performance. Depending on your configuration and region, these tools may involve device identifiers.
+                </p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
+                  <li><strong>Consent where required:</strong> In certain regions, we request consent before using non-essential analytics or advertising identifiers.</li>
+                  <li><strong>Apple App Tracking Transparency (ATT):</strong> On iOS, if we engage in tracking as defined by Apple, we will request permission via ATT prompts.</li>
+                  <li><strong>Advertising identifiers:</strong> Some devices provide advertising IDs (e.g., IDFA on iOS, AAID on Android). You can reset or limit these in device settings.</li>
+                </ul>
+                <p className="text-gray-900">
+                  We do not knowingly allow interest-based advertising targeted to minors.
+                </p>
+              </div>
+
+              {/* Section 12 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">12) Permissions (Location, Camera, Photos, Notifications)</h3>
+                <p className="text-gray-900 mb-2">The App may request device permissions to enable features:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
+                  <li><strong>Photos/Camera:</strong> to upload profile images.</li>
+                  <li><strong>Location:</strong> to show nearby matches and/or distance (if enabled by you).</li>
+                  <li><strong>Notifications:</strong> to alert you about messages, matches, and important updates.</li>
+                </ul>
+                <p className="text-gray-900">
+                  You can change permissions at any time in your device settings.
+                </p>
+              </div>
+
+              {/* Section 13 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">13) User-Generated Content, Reports, and Safety Moderation</h3>
+                <p className="text-gray-900 mb-2">
+                  AstroMatch is a social platform. Content you share (profile info, photos, messages, posts) may be visible to other users depending on your settings and the feature used.
+                </p>
+                <p className="text-gray-900 mb-2">We may review content and related information to:</p>
+                <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
+                  <li>respond to reports,</li>
+                  <li>enforce Terms and community guidelines,</li>
+                  <li>prevent harm and illegal activity,</li>
+                  <li>and improve safety.</li>
+                </ul>
+                <p className="text-gray-900">
+                  If you report a user, we may process details of the report and related context for investigation and enforcement.
+                </p>
+              </div>
+
+              {/* Section 14 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">14) Children's Privacy</h3>
+                <p className="text-gray-900 mb-2">
+                  AstroMatch is intended only for users 18 years or older (or the age of majority in your jurisdiction, if higher). We do not knowingly collect personal information from minors. If we learn we have collected such information, we will take steps to delete it.
+                </p>
+              </div>
+
+              {/* Section 15 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">15) Third-Party Links and Services</h3>
+                <p className="text-gray-900">
+                  The Services may link to third-party sites or services (for example, payment flows or external links). We are not responsible for their privacy practices. Please review their policies before providing information.
+                </p>
+              </div>
+
+              {/* Section 16 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">16) Changes to This Privacy Policy</h3>
+                <p className="text-gray-900 mb-2">
+                  We may update this Privacy Policy from time to time. The latest version will be available in the App and/or on our website. If changes are material, we will provide additional notice as required (e.g., in-app notice).
+                </p>
+              </div>
+
+              {/* Section 17 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">17) Contact Us</h3>
+                <p className="text-gray-900 mb-2">
+                  For questions, requests, or complaints about privacy, contact:
                 </p>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <p className="text-gray-900 font-semibold">AstroMatch Privacy Team</p>
@@ -1188,6 +1320,9 @@ export default function AccountPage({
                     <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">
                       astromatchchat@gmail.com
                     </a>
+                  </p>
+                  <p className="text-gray-900 mt-2">
+                    <strong>Controller details:</strong> Harry Bundock Lawyer and Solicitor
                   </p>
                 </div>
               </div>
@@ -1226,270 +1361,307 @@ export default function AccountPage({
             {/* Modal Content - Scrollable */}
             <div className="overflow-y-auto p-6 space-y-6">
               <div className="text-sm text-gray-600">
-                <strong>Effective Date:</strong> 11th October 2025
+                <strong>Last Updated:</strong> 17 December 2025
               </div>
 
-                  <p className="text-gray-900">
-                Welcome to <strong>AstroMatch</strong>, a global dating and astrology-based matchmaking app ("the App",
-                "we", "us", or "our").
+              <p className="text-gray-900">
+                These Terms of Service (the "Terms") govern your access to and use of AstroMatch's mobile application, websites, and related services (collectively, the "Services"). By creating an account or using the Services, you agree to these Terms.
               </p>
-                  <p className="text-gray-900">
-                By creating an account or using AstroMatch, you agree to these Terms of Service. Please read them
-                carefully.
+              <p className="text-gray-900 font-semibold">
+                If you do not agree, do not use the Services.
               </p>
-                  <p className="text-gray-900 font-semibold">If you do not agree, please do not use the App.</p>
 
               {/* Section 1 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">1. Eligibility</h3>
-                <p className="text-gray-900 mb-2">You must:</p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Be at least 18 years old</li>
-                  <li>Have the legal capacity to enter into this agreement</li>
-                  <li>Provide accurate, truthful information when creating your profile</li>
-                </ul>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">1) Who We Are and Contact</h3>
+                <p className="text-gray-900 mb-2">
+                  The Services are operated by [INSERT LEGAL ENTITY NAME] ("AstroMatch," "we," "us," "our").
+                </p>
+                <p className="text-gray-900 mb-2">
+                  <strong>Contact:</strong> astromatchchat@gmail.com
+                </p>
+                <p className="text-gray-900 mb-2">
+                  <strong>Registered address:</strong> [INSERT ADDRESS]
+                </p>
                 <p className="text-gray-900">
-                  We reserve the right to suspend or remove accounts that violate these terms or contain false or
-                  misleading information.
+                  <strong>Country of establishment:</strong> [INSERT COUNTRY]
                 </p>
               </div>
 
               {/* Section 2 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">2. Your Account</h3>
-                <p className="text-gray-900 mb-2">When you register, you agree to:</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">2) Eligibility and Age Requirements</h3>
+                <p className="text-gray-900 mb-2">You may use the Services only if:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Keep your login credentials secure</li>
-                  <li>Not share your account with others</li>
-                  <li>Be responsible for all activity under your account</li>
+                  <li>you are 18 years or older (or the age of majority where you live, if higher);</li>
+                  <li>you can form a legally binding contract; and</li>
+                  <li>you are not prohibited from using the Services under applicable law.</li>
                 </ul>
                 <p className="text-gray-900">
-                  If you suspect unauthorised use, notify us immediately at{" "}
-                  <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">
-                    astromatchchat@gmail.com
-                  </a>
+                  We do not permit minors. We may suspend or terminate accounts we reasonably believe belong to minors.
                 </p>
               </div>
 
               {/* Section 3 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">3. User Conduct</h3>
-                <p className="text-gray-900 mb-2">AstroMatch is a respectful, inclusive community.</p>
-                <p className="text-gray-900 mb-2">You agree not to:</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">3) Account Registration and Security</h3>
+                <p className="text-gray-900 mb-2">You are responsible for:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Use AstroMatch for any illegal, harmful, or discriminatory activity</li>
-                  <li>Harass, threaten, or abuse other users</li>
-                  <li>Impersonate another person or misrepresent yourself</li>
-                  <li>Post content that is pornographic, offensive, or violates others' rights</li>
-                  <li>Use bots, scrapers, or automated systems to access the app</li>
-                  <li>Interfere with or disrupt the operation of the app</li>
+                  <li>providing accurate information when you register;</li>
+                  <li>keeping your login credentials secure; and</li>
+                  <li>all activity that occurs under your account.</li>
                 </ul>
                 <p className="text-gray-900">
-                  We reserve the right to moderate, restrict, or remove content or accounts that breach these
-                  guidelines.
+                  You agree not to share your account or use another person's account without permission.
                 </p>
               </div>
 
               {/* Section 4 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">4. User Content and Permissions</h3>
-                <p className="text-gray-900 mb-2">You own the content you post (photos, bios, messages, etc.).</p>
-                <p className="text-gray-900 mb-2">
-                  By posting or uploading content on AstroMatch, you grant us a non-exclusive, worldwide, royalty-free
-                  licence to:
-                </p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">4) Your Use of the Services</h3>
+                <p className="text-gray-900 mb-2">You agree to use the Services lawfully and respectfully.</p>
+                <p className="text-gray-900 mb-2">You must not:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Display your content within the app</li>
-                  <li>Use it to operate, promote, and improve AstroMatch (in ways consistent with this policy)</li>
+                  <li>harass, threaten, defame, shame, stalk, or abuse others;</li>
+                  <li>post or send content that is illegal, hateful, sexually exploitative, or otherwise harmful;</li>
+                  <li>share content depicting or encouraging violence or self-harm;</li>
+                  <li>impersonate others or misrepresent your identity;</li>
+                  <li>solicit money, financial information, or run scams;</li>
+                  <li>share another person's private information without permission ("doxxing");</li>
+                  <li>use the Services for commercial solicitation without our written consent;</li>
+                  <li>attempt to access or probe our systems, reverse engineer the app, or circumvent security;</li>
+                  <li>use bots/scrapers or automated tools without permission; or</li>
+                  <li>violate any community guidelines or safety rules we publish.</li>
                 </ul>
                 <p className="text-gray-900">
-                  We will never sell or publicly distribute your private content (such as chats) outside the platform.
+                  We may investigate violations and take enforcement action.
                 </p>
               </div>
 
               {/* Section 5 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">5. Privacy and Data Protection</h3>
-                <p className="text-gray-900 mb-2">Your privacy is very important to us.</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">5) Community Guidelines, Moderation, and Enforcement</h3>
                 <p className="text-gray-900 mb-2">
-                  Our data collection, use, and storage practices are described in our Privacy Policy, which is part of
-                  these Terms.
+                  AstroMatch may provide reporting tools and moderation. We may, at our discretion and consistent with applicable law:
                 </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
+                  <li>remove or limit visibility of content;</li>
+                  <li>restrict features (e.g., messaging);</li>
+                  <li>temporarily suspend or permanently ban accounts; and/or</li>
+                  <li>refer matters to law enforcement where appropriate.</li>
+                </ul>
                 <p className="text-gray-900">
-                  By using the app, you consent to the collection and use of information as described in the Privacy
-                  Policy.
+                  We may act on reports, automated signals, or other information. We are not obligated to monitor all user content, and we cannot guarantee that all harmful content will be identified or removed.
                 </p>
               </div>
 
               {/* Section 6 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">6. Payments and Subscriptions (if applicable)</h3>
-                <p className="text-gray-900 mb-2">AstroMatch may offer optional premium features or subscriptions.</p>
-                <p className="text-gray-900 mb-2">If you choose to purchase these:</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">6) Dating Safety and User Responsibility</h3>
+                <p className="text-gray-900 mb-2">
+                  AstroMatch is a platform that helps users meet and communicate. You are responsible for your interactions with others.
+                </p>
+                <p className="text-gray-900 mb-2">You acknowledge and agree:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>All payments are processed securely through your app store or payment provider</li>
-                  <li>Prices may vary by region and currency</li>
-                  <li>
-                    Subscriptions renew automatically unless cancelled through your store account before the renewal
-                    date
-                  </li>
-                  <li>We do not offer refunds except where required by law (e.g. under the Australian Consumer Law)</li>
+                  <li>you may encounter content or conduct that is offensive, inaccurate, or inappropriate;</li>
+                  <li>you should use caution when communicating with and meeting others;</li>
+                  <li>you should never send money or share sensitive financial information with other users; and</li>
+                  <li>you will take reasonable steps to protect your personal safety when meeting in person.</li>
                 </ul>
+                <p className="text-gray-900">
+                  To the maximum extent permitted by law, AstroMatch is not responsible for offline conduct or events between users.
+                </p>
               </div>
 
               {/* Section 7 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">7. Safety and Disclaimer</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">7) Astrology and Compatibility Disclaimer (Entertainment Purposes)</h3>
                 <p className="text-gray-900 mb-2">
-                  AstroMatch provides a digital space for people to connect, but we cannot guarantee compatibility,
-                  safety, or accuracy of user information.
+                  AstroMatch includes astrological profiles, compatibility scores, and related content. You agree and understand:
                 </p>
-                <p className="text-gray-900 mb-2">Please:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>Exercise caution when communicating or meeting people</li>
-                  <li>Avoid sharing personal or financial information too early</li>
-                  <li>Report suspicious behaviour through the in-app reporting tools</li>
+                  <li><strong>Astrology and compatibility features are provided for entertainment and informational purposes only.</strong></li>
+                  <li>They are not professional advice and are not intended to diagnose, treat, cure, or prevent any condition, nor to provide medical, legal, financial, psychological, or relationship counseling.</li>
+                  <li>Decisions you make (including relationship decisions) are your responsibility.</li>
+                  <li>If you need professional help, seek advice from a qualified professional in your jurisdiction.</li>
                 </ul>
-                <p className="text-gray-900">
-                  We do not verify every user profile and are not responsible for user conduct.
-                </p>
               </div>
 
-              {/* Section 8 - Entertainment & Astrology Disclaimer */}
+              {/* Section 8 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">8. Entertainment Purposes & Astrology Disclaimer</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">8) User Content and License</h3>
                 <p className="text-gray-900 mb-2">
-                  <strong>AstroMatch is designed for entertainment and social connection purposes only.</strong>
+                  User Content includes your profile details, photos, messages, posts, and any content you submit through the Services.
                 </p>
                 <p className="text-gray-900 mb-2">
-                  The astrology-based compatibility matching system, zodiac analysis, and relationship guidance provided 
-                  within the app are <strong>not scientifically proven</strong> and should be viewed as fun, light-hearted 
-                  tools to help people connect based on shared interests.
-                </p>
-                <p className="text-gray-900 mb-2">
-                  <strong>Important disclaimers:</strong>
+                  You retain ownership of your User Content, but you grant AstroMatch a worldwide, non-exclusive, royalty-free, sublicensable license to host, store, reproduce, modify (for formatting), display, and distribute your User Content solely to:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>
-                    <strong>No guarantee of compatibility:</strong> AstroMatch does not guarantee that astrological 
-                    compatibility scores will result in successful relationships, friendships, or romantic outcomes.
-                  </li>
-                  <li>
-                    <strong>Not relationship advice:</strong> The app does not provide professional relationship counseling, 
-                    therapy, or advice. If you need support for relationship issues, please consult a qualified professional.
-                  </li>
-                  <li>
-                    <strong>No liability for relationship outcomes:</strong> AstroMatch and its operators are not liable 
-                    for any relationship problems, breakups, conflicts, emotional distress, or other issues that may arise 
-                    from connections made through the app.
-                  </li>
-                  <li>
-                    <strong>User responsibility:</strong> All decisions made based on astrological information, compatibility 
-                    scores, or connections formed through AstroMatch are your sole responsibility.
-                  </li>
-                  <li>
-                    <strong>Personal judgment:</strong> We encourage you to use your own judgment, intuition, and common 
-                    sense when forming relationships and making important life decisions.
-                  </li>
+                  <li>operate, provide, maintain, and improve the Services;</li>
+                  <li>display your content to other users according to your settings; and</li>
+                  <li>enforce these Terms and protect safety and integrity.</li>
                 </ul>
-                <p className="text-gray-900 font-semibold">
-                  By using AstroMatch, you acknowledge and agree that the app is for entertainment purposes and that 
-                  we are not responsible for any relationship outcomes or personal decisions made through the use of 
-                  the service.
+                <p className="text-gray-900 mb-3">
+                  This license ends when you delete your content or account, except to the extent we must retain content for legal compliance, dispute resolution, safety, or backups as described in our Privacy Policy.
+                </p>
+                <p className="text-gray-900">
+                  You represent that you have all rights necessary to upload and share your User Content and that it does not violate any laws or third-party rights.
                 </p>
               </div>
 
               {/* Section 9 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">9. Intellectual Property</h3>
-                <p className="text-gray-900 mb-2">
-                  All app content — including design, text, graphics, and software — is owned or licensed by AstroMatch
-                  and protected by copyright and trademark laws.
-                </p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">9) Prohibited Content</h3>
+                <p className="text-gray-900 mb-2">You must not upload, post, or transmit content that:</p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
+                  <li>is illegal or promotes illegal activity;</li>
+                  <li>includes sexual content involving minors or exploitation (zero tolerance);</li>
+                  <li>is non-consensual intimate imagery (including "revenge porn");</li>
+                  <li>contains threats, harassment, hate speech, or incitement of violence;</li>
+                  <li>infringes intellectual property rights;</li>
+                  <li>contains malware or malicious code; or</li>
+                  <li>violates another person's privacy or publicity rights.</li>
+                </ul>
                 <p className="text-gray-900">
-                  You may not copy, modify, distribute, or reverse-engineer any part of the app without our written
-                  permission.
+                  We may remove prohibited content and take enforcement action.
                 </p>
               </div>
 
               {/* Section 10 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">10. Service Availability</h3>
-                <p className="text-gray-900 mb-2">
-                  We aim to keep AstroMatch running smoothly but cannot guarantee uninterrupted access.
-                </p>
-                <p className="text-gray-900 mb-2">
-                  We may modify, suspend, or discontinue parts of the app at any time without notice.
-                </p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">10) Third-Party Services and Links</h3>
                 <p className="text-gray-900">
-                  We are not liable for loss or damage caused by temporary downtime or changes.
+                  The Services may integrate with or link to third-party services. AstroMatch does not control and is not responsible for third-party services, terms, or privacy practices. Your use of those services may be governed by their separate terms.
                 </p>
               </div>
 
               {/* Section 11 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">11. Termination</h3>
-                <p className="text-gray-900 mb-2">You may delete your account at any time in the app settings.</p>
-                <p className="text-gray-900 mb-2">We may suspend or terminate your access if:</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">11) Subscriptions, Purchases, and Billing (If Applicable)</h3>
+                <p className="text-gray-900 mb-2">If you purchase subscriptions or in-app features:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>You violate these Terms</li>
-                  <li>Your activity poses a risk to other users or the platform</li>
-                  <li>We are required to do so by law</li>
+                  <li>purchases may be processed by Apple, Google, or their payment processors;</li>
+                  <li>pricing, taxes, billing periods, and renewal terms will be presented at purchase; and</li>
+                  <li>refunds are handled in accordance with the applicable app store's refund policies and local consumer laws.</li>
                 </ul>
                 <p className="text-gray-900">
-                  Termination does not affect rights or obligations that have already accrued.
+                  We may change prices or features in compliance with app store rules and applicable law. Any changes will generally take effect at the next renewal or as otherwise disclosed.
                 </p>
               </div>
 
               {/* Section 12 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">12. Limitation of Liability</h3>
-                <p className="text-gray-900 mb-2">To the fullest extent permitted by law:</p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
-                  <li>
-                    AstroMatch and its partners are not liable for any indirect, incidental, or consequential damages
-                    arising from your use of the app.
-                  </li>
-                  <li>We provide AstroMatch "as is", without guarantees of uninterrupted or error-free operation.</li>
-                </ul>
-                <p className="text-gray-900">
-                  Some jurisdictions (including under Australian Consumer Law) may not allow limitations on liability —
-                  in those cases, your rights remain unaffected.
+                <h3 className="text-xl font-bold text-gray-900 mb-3">12) Termination</h3>
+                <p className="text-gray-900 mb-2">
+                  You may stop using the Services or delete your account at any time (subject to in-app controls).
+                </p>
+                <p className="text-gray-900 mb-2">
+                  We may suspend or terminate your access if we believe you violated these Terms, created risk or legal exposure, or if required by law. Where required by law, we will provide notice and/or an opportunity to appeal.
                 </p>
               </div>
 
               {/* Section 13 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">13. Governing Law</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">13) Disclaimers</h3>
                 <p className="text-gray-900 mb-2">
-                  These Terms are governed by the laws of Queensland, Australia, and subject to the jurisdiction of the
-                  courts of Queensland.
+                  To the maximum extent permitted by law, the Services are provided "as is" and "as available." We do not guarantee that:
+                </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
+                  <li>the Services will be uninterrupted, secure, or error-free;</li>
+                  <li>matches will be accurate or compatible; or</li>
+                  <li>content will be accurate, complete, or reliable.</li>
+                </ul>
+                <p className="text-gray-900 mb-2">
+                  We disclaim warranties of merchantability, fitness for a particular purpose, and non-infringement where permitted by law.
                 </p>
                 <p className="text-gray-900">
-                  If you access AstroMatch from outside Australia, you are responsible for complying with local laws.
+                  Some jurisdictions do not allow certain disclaimers, so some of these may not apply to you.
                 </p>
               </div>
 
               {/* Section 14 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">14. Changes to These Terms</h3>
-                <p className="text-gray-900 mb-2">We may update these Terms from time to time.</p>
-                <p className="text-gray-900 mb-2">
-                  If we make significant changes, we'll notify users in-app or via email.
-                </p>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">14) Limitation of Liability</h3>
+                <p className="text-gray-900 mb-2">To the maximum extent permitted by law:</p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
+                  <li>
+                    AstroMatch will not be liable for indirect, incidental, special, consequential, or punitive damages, or loss of profits/data/goodwill, arising out of or related to your use of the Services.
+                  </li>
+                  <li>
+                    AstroMatch's total liability for any claim will not exceed the greater of: (a) amounts you paid to AstroMatch in the 12 months before the event giving rise to the claim, or (b) USD $100 (or local equivalent), unless applicable law requires otherwise.
+                  </li>
+                </ul>
                 <p className="text-gray-900">
-                  The latest version will always be available under Settings → Legal → Terms of Service.
+                  Some jurisdictions do not allow limitations of liability, so these limits may not fully apply to you.
                 </p>
               </div>
 
               {/* Section 15 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">15. Contact Us</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">15) Indemnity</h3>
                 <p className="text-gray-900 mb-2">
-                  If you have questions about these Terms or your rights, please contact:
+                  To the maximum extent permitted by law, you agree to indemnify and hold AstroMatch harmless from claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising from:
                 </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900">
+                  <li>your use of the Services;</li>
+                  <li>your User Content; or</li>
+                  <li>your violation of these Terms or applicable law.</li>
+                </ul>
+              </div>
+
+              {/* Section 16 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">16) Dispute Resolution</h3>
+                <p className="text-gray-900">
+                  Disputes will be resolved in the courts specified in Section 17.
+                </p>
+              </div>
+
+              {/* Section 17 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">17) Governing Law and Venue</h3>
+                <p className="text-gray-900 mb-2">
+                  These Terms are governed by the laws of [INSERT STATE/COUNTRY], without regard to conflict of laws rules, except where your local consumer protection laws require otherwise.
+                </p>
+                <p className="text-gray-900 mb-2">
+                  Exclusive venue for disputes (unless prohibited by law): [INSERT COURTS/LOCATION].
+                </p>
+                <p className="text-gray-900">
+                  Consumers in some jurisdictions may have the right to bring claims in their local courts.
+                </p>
+              </div>
+
+              {/* Section 18 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">18) Consumer Rights (Global Consumer Notice)</h3>
+                <p className="text-gray-900">
+                  Nothing in these Terms limits rights you may have under applicable consumer protection laws (including statutory guarantees that cannot be excluded). If a disclaimer, limitation, or clause is not enforceable in your jurisdiction, it will apply only to the extent permitted.
+                </p>
+              </div>
+
+              {/* Section 19 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">19) Changes to the Services and Terms</h3>
+                <p className="text-gray-900">
+                  We may update the Services and these Terms. If we make material changes, we will provide notice (e.g., in-app notice). Continued use after the effective date of updated Terms means you accept the updated Terms, to the extent allowed by law.
+                </p>
+              </div>
+
+              {/* Section 20 */}
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">20) Miscellaneous</h3>
+                <ul className="list-disc pl-6 space-y-2 text-gray-900">
+                  <li><strong>Severability:</strong> If any provision is unenforceable, the remainder remains in effect.</li>
+                  <li><strong>Assignment:</strong> You may not assign your rights without our consent. We may assign these Terms as part of a merger or sale.</li>
+                  <li><strong>Entire agreement:</strong> These Terms, plus the Privacy Policy and any in-app policies, form the entire agreement.</li>
+                  <li><strong>No waiver:</strong> Failure to enforce a provision is not a waiver.</li>
+                </ul>
+              </div>
+
+              {/* Contact Section */}
+              <div>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <p className="text-gray-900 font-semibold">AstroMatch Support</p>
+                  <p className="text-gray-900 font-semibold">Contact Information</p>
                   <p className="text-gray-900">
                     📧{" "}
                     <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">

@@ -1,4 +1,3 @@
-import prisma from "@/lib/prisma";
 import { PostCardClient } from "./PostCardClient";
 import { getCurrentUserProfile } from "@/lib/currentProfile";
 import { getCurrentProfileWithRole } from "@/lib/auth-helpers";
@@ -19,6 +18,24 @@ export async function PostList({ topic }: PostListProps) {
         </p>
         <p className="mt-2 text-xs text-amber-300">
           Please configure DATABASE_URL in your environment variables.
+        </p>
+      </div>
+    );
+  }
+
+  // Check if Prisma client is available
+  let prismaClient;
+  try {
+    prismaClient = await import('@/lib/prisma').then(m => m.default || m.prisma);
+  } catch (error) {
+    console.error('[PostList] Prisma client not available:', error);
+    return (
+      <div className="mt-4 rounded-xl border border-amber-800 bg-amber-950/20 p-4">
+        <p className="text-sm text-amber-400">
+          Database client not initialized. Please run: npx prisma generate
+        </p>
+        <p className="mt-2 text-xs text-amber-300">
+          Error: {error instanceof Error ? error.message : String(error)}
         </p>
       </div>
     );
@@ -65,10 +82,14 @@ export async function PostList({ topic }: PostListProps) {
         };
       }
 
+      if (!prismaClient) {
+        throw new Error('Prisma client not available. Please run: npx prisma generate');
+      }
+
       const result = await withTimeout(
         Promise.all([
           getCurrentUserProfile().catch(() => null),
-          prisma.post.findMany({
+          prismaClient.post.findMany({
             where: whereClause,
             orderBy: { createdAt: "desc" },
             take: 50,

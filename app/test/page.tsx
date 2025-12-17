@@ -1,12 +1,8 @@
-'use client'
-
 export default function TestPage() {
   return (
-    <div className="min-h-screen bg-white flex items-center justify-center">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">Test Page</h1>
-        <p className="text-gray-600">If you can see this, the app is loading correctly.</p>
-      </div>
+    <div style={{ padding: '20px', background: 'white', color: 'black' }}>
+      <h1>Test Page Works!</h1>
+      <p>If you see this, Next.js is compiling correctly.</p>
     </div>
   )
 }

@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { COMMUNITY_TOPICS } from "../../topics"
@@ -15,6 +14,24 @@ type PageProps = {
 
 export default async function ThreadPage({ params }: PageProps) {
   const { topic, postId } = await params
+
+  // Dynamic import to handle Prisma client generation errors gracefully
+  let prismaClient: any;
+  try {
+    prismaClient = await import('@/lib/prisma').then(m => m.default || m.prisma);
+  } catch (error) {
+    console.error('[ThreadPage] Prisma client not available:', error);
+    return (
+      <div className="mt-4 rounded-xl border border-amber-800 bg-amber-950/20 p-4">
+        <p className="text-sm text-amber-400">
+          Database client not initialized. Please run: npx prisma generate
+        </p>
+        <p className="mt-2 text-xs text-amber-300">
+          Error: {error instanceof Error ? error.message : String(error)}
+        </p>
+      </div>
+    );
+  }
 
   // Get current user for moderation
   const currentProfile = await getCurrentProfileWithRole()
@@ -58,7 +75,7 @@ export default async function ThreadPage({ params }: PageProps) {
   }
 
   // Fetch post with comments
-  const post = await prisma.post.findUnique({
+  const post = await prismaClient.post.findUnique({
     where: whereClause,
     include: {
       author: {

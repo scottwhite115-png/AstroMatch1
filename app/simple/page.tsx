@@ -1,30 +1,16 @@
-'use client'
-
 export default function SimplePage() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#0a0a0a',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      color: 'white',
-      fontFamily: 'system-ui',
-      flexDirection: 'column',
-      gap: '2rem'
-    }}>
-      <h1 style={{ fontSize: '3rem' }}>✅ Simple Works!</h1>
-      <p>This is a client-side rendered page.</p>
-      <div style={{ display: 'flex', gap: '1rem' }}>
-        <a href="/matches" style={{ padding: '1rem 2rem', background: '#f97316', color: 'white', textDecoration: 'none', borderRadius: '8px' }}>
-          Go to Matches
-        </a>
-        <a href="/astrology" style={{ padding: '1rem 2rem', background: '#8b5cf6', color: 'white', textDecoration: 'none', borderRadius: '8px' }}>
-          Go to Astrology
-        </a>
-      </div>
-    </div>
+    <html>
+      <head>
+        <title>Simple Test</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </head>
+      <body style={{ margin: 0, padding: '20px', background: 'white', color: 'black', fontFamily: 'Arial' }}>
+        <h1>Simple Test Page</h1>
+        <p>If you see this, the server is working!</p>
+        <p>Time: {new Date().toLocaleString()}</p>
+        <a href="/matches" style={{ color: 'blue', textDecoration: 'underline' }}>Go to Matches</a>
+      </body>
+    </html>
   )
 }
-
-export const dynamic = 'force-dynamic'

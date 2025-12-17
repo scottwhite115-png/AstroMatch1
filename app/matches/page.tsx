@@ -823,8 +823,17 @@ const SHUFFLED_PROFILES = typeof window !== 'undefined'
 
 
 export default function MatchesPage() {
+  // Always render something immediately on mobile
+  if (typeof window === 'undefined') {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <p className="text-gray-900">Loading...</p>
+      </div>
+    )
+  }
+
   const router = useRouter()
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(true) // Always true on client
   const [hasError, setHasError] = useState(false)
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
@@ -888,7 +897,9 @@ export default function MatchesPage() {
   
   // Set mounted state on client side only
   useEffect(() => {
-    setMounted(true)
+    if (typeof window !== 'undefined') {
+      setMounted(true)
+    }
   }, [])
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
@@ -993,10 +1004,17 @@ export default function MatchesPage() {
   // Get current user ID
   useEffect(() => {
     const fetchUser = async () => {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      setCurrentUserId(user?.id || null)
-      console.log('[Matches] Current user ID:', user?.id)
+      try {
+        const supabase = createClient()
+        if (supabase && supabase.auth) {
+          const { data: { user } } = await supabase.auth.getUser()
+          setCurrentUserId(user?.id || null)
+          console.log('[Matches] Current user ID:', user?.id)
+        }
+      } catch (error) {
+        console.warn('[Matches] Error fetching user:', error)
+        setCurrentUserId(null)
+      }
     }
     fetchUser()
   }, [])
@@ -2232,8 +2250,11 @@ export default function MatchesPage() {
     setFilteredProfiles(enrichedProfiles)
   }, [enrichedProfiles])
 
-  const currentProfile = filteredProfiles && filteredProfiles.length > 0 && currentProfileIndex >= 0 && currentProfileIndex < filteredProfiles.length
-    ? filteredProfiles[currentProfileIndex]
+  // Ensure we always have profiles to show - use filteredProfiles if available, otherwise enrichedProfiles
+  const profilesToShow = filteredProfiles.length > 0 ? filteredProfiles : enrichedProfiles
+  
+  const currentProfile = profilesToShow && profilesToShow.length > 0 && currentProfileIndex >= 0 && currentProfileIndex < profilesToShow.length
+    ? profilesToShow[currentProfileIndex]
     : null
 
   const handlePrevProfile = () => {
@@ -2749,8 +2770,21 @@ export default function MatchesPage() {
     setButtonTouchStart(null)
   }
 
-  // Show loading state until mounted (prevents hydration mismatch)
-  if (!mounted) {
+  // Debug: Log what we have (must be before any returns)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('[MatchesPage] Debug:', {
+        mounted,
+        profilesLoading,
+        filteredProfilesLength: filteredProfiles.length,
+        enrichedProfilesLength: enrichedProfiles.length,
+        hasError
+      })
+    }
+  }, [mounted, profilesLoading, filteredProfiles.length, enrichedProfiles.length, hasError])
+
+  // Show loading state only on server (prevents hydration mismatch)
+  if (typeof window === 'undefined') {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="text-center">
@@ -2758,6 +2792,12 @@ export default function MatchesPage() {
         </div>
       </div>
     )
+  }
+
+  // Emergency fallback - always show something on mobile
+  if (typeof window !== 'undefined' && filteredProfiles.length === 0 && enrichedProfiles.length > 0) {
+    // Profiles exist but filtered out - show them anyway as fallback
+    console.warn('[MatchesPage] No filtered profiles, showing all profiles as fallback')
   }
 
   // Show loading indicator only if we have no profiles at all
@@ -2768,6 +2808,25 @@ export default function MatchesPage() {
           <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
             Loading matches...
           </p>
+        </div>
+      </div>
+    )
+  }
+  
+  // Force render even if profiles are empty - show something
+  if (filteredProfiles.length === 0 && enrichedProfiles.length === 0) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-slate-950"}`}>
+        <div className="text-center px-4">
+          <p className={`text-lg mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+            No profiles available
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+          >
+            Reload
+          </button>
         </div>
       </div>
     )
@@ -2805,6 +2864,22 @@ export default function MatchesPage() {
         paddingBottom: '120px',
         paddingTop: '0px',
       }
+
+  // Emergency fallback - always render something
+  if (typeof window !== 'undefined' && profilesToShow.length === 0) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-slate-950"}`}>
+        <div className="text-center px-4">
+          <p className={`text-lg mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+            Loading profiles...
+          </p>
+          <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}>
+            {enrichedProfiles.length} profiles found
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div
@@ -3267,18 +3342,11 @@ export default function MatchesPage() {
         </header>
 
         {/* Profile Card Stack */}
-        {!mounted ? (
+        {profilesToShow.length === 0 ? (
           <div className="flex items-center justify-center min-h-screen">
-            <div className="text-center">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-              <p className={`text-lg ${theme === "light" ? "text-gray-700" : "text-white"}`}>Loading...</p>
-            </div>
-          </div>
-        ) : filteredProfiles.length === 0 ? (
-          <div className="flex items-center justify-center min-h-screen">
-            <div className="text-center">
-              <p className={`text-lg ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
-              <p className={`text-sm mt-2 ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
+            <div className="text-center px-4">
+              <p className={`text-lg mb-2 ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
+              <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
                 {enrichedProfiles.length === 0 ? "Loading profiles..." : "Try adjusting your filters"}
               </p>
             </div>
@@ -3288,7 +3356,7 @@ export default function MatchesPage() {
             {/* Next profile card (underneath) - Full size and ready */}
             {filteredProfiles[currentProfileIndex + 1] && (
               <div 
-                key={`next-${filteredProfiles[currentProfileIndex + 1].id}`}
+                key={`next-${profilesToShow[currentProfileIndex + 1].id}`}
                 className="absolute top-0 left-0 right-0 pb-32"
                 style={{
                   zIndex: 1,

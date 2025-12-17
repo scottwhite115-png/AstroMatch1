@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -20,6 +21,11 @@ export default function CommunityLayout({
 }) {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  
+  // Scroll to top when pathname changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [pathname]);
   
   // Show topic chips only for Stories & Q&A tab (not Live)
   const showTopicChips = !pathname.startsWith('/community/live');

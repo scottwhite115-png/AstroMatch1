@@ -214,14 +214,28 @@ export default function MatchProfileCard({
   const patternColors = getPatternGradientColors(connectionBoxData?.pattern);
   
   return (
-    <div
-      className={`w-full rounded-3xl ${theme === "light" ? "bg-gray-50" : "bg-slate-900"} overflow-hidden flex flex-col`}
-      style={{ minHeight: "calc(100vh - 180px)" }}
-    >
-      {/* Photo Carousel with Ranking */}
-      {profile.photos.length > 0 && (
-        <div className="relative px-2 mb-3">
-          <ProfilePhotoCarouselWithRanking
+    <div className="w-full flex justify-center px-2">
+      <div
+        className="w-full rounded-3xl flex flex-col relative"
+        style={{ 
+          minHeight: "calc(100vh - 180px)",
+          border: `3px solid ${patternColors.start}`,
+          background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+          padding: '3px',
+          zIndex: 10,
+        }}
+      >
+        <div
+          className={`w-full h-full rounded-3xl flex flex-col overflow-hidden ${
+            theme === "light" ? "bg-gray-50" : "bg-slate-900"
+          }`}
+          style={{ zIndex: 1 }}
+        >
+        {/* Photo Carousel with Ranking */}
+        {profile.photos.length > 0 && (
+          <div className="relative mb-3" style={{ marginLeft: '-3px', marginRight: '-3px', zIndex: 0 }}>
+            <div className="w-full">
+              <ProfilePhotoCarouselWithRanking
             images={profile.photos}
             profileName={profile.name}
             profileAge={profile.age}
@@ -243,29 +257,23 @@ export default function MatchProfileCard({
             onShowProfileToggle={() => setShowProfile(!showProfile)}
             showElementsToggle={true} // Always true - connection box always visible
             onShowElementsToggle={() => {}} // No-op - toggle disabled
-            onMessageClick={onMessageClick}
-          />
-        </div>
-      )}
+              onMessageClick={onMessageClick}
+            />
+            </div>
+          </div>
+        )}
 
-      {/* Connection Box - Only shown when at least one toggle is open */}
-      {(showProfile || showElements) && (
-        <div className={`px-2 mt-auto pb-32 relative ${
-          theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
-        }`} style={{
-          // Extend padding beyond card boundaries to match page background during swipes
-          position: 'relative',
-          marginLeft: '-1rem',
-          marginRight: '-1rem',
-          marginBottom: '-1rem',
-          paddingLeft: '1rem',
-          paddingRight: '1rem',
-          paddingBottom: 'calc(8rem + 1rem)',
-        }}>
-          {/* Connection box with higher z-index so dropdowns appear above padding */}
-          <div className="relative" style={{ zIndex: 10 }}>
-            {connectionBoxData ? (
-              <ConnectionBoxNew
+        {/* Connection Box - Only shown when at least one toggle is open */}
+        {(showProfile || showElements) && (
+          <div className={`mt-auto relative flex justify-center px-2 ${
+            theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+          }`} style={{
+            position: 'relative',
+          }}>
+            {/* Connection box with higher z-index so dropdowns appear above padding */}
+            <div className="relative w-full max-w-full" style={{ zIndex: 10 }}>
+              {connectionBoxData ? (
+                <ConnectionBoxNew
                 tier={newTier}
                 score={connectionBoxData.score}
                 westA={westA}
@@ -311,12 +319,18 @@ export default function MatchProfileCard({
                 onMessage={onMessageClick}
                 onViewProfile={() => setShowProfile(!showProfile)}
               />
-            ) : (
-              <div className="p-4 text-center text-gray-500">Loading connection data...</div>
-            )}
+              ) : (
+                <div className="p-4 text-center text-gray-500">Loading connection data...</div>
+              )}
+            </div>
+            {/* Bottom padding area */}
+            <div style={{
+              paddingBottom: 'calc(8rem + 1rem)',
+            }}></div>
           </div>
+        )}
         </div>
-      )}
+      </div>
     </div>
   );
 }

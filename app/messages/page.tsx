@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation"
 import { createClient } from "@/lib/supabase/client"
 import { useTheme } from "@/contexts/ThemeContext"
 import { getConversations, clearUnreadCount, deleteConversation, type Conversation } from "@/lib/utils/conversations"
+import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
 
 const MessageCircle = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -72,6 +73,29 @@ export default function MessagesPage() {
 
     let conversations = getConversations()
     
+    // Update existing conversations to include zodiac signs if missing
+    const demoZodiacSigns: Record<string, { westernSign: string; easternSign: string }> = {
+      "demo-user-1": { westernSign: "Gemini", easternSign: "Rat" },
+      "demo-user-2": { westernSign: "Libra", easternSign: "Tiger" },
+      "demo-user-3": { westernSign: "Aquarius", easternSign: "Dog" },
+    }
+    
+    let needsUpdate = false
+    conversations = conversations.map(conv => {
+      if (!conv.westernSign || !conv.easternSign) {
+        const zodiacData = demoZodiacSigns[conv.userId] || demoZodiacSigns[conv.id]
+        if (zodiacData) {
+          needsUpdate = true
+          return { ...conv, westernSign: zodiacData.westernSign, easternSign: zodiacData.easternSign }
+        }
+      }
+      return conv
+    })
+    
+    if (needsUpdate) {
+      localStorage.setItem("conversations", JSON.stringify(conversations))
+    }
+    
     // If no conversations exist, load demo data for testing
     if (conversations.length === 0) {
       const demoConversations: Conversation[] = [
@@ -85,6 +109,8 @@ export default function MessagesPage() {
           unread: 2,
           online: true,
           isNewMatch: true, // NEW MATCH!
+          westernSign: "Gemini",
+          easternSign: "Rat",
           messages: [
             { id: 1, text: "Hi there! 👋", sent: false, timestamp: "10:30 AM" },
             { id: 2, text: "Hey! How are you?", sent: true, timestamp: "10:32 AM" },
@@ -102,6 +128,8 @@ export default function MessagesPage() {
           unread: 0,
           online: false,
           isNewMatch: false,
+          westernSign: "Libra",
+          easternSign: "Tiger",
           messages: [
             { id: 1, text: "Would you want to grab coffee sometime?", sent: true, timestamp: "Yesterday" },
             { id: 2, text: "That sounds amazing! I'd love to", sent: false, timestamp: "1h ago" }
@@ -117,6 +145,8 @@ export default function MessagesPage() {
           unread: 0,
           online: true,
           isNewMatch: false,
+          westernSign: "Aquarius",
+          easternSign: "Dog",
           messages: [
             { id: 1, text: "Hey! Your profile is really interesting", sent: false, timestamp: "2 days ago" },
             { id: 2, text: "Thanks! I loved your photos too", sent: true, timestamp: "2 days ago" },
@@ -391,7 +421,15 @@ export default function MessagesPage() {
 
                   <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className={`text-base sm:text-lg font-bold truncate ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>{chat.userName}</h3>
+                      <h3 className={`text-base sm:text-lg font-bold flex items-center gap-1.5 min-w-0 ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>
+                        <span className="truncate">{chat.userName}</span>
+                        {chat.westernSign && chat.easternSign && (
+                          <span className="flex items-center gap-0.5 flex-shrink-0 text-base leading-none">
+                            {getWesternSignGlyph(capitalizeSign(chat.westernSign))}
+                            {getChineseSignGlyph(capitalizeSign(chat.easternSign))}
+                          </span>
+                        )}
+                      </h3>
                     </div>
                     <p
                       className={`text-sm sm:text-base truncate ${chat.unread > 0 ? (theme === "light" ? "font-semibold text-gray-800" : "font-semibold text-white/70") : (theme === "light" ? "text-gray-600" : "text-white/50")}`}

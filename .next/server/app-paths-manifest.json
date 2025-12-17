@@ -1,8 +1,0 @@
-{
-  "/astrology/page": "app/astrology/page.js",
-  "/matches/page": "app/matches/page.js",
-  "/messages/page": "app/messages/page.js",
-  "/community/[topic]/page": "app/community/[topic]/page.js",
-  "/community/live/page": "app/community/live/page.js",
-  "/community/page": "app/community/page.js"
-}

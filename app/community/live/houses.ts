@@ -1,4 +1,10 @@
-import { SanHeHouse } from "@prisma/client"
+// Local enum instead of importing from Prisma
+enum SanHeHouse {
+  VISIONARIES = "VISIONARIES",
+  STRATEGISTS = "STRATEGISTS",
+  ADVENTURERS = "ADVENTURERS",
+  ARTISTS = "ARTISTS",
+}
 
 export const SAN_HE_HOUSES = [
   {

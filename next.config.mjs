@@ -6,9 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'prisma'],
-  },
+  serverExternalPackages: ['@prisma/client', '@prisma/adapter-neon', '@neondatabase/serverless', 'prisma'],
   // Disable React strict mode which can cause hydration issues
   reactStrictMode: false,
 }

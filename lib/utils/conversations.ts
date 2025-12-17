@@ -9,6 +9,8 @@ export interface Conversation {
   online: boolean
   messages: Message[]
   isNewMatch?: boolean
+  westernSign?: string
+  easternSign?: string
 }
 
 export interface Message {

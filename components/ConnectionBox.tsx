@@ -388,6 +388,9 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   interests,
   relationshipGoals,
   theme = "dark",
+  onMessage,
+  onPass,
+  onLike,
 }) => {
   const [showOverview, setShowOverview] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
@@ -492,10 +495,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
   return (
     <div 
-      className="w-full max-w-xl rounded-2xl p-[2px] shadow-xl"
-      style={{
-        background: `linear-gradient(to right, ${gradientColors.start}, ${gradientColors.end})`,
-      }}
+      className="w-full"
     >
       <div 
         className={`w-full h-full rounded-2xl p-4 sm:p-5 backdrop-blur-md ${
@@ -708,6 +708,11 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Chat Button */}
             <button
+              onClick={() => {
+                if (onMessage) {
+                  onMessage()
+                }
+              }}
               className={`inline-flex items-center justify-center rounded-full px-1.5 py-2 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
@@ -724,11 +729,27 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Dropdowns - Connection Overview */}
         {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
-          <div className={`rounded-2xl px-2 py-2 text-lg mb-3 relative z-20 ${
+          <div className={`rounded-2xl pt-2 pb-1 text-lg mb-1.5 relative z-20 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
-          }`}>
+          }`} style={{
+            marginLeft: '-1rem',
+            marginRight: '-1rem',
+            paddingLeft: '1rem',
+            paddingRight: '1rem',
+          }}>
+            {/* Connection Overview Heading */}
+            <h3 className={`text-lg italic mb-4 text-left ${
+              theme === "light" 
+                ? "text-slate-500" 
+                : "text-slate-400"
+            }`} style={{
+              fontFamily: '"PingFang SC", "Noto Sans SC", "Microsoft YaHei", "SimSun", serif',
+            }}>
+              Connection Overview
+            </h3>
+            
             {/* Chinese Zodiac Compatibility Section */}
             {connectionOverviewText && (
               <div className="mb-2">
@@ -827,11 +848,16 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Dropdowns - About Partner */}
         {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height) && (
-          <div className={`rounded-2xl px-3 py-3 text-sm space-y-4 relative z-20 ${
+          <div className={`rounded-2xl pt-3 pb-1.5 text-sm space-y-4 mb-1.5 relative z-20 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
-          }`}>
+          }`} style={{
+            marginLeft: '-1rem',
+            marginRight: '-1rem',
+            paddingLeft: '1rem',
+            paddingRight: '1rem',
+          }}>
             {/* About Me */}
             {aboutPartnerText && (
               <div>

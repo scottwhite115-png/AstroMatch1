@@ -4,12 +4,14 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
 import { SAN_HE_HOUSES, REGION_SCOPES, getHouseByAnimal } from "./houses"
-import { ChatRegionScope } from "@prisma/client"
+
+// Local type definition instead of importing from Prisma
+type ChatRegionScope = "GLOBAL" | "NEAR_ME" | "COUNTRY"
 
 export default function LivePage() {
   const { theme } = useTheme()
   const router = useRouter()
-  const [regionScope, setRegionScope] = useState<ChatRegionScope>(ChatRegionScope.GLOBAL)
+  const [regionScope, setRegionScope] = useState<ChatRegionScope>("GLOBAL")
   
   // TODO: Get user's Chinese sign from profile
   // For now, hardcoded as null - will be replaced with actual profile data
