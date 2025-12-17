@@ -112,6 +112,9 @@ interface ConnectionBoxProps {
   
   // Theme
   theme?: "light" | "dark";
+  
+  // Pattern colors (if provided, will override calculated colors)
+  patternColors?: { start: string; end: string };
 }
 
 /** ===== Helper functions ===== */
@@ -388,6 +391,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   interests,
   relationshipGoals,
   theme = "dark",
+  patternColors,
   onMessage,
   onPass,
   onLike,
@@ -467,43 +471,95 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
       })()
     : undefined;
 
-  // Get gradient colors based on primary label
+  // Get gradient colors based on pattern (matching MatchProfileCard logic exactly)
+  // MatchProfileCard checks base patterns first, then overlays
   const getGradientColors = (): { start: string; end: string } => {
-    switch (primaryLabel) {
-      case "Soulmate Match":
-        return { start: "#fbbf24", end: "#fb923c" }; // amber-400 to orange-400
-      case "Twin Flame Match":
-        return { start: "#c026d3", end: "#fb923c" }; // fuchsia-600 to orange-400
-      case "Secret Friends Match":
-        return { start: "#c084fc", end: "#f472b6" }; // purple-400 to pink-400
-      case "Strong Harmony Match":
-        return { start: "#f59e0b", end: "#ec4899" }; // amber-500 to pink-500
-      case "Mirror Match":
-        return { start: "#06b6d4", end: "#8b5cf6" }; // cyan-500 to violet-500
-      case "Magnetic Opposites":
-        return { start: "#67e8f9", end: "#c084fc" }; // cyan-300 to purple-400
-      case "Challenging Match":
-        return { start: "#fb7185", end: "#ef4444" }; // rose-400 to red-500
-      case "Neutral Match":
-        return { start: "#60a5fa", end: "#818cf8" }; // blue-400 to indigo-400
-      default:
-        return { start: "#94a3b8", end: "#94a3b8" }; // slate-400
+    // Check base pattern first (matching MatchProfileCard order)
+    // San He - Triple Harmony (Gold)
+    if (basePattern === "SAN_HE") {
+      return { start: '#fbbf24', end: '#f59e0b' }; // amber-400 to amber-500
     }
+    
+    // Liu He - Secret Friends (Purple)
+    if (basePattern === "LIU_HE") {
+      return { start: '#c084fc', end: '#e879f9' }; // purple-400 to fuchsia-400
+    }
+    
+    // Same Animal/Sign (Teal)
+    if (basePattern === "SAME_SIGN") {
+      return { start: '#2dd4bf', end: '#14b8a6' }; // teal-400 to teal-500
+    }
+    
+    // No Pattern (Blue)
+    if (basePattern === "NO_PATTERN") {
+      return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
+    }
+    
+    // Then check overlays (only if base pattern didn't match)
+    if (overlays && overlays.length > 0) {
+      // Liu Chong - Six Conflicts (Orange)
+      if (overlays.includes('LIU_CHONG')) {
+        return { start: '#fb923c', end: '#f97316' }; // orange-400 to orange-500
+      }
+      
+      // Liu Hai - Six Harms (Rose)
+      if (overlays.includes('LIU_HAI')) {
+        return { start: '#fb7185', end: '#f43f5e' }; // rose-400 to rose-500
+      }
+      
+      // Xing - Punishment (Red)
+      if (overlays.includes('XING')) {
+        return { start: '#f87171', end: '#ef4444' }; // red-400 to red-500
+      }
+      
+      // Po - Break (Crimson)
+      if (overlays.includes('PO')) {
+        return { start: '#f43f5e', end: '#e11d48' }; // rose-500 to rose-600
+      }
+    }
+    
+    // Default neutral (use blue, same as NO_PATTERN)
+    return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
   };
 
-  const gradientColors = getGradientColors();
+  // Use provided patternColors if available, otherwise calculate
+  const gradientColors = patternColors || getGradientColors();
 
   return (
     <div 
       className="w-full"
+      style={{
+        borderTop: theme === "light" ? '1px solid #e5e7eb' : '1px solid #475569',
+        borderLeft: theme === "light" ? '1px solid #e5e7eb' : '1px solid #475569',
+        borderRight: theme === "light" ? '1px solid #e5e7eb' : '1px solid #475569',
+        borderBottom: 'none',
+        borderRadius: '1rem 1rem 0 0',
+        paddingBottom: '0',
+      }}
     >
       <div 
-        className={`w-full h-full rounded-2xl p-4 sm:p-5 backdrop-blur-md ${
-          theme === "light" ? "bg-white" : "bg-slate-900/90"
+        className={`w-full ${
+          theme === "light" ? "bg-white" : "bg-slate-900"
         }`}
+        style={{
+          paddingTop: '0.75rem',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          paddingBottom: '1.5rem',
+          marginBottom: '0',
+          borderRadius: '1rem 1rem 0 0',
+          border: 'none',
+          display: 'flex',
+          flexDirection: 'column',
+          boxSizing: 'border-box',
+          height: 'auto',
+          minHeight: '0',
+          overflow: 'hidden',
+          lineHeight: '1',
+        }}
       >
         {/* Top row: sign combinations with emojis */}
-        <div className="py-1 w-full mb-4">
+        <div className="py-1 w-full mb-2">
           <div className="flex items-center gap-2">
             {/* Left side - emojis and label */}
             <div className="flex flex-col items-center flex-1 min-w-0">
@@ -545,14 +601,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         </div>
 
         {/* Primary label pill */}
-        <div className="mb-2 flex justify-center">
+        <div className="mb-1 flex justify-center">
           <div 
             className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 ${
               theme === "light" ? "bg-white" : "bg-slate-900"
             }`}
             style={{
               borderColor: gradientColors.start,
-              color: "black",
+              color: theme === "light" ? "black" : "white",
             }}
           >
             <span>{primaryLabel}</span>
@@ -566,7 +622,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Tagline under the pill */}
         {blurb && (
-          <p className={`text-lg text-center leading-relaxed mb-3 ${
+          <p className={`text-lg text-center leading-relaxed mb-2 ${
             theme === "light" ? "text-slate-600" : "text-slate-300"
           }`}>
             {blurb}
@@ -574,7 +630,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         )}
 
         {/* Pattern breakdown chips */}
-        <div className="mt-2 flex flex-wrap justify-center gap-2 mb-4">
+        <div className="mt-2 flex flex-wrap justify-center gap-2 mb-2">
           {/* base Chinese pattern chip - only show if not NO_PATTERN or if there are no overlays */}
           {showBaseChip && (
             <span
@@ -659,8 +715,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         </div>
 
         {/* Action Buttons Row */}
-        <div className="mt-4 mb-4">
-          <div className="flex justify-center gap-10">
+        <div style={{ marginTop: '0.5rem', marginBottom: '0', paddingBottom: '0', paddingTop: '0', lineHeight: '1' }}>
+          <div className="flex justify-center gap-10 items-end" style={{ marginBottom: '0', paddingBottom: '0', paddingTop: '0', lineHeight: '1' }}>
             {/* Profile Button */}
             <button
               onClick={() => {
@@ -671,14 +727,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   setShowAbout(false);
                 }
               }}
-              className={`inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
+              className={`inline-flex items-center justify-center rounded-full px-7 py-2 text-sm font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 align-bottom ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
               style={{
                 borderColor: gradientColors.start,
               }}
             >
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" style={{ stroke: "black" }}>
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" style={{ stroke: theme === "light" ? "black" : "white" }}>
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
               </svg>
@@ -694,34 +750,40 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   setShowOverview(false);
                 }
               }}
-              className={`inline-flex items-center justify-center rounded-full px-6 py-2.5 text-xs font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 ${
+              className={`inline-flex items-center justify-center rounded-full px-7 py-2 text-sm font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 align-bottom ${
                 theme === "light" ? "bg-white" : "bg-slate-900"
               }`}
               style={{
                 borderColor: gradientColors.start,
               }}
             >
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" strokeWidth="2" style={{ stroke: "black" }}>
+              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" strokeWidth="2" style={{ stroke: theme === "light" ? "black" : "white" }}>
                 <path d="M12 2L14.09 8.26L22 9.27L17 14.14L18.18 22.02L12 18.77L5.82 22.02L7 14.14L2 9.27L9.91 8.26L12 2Z" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Dropdowns - Connection Overview */}
-        {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
-          <div className={`rounded-2xl pt-2 pb-1 text-lg mb-1.5 relative z-20 ${
+      {/* Dropdowns - Connection Overview */}
+      {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
+          <div className={`rounded-2xl text-lg relative z-20 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
           }`} style={{
             marginLeft: '-1rem',
             marginRight: '-1rem',
-            paddingLeft: '1rem',
-            paddingRight: '1rem',
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
+            paddingTop: '0.5rem',
+            paddingBottom: '0',
+            marginTop: '1rem',
+            marginBottom: '0',
+            borderRadius: '0',
           }}>
             {/* Connection Overview Heading */}
-            <h3 className={`text-lg italic mb-4 text-left ${
+            <h3 className={`text-base italic mb-2 text-left ${
               theme === "light" 
                 ? "text-slate-500" 
                 : "text-slate-400"
@@ -736,29 +798,29 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               <div className="mb-2">
                 {/* Chinese Signs Display with Icons */}
                 {chineseAnimalA && chineseAnimalB && userAChineseIcon && userBChineseIcon && (
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="text-3xl">{userAChineseIcon}</span>
-                    <span className={`font-semibold text-xl ${
+                  <div className="flex items-center justify-center gap-1.5 mb-2">
+                    <span className="text-2xl">{userAChineseIcon}</span>
+                    <span className={`font-semibold text-base ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalA}
                     </span>
-                    <span className={`text-xl ${
+                    <span className={`text-base ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
                     </span>
-                    <span className={`font-semibold text-xl ${
+                    <span className={`font-semibold text-base ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalB}
                     </span>
-                    <span className="text-3xl">{userBChineseIcon}</span>
+                    <span className="text-2xl">{userBChineseIcon}</span>
                   </div>
                 )}
                 
                 {chineseHeadingWithoutSignPair && (
-                  <h4 className={`text-xl font-bold mb-1.5 ${
+                  <h4 className={`text-lg font-bold mb-1 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {chineseHeadingWithoutSignPair}
@@ -766,13 +828,13 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
                 {/* TAGLINE - Display if available */}
                 {connectionOverviewTagline && (
-                  <p className={`text-xl italic mb-2 ${
+                  <p className={`text-base italic mb-1.5 ${
                     theme === "light" ? "text-black" : "text-white"
                   }`}>
                     {connectionOverviewTagline}
                   </p>
                 )}
-                <div className="leading-relaxed whitespace-pre-line">
+                <div className="leading-relaxed whitespace-pre-line" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
                   {connectionOverviewText}
                 </div>
               </div>
@@ -783,29 +845,29 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               <div className={connectionOverviewText ? "pt-2" : ""}>
                 {/* Western Signs Display with Icons */}
                 {westernSignA && westernSignB && (
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <span className="text-3xl">{getWesternSignGlyph(westernSignA)}</span>
-                    <span className={`font-semibold text-xl ${
+                  <div className="flex items-center justify-center gap-1.5 mb-2">
+                    <span className="text-2xl">{getWesternSignGlyph(westernSignA)}</span>
+                    <span className={`font-semibold text-base ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignA}
                     </span>
-                    <span className={`text-xl ${
+                    <span className={`text-base ${
                       theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
                       ♥
                     </span>
-                    <span className={`font-semibold text-xl ${
+                    <span className={`font-semibold text-base ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignB}
                     </span>
-                    <span className="text-3xl">{getWesternSignGlyph(westernSignB)}</span>
+                    <span className="text-2xl">{getWesternSignGlyph(westernSignB)}</span>
                   </div>
                 )}
                 
                 {westernHeadingWithoutSignPair && (
-                  <h4 className={`text-xl font-bold mb-1.5 ${
+                  <h4 className={`text-lg font-bold mb-1 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {westernHeadingWithoutSignPair}
@@ -813,13 +875,13 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
                 {/* TAGLINE - Display if available */}
                 {westernCompatibilityTagline && (
-                  <p className={`text-xl italic mb-2 ${
+                  <p className={`text-base italic mb-1.5 ${
                     theme === "light" ? "text-black" : "text-white"
                   }`}>
                     {westernCompatibilityTagline}
                   </p>
                 )}
-                <div className="leading-relaxed whitespace-pre-line">
+                <div className="leading-relaxed whitespace-pre-line" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
                   {westernCompatibilityDescription}
                 </div>
               </div>
@@ -829,19 +891,24 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Dropdowns - About Partner */}
         {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height) && (
-          <div className={`rounded-2xl pt-3 pb-1.5 text-sm space-y-4 mb-1.5 relative z-20 ${
+          <div className={`rounded-2xl text-sm relative z-20 ${
             theme === "light" 
               ? "bg-slate-100/90 text-slate-800" 
               : "bg-slate-800/50 text-slate-200"
           }`} style={{
             marginLeft: '-1rem',
             marginRight: '-1rem',
-            paddingLeft: '1rem',
-            paddingRight: '1rem',
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
+            paddingTop: '0.75rem',
+            paddingBottom: '0',
+            marginTop: '1rem',
+            marginBottom: '0',
+            borderRadius: '0',
           }}>
             {/* About Me */}
             {aboutPartnerText && (
-              <div>
+              <div style={{ marginBottom: '1rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -859,7 +926,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Relationship Goals */}
             {relationshipGoals && relationshipGoals.length > 0 && (
-              <div>
+              <div style={{ marginBottom: '1rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -897,7 +964,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Interests */}
             {interests && Object.keys(interests).length > 0 && (
-              <div>
+              <div style={{ marginBottom: '1rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -937,7 +1004,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Essentials - Location, Occupation, Age, Height */}
             {(city || occupation || age || height) && (
-              <div>
+              <div style={{ marginBottom: '0' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -992,7 +1059,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             )}
           </div>
         )}
-      </div>
     </div>
   );
 };

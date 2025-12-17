@@ -130,6 +130,56 @@ function capitalize(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
+// Get pattern gradient colors for border (same as discover section)
+function getPatternGradientColors(pattern?: string): { start: string; end: string } {
+  if (!pattern) return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500 (same as NO_PATTERN)
+  
+  const patternUpper = pattern.toUpperCase();
+  
+  // San He - Triple Harmony (Gold)
+  if (patternUpper.includes('SAN_HE') || patternUpper.includes('TRIPLE HARMONY')) {
+    return { start: '#fbbf24', end: '#f59e0b' }; // amber-400 to amber-500
+  }
+  
+  // Liu He - Secret Friends (Purple)
+  if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES')) {
+    return { start: '#c084fc', end: '#e879f9' }; // purple-400 to fuchsia-400
+  }
+  
+  // Same Animal (Teal)
+  if (patternUpper.includes('SAME_ANIMAL') || patternUpper.includes('SAME ANIMAL') || patternUpper.includes('SAME_SIGN')) {
+    return { start: '#2dd4bf', end: '#14b8a6' }; // teal-400 to teal-500
+  }
+  
+  // No Pattern (Blue)
+  if (patternUpper.includes('NO_PATTERN') || patternUpper.includes('NO MAJOR')) {
+    return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
+  }
+  
+  // Liu Chong - Six Conflicts (Orange)
+  if (patternUpper.includes('LIU_CHONG') || patternUpper.includes('SIX CONFLICTS')) {
+    return { start: '#fb923c', end: '#f97316' }; // orange-400 to orange-500
+  }
+  
+  // Liu Hai - Six Harms (Rose)
+  if (patternUpper.includes('LIU_HAI') || patternUpper.includes('SIX HARMS')) {
+    return { start: '#fb7185', end: '#f43f5e' }; // rose-400 to rose-500
+  }
+  
+  // Xing - Punishment (Red)
+  if (patternUpper.includes('XING') || patternUpper.includes('PUNISHMENT')) {
+    return { start: '#f87171', end: '#ef4444' }; // red-400 to red-500
+  }
+  
+  // Po - Break (Crimson)
+  if (patternUpper.includes('PO') || patternUpper.includes('BREAK')) {
+    return { start: '#f43f5e', end: '#e11d48' }; // rose-500 to rose-600
+  }
+  
+  // Default neutral (use blue, same as NO_PATTERN)
+  return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
+}
+
 interface ProfilePageProps {
   pageIndex?: number
   totalPages?: number
@@ -2778,9 +2828,36 @@ export default function AstrologyProfilePage({
         {activeTab === "view" && (
           <>
             <div className="mb-8 pb-48" style={{ overflowY: 'visible', position: 'relative' }}>
+              {/* Get pattern colors for border */}
+              {(() => {
+                const patternColors = connectionBoxData?.pattern 
+                  ? getPatternGradientColors(connectionBoxData.pattern)
+                  : { start: '#60a5fa', end: '#3b82f6' };
+                
+                console.log('🎨 PROFILE VIEW TAB - Pattern Colors:', patternColors);
+                console.log('🎨 PROFILE VIEW TAB - Connection Pattern:', connectionBoxData?.pattern);
+                
+                return (
+                  <div className="px-2 mb-3">
+                    {/* Border wrapper - matches discover section */}
+                    <div
+                      className="w-full rounded-3xl flex flex-col relative"
+                      style={{ 
+                        border: `3px solid ${patternColors.start}`,
+                        background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                        padding: '3px',
+                        zIndex: 10,
+                      }}
+                    >
+                      <div
+                        className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col overflow-hidden ${
+                          theme === "light" ? "bg-gray-50" : "bg-slate-900"
+                        }`}
+                        style={{ zIndex: 1 }}
+                      >
               {/* Photo Carousel with Ranking */}
               {photos.some(p => p.hasImage) && (
-                <div className="px-2 mb-3">
+                <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', marginTop: '-3px', zIndex: 0, marginBottom: '0' }}>
                   <ProfilePhotoCarouselWithRanking
                     images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
                     profileName={name || ""}
@@ -2847,7 +2924,7 @@ export default function AstrologyProfilePage({
                 })();
 
                 return (
-                  <div className="px-2">
+                  <>
                     <ConnectionBoxNew
                       tier={newTier}
                       score={connectionBoxData.score}
@@ -2891,6 +2968,11 @@ export default function AstrologyProfilePage({
                       onMessage={undefined}
                       onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
                     />
+                  </>
+                );
+              })()}
+                      </div>
+                    </div>
                   </div>
                 );
               })()}

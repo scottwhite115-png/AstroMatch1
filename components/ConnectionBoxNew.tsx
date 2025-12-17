@@ -77,6 +77,7 @@ interface ConnectionBoxNewProps {
   pattern?: string;
   chemistryStars?: number;
   stabilityStars?: number;
+  patternColors?: { start: string; end: string };
   patternLabelEn?: string;
   patternLabelZh?: string;
   patternTagline?: string;
@@ -198,6 +199,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
       interests={props.interests}
       relationshipGoals={props.relationshipGoals}
       theme={theme}
+      patternColors={props.patternColors}
       onMessage={props.onMessage}
       onPass={props.onPass}
       onLike={props.onLike}

@@ -423,12 +423,6 @@ export default function MessagesPage() {
                     <div className="flex items-center justify-between mb-1">
                       <h3 className={`text-base sm:text-lg font-bold flex items-center gap-1.5 min-w-0 ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>
                         <span className="truncate">{chat.userName}</span>
-                        {chat.westernSign && chat.easternSign && (
-                          <span className="flex items-center gap-0.5 flex-shrink-0 text-base leading-none">
-                            {getWesternSignGlyph(capitalizeSign(chat.westernSign))}
-                            {getChineseSignGlyph(capitalizeSign(chat.easternSign))}
-                          </span>
-                        )}
                       </h3>
                     </div>
                     <p

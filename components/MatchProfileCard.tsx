@@ -73,7 +73,7 @@ function capitalize(str: string): string {
 // Helper function to get gradient colors based on tier
 // Helper to get pattern-based gradient colors
 function getPatternGradientColors(pattern?: string): { start: string; end: string } {
-  if (!pattern) return { start: '#94a3b8', end: '#94a3b8' }; // slate-400
+  if (!pattern) return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500 (same as NO_PATTERN)
   
   const patternUpper = pattern.toUpperCase();
   
@@ -117,8 +117,8 @@ function getPatternGradientColors(pattern?: string): { start: string; end: strin
     return { start: '#f43f5e', end: '#e11d48' }; // rose-500 to rose-600
   }
   
-  // Default neutral
-  return { start: '#94a3b8', end: '#94a3b8' }; // slate-400
+  // Default neutral (use blue, same as NO_PATTERN)
+  return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
 }
 
 function getTierGradientColors(tier: string): { start: string; end: string } {
@@ -142,8 +142,8 @@ function getTierGradientColors(tier: string): { start: string; end: string } {
   if (tierLower.includes('difficult') || tierLower.includes('challenging')) {
     return { start: '#f87171', end: '#dc2626' }; // red-400 to red-600
   }
-  // Neutral default
-  return { start: '#94a3b8', end: '#94a3b8' }; // slate-400
+  // Neutral default (use blue, same as NO_PATTERN)
+  return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
 }
 
 
@@ -215,10 +215,10 @@ export default function MatchProfileCard({
   
   return (
     <div className="w-full flex justify-center px-2">
+      <div className="w-full">
       <div
         className="w-full rounded-3xl flex flex-col relative"
         style={{ 
-          minHeight: "calc(100vh - 180px)",
           border: `3px solid ${patternColors.start}`,
           background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
           padding: '3px',
@@ -226,14 +226,14 @@ export default function MatchProfileCard({
         }}
       >
         <div
-          className={`w-full h-full rounded-3xl flex flex-col overflow-hidden ${
+          className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col overflow-hidden ${
             theme === "light" ? "bg-gray-50" : "bg-slate-900"
           }`}
           style={{ zIndex: 1 }}
         >
         {/* Photo Carousel with Ranking */}
         {profile.photos.length > 0 && (
-          <div className="relative mb-3" style={{ marginLeft: '-3px', marginRight: '-3px', zIndex: 0 }}>
+          <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', zIndex: 0, marginBottom: '0' }}>
             <div className="w-full">
               <ProfilePhotoCarouselWithRanking
             images={profile.photos}
@@ -258,6 +258,7 @@ export default function MatchProfileCard({
             showElementsToggle={true} // Always true - connection box always visible
             onShowElementsToggle={() => {}} // No-op - toggle disabled
               onMessageClick={onMessageClick}
+              patternColors={patternColors}
             />
             </div>
           </div>
@@ -265,13 +266,13 @@ export default function MatchProfileCard({
 
         {/* Connection Box - Only shown when at least one toggle is open */}
         {(showProfile || showElements) && (
-          <div className={`mt-auto relative flex justify-center px-2 ${
+          <div className={`relative flex justify-center ${
             theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
           }`} style={{
             position: 'relative',
           }}>
             {/* Connection box with higher z-index so dropdowns appear above padding */}
-            <div className="relative w-full max-w-full" style={{ zIndex: 10 }}>
+            <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
               {connectionBoxData ? (
                 <ConnectionBoxNew
                 tier={newTier}
@@ -310,6 +311,7 @@ export default function MatchProfileCard({
                 pattern={connectionBoxData.pattern}
                 chemistryStars={connectionBoxData.chemistryStars}
                 stabilityStars={connectionBoxData.stabilityStars}
+                patternColors={patternColors}
                 // Pass relationship goals and interests
                 relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
                 interests={profile.interests || profile.selectedOrganizedInterests}
@@ -323,13 +325,21 @@ export default function MatchProfileCard({
                 <div className="p-4 text-center text-gray-500">Loading connection data...</div>
               )}
             </div>
-            {/* Bottom padding area */}
-            <div style={{
-              paddingBottom: 'calc(8rem + 1rem)',
-            }}></div>
           </div>
         )}
         </div>
+      </div>
+      
+      {/* Spacer OUTSIDE the border to hide profiles underneath */}
+      <div 
+        className="bg-white"
+        style={{ 
+          height: '8rem', 
+          width: '100%',
+          borderRadius: '0 0 1.5rem 1.5rem',
+          marginTop: '-1.5rem'
+        }}
+      ></div>
       </div>
     </div>
   );

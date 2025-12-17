@@ -79,6 +79,56 @@ const getChineseSignEmoji = (sign: string): string => {
   return emojiMap[sign] || ""
 }
 
+// Helper to get pattern-based gradient colors (same as discover section)
+function getPatternGradientColors(pattern?: string): { start: string; end: string } {
+  if (!pattern) return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500 (same as NO_PATTERN)
+  
+  const patternUpper = pattern.toUpperCase();
+  
+  // San He - Triple Harmony (Gold)
+  if (patternUpper.includes('SAN_HE') || patternUpper.includes('TRIPLE HARMONY')) {
+    return { start: '#fbbf24', end: '#f59e0b' }; // amber-400 to amber-500
+  }
+  
+  // Liu He - Secret Friends (Purple)
+  if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES')) {
+    return { start: '#c084fc', end: '#e879f9' }; // purple-400 to fuchsia-400
+  }
+  
+  // Same Animal (Teal)
+  if (patternUpper.includes('SAME_ANIMAL') || patternUpper.includes('SAME ANIMAL') || patternUpper.includes('SAME_SIGN')) {
+    return { start: '#2dd4bf', end: '#14b8a6' }; // teal-400 to teal-500
+  }
+  
+  // No Pattern (Blue)
+  if (patternUpper.includes('NO_PATTERN') || patternUpper.includes('NO MAJOR')) {
+    return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
+  }
+  
+  // Liu Chong - Six Conflicts (Orange)
+  if (patternUpper.includes('LIU_CHONG') || patternUpper.includes('SIX CONFLICTS')) {
+    return { start: '#fb923c', end: '#f97316' }; // orange-400 to orange-500
+  }
+  
+  // Liu Hai - Six Harms (Rose)
+  if (patternUpper.includes('LIU_HAI') || patternUpper.includes('SIX HARMS')) {
+    return { start: '#fb7185', end: '#f43f5e' }; // rose-400 to rose-500
+  }
+  
+  // Xing - Punishment (Red)
+  if (patternUpper.includes('XING') || patternUpper.includes('PUNISHMENT')) {
+    return { start: '#f87171', end: '#ef4444' }; // red-400 to red-500
+  }
+  
+  // Po - Break (Crimson)
+  if (patternUpper.includes('PO') || patternUpper.includes('BREAK')) {
+    return { start: '#f43f5e', end: '#e11d48' }; // rose-500 to rose-600
+  }
+  
+  // Default neutral (use blue, same as NO_PATTERN)
+  return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
+}
+
 // Test profile data - MUST MATCH the test data in matches/page.tsx
 // Updated to match view tab design with all required fields
 const testProfiles: Record<string, any> = {
@@ -817,6 +867,15 @@ export default function ProfileViewPage() {
     router.push(`/profile/settings`)
   }
 
+  // Get pattern colors for border (same as discover section)
+  const patternColors = connectionBoxData?.pattern 
+    ? getPatternGradientColors(connectionBoxData.pattern)
+    : { start: '#60a5fa', end: '#3b82f6' };
+  
+  console.log('🎨 PROFILE VIEW - Pattern Colors:', patternColors);
+  console.log('🎨 PROFILE VIEW - Connection Pattern:', connectionBoxData?.pattern);
+  
+
   return (
     <div className="bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 min-h-screen pb-8">
       <div className="relative z-10 max-w-md mx-auto">
@@ -832,22 +891,27 @@ export default function ProfileViewPage() {
           <div className="w-9 h-9" />
         </div>
 
-        {/* Profile Content */}
-        <div className="px-1 pt-0 mb-4">
+        {/* Profile Content - Wrapped in border like discover section */}
+        <div className="w-full flex justify-center px-2 pt-0 mb-4">
           <div
-            ref={setProfileCardRef}
-            className="border-white/20 bg-black/40 border rounded-lg overflow-hidden shadow-lg"
-            style={{
-              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3)",
-              transition: "none",
-              pointerEvents: "auto",
+            className="w-full rounded-3xl flex flex-col relative"
+            style={{ 
+              border: `3px solid ${patternColors.start}`,
+              background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+              padding: '3px',
+              zIndex: 10,
             }}
-            onMouseEnter={(e) => forceGreyShadow(e.currentTarget)}
-            onMouseOver={(e) => forceGreyShadow(e.currentTarget)}
-            onMouseMove={(e) => forceGreyShadow(e.currentTarget)}
           >
+            <div
+              ref={setProfileCardRef}
+              className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col overflow-hidden ${
+                theme === "light" ? "bg-gray-50" : "bg-slate-900"
+              }`}
+              style={{ zIndex: 1 }}
+            >
             {/* Photo Carousel */}
-            <div className="relative w-full aspect-[4/5] rounded-t-lg overflow-hidden">
+            <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', marginTop: '-3px', zIndex: 0, marginBottom: '0' }}>
+              <div className="w-full aspect-[4/5] rounded-t-3xl overflow-hidden">
               <button
                 onClick={() => router.push(`/messages/${profileId}`)}
                 className="absolute top-4 right-4 z-20 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center hover:bg-white/30 transition-all shadow-lg"
@@ -898,16 +962,16 @@ export default function ProfileViewPage() {
                 </div>
 
               </div>
+              </div>
+            </div>
+
+            {/* Your Connection Section - Connected to carousel */}
+            {connectionBoxData && (
+              <ConnectionBoxSimple data={connectionBoxData} />
+            )}
             </div>
           </div>
         </div>
-
-        {/* Your Connection Section - Connected to carousel */}
-        {connectionBoxData && (
-          <div className="px-4 -mt-4 mb-6">
-            <ConnectionBoxSimple data={connectionBoxData} />
-          </div>
-        )}
 
         {/* Relationship Goals Section */}
         {profile.aboutMe && connectionBoxData && (

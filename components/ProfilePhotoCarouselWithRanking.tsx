@@ -28,7 +28,7 @@ const ChevronRight = ({ className }: { className?: string }) => (
 );
 
 const MessageCircle = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
-  <svg viewBox="0 0 24 24" fill="none" strokeWidth="2" className={className} style={style}>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className} style={style}>
     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
   </svg>
 );
@@ -36,7 +36,7 @@ const MessageCircle = ({ className, style }: { className?: string; style?: React
 // Helper to get tier gradient colors
 // Helper to get pattern-based solid color for borders, text, etc.
 function getPatternColor(pattern?: string): string {
-  if (!pattern) return 'rgb(148, 163, 184)'; // slate-400
+  if (!pattern) return 'rgb(96, 165, 250)'; // blue-400 (same as NO_PATTERN)
   
   const patternUpper = pattern.toUpperCase();
   
@@ -80,8 +80,8 @@ function getPatternColor(pattern?: string): string {
     return 'rgb(244, 63, 94)'; // rose-500
   }
   
-  // Default neutral
-  return 'rgb(148, 163, 184)'; // slate-400
+  // Default neutral (use blue, same as NO_PATTERN)
+  return 'rgb(96, 165, 250)'; // blue-400
 }
 
 function getTierGradient(tier?: string): string {
@@ -105,8 +105,8 @@ function getTierGradient(tier?: string): string {
   if (tierLower.includes('difficult') || tierLower.includes('challenging')) {
     return 'from-red-400 via-rose-500 to-red-600';
   }
-  // Neutral default
-  return 'from-slate-300 via-slate-400 to-slate-300';
+  // Neutral default (use blue gradient, same as NO_PATTERN)
+  return 'from-blue-400 via-blue-500 to-blue-400';
 }
 
 // Helper to get pattern-based gradient colors for the new pill
@@ -187,6 +187,7 @@ interface ProfilePhotoCarouselWithRankingProps {
   showElementsToggle?: boolean;
   onShowElementsToggle?: () => void;
   onMessageClick?: () => void;
+  patternColors?: { start: string; end: string };
 }
 
 export default function ProfilePhotoCarouselWithRanking({
@@ -217,6 +218,7 @@ export default function ProfilePhotoCarouselWithRanking({
   showElementsToggle = false,
   onShowElementsToggle,
   onMessageClick,
+  patternColors,
 }: ProfilePhotoCarouselWithRankingProps) {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
@@ -457,9 +459,9 @@ export default function ProfilePhotoCarouselWithRanking({
               backgroundColor: 'transparent',
               borderWidth: '2px',
               borderStyle: 'solid',
-              borderColor: connectionBoxData 
+              borderColor: patternColors?.start || (connectionBoxData 
                 ? getPatternColor(connectionBoxData.pattern)
-                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)"),
+                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
               backdropFilter: 'blur(10px)',
               boxShadow: theme === "light" 
                 ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
