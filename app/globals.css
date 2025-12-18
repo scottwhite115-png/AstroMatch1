@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @theme {
   --color-rank-gold: rgb(251 191 36);
@@ -813,111 +814,111 @@ body::-webkit-scrollbar {
 }
 
 /* Override white text in light mode on astrology page */
-:global(.light) .zodiac-info span {
+.light .zodiac-info span {
   color: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) svg.zodiac-symbol {
+.light svg.zodiac-symbol {
   color: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) .astrology-page .text-white {
+.light .astrology-page .text-white {
   color: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) .astrology-page svg.text-white {
+.light .astrology-page svg.text-white {
   stroke: rgba(17, 24, 39, 0.9) !important;
   fill: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) .astrology-page .text-white\/95 {
+.light .astrology-page .text-white\/95 {
   color: rgba(17, 24, 39, 0.9) !important;
 }
 
 /* Light mode for combination pages (144 sign pages) */
-:global(.light) .combination-page {
+.light .combination-page {
   background: #ffffff !important;
 }
 
-:global(.light) .combination-page .astrology-cosmic-bg {
+.light .combination-page .astrology-cosmic-bg {
   background: #ffffff !important;
 }
 
-:global(.light) .combination-page .text-white {
+.light .combination-page .text-white {
   color: rgba(17, 24, 39, 0.95) !important;
 }
 
-:global(.light) .combination-page .text-white\/95 {
+.light .combination-page .text-white\/95 {
   color: rgba(17, 24, 39, 0.95) !important;
 }
 
-:global(.light) .combination-page .text-white\/90 {
+.light .combination-page .text-white\/90 {
   color: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) .combination-page .text-white\/80 {
+.light .combination-page .text-white\/80 {
   color: rgba(17, 24, 39, 0.85) !important;
 }
 
-:global(.light) .combination-page .text-white\/70 {
+.light .combination-page .text-white\/70 {
   color: rgba(75, 85, 99, 0.9) !important;
 }
 
-:global(.light) .combination-page .text-white\/60 {
+.light .combination-page .text-white\/60 {
   color: rgba(107, 114, 128, 0.9) !important;
 }
 
-:global(.light) .combination-page .text-white\/50 {
+.light .combination-page .text-white\/50 {
   color: rgba(107, 114, 128, 0.8) !important;
 }
 
-:global(.light) .combination-page .text-white\/40 {
+.light .combination-page .text-white\/40 {
   color: rgba(156, 163, 175, 0.8) !important;
 }
 
-:global(.light) .combination-page svg {
+.light .combination-page svg {
   stroke: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) .combination-page button svg {
+.light .combination-page button svg {
   stroke: rgba(17, 24, 39, 0.9) !important;
 }
 
 /* Hide celestial particles in light mode */
-:global(.light) .combination-page .celestial-particles {
+.light .combination-page .celestial-particles {
   display: none !important;
 }
 
 /* Background colors in light mode */
-:global(.light) .combination-page .bg-white\/5 {
+.light .combination-page .bg-white\/5 {
   background: rgba(243, 244, 246, 0.8) !important;
 }
 
-:global(.light) .combination-page .bg-white\/10 {
+.light .combination-page .bg-white\/10 {
   background: rgba(229, 231, 235, 0.8) !important;
 }
 
-:global(.light) .combination-page .bg-white\/20 {
+.light .combination-page .bg-white\/20 {
   background: rgba(209, 213, 219, 0.6) !important;
 }
 
 /* Border colors in light mode */
-:global(.light) .combination-page .border-white\/10 {
+.light .combination-page .border-white\/10 {
   border-color: rgba(209, 213, 219, 0.8) !important;
 }
 
-:global(.light) .combination-page .border-white\/20 {
+.light .combination-page .border-white\/20 {
   border-color: rgba(156, 163, 175, 0.6) !important;
 }
 
 
 /* Force all text in zodiac buttons to black in light mode */
-:global(.light) .zodiac-list-item .text-white,
-:global(.light) .zodiac-list-item .text-white\/95 {
+.light .zodiac-list-item .text-white,
+.light .zodiac-list-item .text-white\/95 {
   color: rgba(17, 24, 39, 0.9) !important;
 }
 
-:global(.light) .zodiac-list-item svg.text-white {
+.light .zodiac-list-item svg.text-white {
   stroke: rgba(17, 24, 39, 0.9) !important;
   fill: rgba(17, 24, 39, 0.9) !important;
 }
@@ -937,15 +938,15 @@ body::-webkit-scrollbar {
 }
 
 /* Override zodiac-name and zodiac-dates colors in light mode combination pages */
-:global(.light) .combination-page .zodiac-name {
+.light .combination-page .zodiac-name {
   color: rgba(17, 24, 39, 0.95) !important;
 }
 
-:global(.light) .combination-page .zodiac-dates {
+.light .combination-page .zodiac-dates {
   color: rgba(75, 85, 99, 0.9) !important;
 }
 
-:global(.light) .combination-page .zodiac-symbol {
+.light .combination-page .zodiac-symbol {
   color: rgba(17, 24, 39, 0.95) !important;
   background: #ffffff !important;
   background-color: #ffffff !important;
@@ -953,15 +954,15 @@ body::-webkit-scrollbar {
 }
 
 /* Additional specificity for light mode zodiac symbols */
-:global(.light).combination-page .zodiac-symbol,
+.light.combination-page .zodiac-symbol,
 .light .combination-page .zodiac-symbol {
   background: #ffffff !important;
   background-color: #ffffff !important;
 }
 
-:global(.light) .combination-page .astrology-heading-primary,
-:global(.light) .combination-page .astrology-heading-secondary,
-:global(.light) .combination-page .astrology-heading-tertiary {
+.light .combination-page .astrology-heading-primary,
+.light .combination-page .astrology-heading-secondary,
+.light .combination-page .astrology-heading-tertiary {
   color: rgba(17, 24, 39, 0.95) !important;
 }
 
