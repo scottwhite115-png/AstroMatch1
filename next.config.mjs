@@ -9,6 +9,10 @@ const nextConfig = {
   serverExternalPackages: ['@prisma/client', '@prisma/adapter-neon', '@neondatabase/serverless', 'prisma'],
   // Disable React strict mode which can cause hydration issues
   reactStrictMode: false,
+  // Disable Turbopack for production builds (Tailwind v4 compatibility)
+  experimental: {
+    turbo: false,
+  },
 }
 
 export default nextConfig
