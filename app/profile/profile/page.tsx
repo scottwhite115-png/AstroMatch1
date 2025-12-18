@@ -82,6 +82,13 @@ const ChevronDown = ({ className }: { className?: string }) => (
   </svg>
 )
 
+const CameraIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+    <circle cx="12" cy="13" r="4" />
+  </svg>
+)
+
 const HeartIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
@@ -2838,10 +2845,10 @@ export default function AstrologyProfilePage({
                     </div>
                   ) : (
                     <div
-                      className="photo-placeholder w-full h-full cursor-pointer hover:opacity-80 transition-opacity"
+                      className="photo-placeholder w-full h-full cursor-pointer hover:opacity-80 transition-opacity flex items-center justify-center"
                       onClick={() => triggerFileInput(index)}
                     >
-                      <div className="photo-placeholder-icon text-4xl font-bold">{index + 1}</div>
+                      <CameraIcon className="w-12 h-12 opacity-50" />
                     </div>
                   )}
                 </div>
