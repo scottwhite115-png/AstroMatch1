@@ -70,104 +70,7 @@ export default function MessagesPage() {
     }
   }, [showSettingsDropdown])
 
-  // Fallback demo data loader
-  const loadDemoData = () => {
-    console.log("[Messages] 📝 Loading demo data for design/testing")
-    setCurrentUser({ id: "mock-user-id" })
-
-    let conversations = getConversations()
-    
-    // Update existing conversations to include zodiac signs if missing
-    const demoZodiacSigns: Record<string, { westernSign: string; easternSign: string }> = {
-      "demo-user-1": { westernSign: "Gemini", easternSign: "Rat" },
-      "demo-user-2": { westernSign: "Libra", easternSign: "Tiger" },
-      "demo-user-3": { westernSign: "Aquarius", easternSign: "Dog" },
-    }
-    
-    let needsUpdate = false
-    conversations = conversations.map(conv => {
-      if (!conv.westernSign || !conv.easternSign) {
-        const zodiacData = demoZodiacSigns[conv.userId] || demoZodiacSigns[conv.id]
-        if (zodiacData) {
-          needsUpdate = true
-          return { ...conv, westernSign: zodiacData.westernSign, easternSign: zodiacData.easternSign }
-        }
-      }
-      return conv
-    })
-    
-    if (needsUpdate) {
-      localStorage.setItem("conversations", JSON.stringify(conversations))
-    }
-    
-    // If no conversations exist, load demo data for testing
-    if (conversations.length === 0) {
-      const demoConversations: Conversation[] = [
-        {
-          id: "demo-user-1",
-          userId: "demo-user-1",
-          userName: "Emma",
-          userPhoto: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
-          lastMessage: "Hey! How's your week going? 😊",
-          timestamp: "2m ago",
-          unread: 2,
-          online: true,
-          isNewMatch: true,
-          westernSign: "Gemini",
-          easternSign: "Rat",
-          messages: [
-            { id: 1, text: "Hi there! 👋", sent: false, timestamp: "10:30 AM" },
-            { id: 2, text: "Hey! How are you?", sent: true, timestamp: "10:32 AM" },
-            { id: 3, text: "I'm great! Just got back from yoga", sent: false, timestamp: "10:35 AM" },
-            { id: 4, text: "Hey! How's your week going? 😊", sent: false, timestamp: "Just now" }
-          ]
-        },
-        {
-          id: "demo-user-2",
-          userId: "demo-user-2",
-          userName: "Olivia",
-          userPhoto: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
-          lastMessage: "That sounds amazing! I'd love to",
-          timestamp: "1h ago",
-          unread: 0,
-          online: false,
-          isNewMatch: false,
-          westernSign: "Libra",
-          easternSign: "Tiger",
-          messages: [
-            { id: 1, text: "Would you want to grab coffee sometime?", sent: true, timestamp: "Yesterday" },
-            { id: 2, text: "That sounds amazing! I'd love to", sent: false, timestamp: "1h ago" }
-          ]
-        },
-        {
-          id: "demo-user-3",
-          userId: "demo-user-3",
-          userName: "Sophia",
-          userPhoto: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
-          lastMessage: "See you then! 🎉",
-          timestamp: "Yesterday",
-          unread: 0,
-          online: true,
-          isNewMatch: false,
-          westernSign: "Aquarius",
-          easternSign: "Dog",
-          messages: [
-            { id: 1, text: "Hey! Your profile is really interesting", sent: false, timestamp: "2 days ago" },
-            { id: 2, text: "Thanks! I loved your photos too", sent: true, timestamp: "2 days ago" },
-            { id: 3, text: "Want to meet up this weekend?", sent: true, timestamp: "Yesterday" },
-            { id: 4, text: "See you then! 🎉", sent: false, timestamp: "Yesterday" }
-          ]
-        }
-      ]
-      
-      // Save demo conversations to localStorage
-      localStorage.setItem("conversations", JSON.stringify(demoConversations))
-      conversations = demoConversations
-    }
-    
-    setChats(conversations)
-    setLoading(false)
-  }
+  // REMOVED: Demo data loader - only use real matches from Supabase
 
   // REAL DATABASE: Load user and their matches
   useEffect(() => {
@@ -175,13 +78,32 @@ export default function MessagesPage() {
       setLoading(true)
       console.log('[Messages] 🔄 Loading real matches from database...')
 
+      // Clear any old demo conversations from localStorage
+      const oldConversations = localStorage.getItem("conversations")
+      if (oldConversations) {
+        try {
+          const parsed = JSON.parse(oldConversations)
+          // Check if these are demo conversations (have demo-user IDs)
+          const hasDemoData = parsed.some((conv: any) => 
+            conv.userId?.includes("demo-user") || conv.id?.includes("demo-user")
+          )
+          if (hasDemoData) {
+            console.log('[Messages] 🗑️  Clearing old demo conversations from localStorage')
+            localStorage.removeItem("conversations")
+          }
+        } catch (e) {
+          // Invalid JSON, clear it
+          localStorage.removeItem("conversations")
+        }
+      }
+
       try {
         // 1. Get current user
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) {
-          console.log('[Messages] ⚠️  No authenticated user - showing demo data')
-          // Fall back to demo data if no user
-          loadDemoData()
+          console.log('[Messages] ⚠️  No authenticated user')
+          setChats([])
+          setLoading(false)
           return
         }
 
@@ -243,8 +165,7 @@ export default function MessagesPage() {
 
       } catch (error) {
         console.error('[Messages] ❌ Error loading matches:', error)
-        // Fall back to demo data on error
-        loadDemoData()
+        setChats([])
       } finally {
         setLoading(false)
       }
