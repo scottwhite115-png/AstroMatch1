@@ -1106,13 +1106,14 @@ export default function AstrologyProfilePage({
     "Lima, Peru",
   ].sort()
 
+  // Initialize photos as empty - will load from Supabase
   const [photos, setPhotos] = useState([
-    { id: 1, src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80", hasImage: true },
-    { id: 2, src: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80", hasImage: true },
-    { id: 3, src: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=800&q=80", hasImage: true },
-    { id: 4, src: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80", hasImage: true },
-    { id: 5, src: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=800&q=80", hasImage: true },
-    { id: 6, src: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=800&q=80", hasImage: true },
+    { id: 1, src: "", hasImage: false },
+    { id: 2, src: "", hasImage: false },
+    { id: 3, src: "", hasImage: false },
+    { id: 4, src: "", hasImage: false },
+    { id: 5, src: "", hasImage: false },
+    { id: 6, src: "", hasImage: false },
   ])
 
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
@@ -1231,28 +1232,48 @@ export default function AstrologyProfilePage({
     return () => clearTimeout(timeout)
   })
 
+  // Load photos from Supabase when component mounts
   useEffect(() => {
-    // Save the first test photo to localStorage for the nav bar
-    const firstPhoto = photos[0]
-    if (firstPhoto?.hasImage && firstPhoto.src) {
-      localStorage.setItem("profilePhoto1", firstPhoto.src)
-      if (typeof window !== 'undefined') {
-        window.dispatchEvent(new Event('profilePhotoUpdated'))
+    const loadPhotos = async () => {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (!user) {
+          console.log('[Profile] No user logged in')
+          return
+        }
+
+        // Fetch user profile to get photos
+        const profile = await fetchUserProfile(user.id)
+        
+        if (profile && profile.photos && Array.isArray(profile.photos)) {
+          // Map Supabase photos to component format
+          const loadedPhotos = [
+            { id: 1, src: profile.photos[0] || "", hasImage: !!profile.photos[0] },
+            { id: 2, src: profile.photos[1] || "", hasImage: !!profile.photos[1] },
+            { id: 3, src: profile.photos[2] || "", hasImage: !!profile.photos[2] },
+            { id: 4, src: profile.photos[3] || "", hasImage: !!profile.photos[3] },
+            { id: 5, src: profile.photos[4] || "", hasImage: !!profile.photos[4] },
+            { id: 6, src: profile.photos[5] || "", hasImage: !!profile.photos[5] },
+          ]
+          
+          setPhotos(loadedPhotos)
+          
+          // Save first photo to localStorage for nav bar
+          if (loadedPhotos[0]?.hasImage && loadedPhotos[0].src) {
+            localStorage.setItem("profilePhoto1", loadedPhotos[0].src)
+            if (typeof window !== 'undefined') {
+              window.dispatchEvent(new Event('profilePhotoUpdated'))
+            }
+          }
+        }
+      } catch (error) {
+        console.error('[Profile] Error loading photos:', error)
       }
     }
     
-    // Commented out to keep test photos visible
-    // const savedPhotos = localStorage.getItem("userPhotos")
-    // if (savedPhotos) {
-    //   try {
-    //     const parsedPhotos = JSON.parse(savedPhotos)
-    //     if (Array.isArray(parsedPhotos)) {
-    //       setPhotos(parsedPhotos)
-    //     }
-    //   } catch (error) {
-    //     console.log("[v0] Error parsing saved photos:", error)
-    //   }
-    // }
+    loadPhotos()
   }, [])
 
   const handlePhotoUpload = (photoId: number, event: React.ChangeEvent<HTMLInputElement>) => {
