@@ -168,7 +168,7 @@ export async function PostList({ topic }: PostListProps) {
                     displayName: currentUserProfile.displayName ?? "You",
                     westSign: currentUserProfile.westSign ?? "",
                     chineseSign: currentUserProfile.chineseSign ?? "",
-                    eastWestCode: currentUserProfile.eastWestCode ?? `${currentUserProfile.westSign ?? ""} ${currentUserProfile.chineseSign ?? ""}`.trim() || "",
+                    eastWestCode: currentUserProfile.eastWestCode ?? ((`${currentUserProfile.westSign ?? ""} ${currentUserProfile.chineseSign ?? ""}`).trim() || ""),
                   }
                 : null
             }

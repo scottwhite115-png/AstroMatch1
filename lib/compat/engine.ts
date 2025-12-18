@@ -1288,13 +1288,7 @@ function areChineseOpposites(animalA: ChineseAnimal, animalB: ChineseAnimal): bo
   );
 }
 
-/**
- * Check if pair is a "lively" combination (Liu Chong or specific dynamic pairs)
- */
-function isLivelyPair(animalA: ChineseAnimal, animalB: ChineseAnimal): boolean {
-  // Liu Chong pairs are always lively
-  return areChineseOpposites(animalA, animalB);
-}
+// isLivelyPair is imported from @/lib/matchEngineHelpers
 
 /**
  * Build MatchContext from user profiles and compatibility data

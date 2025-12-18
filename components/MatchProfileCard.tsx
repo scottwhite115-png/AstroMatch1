@@ -219,18 +219,18 @@ export default function MatchProfileCard({
       <div className="w-full">
       {/* Photo Carousel with Border */}
       {profile.photos.length > 0 && (
-        <div
+      <div
           className="w-full rounded-3xl relative"
-          style={{ 
-            border: `3px solid ${patternColors.start}`,
-            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-            padding: '3px',
-            zIndex: 10,
+        style={{ 
+          border: `3px solid ${patternColors.start}`,
+          background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+          padding: '3px',
+          zIndex: 10,
             marginBottom: '0',
-          }}
-        >
+        }}
+      >
           <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
-            <ProfilePhotoCarouselWithRanking
+              <ProfilePhotoCarouselWithRanking
             images={profile.photos}
             profileName={profile.name}
             profileAge={profile.age}
@@ -273,9 +273,9 @@ export default function MatchProfileCard({
               onMessageClick={onMessageClick}
               patternColors={patternColors}
             />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Connection Box - Always visible, toggles control dropdowns */}
       {(showProfile || showElements) && connectionBoxData && (
@@ -290,51 +290,51 @@ export default function MatchProfileCard({
             paddingTop: '0',
           }}
         >
-          <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
-            <ConnectionBoxNew
-              tier={newTier}
-              score={connectionBoxData.score}
-              westA={westA}
-              eastA={eastA}
-              westB={westB}
-              eastB={eastB}
-              chineseLine={chineseLine}
-              sunMatchBlurb={connectionBoxData.westernSignLine || ""}
-              westernLine={westernLine}
-              wuXingLine={wuXingLine}
-              chineseElementA={connectionBoxData.a?.chineseElement}
-              chineseElementB={connectionBoxData.b?.chineseElement}
-              connectionBlurb={connectionBlurb || undefined}
-              theme={theme}
-              aboutMe={profile.aboutMe}
-              age={profile.age}
-              city={profile.city}
-              occupation={profile.occupation}
-              height={profile.height}
-              children={profile.children}
-              religion={profile.religion}
-              chinesePattern={connectionBoxData.chinesePattern}
-              westAspect={connectionBoxData.westAspect}
-              westElementRelation={connectionBoxData.westElementRelation}
-              isChineseOpposite={connectionBoxData.isChineseOpposite}
-              isLivelyPair={connectionBoxData.isLivelyPair}
-              showProfile={showProfile}
-              showElements={showElements}
-              patternFullLabel={connectionBoxData.patternFullLabel}
-              pillLabel={connectionBoxData.pillLabel}
-              baseTagline={connectionBoxData.baseTagline}
-              patternEmoji={connectionBoxData.patternEmoji}
-              pattern={connectionBoxData.pattern}
-              chemistryStars={connectionBoxData.chemistryStars}
-              stabilityStars={connectionBoxData.stabilityStars}
-              patternColors={patternColors}
-              relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
-              interests={profile.interests || profile.selectedOrganizedInterests}
-              onPass={onPass}
-              onLike={onLike}
-              onMessage={onMessageClick}
-              onViewProfile={() => setShowProfile(!showProfile)}
-            />
+            <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
+                <ConnectionBoxNew
+                tier={newTier}
+                score={connectionBoxData.score}
+                westA={westA}
+                eastA={eastA}
+                westB={westB}
+                eastB={eastB}
+                chineseLine={chineseLine}
+                sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                westernLine={westernLine}
+                wuXingLine={wuXingLine}
+                chineseElementA={connectionBoxData.a?.chineseElement}
+                chineseElementB={connectionBoxData.b?.chineseElement}
+                connectionBlurb={connectionBlurb || undefined}
+                theme={theme}
+                aboutMe={profile.aboutMe}
+                age={profile.age}
+                city={profile.city}
+                occupation={profile.occupation}
+                height={profile.height}
+                children={profile.children}
+                religion={profile.religion}
+                chinesePattern={connectionBoxData.chinesePattern}
+                westAspect={connectionBoxData.westAspect}
+                westElementRelation={connectionBoxData.westElementRelation}
+                isChineseOpposite={connectionBoxData.isChineseOpposite}
+                isLivelyPair={connectionBoxData.isLivelyPair}
+                showProfile={showProfile}
+                showElements={showElements}
+                patternFullLabel={connectionBoxData.patternFullLabel}
+                pillLabel={connectionBoxData.pillLabel}
+                baseTagline={connectionBoxData.baseTagline}
+                patternEmoji={connectionBoxData.patternEmoji}
+                pattern={connectionBoxData.pattern}
+                chemistryStars={connectionBoxData.chemistryStars}
+                stabilityStars={connectionBoxData.stabilityStars}
+                patternColors={patternColors}
+                relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+                interests={profile.interests || profile.selectedOrganizedInterests}
+                onPass={onPass}
+                onLike={onLike}
+                onMessage={onMessageClick}
+                onViewProfile={() => setShowProfile(!showProfile)}
+              />
           </div>
         </div>
       )}
