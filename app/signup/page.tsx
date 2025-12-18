@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
 import { useTheme } from "@/contexts/ThemeContext"
+import { createClient } from "@/lib/supabase/client"
+import { useRouter } from "next/navigation"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -72,6 +74,8 @@ export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [showEmailForm, setShowEmailForm] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -79,28 +83,76 @@ export default function SignupPage() {
     confirmPassword: "",
   })
   const { theme } = useTheme()
+  const router = useRouter()
+  const supabase = createClient()
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleOAuthSignUp = async (provider: string) => {
-    // Mock OAuth signup for design stage
-    alert(`${provider} signup is disabled during design stage. This would normally redirect to OAuth provider.`)
+  const handleOAuthSignUp = async (provider: "google" | "apple") => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      
+      const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+      
+      if (oauthError) {
+        setError(`Failed to sign up with ${provider}: ${oauthError.message}`)
+        return
+      }
+    } catch (err: any) {
+      setError(err.message || `Failed to sign up with ${provider}`)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords don't match!")
+      setError("Passwords don't match!")
       return
     }
 
-    // Mock signup for design stage
-    alert("Signup is disabled during design stage. This would normally create an account with Supabase.")
-    // Simulate successful signup redirect
-    window.location.href = "/auth/verify-email"
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters")
+      return
+    }
+
+    try {
+      setIsLoading(true)
+
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            display_name: formData.name,
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (signUpError) {
+        setError(signUpError.message)
+        return
+      }
+
+      // Success - redirect to email verification page
+      router.push("/auth/verify-email")
+    } catch (err: any) {
+      setError(err.message || "Failed to create account. Please try again.")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -118,12 +170,19 @@ export default function SignupPage() {
 
         <h2 className="text-gray-900 text-base font-semibold mb-4 text-center">Sign up</h2>
 
+        {error && (
+          <div className="w-full max-w-sm mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        )}
+
         <div className="w-full max-w-sm">
           <div className="space-y-3 mb-6">
             <Button
               type="button"
-              onClick={() => handleOAuthSignUp("Google")}
-              className="w-full bg-red-400 hover:bg-red-500 text-white font-medium py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+              onClick={() => handleOAuthSignUp("google")}
+              disabled={isLoading}
+              className="w-full bg-red-400 hover:bg-red-500 text-white font-medium py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <GoogleIcon className="w-5 h-5" />
               Sign up with Google
@@ -131,8 +190,9 @@ export default function SignupPage() {
 
             <Button
               type="button"
-              onClick={() => handleOAuthSignUp("Apple")}
-              className="w-full bg-red-400 hover:bg-red-500 text-white font-medium py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3"
+              onClick={() => handleOAuthSignUp("apple")}
+              disabled={isLoading}
+              className="w-full bg-red-400 hover:bg-red-500 text-white font-medium py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <AppleIcon className="w-5 h-5" />
               Sign up with Apple
@@ -240,9 +300,10 @@ export default function SignupPage() {
 
                 <Button
                   type="submit"
-                  className="w-full bg-red-400 hover:bg-red-500 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl"
+                  disabled={isLoading}
+                  className="w-full bg-red-400 hover:bg-red-500 text-white font-semibold py-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Create Account
+                  {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
               </form>
             </div>
