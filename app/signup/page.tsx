@@ -138,6 +138,9 @@ export default function SignupPage() {
             display_name: formData.name,
           },
           emailRedirectTo: `${window.location.origin}/auth/callback`,
+          // Temporarily disable email confirmation for testing
+          // Remove this in production after setting up SMTP
+          // emailRedirectTo: undefined,
         },
       })
 
@@ -146,8 +149,14 @@ export default function SignupPage() {
         return
       }
 
-      // Success - redirect to email verification page
-      router.push("/auth/verify-email")
+      // Check if user is already confirmed (email confirmation might be disabled)
+      if (data.user?.email_confirmed_at) {
+        // User is already confirmed, go straight to matches
+        router.push("/matches")
+      } else {
+        // User needs email verification
+        router.push("/auth/verify-email")
+      }
     } catch (err: any) {
       setError(err.message || "Failed to create account. Please try again.")
     } finally {

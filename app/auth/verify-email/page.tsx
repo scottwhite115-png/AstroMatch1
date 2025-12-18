@@ -33,19 +33,41 @@ export default function VerifyEmail() {
     };
     getUserEmail();
 
-    // Check if user is already verified
+    // Check if user is already verified - check every 2 seconds
     const checkVerification = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (error) {
+          console.error("Error getting user:", error);
+          return;
+        }
+        
         if (user?.email_confirmed_at) {
           // User is already verified, redirect to app
+          console.log("User already verified, redirecting to matches");
           router.push("/matches");
+          return;
+        }
+        
+        // Also check session
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user?.email_confirmed_at) {
+          console.log("Session user verified, redirecting to matches");
+          router.push("/matches");
+          return;
         }
       } catch (err) {
         console.error("Error checking verification:", err);
       }
     };
+    
+    // Check immediately
     checkVerification();
+    
+    // Also set up interval to check periodically
+    const interval = setInterval(checkVerification, 2000);
+    
+    return () => clearInterval(interval);
   }, [supabase, router]);
 
   const handleResend = async () => {
