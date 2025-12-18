@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@theme {
+:root {
   --color-rank-gold: rgb(251 191 36);
   --color-rank-orange: rgb(249 115 22);
   --color-rank-pink: rgb(236 72 153);
@@ -10,9 +10,6 @@
   --color-rank-blue: rgb(59 130 246);
   --color-rank-red: rgb(239 68 68);
   --color-rank-gray: rgb(107 114 128);
-}
-
-:root {
   /* Enhanced compatibility tier colors (deep, muted tones) */
   --compat-soulmate: #064e3b;   /* deep green */
   --compat-twin: #0f3d56;        /* deep blue */
