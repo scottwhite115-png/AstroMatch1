@@ -33,6 +33,12 @@ const MessageCircle = ({ className, style }: { className?: string; style?: React
   </svg>
 );
 
+const FourPointedStar = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+);
+
 // Helper to get tier gradient colors
 // Helper to get pattern-based solid color for borders, text, etc.
 function getPatternColor(pattern?: string): string {
@@ -388,7 +394,8 @@ export default function ProfilePhotoCarouselWithRanking({
           setCurrentPhotoIndex(index);
           onPhotoChange?.(index);
         }}
-        className="photo-carousel-container w-full aspect-[3/4] rounded-2xl bg-black"
+        className="photo-carousel-container w-full aspect-[3/4.2] bg-black"
+        style={{ borderRadius: '1.5rem', margin: '0', padding: '0' }}
       >
         {/* Photo Navigation Areas - Only show when not zoomed */}
         <div
@@ -425,7 +432,7 @@ export default function ProfilePhotoCarouselWithRanking({
 
         {/* Name and Age Overlay - Bottom Left */}
         {profileName && (
-          <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 10 }}>
+          <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 30, pointerEvents: 'none' }}>
             <div className="px-5 pb-2">
               <div className="text-white font-semibold text-3xl mb-1">
                 {profileName}
@@ -476,6 +483,72 @@ export default function ProfilePhotoCarouselWithRanking({
                 fill: "none"
               }} 
             />
+          </button>
+        )}
+
+        {/* Connection Overview Button - Bottom Right (top position) */}
+        {onShowElementsToggle && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onShowElementsToggle();
+            }}
+            className="absolute right-4 z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            style={{
+              bottom: '80px', // Position above profile button with gap
+              backgroundColor: 'transparent',
+              borderWidth: '2px',
+              borderStyle: 'solid',
+              borderColor: patternColors?.start || (connectionBoxData 
+                ? getPatternColor(connectionBoxData.pattern)
+                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
+              backdropFilter: 'blur(10px)',
+              boxShadow: theme === "light" 
+                ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
+                : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+            }}
+            aria-label="Toggle connection overview"
+          >
+            <FourPointedStar 
+              className="w-7 h-7 text-white" 
+              style={{ color: "white", fill: "white" }}
+            />
+          </button>
+        )}
+
+        {/* Profile Button - Bottom Right (bottom position) */}
+        {onShowProfileToggle && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onShowProfileToggle();
+            }}
+            className="absolute right-4 z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            style={{
+              bottom: '16px', // Position at bottom with padding
+              backgroundColor: 'transparent',
+              borderWidth: '2px',
+              borderStyle: 'solid',
+              borderColor: patternColors?.start || (connectionBoxData 
+                ? getPatternColor(connectionBoxData.pattern)
+                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
+              backdropFilter: 'blur(10px)',
+              boxShadow: theme === "light" 
+                ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
+                : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+            }}
+            aria-label="Toggle profile"
+          >
+            <svg 
+              className="w-7 h-7" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="white" 
+              strokeWidth="2"
+            >
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
           </button>
         )}
 

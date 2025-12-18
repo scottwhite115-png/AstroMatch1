@@ -1,111 +1,9 @@
 /**
  * Supabase Profile Queries
- * 
- * Functions to fetch and update user profiles from the database
+ * Fetch and filter matchable profiles from database
  */
 
-import { createClient } from '@/lib/supabase/client'
-import type { UserProfile } from '@/lib/profileCompletion'
-
-/**
- * Fetch the current user's profile from Supabase
- */
-export async function fetchUserProfile(): Promise<UserProfile | null> {
-  try {
-    const supabase = createClient()
-    
-    // Get current user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
-    if (authError || !user) {
-      console.error('[fetchUserProfile] Auth error:', authError)
-      return null
-    }
-
-    // Fetch profile
-    const { data: profile, error: profileError } = await supabase
-      .from('profiles')
-      .select('*')
-      .eq('id', user.id)
-      .single()
-
-    if (profileError) {
-      console.error('[fetchUserProfile] Profile error:', profileError)
-      return null
-    }
-
-    return profile as UserProfile
-  } catch (error) {
-    console.error('[fetchUserProfile] Unexpected error:', error)
-    return null
-  }
-}
-
-/**
- * Update the current user's profile
- */
-export async function updateUserProfile(updates: Partial<UserProfile>): Promise<{ success: boolean; error?: string }> {
-  try {
-    const supabase = createClient()
-    
-    // Get current user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    
-    if (authError || !user) {
-      return { success: false, error: 'Not authenticated' }
-    }
-
-    // Update profile
-    const { error: updateError } = await supabase
-      .from('profiles')
-      .update(updates)
-      .eq('id', user.id)
-
-    if (updateError) {
-      console.error('[updateUserProfile] Update error:', updateError)
-      return { success: false, error: updateError.message }
-    }
-
-    return { success: true }
-  } catch (error) {
-    console.error('[updateUserProfile] Unexpected error:', error)
-    return { success: false, error: 'Failed to update profile' }
-  }
-}
-
-/**
- * Create or update profile on first login
- */
-export async function upsertUserProfile(userId: string, email: string): Promise<{ success: boolean; error?: string }> {
-  try {
-    const supabase = createClient()
-
-    const { error } = await supabase
-      .from('profiles')
-      .upsert({
-        id: userId,
-        email: email,
-        email_verified: false,
-        phone_verified: false,
-        account_active: true,
-        profile_complete: false,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      }, {
-        onConflict: 'id'
-      })
-
-    if (error) {
-      console.error('[upsertUserProfile] Upsert error:', error)
-      return { success: false, error: error.message }
-    }
-
-    return { success: true }
-  } catch (error) {
-    console.error('[upsertUserProfile] Unexpected error:', error)
-    return { success: false, error: 'Failed to create profile' }
-  }
-}
+import { createClient } from './client'
 
 export interface MatchFilters {
   userGender: string
@@ -118,34 +16,58 @@ export interface MatchFilters {
   userId: string
 }
 
+export interface EnrichedProfile {
+  id: string
+  name: string
+  age: number
+  birthdate: string
+  westernSign: string
+  easternSign: string
+  tropicalWesternSign?: string
+  siderealWesternSign?: string
+  photos: string[]
+  bio?: string
+  occupation?: string
+  height?: string
+  religion?: string
+  children_preference?: string
+  city?: string
+  distance?: number
+  interests?: string[]
+  relationship_goals?: string[]
+  gender?: string
+  lat?: number
+  lon?: number
+}
+
 /**
- * Fetch matchable profiles based on user preferences
+ * Fetch profiles within radius using PostGIS
  */
-export async function fetchMatchableProfiles(filters: MatchFilters): Promise<UserProfile[]> {
-  try {
+export async function fetchMatchableProfiles(filters: MatchFilters): Promise<EnrichedProfile[]> {
     const supabase = createClient()
     
-    // Get profiles within radius using the RPC function
+  try {
+    // First, get profiles within distance radius
+    // Using earthdistance extension for geo queries
     const { data: nearbyProfiles, error } = await supabase
       .rpc('profiles_within_radius', {
         user_lat: filters.userLat,
         user_lon: filters.userLon,
-        radius_meters: filters.distanceRadius * 1000, // Convert km to meters
-        limit_count: 100
+        radius_km: filters.distanceRadius
       })
     
     if (error) {
-      console.error('[fetchMatchableProfiles] RPC error:', error)
+      console.error('[Profile Queries] Error fetching nearby profiles:', error)
       return []
     }
 
     if (!nearbyProfiles || nearbyProfiles.length === 0) {
-      console.log('[fetchMatchableProfiles] No nearby profiles found')
+      console.log('[Profile Queries] No profiles found within radius')
       return []
     }
 
-    // Filter by preferences
-    const matchableProfiles = nearbyProfiles.filter((profile: UserProfile) => {
+    // Filter profiles based on preferences
+    const matchableProfiles = nearbyProfiles.filter((profile: any) => {
       // Exclude own profile
       if (profile.id === filters.userId) return false
       
@@ -158,46 +80,193 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Use
       }
       
       // Age filter
-      const age = profile.age || 0
-      if (age < filters.ageMin || age > filters.ageMax) return false
+      if (profile.age < filters.ageMin || profile.age > filters.ageMax) return false
+
+      // Has required fields
+      if (!profile.birthdate || !profile.western_sign || !profile.chinese_sign) return false
+
+      // Has at least one photo
+      if (!profile.photos || profile.photos.length === 0) return false
       
       return true
     })
 
-    console.log(`[fetchMatchableProfiles] Found ${matchableProfiles.length} matchable profiles`)
-    return matchableProfiles as UserProfile[]
+    // Map to EnrichedProfile format
+    const enrichedProfiles: EnrichedProfile[] = matchableProfiles.map((profile: any) => ({
+      id: profile.id,
+      name: profile.display_name || 'Anonymous',
+      age: profile.age,
+      birthdate: profile.birthdate,
+      westernSign: profile.western_sign,
+      easternSign: profile.chinese_sign,
+      tropicalWesternSign: profile.tropical_western_sign || profile.western_sign,
+      siderealWesternSign: profile.sidereal_western_sign || profile.western_sign,
+      photos: profile.photos || [],
+      bio: profile.bio,
+      occupation: profile.occupation,
+      height: profile.height,
+      religion: profile.religion,
+      children_preference: profile.children_preference,
+      city: profile.city || profile.location_name,
+      distance: profile.distance_km ? Math.round(profile.distance_km) : undefined,
+      interests: profile.interests || [],
+      relationship_goals: profile.relationship_goals || [],
+      gender: profile.gender,
+      lat: profile.lat,
+      lon: profile.lon
+    }))
+
+    console.log(`[Profile Queries] Found ${enrichedProfiles.length} matchable profiles`)
+    return enrichedProfiles
+
   } catch (error) {
-    console.error('[fetchMatchableProfiles] Unexpected error:', error)
+    console.error('[Profile Queries] Unexpected error:', error)
     return []
   }
 }
 
 /**
- * Check if profiles_within_radius RPC function exists
- * If not, we'll need to create it
+ * Get profiles that the user has already liked
  */
-export async function checkRadiusFunction(): Promise<boolean> {
-  try {
-    const supabase = createClient()
-    
-    // Try calling with dummy data to see if function exists
-    const { error } = await supabase.rpc('profiles_within_radius', {
-      user_lat: 0,
-      user_lon: 0,
-      radius_meters: 1000,
-      limit_count: 1
-    })
+export async function fetchLikedProfileIds(userId: string): Promise<string[]> {
+  const supabase = createClient()
 
-    // If function doesn't exist, we'll get a specific error
-    if (error && error.message.includes('does not exist')) {
-      console.warn('[checkRadiusFunction] profiles_within_radius function not found')
-      return false
-    }
+  const { data, error } = await supabase
+    .from('likes')
+    .select('liked_id')
+    .eq('liker_id', userId)
 
-    return true
-  } catch (error) {
-    console.error('[checkRadiusFunction] Error checking function:', error)
-    return false
+  if (error) {
+    console.error('[Profile Queries] Error fetching likes:', error)
+    return []
   }
+
+  return data?.map(like => like.liked_id) || []
 }
 
+/**
+ * Get profiles that the user has passed on
+ */
+export async function fetchPassedProfileIds(userId: string): Promise<string[]> {
+  const supabase = createClient()
+
+  // Only get passes that haven't expired
+  const { data, error } = await supabase
+    .from('passes')
+    .select('passed_id')
+    .eq('passer_id', userId)
+    .gt('expires_at', new Date().toISOString())
+
+  if (error) {
+    console.error('[Profile Queries] Error fetching passes:', error)
+    return []
+  }
+
+  return data?.map(pass => pass.passed_id) || []
+}
+
+/**
+ * Get the current user's profile
+ */
+export async function fetchUserProfile(userId?: string): Promise<any | null> {
+  const supabase = createClient()
+
+  // If no userId provided, get current authenticated user
+  if (!userId) {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) return null
+    userId = user.id
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single()
+
+  if (error) {
+    console.error('[Profile Queries] Error fetching user profile:', error)
+    return null
+  }
+
+  return data
+}
+
+/**
+ * Get matches for the current user
+ */
+export async function fetchUserMatches(userId: string): Promise<any[]> {
+    const supabase = createClient()
+    
+  const { data, error } = await supabase
+    .from('matches')
+    .select(`
+      *,
+      user1:profiles!matches_user1_id_fkey(*),
+      user2:profiles!matches_user2_id_fkey(*)
+    `)
+    .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
+    .eq('is_active', true)
+    .order('last_message_at', { ascending: false, nullsFirst: false })
+
+  if (error) {
+    console.error('[Profile Queries] Error fetching matches:', error)
+    return []
+  }
+
+  // Map to include the other user's profile
+  return data?.map(match => {
+    const otherUser = match.user1_id === userId ? match.user2 : match.user1
+    return {
+      ...match,
+      profile: otherUser
+    }
+  }) || []
+}
+
+/**
+ * Get profiles that liked the current user (incoming likes)
+ */
+export async function fetchIncomingLikes(userId: string): Promise<any[]> {
+  const supabase = createClient()
+
+  const { data, error } = await supabase
+    .from('likes')
+    .select(`
+      *,
+      liker:profiles!likes_liker_id_fkey(*)
+    `)
+    .eq('liked_id', userId)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('[Profile Queries] Error fetching incoming likes:', error)
+    return []
+    }
+
+  return data?.map(like => like.liker) || []
+}
+
+/**
+ * Update user's last_active timestamp
+ */
+export async function updateLastActive(userId: string): Promise<void> {
+  const supabase = createClient()
+
+  await supabase
+    .from('profiles')
+    .update({ last_active: new Date().toISOString() })
+    .eq('id', userId)
+}
+
+/**
+ * Filter out profiles that user has already seen (liked or passed)
+ */
+export function filterSeenProfiles(
+  profiles: EnrichedProfile[],
+  likedIds: string[],
+  passedIds: string[]
+): EnrichedProfile[] {
+  const seenIds = new Set([...likedIds, ...passedIds])
+  return profiles.filter(profile => !seenIds.has(profile.id))
+  }

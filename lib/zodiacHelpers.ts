@@ -41,7 +41,7 @@ export const capitalizeSign = (sign: string): string => {
   return sign.charAt(0).toUpperCase() + sign.slice(1).toLowerCase()
 }
 
-// Get Western zodiac sign from birthdate
+// Get Western zodiac sign from birthdate (tropical - default)
 export const getWesternSignFromDate = (date: Date): string => {
   const month = date.getMonth() + 1; // 1-12
   const day = date.getDate();
@@ -60,6 +60,40 @@ export const getWesternSignFromDate = (date: Date): string => {
   if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return "Pisces";
   
   return "Aries"; // Default
+}
+
+// Get Western zodiac sign from birthdate based on user's system preference (tropical or sidereal)
+export const getWesternSignFromDateWithSystem = (date: Date, system?: "tropical" | "sidereal"): string => {
+  const month = date.getMonth() + 1; // 1-12
+  const day = date.getDate();
+  
+  // Get system preference if not provided
+  let preferredSystem = system;
+  if (!preferredSystem && typeof window !== "undefined") {
+    const stored = localStorage.getItem("sunSignSystem");
+    preferredSystem = (stored as "tropical" | "sidereal") || "tropical";
+  }
+  preferredSystem = preferredSystem || "tropical";
+  
+  // Use sunSignCalculator functions for accurate calculation
+  if (preferredSystem === "sidereal") {
+    // Sidereal dates (shifted ~23 days earlier)
+    if ((month === 4 && day >= 13) || (month === 5 && day <= 14)) return "Aries";
+    if ((month === 5 && day >= 15) || (month === 6 && day <= 14)) return "Taurus";
+    if ((month === 6 && day >= 15) || (month === 7 && day <= 16)) return "Gemini";
+    if ((month === 7 && day >= 17) || (month === 8 && day <= 16)) return "Cancer";
+    if ((month === 8 && day >= 17) || (month === 9 && day <= 16)) return "Leo";
+    if ((month === 9 && day >= 17) || (month === 10 && day <= 17)) return "Virgo";
+    if ((month === 10 && day >= 18) || (month === 11 && day <= 16)) return "Libra";
+    if ((month === 11 && day >= 17) || (month === 12 && day <= 15)) return "Scorpio";
+    if ((month === 12 && day >= 16) || (month === 1 && day <= 14)) return "Sagittarius";
+    if ((month === 1 && day >= 15) || (month === 2 && day <= 12)) return "Capricorn";
+    if ((month === 2 && day >= 13) || (month === 3 && day <= 14)) return "Aquarius";
+    if ((month === 3 && day >= 15) || (month === 4 && day <= 12)) return "Pisces";
+  }
+  
+  // Default to tropical
+  return getWesternSignFromDate(date);
 }
 
 // Get Chinese zodiac animal from birthdate

@@ -23,6 +23,10 @@ import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { explainMatchAndScore } from "@/lib/matchExplainAndScore"
 import type { West, East } from "@/lib/matchEngine"
 import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
+import { createClient } from "@/lib/supabase/client"
+import { fetchUserProfile } from "@/lib/supabase/profileQueries"
+import { uploadProfilePhoto, deleteProfilePhoto } from "@/lib/supabase/photoUpload"
+import { checkProfileCompletion, getCompletionMessage } from "@/lib/profileCompletion"
 import { autoInsight } from "@/lib/insight"
 import { INSIGHT_OVERRIDES, type OverrideKey } from "@/data/insight_overrides"
 import { getCompleteLongformBlurb, getTierKeyFromScore, createPairId } from "@/data/longformBlurbsComplete"
@@ -205,7 +209,7 @@ export default function AstrologyProfilePage({
   const [showStickyNameHeader, setShowStickyNameHeader] = useState(false)
   const [showMatchDropdown, setShowMatchDropdown] = useState(false)
   const [showConnectionProfile, setShowConnectionProfile] = useState(false)
-  const [showConnectionElements, setShowConnectionElements] = useState(true) // Always show connection box in view tab
+  const [showConnectionElements, setShowConnectionElements] = useState(false) // Toggle connection overview
   const [showInterestsDropdown, setShowInterestsDropdown] = useState(false)
   const [showInterestCategoryDropdowns, setShowInterestCategoryDropdowns] = useState<{[key: string]: boolean}>({})
   const [showLifestyleDropdown, setShowLifestyleDropdown] = useState(false)
@@ -2827,162 +2831,201 @@ export default function AstrologyProfilePage({
 
         {activeTab === "view" && (
           <>
-            <div className="mb-8 pb-48" style={{ overflowY: 'visible', position: 'relative' }}>
-              {/* Get pattern colors for border */}
-              {(() => {
-                const patternColors = connectionBoxData?.pattern 
-                  ? getPatternGradientColors(connectionBoxData.pattern)
-                  : { start: '#60a5fa', end: '#3b82f6' };
-                
-                console.log('🎨 PROFILE VIEW TAB - Pattern Colors:', patternColors);
-                console.log('🎨 PROFILE VIEW TAB - Connection Pattern:', connectionBoxData?.pattern);
-                
-                return (
-                  <div className="px-2 mb-3">
-                    {/* Border wrapper - matches discover section */}
-                    <div
-                      className="w-full rounded-3xl flex flex-col relative"
-                      style={{ 
-                        border: `3px solid ${patternColors.start}`,
-                        background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                        padding: '3px',
-                        zIndex: 10,
-                      }}
-                    >
-                      <div
-                        className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col overflow-hidden ${
-                          theme === "light" ? "bg-gray-50" : "bg-slate-900"
-                        }`}
-                        style={{ zIndex: 1 }}
-                      >
-              {/* Photo Carousel with Ranking */}
-              {photos.some(p => p.hasImage) && (
-                <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', marginTop: '-3px', zIndex: 0, marginBottom: '0' }}>
-                  <ProfilePhotoCarouselWithRanking
-                    images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
-                    profileName={name || ""}
-                    profileAge={(() => {
-                      if (birthInfo?.birthdate) {
-                        const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
-                        const today = new Date();
-                        let age = today.getFullYear() - year;
-                        const monthDiff = today.getMonth() + 1 - month;
-                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
-                          age--;
-                        }
-                        return age > 0 ? age : 27;
-                      }
-                      return 27;
-                    })()}
-                  connectionBoxData={connectionBoxData || undefined}
-                  theme={theme}
-                  showDropdown={false}
-                  badgePosition="none"
-                    aboutMeText={aboutMeText}
-                    selectedOccupation={selectedOccupation}
-                    selectedCity={selectedCity}
-                    cityInput={cityInput}
-                    selectedHeight={selectedHeight}
-                    selectedChildrenOption={selectedChildrenOption}
-                    selectedReligion={selectedReligion}
-                    birthInfo={birthInfo}
-                    onPhotoChange={setCurrentPhotoIndex}
-                  />
-                </div>
-              )}
+            <div className="w-full flex justify-center mb-8">
+              <div className="w-full">
+                {/* Get pattern colors for border */}
+                {(() => {
+                  const patternColors = connectionBoxData?.pattern 
+                    ? getPatternGradientColors(connectionBoxData.pattern)
+                    : { start: '#60a5fa', end: '#3b82f6' };
+                  
+                  // Get display signs for the profile
+                  const displayWesternSign = zodiacSigns.western || calculatedSigns.westernSign;
+                  const displayEasternSign = zodiacSigns.chinese || calculatedSigns.chineseSign;
+                  
+                  return (
+                    <>
+                      {/* Photo Carousel with Border - matches discover section */}
+                      {photos.some(p => p.hasImage) && (
+                        <div
+                          className="w-full rounded-3xl relative"
+                          style={{ 
+                            border: `3px solid ${patternColors.start}`,
+                            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                            padding: '3px',
+                            zIndex: 10,
+                            marginBottom: '0',
+                          }}
+                        >
+                          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
+                            <ProfilePhotoCarouselWithRanking
+                              images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
+                              profileName={name || ""}
+                              profileAge={(() => {
+                                if (birthInfo?.birthdate) {
+                                  const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+                                  const today = new Date();
+                                  let age = today.getFullYear() - year;
+                                  const monthDiff = today.getMonth() + 1 - month;
+                                  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+                                    age--;
+                                  }
+                                  return age > 0 ? age : 27;
+                                }
+                                return 27;
+                              })()}
+                              connectionBoxData={connectionBoxData || undefined}
+                              theme={theme}
+                              showDropdown={false}
+                              badgePosition="overlay-bottom"
+                              aboutMeText={aboutMeText}
+                              selectedOccupation={selectedOccupation}
+                              selectedCity={selectedCity}
+                              cityInput={cityInput}
+                              selectedHeight={selectedHeight}
+                              selectedChildrenOption={selectedChildrenOption}
+                              selectedReligion={selectedReligion}
+                              birthInfo={birthInfo}
+                              westernSign={displayWesternSign}
+                              easternSign={displayEasternSign}
+                              onPhotoChange={setCurrentPhotoIndex}
+                              showProfileToggle={showConnectionProfile}
+                              onShowProfileToggle={() => {
+                                if (showConnectionProfile) {
+                                  setShowConnectionProfile(false);
+                                } else {
+                                  setShowConnectionProfile(true);
+                                  setShowConnectionElements(false);
+                                }
+                              }}
+                              showElementsToggle={showConnectionElements}
+                              onShowElementsToggle={() => {
+                                if (showConnectionElements) {
+                                  setShowConnectionElements(false);
+                                } else {
+                                  setShowConnectionElements(true);
+                                  setShowConnectionProfile(false);
+                                }
+                              }}
+                              patternColors={patternColors}
+                            />
+                          </div>
+                        </div>
+                      )}
 
-              {/* Connection Box - Permanently displayed below photo carousel */}
-              {connectionBoxData && (() => {
-                const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
-                const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
-                const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
-                const westB = connectionBoxData.b?.west ? capitalize(connectionBoxData.b.west) : "Unknown";
-                const eastB = connectionBoxData.b?.east ? capitalize(connectionBoxData.b.east) : "Unknown";
-                const chineseLine = connectionBoxData.east_relation || `${eastA} × ${eastB}`;
-                const westernLine = connectionBoxData.west_relation || `${westA} × ${westB}`;
-                const wuXingLine = connectionBoxData.wuXingLine;
-                const connectionBlurb = connectionBoxData.insight && connectionBoxData.insight.trim().length > 0
-                  ? connectionBoxData.insight
-                  : connectionBoxData.pattern && connectionBoxData.score
-                  ? deriveConnectionOverview(
-                      connectionBoxData.pattern as import('@/lib/matchEngine').ChinesePattern,
-                      connectionBoxData.score
-                    )
-                  : undefined;
-                const calculatedAge = connectionBoxData.age ?? (() => {
-                  if (birthInfo?.birthdate) {
-                    const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
-                    const today = new Date();
-                    let age = today.getFullYear() - year;
-                    const monthDiff = today.getMonth() + 1 - month;
-                    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
-                      age--;
-                    }
-                    return age > 0 ? age : 27;
-                  }
-                  return 27;
-                })();
+                      {/* Connection Box - Only visible when toggled, matches discover section */}
+                      {(showConnectionProfile || showConnectionElements) && connectionBoxData && (() => {
+                        const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
+                        const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
+                        const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
+                        const westB = connectionBoxData.b?.west ? capitalize(connectionBoxData.b.west) : "Unknown";
+                        const eastB = connectionBoxData.b?.east ? capitalize(connectionBoxData.b.east) : "Unknown";
+                        const chineseLine = connectionBoxData.east_relation || `${eastA} × ${eastB}`;
+                        const westernLine = connectionBoxData.west_relation || `${westA} × ${westB}`;
+                        const wuXingLine = connectionBoxData.wuXingLine;
+                        const connectionBlurb = connectionBoxData.insight && connectionBoxData.insight.trim().length > 0
+                          ? connectionBoxData.insight
+                          : connectionBoxData.pattern && connectionBoxData.score
+                          ? deriveConnectionOverview(
+                              connectionBoxData.pattern as import('@/lib/matchEngine').ChinesePattern,
+                              connectionBoxData.score
+                            )
+                          : undefined;
+                        const calculatedAge = connectionBoxData.age ?? (() => {
+                          if (birthInfo?.birthdate) {
+                            const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+                            const today = new Date();
+                            let age = today.getFullYear() - year;
+                            const monthDiff = today.getMonth() + 1 - month;
+                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+                              age--;
+                            }
+                            return age > 0 ? age : 27;
+                          }
+                          return 27;
+                        })();
 
-                return (
-                  <>
-                    <ConnectionBoxNew
-                      tier={newTier}
-                      score={connectionBoxData.score}
-                      westA={westA}
-                      eastA={eastA}
-                      westB={westB}
-                      eastB={eastB}
-                      chineseLine={chineseLine}
-                      sunMatchBlurb={connectionBoxData.westernSignLine || ""}
-                      westernLine={westernLine}
-                      wuXingLine={wuXingLine}
-                      chineseElementA={connectionBoxData.a?.chineseElement}
-                      chineseElementB={connectionBoxData.b?.chineseElement}
-                      connectionBlurb={connectionBlurb || undefined}
-                      theme={theme}
-                      aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
-                      interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
-                      relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
-                      age={calculatedAge}
-                      city={connectionBoxData.city ?? selectedCity ?? cityInput}
-                      occupation={connectionBoxData.occupation ?? selectedOccupation}
-                      height={connectionBoxData.height ?? selectedHeight}
-                      children={connectionBoxData.children ?? selectedChildrenOption}
-                      religion={connectionBoxData.religion ?? selectedReligion}
-                      chinesePattern={connectionBoxData.chinesePattern}
-                      westAspect={connectionBoxData.westAspect}
-                      westElementRelation={connectionBoxData.westElementRelation}
-                      isChineseOpposite={connectionBoxData.isChineseOpposite}
-                      isLivelyPair={connectionBoxData.isLivelyPair}
-                      showProfile={showConnectionProfile}
-                      showElements={true} // Always show the main connection box in view tab
-                      patternFullLabel={connectionBoxData.patternFullLabel}
-                      pillLabel={connectionBoxData.pillLabel}
-                      baseTagline={connectionBoxData.baseTagline}
-                      patternEmoji={connectionBoxData.patternEmoji}
-                      pattern={connectionBoxData.pattern}
-                      chemistryStars={connectionBoxData.chemistryStars}
-                      stabilityStars={connectionBoxData.stabilityStars}
-                      onPass={undefined}
-                      onLike={undefined}
-                      onMessage={undefined}
-                      onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
-                    />
-                  </>
-                );
-              })()}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
-
+                        return (
+                          <div 
+                            className={`relative flex justify-center ${
+                              theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+                            }`}
+                            style={{
+                              position: 'relative',
+                              marginTop: '-3px',
+                              paddingTop: '0',
+                            }}
+                          >
+                            <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
+                              <ConnectionBoxNew
+                                tier={newTier}
+                                score={connectionBoxData.score}
+                                westA={westA}
+                                eastA={eastA}
+                                westB={westB}
+                                eastB={eastB}
+                                chineseLine={chineseLine}
+                                sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                                westernLine={westernLine}
+                                wuXingLine={wuXingLine}
+                                chineseElementA={connectionBoxData.a?.chineseElement}
+                                chineseElementB={connectionBoxData.b?.chineseElement}
+                                connectionBlurb={connectionBlurb || undefined}
+                                theme={theme}
+                                aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
+                                interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
+                                relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
+                                age={calculatedAge}
+                                city={connectionBoxData.city ?? selectedCity ?? cityInput}
+                                occupation={connectionBoxData.occupation ?? selectedOccupation}
+                                height={connectionBoxData.height ?? selectedHeight}
+                                children={connectionBoxData.children ?? selectedChildrenOption}
+                                religion={connectionBoxData.religion ?? selectedReligion}
+                                chinesePattern={connectionBoxData.chinesePattern}
+                                westAspect={connectionBoxData.westAspect}
+                                westElementRelation={connectionBoxData.westElementRelation}
+                                isChineseOpposite={connectionBoxData.isChineseOpposite}
+                                isLivelyPair={connectionBoxData.isLivelyPair}
+                                showProfile={showConnectionProfile}
+                                showElements={showConnectionElements}
+                                patternFullLabel={connectionBoxData.patternFullLabel}
+                                pillLabel={connectionBoxData.pillLabel}
+                                baseTagline={connectionBoxData.baseTagline}
+                                patternEmoji={connectionBoxData.patternEmoji}
+                                pattern={connectionBoxData.pattern}
+                                chemistryStars={connectionBoxData.chemistryStars}
+                                stabilityStars={connectionBoxData.stabilityStars}
+                                patternColors={patternColors}
+                                onPass={undefined}
+                                onLike={undefined}
+                                onMessage={undefined}
+                                onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </>
+                  );
+                })()}
+              </div>
             </div>
           </>
         )}
 
         {activeTab === "edit" && (
-          <div className="px-7 pb-32">
+          <div className="px-7 pb-32" style={{ position: 'relative' }}>
+            {theme !== "light" && (
+              <div 
+                className="absolute inset-x-0 bottom-0 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+                style={{ 
+                  height: '8rem', 
+                  left: 0, 
+                  right: 0,
+                  zIndex: 0
+                }}
+              />
+            )}
 
             <div
               className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}

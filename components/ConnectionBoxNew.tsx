@@ -203,6 +203,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
       onMessage={props.onMessage}
       onPass={props.onPass}
       onLike={props.onLike}
+      showProfile={props.showProfile}
+      showElements={props.showElements}
     />
   );
 };

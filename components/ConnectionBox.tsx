@@ -115,6 +115,10 @@ interface ConnectionBoxProps {
   
   // Pattern colors (if provided, will override calculated colors)
   patternColors?: { start: string; end: string };
+  
+  // External control of dropdowns
+  showProfile?: boolean;
+  showElements?: boolean;
 }
 
 /** ===== Helper functions ===== */
@@ -395,9 +399,15 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   onMessage,
   onPass,
   onLike,
+  showProfile: externalShowProfile,
+  showElements: externalShowElements,
 }) => {
-  const [showOverview, setShowOverview] = useState(false);
-  const [showAbout, setShowAbout] = useState(false);
+  const [internalShowOverview, setInternalShowOverview] = useState(false);
+  const [internalShowAbout, setInternalShowAbout] = useState(false);
+  
+  // Use external props if provided, otherwise use internal state
+  const showOverview = externalShowElements !== undefined ? externalShowElements : internalShowOverview;
+  const showAbout = externalShowProfile !== undefined ? externalShowProfile : internalShowAbout;
 
   const elementRelation =
     elementRelationOverride ?? getElementRelation(elements.a, elements.b);
@@ -529,298 +539,129 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     <div 
       className="w-full"
       style={{
-        borderTop: theme === "light" ? '1px solid #e5e7eb' : '1px solid #475569',
-        borderLeft: theme === "light" ? '1px solid #e5e7eb' : '1px solid #475569',
-        borderRight: theme === "light" ? '1px solid #e5e7eb' : '1px solid #475569',
-        borderBottom: 'none',
-        borderRadius: '1rem 1rem 0 0',
+        border: 'none',
+        borderRadius: '0',
         paddingBottom: '0',
+        marginLeft: '-3px',
+        marginRight: '-3px',
+        width: 'calc(100% + 6px)',
       }}
     >
-      <div 
-        className={`w-full ${
-          theme === "light" ? "bg-white" : "bg-slate-900"
-        }`}
-        style={{
-          paddingTop: '0.75rem',
-          paddingLeft: '1rem',
-          paddingRight: '1rem',
-          paddingBottom: '1.5rem',
-          marginBottom: '0',
-          borderRadius: '1rem 1rem 0 0',
-          border: 'none',
-          display: 'flex',
-          flexDirection: 'column',
-          boxSizing: 'border-box',
-          height: 'auto',
-          minHeight: '0',
-          overflow: 'hidden',
-          lineHeight: '1',
-        }}
-      >
-        {/* Top row: sign combinations with emojis */}
-        <div className="py-1 w-full mb-2">
-          <div className="flex items-center gap-2">
-            {/* Left side - emojis and label */}
-            <div className="flex flex-col items-center flex-1 min-w-0">
-              {/* Left sign emojis */}
-              <div className="flex items-center gap-1 mb-1">
-                {userAWestIcon && <span className="text-3xl">{userAWestIcon}</span>}
-                {userAChineseIcon && <span className="text-3xl">{userAChineseIcon}</span>}
-              </div>
-              {/* Left sign label */}
-              <span className={`font-bold text-base whitespace-nowrap ${
-                theme === "light" ? "text-slate-700" : "text-slate-200"
-              }`}>
-                {userASignLabel}
-              </span>
-            </div>
-            
-            {/* Heart icon in the center */}
-            <span className={`text-xl flex-shrink-0 self-center ${
-              theme === "light" ? "text-pink-500" : "text-pink-400"
-            }`}>
-              ♥
-            </span>
-            
-            {/* Right side - emojis and label */}
-            <div className="flex flex-col items-center flex-1 min-w-0">
-              {/* Right sign emojis */}
-              <div className="flex items-center gap-1 mb-1">
-                {userBWestIcon && <span className="text-3xl">{userBWestIcon}</span>}
-                {userBChineseIcon && <span className="text-3xl">{userBChineseIcon}</span>}
-              </div>
-              {/* Right sign label */}
-              <span className={`font-bold text-base whitespace-nowrap ${
-                theme === "light" ? "text-slate-700" : "text-slate-200"
-              }`}>
-                {userBSignLabel}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Primary label pill */}
-        <div className="mb-1 flex justify-center">
-          <div 
-            className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 ${
-              theme === "light" ? "bg-white" : "bg-slate-900"
-            }`}
-            style={{
-              borderColor: gradientColors.start,
-              color: theme === "light" ? "black" : "white",
-            }}
-          >
-            <span>{primaryLabel}</span>
-            {typeof score === "number" && (
-              <span className="ml-2 text-base opacity-80" style={{ fontWeight: 'bold' }}>
-                {score}%
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Tagline under the pill */}
-        {blurb && (
-          <p className={`text-lg text-center leading-relaxed mb-2 ${
-            theme === "light" ? "text-slate-600" : "text-slate-300"
-          }`}>
-            {blurb}
-          </p>
-        )}
-
-        {/* Pattern breakdown chips */}
-        <div className="mt-2 flex flex-wrap justify-center gap-2 mb-2">
-          {/* base Chinese pattern chip - only show if not NO_PATTERN or if there are no overlays */}
-          {showBaseChip && (
-            <span
-              key={baseChipNew.icon + baseChipNew.label}
-              className={`px-3 py-1 rounded-full text-base inline-flex items-center gap-1 ${
-                theme === "light" 
-                  ? "bg-slate-200 text-slate-700" 
-                  : "bg-slate-900 text-slate-200 border border-slate-600"
-              }`}
-            >
-              <span>{baseChipNew.icon}</span>
-              <span>{baseChipNew.label}</span>
-            </span>
-          )}
-
-          {/* overlay chips, if any */}
-          {overlayChips.map((chip) => (
-            <span
-              key={chip.icon + chip.label}
-              className={`px-3 py-1 rounded-full text-base inline-flex items-center gap-1 ${
-                theme === "light" 
-                  ? "bg-slate-200 text-slate-700" 
-                  : "bg-slate-900 text-slate-200 border border-slate-600"
-              }`}
-            >
-              <span>{chip.icon}</span>
-              <span>{chip.label}</span>
-            </span>
-          ))}
-
-          {/* western chip */}
-          <span
-            key={westernChipNew.icon + westernChipNew.label}
-            className={`py-1.5 rounded-full text-base inline-flex items-center justify-center gap-1 ${
-              theme === "light" 
-                ? "bg-slate-200 text-slate-700" 
-                : "bg-slate-900 text-slate-200 border border-slate-600"
-            }`}
-            style={{
-              paddingLeft: (westernChipNew.label.includes('–') || westernChipNew.label.includes(' · ')) ? '8px' : '12px',
-              paddingRight: (westernChipNew.label.includes('–') || westernChipNew.label.includes(' · ')) ? '8px' : '12px',
-              maxWidth: (westernChipNew.label.includes('–') || westernChipNew.label.includes(' · ')) ? '240px' : 'fit-content',
-              width: 'fit-content',
-              minWidth: 'min-content',
-              display: 'inline-flex',
-              flexWrap: 'wrap',
-              textAlign: 'center',
-              lineHeight: '1.3',
-            }}
-          >
-            {westernChipNew.icon && <span className="flex-shrink-0">{westernChipNew.icon}</span>}
-            <span 
-              className="whitespace-normal text-center"
-              style={{ 
-                textWrap: 'balance',
-                wordBreak: 'break-word',
-                maxWidth: '100%',
-                minWidth: 0,
-                flex: '1 1 auto',
-              }}
-            >
-              {(() => {
-                // Split label at "·" to help with balancing
-                const parts = westernChipNew.label.split(' · ');
-                if (parts.length === 2) {
-                  return (
-                    <>
-                      <span className="whitespace-nowrap">{parts[0]}</span>
-                      {parts[1] && (
-                        <>
-                          <span className="mx-1">·</span>
-                          <span>{parts[1]}</span>
-                        </>
-                      )}
-                    </>
-                  );
-                }
-                return westernChipNew.label;
-              })()}
-            </span>
-          </span>
-        </div>
-
-        {/* Action Buttons Row */}
-        <div style={{ marginTop: '0.5rem', marginBottom: '0', paddingBottom: '0', paddingTop: '0', lineHeight: '1' }}>
-          <div className="flex justify-center gap-10 items-end" style={{ marginBottom: '0', paddingBottom: '0', paddingTop: '0', lineHeight: '1' }}>
-            {/* Profile Button */}
-            <button
-              onClick={() => {
-                if (!showAbout) {
-                  setShowAbout(true);
-                  setShowOverview(false);
-                } else {
-                  setShowAbout(false);
-                }
-              }}
-              className={`inline-flex items-center justify-center rounded-full px-7 py-2 text-sm font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 align-bottom ${
-                theme === "light" ? "bg-white" : "bg-slate-900"
-              }`}
-              style={{
-                borderColor: gradientColors.start,
-              }}
-            >
-              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" strokeWidth="2.5" style={{ stroke: theme === "light" ? "black" : "white" }}>
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </button>
-
-            {/* Star Button (Connection Overview) */}
-            <button
-              onClick={() => {
-                if (!showOverview) {
-                  setShowOverview(true);
-                  setShowAbout(false);
-                } else {
-                  setShowOverview(false);
-                }
-              }}
-              className={`inline-flex items-center justify-center rounded-full px-7 py-2 text-sm font-semibold tracking-wide transition-opacity hover:opacity-90 shadow-lg active:scale-95 border-2 align-bottom ${
-                theme === "light" ? "bg-white" : "bg-slate-900"
-              }`}
-              style={{
-                borderColor: gradientColors.start,
-              }}
-            >
-              <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" strokeWidth="2" style={{ stroke: theme === "light" ? "black" : "white" }}>
-                <path d="M12 2L14.09 8.26L22 9.27L17 14.14L18.18 22.02L12 18.77L5.82 22.02L7 14.14L2 9.27L9.91 8.26L12 2Z" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Dropdowns - Connection Overview */}
       {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
           <div className={`rounded-2xl text-lg relative z-20 ${
             theme === "light" 
-              ? "bg-slate-100/90 text-slate-800" 
-              : "bg-slate-800/50 text-slate-200"
+              ? "text-slate-800" 
+              : "text-slate-200"
           }`} style={{
+            backgroundColor: 'transparent',
             marginLeft: '-1rem',
             marginRight: '-1rem',
             paddingLeft: '2rem',
             paddingRight: '2rem',
             paddingTop: '0.5rem',
-            paddingBottom: '0',
-            marginTop: '1rem',
+            paddingBottom: '1.5rem',
+            marginTop: '0',
             marginBottom: '0',
             borderRadius: '0',
           }}>
-            {/* Connection Overview Heading */}
-            <h3 className={`text-base italic mb-2 text-left ${
-              theme === "light" 
-                ? "text-slate-500" 
-                : "text-slate-400"
-            }`} style={{
-              fontFamily: '"PingFang SC", "Noto Sans SC", "Microsoft YaHei", "SimSun", serif',
-            }}>
-              Connection Overview
-            </h3>
+            {/* Sign combinations with emojis - moved from top of connection box */}
+            <div className="py-2 w-full mb-3">
+              <div className="flex items-center gap-2">
+                {/* Left side - emojis and label */}
+                <div className="flex flex-col items-center flex-1 min-w-0">
+                  {/* Left sign emojis */}
+                  <div className="flex items-center gap-1 mb-1">
+                    {userAWestIcon && <span className="text-3xl">{userAWestIcon}</span>}
+                    {userAChineseIcon && <span className="text-3xl">{userAChineseIcon}</span>}
+                  </div>
+                  {/* Left sign label */}
+                  <span className={`font-bold text-base whitespace-nowrap ${
+                    theme === "light" ? "text-slate-700" : "text-slate-200"
+                  }`}>
+                    {userASignLabel}
+                  </span>
+                </div>
+                
+                {/* Heart icon in the center */}
+                <span className={`text-xl flex-shrink-0 self-center ${
+                  theme === "light" ? "text-pink-500" : "text-pink-400"
+                }`}>
+                  ♥
+                </span>
+                
+                {/* Right side - emojis and label */}
+                <div className="flex flex-col items-center flex-1 min-w-0">
+                  {/* Right sign emojis */}
+                  <div className="flex items-center gap-1 mb-1">
+                    {userBWestIcon && <span className="text-3xl">{userBWestIcon}</span>}
+                    {userBChineseIcon && <span className="text-3xl">{userBChineseIcon}</span>}
+                  </div>
+                  {/* Right sign label */}
+                  <span className={`font-bold text-base whitespace-nowrap ${
+                    theme === "light" ? "text-slate-700" : "text-slate-200"
+                  }`}>
+                    {userBSignLabel}
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Primary label pill - moved from connection box */}
+            <div className="mb-2 flex justify-center">
+              <div 
+                className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 ${
+                  theme === "light" ? "bg-white" : "bg-slate-900"
+                }`}
+                style={{
+                  borderColor: gradientColors.start,
+                  color: theme === "light" ? "black" : "white",
+                }}
+              >
+                <span>{primaryLabel}</span>
+                {typeof score === "number" && (
+                  <span className={`ml-2 text-lg font-bold ${theme === "light" ? "text-black" : "text-white"}`}>
+                    {score}%
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* Tagline under the pill - moved from connection box */}
+            {blurb && (
+              <p className={`text-lg text-center leading-relaxed mb-3 ${
+                theme === "light" ? "text-slate-600" : "text-slate-300"
+              }`}>
+                {blurb}
+              </p>
+            )}
             
             {/* Chinese Zodiac Compatibility Section */}
             {connectionOverviewText && (
               <div className="mb-2">
-                {/* Chinese Signs Display with Icons */}
-                {chineseAnimalA && chineseAnimalB && userAChineseIcon && userBChineseIcon && (
-                  <div className="flex items-center justify-center gap-1.5 mb-2">
-                    <span className="text-2xl">{userAChineseIcon}</span>
-                    <span className={`font-semibold text-base ${
+                {/* Chinese Signs Display */}
+                {chineseAnimalA && chineseAnimalB && (
+                  <div className="flex items-center justify-start gap-1.5 mb-2">
+                    <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalA}
                     </span>
-                    <span className={`text-base ${
-                      theme === "light" ? "text-pink-500" : "text-pink-400"
+                    <span className={`text-lg font-semibold ${
+                      theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
-                      ♥
+                      ×
                     </span>
-                    <span className={`font-semibold text-base ${
+                    <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalB}
                     </span>
-                    <span className="text-2xl">{userBChineseIcon}</span>
                   </div>
                 )}
                 
                 {chineseHeadingWithoutSignPair && (
-                  <h4 className={`text-lg font-bold mb-1 ${
+                  <h4 className={`text-lg mb-1 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {chineseHeadingWithoutSignPair}
@@ -843,31 +684,29 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             {/* Western Sun Sign Compatibility Section */}
             {westernCompatibilityDescription && (
               <div className={connectionOverviewText ? "pt-2" : ""}>
-                {/* Western Signs Display with Icons */}
+                {/* Western Signs Display */}
                 {westernSignA && westernSignB && (
-                  <div className="flex items-center justify-center gap-1.5 mb-2">
-                    <span className="text-2xl">{getWesternSignGlyph(westernSignA)}</span>
-                    <span className={`font-semibold text-base ${
+                  <div className="flex items-center justify-start gap-1.5 mb-2">
+                    <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignA}
                     </span>
-                    <span className={`text-base ${
-                      theme === "light" ? "text-pink-500" : "text-pink-400"
+                    <span className={`text-lg font-semibold ${
+                      theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
-                      ♥
+                      ×
                     </span>
-                    <span className={`font-semibold text-base ${
+                    <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignB}
                     </span>
-                    <span className="text-2xl">{getWesternSignGlyph(westernSignB)}</span>
                   </div>
                 )}
                 
                 {westernHeadingWithoutSignPair && (
-                  <h4 className={`text-lg font-bold mb-1 ${
+                  <h4 className={`text-lg mb-1 ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {westernHeadingWithoutSignPair}
@@ -893,8 +732,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height) && (
           <div className={`rounded-2xl text-sm relative z-20 ${
             theme === "light" 
-              ? "bg-slate-100/90 text-slate-800" 
-              : "bg-slate-800/50 text-slate-200"
+              ? "text-slate-800" 
+              : "text-slate-200"
           }`} style={{
             marginLeft: '-1rem',
             marginRight: '-1rem',
@@ -902,13 +741,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             paddingRight: '2rem',
             paddingTop: '0.75rem',
             paddingBottom: '0',
-            marginTop: '1rem',
+            marginTop: '1.5rem',
             marginBottom: '0',
             borderRadius: '0',
+            backgroundColor: 'transparent',
           }}>
             {/* About Me */}
             {aboutPartnerText && (
-              <div style={{ marginBottom: '1rem' }}>
+              <div style={{ marginBottom: '2rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -926,7 +766,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Relationship Goals */}
             {relationshipGoals && relationshipGoals.length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
+              <div style={{ marginBottom: '2rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -964,7 +804,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Interests */}
             {interests && Object.keys(interests).length > 0 && (
-              <div style={{ marginBottom: '1rem' }}>
+              <div style={{ marginBottom: '2rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -1004,7 +844,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Essentials - Location, Occupation, Age, Height */}
             {(city || occupation || age || height) && (
-              <div style={{ marginBottom: '0' }}>
+              <div style={{ marginBottom: '2rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 

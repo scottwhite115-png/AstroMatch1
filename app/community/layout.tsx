@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "@/contexts/ThemeContext";
 import { COMMUNITY_TOPICS } from "./topics";
 import { CommunityTabs } from "./_components/CommunityTabs";
@@ -21,11 +21,27 @@ export default function CommunityLayout({
 }) {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
+  const router = useRouter();
   
-  // Scroll to top when pathname changes
-  useEffect(() => {
+  // Scroll to top immediately on mount and when pathname changes (before paint)
+  useLayoutEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [pathname]);
+  
+  // Also ensure scroll to top after page is fully loaded (fallback)
+  useEffect(() => {
+    const handleLoad = () => {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    };
+    
+    // If page is already loaded, scroll immediately
+    if (document.readyState === 'complete') {
+      handleLoad();
+    } else {
+      window.addEventListener('load', handleLoad);
+      return () => window.removeEventListener('load', handleLoad);
+    }
+  }, []);
   
   // Show topic chips only for Stories & Q&A tab (not Live)
   const showTopicChips = !pathname.startsWith('/community/live');
@@ -42,15 +58,37 @@ export default function CommunityLayout({
       <div className="mx-auto max-w-4xl">
         {/* AstroLounge Header */}
         <header className="mb-4">
-          <div className="px-3 pt-2 pb-1 flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
+          <div className="px-4 pt-0.5 pb-1.5">
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex-1 -ml-8">
+                <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+                  <div className="flex gap-0.5 min-w-max">
+                    <button
+                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out flex items-center gap-0.5`}
+                    >
               <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                      <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
                 AstroLounge
               </span>
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" />
+                    </button>
+                    <button
+                      onClick={() => router.push('/astrology')}
+                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out -ml-2 ${
+                        theme === "light"
+                          ? "text-gray-600 hover:text-gray-900"
+                          : "text-gray-400 hover:text-gray-200"
+                      }`}
+                    >
+                      AstroLab
+                      <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out opacity-0" />
+                    </button>
+                  </div>
+                </div>
             </div>
 
             {/* Theme Toggle Button - Top Right */}
+              <div className="flex items-center gap-2 ml-2">
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
@@ -74,6 +112,8 @@ export default function CommunityLayout({
                 </svg>
               )}
             </button>
+              </div>
+            </div>
           </div>
           
           <p className={`text-sm px-5 ${

@@ -1,89 +1,31 @@
-// Safe Prisma import - handles case where client isn't generated yet
-let PrismaClient: any;
-let Pool: any;
-let neonConfig: any;
-let PrismaNeon: any;
-let ws: any;
-let prismaInitialized = false;
+import { PrismaClient } from '@prisma/client'
+import { PrismaPg } from '@prisma/adapter-pg'
+import { Pool } from 'pg'
 
-function initializePrisma() {
-  if (prismaInitialized) return;
+// Prisma 7: Requires adapter for direct PostgreSQL connection
+const prismaClientSingleton = () => {
+  const connectionString = process.env.DATABASE_URL || process.env.DIRECT_URL
   
-  try {
-    const prismaImport = require('@prisma/client');
-    PrismaClient = prismaImport.PrismaClient;
-    
-    const neonImport = require('@neondatabase/serverless');
-    Pool = neonImport.Pool;
-    neonConfig = neonImport.neonConfig;
-    
-    const adapterImport = require('@prisma/adapter-neon');
-    PrismaNeon = adapterImport.PrismaNeon;
-    
-    ws = require('ws');
-    
-    // Configure neon WebSocket for Node.js environment
-    if (typeof WebSocket === 'undefined' && ws && neonConfig) {
-      neonConfig.webSocketConstructor = ws
-    }
-    
-    prismaInitialized = true;
-  } catch (error) {
-    // Silently fail - will use mock
-    prismaInitialized = true; // Mark as initialized to prevent retries
+  if (!connectionString) {
+    throw new Error('DATABASE_URL or DIRECT_URL must be set')
   }
+
+  const pool = new Pool({ connectionString })
+  const adapter = new PrismaPg(pool)
+
+  return new PrismaClient({
+    adapter,
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
+  })
 }
 
-const globalForPrisma = globalThis as unknown as {
-  prisma: any
-}
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
 
-// Create a safe mock if Prisma isn't available
-const createMockPrisma = () => {
-  const createMockModel = () => {
-    return new Proxy({}, {
-      get: () => {
-        return () => Promise.resolve(null);
-      }
-    });
-  };
-  
-  return new Proxy({}, {
-    get: (_target: any, prop: string) => {
-      // Return a mock model that returns null/empty results
-      return createMockModel();
-    }
-  });
-};
-
-export const prisma =
-  globalForPrisma.prisma ??
-  (() => {
-    initializePrisma();
-    
-    if (!PrismaClient) {
-      return createMockPrisma();
-    }
-    
-    try {
-      const connectionString = process.env.DATABASE_URL || ''
-      if (!connectionString) {
-        return createMockPrisma();
-      }
-      
-      const pool = new Pool({ connectionString })
-      const adapter = new PrismaNeon(pool)
-      
-      return new PrismaClient({
-        adapter,
-        log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
-      })
-    } catch (error) {
-      console.warn('[Prisma] Failed to initialize, using mock:', error);
-      return createMockPrisma();
-    }
-  })()
-
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
 export default prisma
+export { prisma }
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma

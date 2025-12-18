@@ -1,15 +1,20 @@
-import prisma from "@/src/lib/prisma";
+import { supabase } from "./supabaseClient";
 import type { Profile } from "./supabaseClient";
 
 // Fetch a single profile by user id
 export async function getProfile(userId: string): Promise<Profile | null> {
-  const profile = await prisma.profiles.findUnique({
-    where: { id: userId },
-  });
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
 
-  // Cast the Prisma result to the existing Profile type so the rest
-  // of the app doesn't have to change yet.
-  return profile as unknown as Profile | null;
+  if (error) {
+    console.error('[getProfile] Error:', error);
+    return null;
+  }
+
+  return profile as Profile;
 }
 
 // Update a profile by user id
@@ -17,11 +22,17 @@ export async function updateProfile(
   userId: string,
   data: Partial<Profile>,
 ): Promise<Profile> {
-  const updated = await prisma.profiles.update({
-    where: { id: userId },
-    // Prisma's `data` type may not exactly match `Profile`, so we cast.
-    data: data as any,
-  });
+  const { data: updated, error } = await supabase
+    .from('profiles')
+    .update(data)
+    .eq('id', userId)
+    .select()
+    .single();
 
-  return updated as unknown as Profile;
+  if (error) {
+    console.error('[updateProfile] Error:', error);
+    throw error;
+  }
+
+  return updated as Profile;
 }

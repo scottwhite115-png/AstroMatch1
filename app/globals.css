@@ -34,6 +34,15 @@ body {
   touch-action: manipulation;
 }
 
+/* Ensure dark mode background extends to cover padding areas */
+.dark,
+.dark html,
+.dark body,
+html.dark,
+body.dark {
+  background: linear-gradient(to bottom right, rgb(2, 6, 23), rgb(30, 27, 75), rgb(15, 23, 42)) !important;
+}
+
 /* Prevent zoom on input focus (iOS) */
 input, textarea, select {
   font-size: 16px;

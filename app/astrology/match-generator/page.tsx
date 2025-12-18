@@ -6,7 +6,8 @@ import { useTheme } from "@/contexts/ThemeContext"
 import { ConnectionBoxNew } from "@/components/ConnectionBoxNew"
 import { buildConnectionBox } from "@/lib/compat/engine"
 import type { UserProfile } from "@/lib/compat/types"
-import { getWesternSignFromDate, getChineseAnimalFromDate, getWuXingElementFromDate } from "@/lib/zodiacHelpers"
+import { getWesternSignFromDateWithSystem, getChineseAnimalFromDate, getWuXingElementFromDate } from "@/lib/zodiacHelpers"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
 import { getWuXingYearElement } from "@/lib/matchEngine"
 import type { WesternSign, ChineseAnimal, WuXingElement } from "@/lib/matchEngine"
 import AstroLabNavigationHeader from "@/components/AstroLabNavigationHeader"
@@ -18,6 +19,7 @@ export default function MatchGeneratorPage() {
   const [matchData, setMatchData] = useState<any>(null)
   const router = useRouter()
   const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem() // Get user's system preference
 
   const calculateMatch = () => {
     if (!birthdate1 || !birthdate2) return
@@ -31,12 +33,12 @@ export default function MatchGeneratorPage() {
       console.log('[Match Generator] Dates parsed:', { date1, date2 })
 
       const person1: UserProfile = {
-        sunSign: getWesternSignFromDate(date1).toLowerCase() as any,
+        sunSign: getWesternSignFromDateWithSystem(date1, sunSignSystem).toLowerCase() as any,
         animal: getChineseAnimalFromDate(date1).toLowerCase() as any,
       }
 
       const person2: UserProfile = {
-        sunSign: getWesternSignFromDate(date2).toLowerCase() as any,
+        sunSign: getWesternSignFromDateWithSystem(date2, sunSignSystem).toLowerCase() as any,
         animal: getChineseAnimalFromDate(date2).toLowerCase() as any,
       }
 
@@ -190,12 +192,14 @@ export default function MatchGeneratorPage() {
                 >
                   {/* Close button */}
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation()
                       console.log('[Match Generator] Close button clicked')
                       setShowMatchResult(false)
                     }}
-                    className={`absolute top-4 right-4 z-10 p-2 rounded-full transition-colors ${theme === "light" ? "hover:bg-gray-100 text-gray-700" : "hover:bg-white/10 text-white"}`}
+                    className={`absolute top-4 right-4 z-[100] p-2 rounded-full transition-colors ${theme === "light" ? "hover:bg-gray-100 text-gray-700" : "hover:bg-white/10 text-white"}`}
                     aria-label="Close"
+                    style={{ zIndex: 100 }}
                   >
                     <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="m18 6-12 12" />

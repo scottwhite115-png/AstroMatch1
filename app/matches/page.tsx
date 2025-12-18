@@ -31,6 +31,9 @@ import { evaluateMatch } from "@/engine/astromatch-engine"
 import { createClient } from "@/lib/supabase/client"
 import { recordLike } from "@/lib/match/recordLike"
 import { buildConnectionBox, buildConnectionBoxTop, buildMatchContext } from "@/lib/compat/engine"
+import { fetchUserProfile, fetchMatchableProfiles, fetchLikedProfileIds, fetchPassedProfileIds, filterSeenProfiles, updateLastActive, type EnrichedProfile } from "@/lib/supabase/profileQueries"
+import { likeProfile, passProfile, type LikeResult } from "@/lib/supabase/matchActions"
+import { checkProfileCompletion } from "@/lib/profileCompletion"
 import type { UserProfile, SimpleConnectionBox, ConnectionBoxTop } from "@/lib/compat/types"
 import { getChineseZodiacFromDate, type ChineseElement } from "@/lib/chineseZodiac"
 import { TIER_LABEL, type Tier } from "@/engine/labels"
@@ -835,17 +838,57 @@ export default function MatchesPage() {
   const router = useRouter()
   const [mounted, setMounted] = useState(true) // Always true on client
   const [hasError, setHasError] = useState(false)
+  const [showMatchModal, setShowMatchModal] = useState(false) // "It's a Match!" modal
+  const [matchedProfile, setMatchedProfile] = useState<any>(null) // Profile we matched with
+  const [isLoadingProfiles, setIsLoadingProfiles] = useState(true) // Loading state for database fetch
+  const [userProfile, setUserProfile] = useState<any>(null) // Current user's full profile
+  const [realProfiles, setRealProfiles] = useState<any[]>([]) // Profiles from Supabase
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
+  
+  // Fetch real profiles from Supabase on mount
+  useEffect(() => {
+    const loadProfiles = async () => {
+      try {
+        setIsLoadingProfiles(true)
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (!user) {
+          console.warn('[Matches] No user logged in')
+          setIsLoadingProfiles(false)
+          return
+        }
+        
+        // Fetch current user's profile
+        const userProf = await fetchUserProfile(user.id)
+        setUserProfile(userProf)
+        
+        // Fetch matchable profiles
+        const profiles = await fetchMatchableProfiles(user.id)
+        console.log('[Matches] Loaded', profiles.length, 'profiles from Supabase')
+        setRealProfiles(profiles)
+        setIsLoadingProfiles(false)
+      } catch (error) {
+        console.error('[Matches] Error loading profiles:', error)
+        setIsLoadingProfiles(false)
+      }
+    }
+    
+    loadProfiles()
+  }, [])
+  
+  // Use real profiles if available, fallback to test profiles
+  const profilesToUse = realProfiles.length > 0 ? realProfiles : SHUFFLED_PROFILES
   
   // Wrap enrichedProfiles in error boundary
   const enrichedProfiles = useMemo(() => {
     try {
-      if (!SHUFFLED_PROFILES || !Array.isArray(SHUFFLED_PROFILES) || SHUFFLED_PROFILES.length === 0) {
-        console.warn('[MatchesPage] SHUFFLED_PROFILES is empty or invalid')
+      if (!profilesToUse || !Array.isArray(profilesToUse) || profilesToUse.length === 0) {
+        console.warn('[MatchesPage] No profiles available')
         return []
       }
-      return SHUFFLED_PROFILES.map((profile) => {
+      return profilesToUse.map((profile) => {
         try {
           if (!profile || !profile.birthdate) {
             console.warn('[MatchesPage] Profile missing birthdate:', profile?.id)
@@ -875,7 +918,7 @@ export default function MatchesPage() {
       setHasError(true)
       return []
     }
-  }, [])
+  }, [profilesToUse, sunSignSystem])
   
   // Show error state if there's a critical error
   if (hasError && enrichedProfiles.length === 0) {
@@ -971,8 +1014,7 @@ export default function MatchesPage() {
   
   // Match system state
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
-  const [showMatchModal, setShowMatchModal] = useState(false)
-  const [matchedProfile, setMatchedProfile] = useState<typeof currentProfile | null>(null)
+  // Removed duplicate - already declared above
   const [matchConversationId, setMatchConversationId] = useState<string | null>(null)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'match' } | null>(null)
   
@@ -1047,6 +1089,119 @@ export default function MatchesPage() {
     window.addEventListener('sunSignSystemChanged', handleSystemChange)
     return () => window.removeEventListener('sunSignSystemChanged', handleSystemChange)
   }, [])
+
+  // REAL DATABASE: Fetch user profile and matchable profiles
+  useEffect(() => {
+    if (!currentUserId) return
+
+    const loadRealProfiles = async () => {
+      setIsLoadingProfiles(true)
+      console.log('[Matches] 🔄 Loading real profiles from database...')
+
+      try {
+        // 1. Fetch current user's profile
+        const profile = await fetchUserProfile(currentUserId)
+        if (!profile) {
+          console.error('[Matches] User profile not found')
+          setHasError(true)
+          setIsLoadingProfiles(false)
+          return
+        }
+
+        setUserProfile(profile)
+        console.log('[Matches] ✅ User profile loaded:', profile.display_name)
+
+        // 2. Check if profile is complete
+        const completionStatus = checkProfileCompletion(profile)
+        if (!completionStatus.isComplete) {
+          console.warn('[Matches] ⚠️  Profile incomplete:', completionStatus.missingFields)
+          // Redirect to onboarding (for now, just log warning)
+          // router.push('/onboarding')
+          // TODO: Uncomment above line when onboarding page is ready
+        }
+
+        // 3. Update zodiac signs from profile if available
+        if (profile.western_sign && profile.chinese_sign) {
+          setUserZodiacSigns({
+            western: capitalizeSign(profile.western_sign),
+            chinese: capitalizeSign(profile.chinese_sign)
+          })
+        }
+
+        // 4. Fetch matchable profiles based on user's preferences
+        const filters = {
+          userGender: profile.gender || 'Man',
+          lookingForGender: profile.looking_for_gender || 'Everyone',
+          ageMin: profile.age_min || 18,
+          ageMax: profile.age_max || 99,
+          distanceRadius: profile.distance_radius || 50,
+          userLat: profile.lat || -33.8688, // Default to Sydney if no location
+          userLon: profile.lon || 151.2093,
+          userId: currentUserId
+        }
+
+        console.log('[Matches] 🔍 Fetching profiles with filters:', filters)
+        const candidates = await fetchMatchableProfiles(filters)
+        console.log(`[Matches] 📋 Found ${candidates.length} potential matches`)
+
+        if (candidates.length === 0) {
+          console.log('[Matches] ℹ️  No profiles found - check location or preferences')
+          setEnrichedProfiles([])
+          setFilteredProfiles([])
+          setIsLoadingProfiles(false)
+          return
+        }
+
+        // 5. Filter out already liked/passed profiles
+        const likedIds = await fetchLikedProfileIds(currentUserId)
+        const passedIds = await fetchPassedProfileIds(currentUserId)
+        console.log(`[Matches] 🚫 Filtering out ${likedIds.length} liked + ${passedIds.length} passed profiles`)
+
+        const unseenProfiles = filterSeenProfiles(candidates, likedIds, passedIds)
+        console.log(`[Matches] ✨ ${unseenProfiles.length} new profiles to show`)
+
+        // 6. Update last active timestamp
+        updateLastActive(currentUserId)
+
+        // 7. Convert to component format and enrich with zodiac signs
+        const formattedProfiles = unseenProfiles.map((p: EnrichedProfile) => ({
+          id: p.id,
+          name: p.name,
+          age: p.age,
+          birthdate: p.birthdate,
+          westernSign: p.westernSign,
+          easternSign: p.easternSign,
+          tropicalWesternSign: p.tropicalWesternSign || p.westernSign,
+          siderealWesternSign: p.siderealWesternSign || p.westernSign,
+          photos: p.photos,
+          aboutMe: p.bio || 'No bio yet',
+          aboutMeText: p.bio || 'No bio yet',
+          occupation: p.occupation || 'Not specified',
+          city: p.city || 'Unknown',
+          height: p.height || 'Not specified',
+          children: p.children_preference || 'Not specified',
+          religion: p.religion || 'Not specified',
+          relationshipGoals: p.relationship_goals || [],
+          selectedRelationshipGoals: p.relationship_goals || [],
+          interests: p.interests || {},
+          selectedOrganizedInterests: p.interests || {},
+          distance: p.distance || 0,
+        }))
+
+        setEnrichedProfiles(formattedProfiles)
+        setFilteredProfiles(formattedProfiles)
+        console.log('[Matches] ✅ Profiles loaded and ready!')
+
+      } catch (error) {
+        console.error('[Matches] ❌ Error loading profiles:', error)
+        setHasError(true)
+      } finally {
+        setIsLoadingProfiles(false)
+      }
+    }
+
+    loadRealProfiles()
+  }, [currentUserId])
 
   // Filter profiles based on search criteria
   useEffect(() => {
@@ -1470,11 +1625,21 @@ export default function MatchesPage() {
       console.log('[Match Engine] Building compatibility boxes for', enrichedProfiles.length, 'profiles')
       const boxes: {[key: number]: ConnectionBoxData} = {}
       
-      // Get user profile for new engine
+      // Get user's display signs based on sun sign system
+      const savedSunSigns = getSavedSunSigns()
+      const userDisplayWest = sunSignSystem === "sidereal"
+        ? (savedSunSigns.sidereal ?? userZodiacSigns.western)
+        : (savedSunSigns.tropical ?? userZodiacSigns.western)
+      
+      // Get user profile for new engine - use the correct sign based on system preference
       const userProfile: UserProfile = {
-        sunSign: userZodiacSigns.western.toLowerCase() as any,
+        sunSign: userDisplayWest.toLowerCase() as any,
         animal: userZodiacSigns.chinese.toLowerCase() as any,
       };
+      
+      // Calculate userWest once for use in the loop
+      const userWest = capitalizeSign(userDisplayWest) as West
+      const userEast = capitalizeSign(userZodiacSigns.chinese) as East
       
       // Get user's Wu Xing year element from birthdate
       let userYearElement: any; // WuXing type
@@ -1519,15 +1684,11 @@ export default function MatchesPage() {
         console.log(`[🚀 Match Engine] Profile birthdate:`, profile.birthdate)
         console.log(`[🚀 Match Engine] Profile signs:`, { western: profile.westernSign, eastern: profile.easternSign })
         try {
-        // Get user's display signs based on sun sign system
-        const savedSunSigns = getSavedSunSigns()
-        const userDisplayWest = sunSignSystem === "sidereal"
-          ? (savedSunSigns.sidereal ?? userZodiacSigns.western)
-          : (savedSunSigns.tropical ?? userZodiacSigns.western)
-        
-        const userWest = capitalizeSign(userDisplayWest) as West
-        const userEast = capitalizeSign(userZodiacSigns.chinese) as East
-        const tropicalProfileWest = capitalizeSign(profile.tropicalWesternSign || profile.westernSign) as West
+        // Use the userWest and userEast already calculated above (outside the loop)
+        // Get profile's display sign based on sun sign system
+        const profileDisplayWest = sunSignSystem === "sidereal"
+          ? (profile.siderealWesternSign || profile.westernSign)
+          : (profile.tropicalWesternSign || profile.westernSign)
         const profileEast = capitalizeSign(profile.easternSign) as East
         
         // Calculate profile's Wu Xing year element from birthdate
@@ -1543,9 +1704,10 @@ export default function MatchesPage() {
           console.error(`[🚀 Match Engine] Error calculating profile Wu Xing year element for ${profile.name}:`, error);
         }
         
-        // Use NEW simplified engine with latest updates
+        // Use NEW simplified engine with latest updates - use the correct sign based on system preference
+        // (profileDisplayWest already calculated above)
         const profileForNewEngine: UserProfile = {
-          sunSign: (profile.tropicalWesternSign || profile.westernSign).toLowerCase() as any,
+          sunSign: profileDisplayWest.toLowerCase() as any,
           animal: profile.easternSign.toLowerCase() as any,
         };
         
@@ -1562,10 +1724,7 @@ export default function MatchesPage() {
           const errorMessage = error instanceof Error ? error.message : error instanceof Event ? 'Event error' : String(error);
           const errorStack = error instanceof Error ? error.stack : '';
           console.error(`[✗] Error in buildConnectionBox for ${profile.name}:`, errorMessage, errorStack || error);
-          // Calculate display west sign for fallback
-          const profileDisplayWest = sunSignSystem === "sidereal"
-            ? (profile.siderealWesternSign || profile.westernSign)
-            : (profile.tropicalWesternSign || profile.westernSign)
+          // Use profileDisplayWest already declared above (in the try block scope)
           const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
           // Create fallback connection box instead of skipping
           const fallbackBox = createFallbackConnectionBox(
@@ -1582,10 +1741,7 @@ export default function MatchesPage() {
         
         if (!simpleBox) {
           console.error(`[✗] buildConnectionBox returned undefined for ${profile.name}`);
-          // Calculate display west sign for fallback
-          const profileDisplayWest = sunSignSystem === "sidereal"
-            ? (profile.siderealWesternSign || profile.westernSign)
-            : (profile.tropicalWesternSign || profile.westernSign)
+          // Use profileDisplayWest already declared above (in the try block scope)
           const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
           // Create fallback connection box instead of skipping
           const fallbackBox = createFallbackConnectionBox(
@@ -1600,9 +1756,7 @@ export default function MatchesPage() {
           continue;
         }
         
-        const profileDisplayWest = sunSignSystem === "sidereal"
-          ? (profile.siderealWesternSign || profile.westernSign)
-          : (profile.tropicalWesternSign || profile.westernSign)
+        // profileDisplayWest already declared above at the start of the try block
         const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
         
         // Convert to ConnectionBoxData format
@@ -2279,35 +2433,26 @@ export default function MatchesPage() {
   const handleLike = async () => {
     console.log('Liked:', currentProfile.name)
     
-    // Save like to database using recordLike
+    // Save like to database using NEW Supabase function
     try {
       if (currentUserId) {
-        const result = await recordLike({
-          fromUserId: currentUserId,
-          toUserId: String(currentProfile.id)
-        })
+        const result: LikeResult = await likeProfile(currentUserId, String(currentProfile.id))
         
-        console.log('[Matches] RecordLike result:', result)
+        console.log('[Matches] 💖 Like result:', result)
         
-        if (result.status === "new_match") {
+        if (result.success && result.isMatch) {
           // It's a mutual match! Show the match modal
           setMatchedProfile(currentProfile)
-          setMatchConversationId(result.conversationId)
           setShowMatchModal(true)
-          console.log('🎉 New match with:', currentProfile.name)
-        } else if (result.status === "liked_only") {
-          // One-way like - show toast
-          setToast({ message: `You liked ${currentProfile.name}`, type: 'success' })
-          setTimeout(() => setToast(null), 3000)
-          console.log('✓ Like saved (one-way)')
-        } else if (result.status === "already_matched") {
-          // Already matched - conversation exists
-          console.log('Already matched with:', currentProfile.name)
-        } else if (result.status === "error") {
-          console.error('Error recording like:', result.error)
+          console.log('🎉 NEW MATCH with:', currentProfile.name)
+        } else if (result.success) {
+          // One-way like saved successfully
+          console.log('✓ Like saved (waiting for mutual like)')
+        } else {
+          console.error('❌ Error recording like:', result.error)
         }
       } else {
-        console.warn('[Matches] No user ID - cannot save like')
+        console.warn('[Matches] ⚠️  No user ID - cannot save like')
       }
     } catch (error) {
       console.error('Error in handleLike:', error)
@@ -2344,8 +2489,26 @@ export default function MatchesPage() {
     }, 1000) // 300ms pause + 700ms swipe animation
   }
 
-  const handlePass = () => {
+  const handlePass = async () => {
     console.log('Passed:', currentProfile.name)
+    
+    // Save pass to database using NEW Supabase function
+    try {
+      if (currentUserId) {
+        const result = await passProfile(currentUserId, String(currentProfile.id))
+        
+        if (result.success) {
+          console.log('✓ Pass saved (hidden for 28 days)')
+        } else {
+          console.error('❌ Error recording pass:', result.error)
+        }
+      } else {
+        console.warn('[Matches] ⚠️  No user ID - cannot save pass')
+      }
+    } catch (error) {
+      console.error('Error in handlePass:', error)
+    }
+    
     // Step 1: Show the X icon first
     setActiveButton('pass')
     setPassButtonFlash(true)
@@ -2883,8 +3046,14 @@ export default function MatchesPage() {
 
   return (
     <div
-      className={`overscroll-y-contain ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
-      style={containerStyle}
+      className={`overscroll-y-contain min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
+      style={{
+        ...containerStyle,
+        ...(theme !== "light" ? {
+          background: 'linear-gradient(to bottom right, rgb(2, 6, 23), rgb(30, 27, 75), rgb(15, 23, 42))',
+          minHeight: '100vh'
+        } : {})
+      }}
     >
       {/* CSS Animations for Flash */}
       <style jsx global>{`
@@ -3014,30 +3183,36 @@ export default function MatchesPage() {
         }
       `}</style>
       
-      <div className="relative z-10 max-w-sm mx-auto overflow-visible">
+      <div className={`relative z-10 max-w-sm mx-auto overflow-visible ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : ""}`}>
         {/* Header */}
-        <header className={`sticky top-0 z-50 border-b ${
+        <header className={`sticky top-0 z-50 ${
           theme === "light"
-            ? "bg-white/80 backdrop-blur-sm border-gray-200"
-            : "bg-slate-900/80 backdrop-blur-sm border-slate-800"
+            ? "bg-white/80 backdrop-blur-sm"
+            : "bg-slate-900/80 backdrop-blur-sm"
         }`}>
-          <div className="px-4 pt-3 pb-2">
+          <div className="px-4 pt-0.5 pb-1.5">
             {/* Tabs: Matches | AstroLab */}
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex-1 -ml-4">
+            <div className="flex items-center justify-between mb-1.5">
+              <div className="flex-1 -ml-8">
                 <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
                   <div className="flex gap-0.5 min-w-max">
                     <button
                       onClick={() => setActiveTab('matches')}
-                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out flex items-center gap-0.5 ${
                         activeTab === 'matches'
-                          ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                          ? ""
                           : theme === "light"
                             ? "text-gray-600 hover:text-gray-900"
                             : "text-gray-400 hover:text-gray-200"
                       }`}
                     >
-                      AstroMatch
+                      <FourPointedStar className="w-4 h-4 text-orange-500" />
+                      <span className={activeTab === 'matches' 
+                        ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                        : ""
+                      }>
+                        Discover
+                      </span>
                       <div 
                         className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
                           activeTab === 'matches' 
@@ -3051,7 +3226,7 @@ export default function MatchesPage() {
                         setActiveTab('astrolab')
                         router.push('/astrology')
                       }}
-                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out ${
+                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out -ml-2 ${
                         activeTab === 'astrolab'
                           ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
                           : theme === "light"
@@ -3353,6 +3528,18 @@ export default function MatchesPage() {
           </div>
         ) : currentProfile ? (
           <div className="pb-32 relative overflow-visible">
+            {/* Cover the bottom padding area with dark background */}
+            {theme !== "light" && (
+              <div 
+                className="absolute bottom-0 left-0 right-0"
+                style={{
+                  height: '8rem',
+                  background: 'linear-gradient(to bottom right, rgb(2, 6, 23), rgb(30, 27, 75), rgb(15, 23, 42))',
+                  zIndex: 0,
+                  pointerEvents: 'none'
+                }}
+              />
+            )}
             {/* Next profile card (underneath) - Full size and ready */}
             {filteredProfiles[currentProfileIndex + 1] && (
               <div 

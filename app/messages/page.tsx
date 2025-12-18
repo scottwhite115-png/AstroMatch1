@@ -8,6 +8,8 @@ import { createClient } from "@/lib/supabase/client"
 import { useTheme } from "@/contexts/ThemeContext"
 import { getConversations, clearUnreadCount, deleteConversation, type Conversation } from "@/lib/utils/conversations"
 import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
+import { fetchUserMatches, fetchUserProfile } from "@/lib/supabase/profileQueries"
+import { getMessages } from "@/lib/supabase/messageActions"
 
 const MessageCircle = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -41,6 +43,7 @@ export default function MessagesPage() {
   const [isDragging, setIsDragging] = useState(false)
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
   const [instantMessageEnabled, setInstantMessageEnabled] = useState(true)
+  const [activeTab, setActiveTab] = useState<'connections' | 'astrolab'>('connections')
 
   // Load instant message setting from localStorage
   useEffect(() => {
@@ -67,8 +70,9 @@ export default function MessagesPage() {
     }
   }, [showSettingsDropdown])
 
-  useEffect(() => {
-    console.log("[v0] Messages auth temporarily disabled for design work")
+  // Fallback demo data loader
+  const loadDemoData = () => {
+    console.log("[Messages] 📝 Loading demo data for design/testing")
     setCurrentUser({ id: "mock-user-id" })
 
     let conversations = getConversations()
@@ -108,7 +112,7 @@ export default function MessagesPage() {
           timestamp: "2m ago",
           unread: 2,
           online: true,
-          isNewMatch: true, // NEW MATCH!
+          isNewMatch: true,
           westernSign: "Gemini",
           easternSign: "Rat",
           messages: [
@@ -162,6 +166,91 @@ export default function MessagesPage() {
     }
     
     setChats(conversations)
+    setLoading(false)
+  }
+
+  // REAL DATABASE: Load user and their matches
+  useEffect(() => {
+    const loadMatchesFromDatabase = async () => {
+      setLoading(true)
+      console.log('[Messages] 🔄 Loading real matches from database...')
+
+      try {
+        // 1. Get current user
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          console.log('[Messages] ⚠️  No authenticated user - showing demo data')
+          // Fall back to demo data if no user
+          loadDemoData()
+          return
+        }
+
+        setCurrentUser(user)
+        console.log('[Messages] ✅ User authenticated:', user.id)
+
+        // 2. Fetch user's profile to get their zodiac signs
+        const userProfile = await fetchUserProfile(user.id)
+        if (!userProfile) {
+          console.error('[Messages] ❌ User profile not found')
+          setLoading(false)
+          return
+        }
+
+        // 3. Fetch all active matches
+        const matches = await fetchUserMatches(user.id)
+        console.log(`[Messages] 📋 Found ${matches.length} matches`)
+
+        if (matches.length === 0) {
+          console.log('[Messages] ℹ️  No matches yet')
+          setChats([])
+          setLoading(false)
+          return
+        }
+
+        // 4. Convert matches to chat format
+        const chatList: Conversation[] = await Promise.all(
+          matches.map(async (match: any) => {
+            const otherProfile = match.profile
+            
+            // Get last message for this match
+            const messages = await getMessages(match.id, 1)
+            const lastMessage = messages[0]
+
+            return {
+              id: match.id,
+              userId: otherProfile.id,
+              name: otherProfile.display_name || 'Unknown',
+              avatar: otherProfile.photos?.[0] || '/placeholder.svg',
+              lastMessage: lastMessage?.content || 'Start a conversation',
+              timestamp: lastMessage?.created_at || match.matched_at,
+              unreadCount: 0, // TODO: Calculate unread count
+              westernSign: otherProfile.western_sign || 'Leo',
+              easternSign: otherProfile.chinese_sign || 'Rabbit',
+              matchedAt: match.matched_at,
+            }
+          })
+        )
+
+        // Sort by most recent message
+        chatList.sort((a, b) => {
+          const dateA = new Date(a.timestamp).getTime()
+          const dateB = new Date(b.timestamp).getTime()
+          return dateB - dateA
+        })
+
+        setChats(chatList)
+        console.log('[Messages] ✅ Chats loaded successfully!')
+
+      } catch (error) {
+        console.error('[Messages] ❌ Error loading matches:', error)
+        // Fall back to demo data on error
+        loadDemoData()
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadMatchesFromDatabase()
   }, [])
 
   const handleTouchStart = (e: React.TouchEvent, chatId: string) => {
@@ -278,17 +367,64 @@ export default function MessagesPage() {
   return (
     <div className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} min-h-screen w-full fixed inset-0`}>
       <div className="flex flex-col min-h-screen relative z-10">
-        <div className="px-3 pt-2 pb-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
+        <div className="px-4 pt-0.5 pb-1.5">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex-1 -ml-8">
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+                <div className="flex gap-0.5 min-w-max">
+              <button
+                onClick={() => setActiveTab('connections')}
+                className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out flex items-center gap-0.5 ${
+                  activeTab === 'connections'
+                    ? ""
+                    : theme === "light"
+                      ? "text-gray-600 hover:text-gray-900"
+                      : "text-gray-400 hover:text-gray-200"
+                }`}
+              >
               <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                <span className={activeTab === 'connections' 
+                  ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                  : ""
+                }>
                 Connections
               </span>
+                <div 
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
+                    activeTab === 'connections' 
+                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
+                      : "opacity-0"
+                  }`}
+                />
+              </button>
+              <button
+                onClick={() => {
+                  setActiveTab('astrolab')
+                  router.push('/astrology')
+                }}
+                className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out -ml-2 ${
+                  activeTab === 'astrolab'
+                    ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
+                    : theme === "light"
+                      ? "text-gray-600 hover:text-gray-900"
+                      : "text-gray-400 hover:text-gray-200"
+                }`}
+              >
+                AstroLab
+                <div 
+                  className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
+                    activeTab === 'astrolab' 
+                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
+                      : "opacity-0"
+                  }`}
+                />
+              </button>
+                </div>
+              </div>
             </div>
             
             {/* Right side: Settings and Theme toggle */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 ml-2">
               {/* Settings Dropdown */}
               <div className="relative settings-dropdown-container">
                 <button

@@ -1,5 +1,4 @@
 import { supabase } from "./supabaseClient";
-import prisma from "@/src/lib/prisma";
 
 export async function updateMyLocation() {
   if (!("geolocation" in navigator)) return null;
@@ -11,10 +10,13 @@ export async function updateMyLocation() {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) return null;
-  await prisma.profiles.update({
-    where: { id: user.id },
-    data: { lat, lon, last_active: new Date() },
-  });
+  
+  // Update location in Supabase
+  await supabase
+    .from('profiles')
+    .update({ lat, lon, last_active: new Date().toISOString() })
+    .eq('id', user.id);
+    
   return { lat, lon };
 }
 

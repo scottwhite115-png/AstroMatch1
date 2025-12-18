@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ProfilePhotoCarouselWithRanking from "@/components/ProfilePhotoCarouselWithRanking";
 import { ConnectionBoxNew } from "@/components/ConnectionBoxNew";
 import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple";
@@ -157,7 +157,8 @@ export default function MatchProfileCard({
   onLike,
 }: MatchProfileCardProps) {
   const [showProfile, setShowProfile] = useState(false);
-  const [showElements, setShowElements] = useState(true); // Always show connection box
+  const [showElements, setShowElements] = useState(false); // Toggle connection overview
+  const connectionBoxRef = useRef<HTMLDivElement>(null);
   
   // Extract the appropriate western sign based on what's provided in profile
   // profile.westernSign is the display sign (already adjusted by parent for tropical/sidereal)
@@ -214,28 +215,22 @@ export default function MatchProfileCard({
   const patternColors = getPatternGradientColors(connectionBoxData?.pattern);
   
   return (
-    <div className="w-full flex justify-center px-2">
+    <div className="w-full flex justify-center">
       <div className="w-full">
-      <div
-        className="w-full rounded-3xl flex flex-col relative"
-        style={{ 
-          border: `3px solid ${patternColors.start}`,
-          background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-          padding: '3px',
-          zIndex: 10,
-        }}
-      >
+      {/* Photo Carousel with Border */}
+      {profile.photos.length > 0 && (
         <div
-          className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col overflow-hidden ${
-            theme === "light" ? "bg-gray-50" : "bg-slate-900"
-          }`}
-          style={{ zIndex: 1 }}
+          className="w-full rounded-3xl relative"
+          style={{ 
+            border: `3px solid ${patternColors.start}`,
+            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+            padding: '3px',
+            zIndex: 10,
+            marginBottom: '0',
+          }}
         >
-        {/* Photo Carousel with Ranking */}
-        {profile.photos.length > 0 && (
-          <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', zIndex: 0, marginBottom: '0' }}>
-            <div className="w-full">
-              <ProfilePhotoCarouselWithRanking
+          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
+            <ProfilePhotoCarouselWithRanking
             images={profile.photos}
             profileName={profile.name}
             profileAge={profile.age}
@@ -254,92 +249,96 @@ export default function MatchProfileCard({
             easternSign={displayEasternSign}
             onPhotoChange={onPhotoChange}
             showProfileToggle={showProfile}
-            onShowProfileToggle={() => setShowProfile(!showProfile)}
-            showElementsToggle={true} // Always true - connection box always visible
-            onShowElementsToggle={() => {}} // No-op - toggle disabled
+            onShowProfileToggle={() => {
+              if (showProfile) {
+                // If already open, close it
+                setShowProfile(false);
+              } else {
+                // Open profile and close connection overview
+                setShowProfile(true);
+                setShowElements(false);
+              }
+            }}
+            showElementsToggle={showElements}
+            onShowElementsToggle={() => {
+              if (showElements) {
+                // If already open, close it
+                setShowElements(false);
+              } else {
+                // Open connection overview and close profile
+                setShowElements(true);
+                setShowProfile(false);
+              }
+            }}
               onMessageClick={onMessageClick}
               patternColors={patternColors}
             />
-            </div>
           </div>
-        )}
-
-        {/* Connection Box - Only shown when at least one toggle is open */}
-        {(showProfile || showElements) && (
-          <div className={`relative flex justify-center ${
-            theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
-          }`} style={{
-            position: 'relative',
-          }}>
-            {/* Connection box with higher z-index so dropdowns appear above padding */}
-            <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
-              {connectionBoxData ? (
-                <ConnectionBoxNew
-                tier={newTier}
-                score={connectionBoxData.score}
-                westA={westA}
-                eastA={eastA}
-                westB={westB}
-                eastB={eastB}
-                chineseLine={chineseLine}
-                sunMatchBlurb={connectionBoxData.westernSignLine || ""}
-                westernLine={westernLine}
-                wuXingLine={wuXingLine}
-                chineseElementA={connectionBoxData.a?.chineseElement}
-                chineseElementB={connectionBoxData.b?.chineseElement}
-                connectionBlurb={connectionBlurb || undefined}
-                theme={theme}
-                aboutMe={profile.aboutMe}
-                age={profile.age}
-                city={profile.city}
-                occupation={profile.occupation}
-                height={profile.height}
-                children={profile.children}
-                religion={profile.religion}
-                chinesePattern={connectionBoxData.chinesePattern}
-                westAspect={connectionBoxData.westAspect}
-                westElementRelation={connectionBoxData.westElementRelation}
-                isChineseOpposite={connectionBoxData.isChineseOpposite}
-                isLivelyPair={connectionBoxData.isLivelyPair}
-                showProfile={showProfile}
-                showElements={showElements}
-                // NEW: Pass match engine fields
-                patternFullLabel={connectionBoxData.patternFullLabel}
-                pillLabel={connectionBoxData.pillLabel}
-                baseTagline={connectionBoxData.baseTagline}
-                patternEmoji={connectionBoxData.patternEmoji}
-                pattern={connectionBoxData.pattern}
-                chemistryStars={connectionBoxData.chemistryStars}
-                stabilityStars={connectionBoxData.stabilityStars}
-                patternColors={patternColors}
-                // Pass relationship goals and interests
-                relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
-                interests={profile.interests || profile.selectedOrganizedInterests}
-                // Action handlers
-                onPass={onPass}
-                onLike={onLike}
-                onMessage={onMessageClick}
-                onViewProfile={() => setShowProfile(!showProfile)}
-              />
-              ) : (
-                <div className="p-4 text-center text-gray-500">Loading connection data...</div>
-              )}
-            </div>
-          </div>
-        )}
         </div>
-      </div>
-      
-      {/* Spacer OUTSIDE the border to hide profiles underneath */}
-      <div 
-        className="bg-white"
-        style={{ 
-          height: '8rem', 
-          width: '100%',
-          borderRadius: '0 0 1.5rem 1.5rem',
-          marginTop: '-1.5rem'
-        }}
-      ></div>
+      )}
+
+      {/* Connection Box - Always visible, toggles control dropdowns */}
+      {(showProfile || showElements) && connectionBoxData && (
+        <div 
+          ref={connectionBoxRef}
+          className={`relative flex justify-center ${
+            theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+          }`}
+          style={{
+            position: 'relative',
+            marginTop: '-3px',
+            paddingTop: '0',
+          }}
+        >
+          <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
+            <ConnectionBoxNew
+              tier={newTier}
+              score={connectionBoxData.score}
+              westA={westA}
+              eastA={eastA}
+              westB={westB}
+              eastB={eastB}
+              chineseLine={chineseLine}
+              sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+              westernLine={westernLine}
+              wuXingLine={wuXingLine}
+              chineseElementA={connectionBoxData.a?.chineseElement}
+              chineseElementB={connectionBoxData.b?.chineseElement}
+              connectionBlurb={connectionBlurb || undefined}
+              theme={theme}
+              aboutMe={profile.aboutMe}
+              age={profile.age}
+              city={profile.city}
+              occupation={profile.occupation}
+              height={profile.height}
+              children={profile.children}
+              religion={profile.religion}
+              chinesePattern={connectionBoxData.chinesePattern}
+              westAspect={connectionBoxData.westAspect}
+              westElementRelation={connectionBoxData.westElementRelation}
+              isChineseOpposite={connectionBoxData.isChineseOpposite}
+              isLivelyPair={connectionBoxData.isLivelyPair}
+              showProfile={showProfile}
+              showElements={showElements}
+              patternFullLabel={connectionBoxData.patternFullLabel}
+              pillLabel={connectionBoxData.pillLabel}
+              baseTagline={connectionBoxData.baseTagline}
+              patternEmoji={connectionBoxData.patternEmoji}
+              pattern={connectionBoxData.pattern}
+              chemistryStars={connectionBoxData.chemistryStars}
+              stabilityStars={connectionBoxData.stabilityStars}
+              patternColors={patternColors}
+              relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+              interests={profile.interests || profile.selectedOrganizedInterests}
+              onPass={onPass}
+              onLike={onLike}
+              onMessage={onMessageClick}
+              onViewProfile={() => setShowProfile(!showProfile)}
+            />
+          </div>
+        </div>
+      )}
+
       </div>
     </div>
   );

@@ -97,19 +97,9 @@ interface AstroLabNavigationHeaderProps {
 export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNavigationHeaderProps) {
   const router = useRouter()
   const pathname = usePathname()
-  const [activeTab, setActiveTab] = useState<'matches' | 'astrolab'>('astrolab')
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const drawerRef = useRef<HTMLElement>(null)
   const drawerButtonRef = useRef<HTMLButtonElement>(null)
-
-  // Sync active tab with current route
-  useEffect(() => {
-    if (pathname === '/matches' || pathname.startsWith('/matches/')) {
-      setActiveTab('matches')
-    } else if (pathname === '/astrology' || pathname.startsWith('/astrology/')) {
-      setActiveTab('astrolab')
-    }
-  }, [pathname])
 
   // Close drawer when clicking outside
   useEffect(() => {
@@ -178,58 +168,38 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
     }
   }
 
+  const ChevronLeft = ({ className }: { className?: string }) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  )
+
   return (
-    <header className={`sticky top-0 z-50 border-b ${
+    <header className={`sticky top-0 z-50 ${
       theme === "light"
-        ? "bg-white/80 backdrop-blur-sm border-gray-200"
-        : "bg-slate-900/80 backdrop-blur-sm border-slate-800"
+        ? "bg-white/80 backdrop-blur-sm"
+        : "bg-slate-900/80 backdrop-blur-sm"
     }`}>
-      <div className="mx-auto max-w-4xl px-4 pt-3 pb-3">
-        {/* Tabs: Matches | AstroLab */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex-1 -ml-4">
+      <div className="mx-auto max-w-4xl px-4 pt-0.5 pb-1.5">
+        {/* Back button, AstroLab logo, and AstroLab tab */}
+        <div className="flex items-center justify-between mb-1.5">
+          {/* Left side: Back button, AstroLab logo, and AstroLab tab */}
+          <div className="flex-1 -ml-8">
             <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-              <div className="flex gap-0.5 min-w-max">
-                <Link
-                  href="/matches"
-                  onClick={() => setActiveTab('matches')}
-                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out cursor-pointer inline-block ${
-                    activeTab === 'matches'
-                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
-                      : theme === "light"
-                        ? "text-gray-600 hover:text-gray-900"
-                        : "text-gray-400 hover:text-gray-200"
-                  }`}
+              <div className="flex gap-0.5 min-w-max items-center ml-8">
+                <button
+                  onClick={() => router.back()}
+                  className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/10 transition-colors"
+                  aria-label="Go back"
                 >
-                  AstroMatch
-                  <div 
-                    className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
-                      activeTab === 'matches' 
-                        ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
-                        : "opacity-0"
-                    }`}
-                  />
-                </Link>
-                <Link
-                  href="/astrology"
-                  onClick={() => setActiveTab('astrolab')}
-                  className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out cursor-pointer inline-block ${
-                    activeTab === 'astrolab'
-                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
-                      : theme === "light"
-                        ? "text-gray-600 hover:text-gray-900"
-                        : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  AstroLab
-                  <div 
-                    className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
-                      activeTab === 'astrolab' 
-                        ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
-                        : "opacity-0"
-                    }`}
-                  />
-                </Link>
+                  <ChevronLeft className={`w-7 h-7 ${theme === "light" ? "text-gray-700" : "text-white/70"}`} />
+                </button>
+                <div className="flex items-center gap-0.5 -ml-2">
+                  <FourPointedStar className="w-5 h-5 text-orange-500" />
+                  <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                    AstroLab
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -273,7 +243,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
               <Link
                 key={page.id}
                 href={page.path}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
                   theme === "light"
                     ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                     : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
@@ -301,7 +271,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   <Link
                     key={section.id}
                     href={sectionPath}
-                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                       theme === "light"
                         ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                         : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
@@ -318,7 +288,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   key={section.id}
                   type="button"
                   onClick={(e) => handleSectionClick(section.id, e)}
-                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
                     theme === "light"
                       ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                       : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
