@@ -93,7 +93,7 @@ export default function VerifyEmail() {
         setError(resendError.message || "Failed to resend email. Please try again.");
         console.error("Resend error:", resendError);
       } else {
-        setMessage("Verification email sent! Please check your inbox (and spam folder).");
+        setMessage("Verification email sent! Please check your inbox (and spam folder) for an email from Supabase Authentication.");
       }
     } catch (err: any) {
       setError(err.message || "Failed to resend email. Please try again.");
@@ -116,6 +116,9 @@ export default function VerifyEmail() {
           )}
           <p className="text-sm text-gray-600 mb-6">
             Click the link in the email to verify your account and continue.
+          </p>
+          <p className="text-xs text-gray-500 mb-6">
+            <strong>Note:</strong> The email will come from <strong>Supabase Authentication</strong> - check your inbox and spam folder for this sender.
           </p>
         </div>
 
@@ -151,6 +154,7 @@ export default function VerifyEmail() {
         <div className="text-center text-sm text-gray-500">
           <p>Didn't receive the email?</p>
           <ul className="mt-2 space-y-1 text-left max-w-xs mx-auto">
+            <li>• Look for an email from <strong>Supabase Authentication</strong></li>
             <li>• Check your spam/junk folder</li>
             <li>• Wait 1-2 minutes (emails can be delayed)</li>
             <li>• Make sure you used the correct email address</li>
