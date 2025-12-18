@@ -130,6 +130,11 @@ export default function SignupPage() {
     try {
       setIsLoading(true)
 
+      // Use production URL from env or fallback to current origin
+      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL 
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+        : `${window.location.origin}/auth/callback`
+
       const { data, error: signUpError } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
@@ -137,10 +142,7 @@ export default function SignupPage() {
           data: {
             display_name: formData.name,
           },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-          // Temporarily disable email confirmation for testing
-          // Remove this in production after setting up SMTP
-          // emailRedirectTo: undefined,
+          emailRedirectTo: redirectUrl,
         },
       })
 

@@ -81,11 +81,16 @@ export default function VerifyEmail() {
     setMessage("");
 
     try {
+      // Use production URL from env or fallback to current origin
+      const redirectUrl = process.env.NEXT_PUBLIC_SITE_URL 
+        ? `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+        : `${window.location.origin}/auth/callback`
+
       const { error: resendError } = await supabase.auth.resend({
         type: "signup",
         email: email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: redirectUrl,
         },
       });
 
