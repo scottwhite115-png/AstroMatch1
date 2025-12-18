@@ -843,82 +843,11 @@ export default function MatchesPage() {
   const [isLoadingProfiles, setIsLoadingProfiles] = useState(true) // Loading state for database fetch
   const [userProfile, setUserProfile] = useState<any>(null) // Current user's full profile
   const [realProfiles, setRealProfiles] = useState<any[]>([]) // Profiles from Supabase
+  const [enrichedProfiles, setEnrichedProfiles] = useState<any[]>([]) // Enriched profiles with zodiac signs
   const { theme, setTheme } = useTheme()
   const sunSignSystem = useSunSignSystem()
   
-  // Fetch real profiles from Supabase on mount
-  useEffect(() => {
-    const loadProfiles = async () => {
-      try {
-        setIsLoadingProfiles(true)
-        const supabase = createClient()
-        const { data: { user } } = await supabase.auth.getUser()
-        
-        if (!user) {
-          console.warn('[Matches] No user logged in')
-          setIsLoadingProfiles(false)
-          return
-        }
-        
-        // Fetch current user's profile
-        const userProf = await fetchUserProfile(user.id)
-        setUserProfile(userProf)
-        
-        // Fetch matchable profiles
-        const profiles = await fetchMatchableProfiles(user.id)
-        console.log('[Matches] Loaded', profiles.length, 'profiles from Supabase')
-        setRealProfiles(profiles)
-        setIsLoadingProfiles(false)
-      } catch (error) {
-        console.error('[Matches] Error loading profiles:', error)
-        setIsLoadingProfiles(false)
-      }
-    }
-    
-    loadProfiles()
-  }, [])
-  
-  // Use real profiles if available, fallback to test profiles
-  const profilesToUse = realProfiles.length > 0 ? realProfiles : SHUFFLED_PROFILES
-  
-  // Wrap enrichedProfiles in error boundary
-  const enrichedProfiles = useMemo(() => {
-    try {
-      if (!profilesToUse || !Array.isArray(profilesToUse) || profilesToUse.length === 0) {
-        console.warn('[MatchesPage] No profiles available')
-        return []
-      }
-      return profilesToUse.map((profile) => {
-        try {
-          if (!profile || !profile.birthdate) {
-            console.warn('[MatchesPage] Profile missing birthdate:', profile?.id)
-            return {
-              ...profile,
-              tropicalWesternSign: profile.westernSign,
-              siderealWesternSign: profile.westernSign,
-            }
-          }
-          const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
-          return {
-            ...profile,
-            tropicalWesternSign: tropical ?? profile.westernSign,
-            siderealWesternSign: sidereal ?? profile.westernSign,
-          }
-        } catch (profileError) {
-          console.error('[MatchesPage] Error enriching individual profile:', profile?.id, profileError)
-          return {
-            ...profile,
-            tropicalWesternSign: profile.westernSign,
-            siderealWesternSign: profile.westernSign,
-          }
-        }
-      })
-    } catch (error) {
-      console.error('[MatchesPage] Error enriching profiles:', error)
-      setHasError(true)
-      return []
-    }
-  }, [profilesToUse, sunSignSystem])
+  // REMOVED: Old profile loading logic - now handled by the newer useEffect below
   
   // Show error state if there's a critical error
   if (hasError && enrichedProfiles.length === 0) {
