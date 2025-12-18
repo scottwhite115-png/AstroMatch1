@@ -1,26 +1,140 @@
 "use client";
 
-import { supabase } from "@/lib/supabaseClient";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function VerifyEmail() {
-  return (
-    <main className="p-6 max-w-md mx-auto">
-      <h1 className="text-xl font-semibold mb-2">Check your email</h1>
-      <p className="mb-4">We sent a verification link. Click it to continue.</p>
-      <button
-        className="px-4 py-2 rounded bg-black text-white"
-        onClick={async () => {
-          const {
-            data: { user },
-          } = await supabase.auth.getUser();
-          if (user?.email) {
-            await supabase.auth.resend({ type: "signup", email: user.email });
-            alert("Verification email re-sent.");
+  const [email, setEmail] = useState<string>("");
+  const [isResending, setIsResending] = useState(false);
+  const [message, setMessage] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const supabase = createClient();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Get the email from the user session or URL params
+    const getUserEmail = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email) {
+          setEmail(user.email);
+        } else {
+          // Try to get from URL params if available
+          const params = new URLSearchParams(window.location.search);
+          const emailParam = params.get("email");
+          if (emailParam) {
+            setEmail(emailParam);
           }
-        }}
-      >
-        Resend email
-      </button>
-    </main>
+        }
+      } catch (err) {
+        console.error("Error getting user email:", err);
+      }
+    };
+    getUserEmail();
+
+    // Check if user is already verified
+    const checkVerification = async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user?.email_confirmed_at) {
+          // User is already verified, redirect to app
+          router.push("/matches");
+        }
+      } catch (err) {
+        console.error("Error checking verification:", err);
+      }
+    };
+    checkVerification();
+  }, [supabase, router]);
+
+  const handleResend = async () => {
+    if (!email) {
+      setError("Email address not found. Please sign up again.");
+      return;
+    }
+
+    setIsResending(true);
+    setError("");
+    setMessage("");
+
+    try {
+      const { error: resendError } = await supabase.auth.resend({
+        type: "signup",
+        email: email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
+
+      if (resendError) {
+        setError(resendError.message || "Failed to resend email. Please try again.");
+        console.error("Resend error:", resendError);
+      } else {
+        setMessage("Verification email sent! Please check your inbox (and spam folder).");
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to resend email. Please try again.");
+      console.error("Resend error:", err);
+    } finally {
+      setIsResending(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-white px-6">
+      <div className="max-w-md w-full space-y-6">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Check your email</h1>
+          <p className="text-gray-600 mb-1">
+            We sent a verification link to:
+          </p>
+          {email && (
+            <p className="text-gray-900 font-medium mb-4">{email}</p>
+          )}
+          <p className="text-sm text-gray-600 mb-6">
+            Click the link in the email to verify your account and continue.
+          </p>
+        </div>
+
+        {message && (
+          <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+            <p className="text-sm text-green-800">{message}</p>
+          </div>
+        )}
+
+        {error && (
+          <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-800">{error}</p>
+          </div>
+        )}
+
+        <div className="space-y-3">
+          <button
+            onClick={handleResend}
+            disabled={isResending || !email}
+            className="w-full px-4 py-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isResending ? "Sending..." : "Resend email"}
+          </button>
+
+          <button
+            onClick={() => router.push("/signup")}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+          >
+            Back to Sign Up
+          </button>
+        </div>
+
+        <div className="text-center text-sm text-gray-500">
+          <p>Didn't receive the email?</p>
+          <ul className="mt-2 space-y-1 text-left max-w-xs mx-auto">
+            <li>• Check your spam/junk folder</li>
+            <li>• Wait 1-2 minutes (emails can be delayed)</li>
+            <li>• Make sure you used the correct email address</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   );
 }
