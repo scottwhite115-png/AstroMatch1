@@ -213,6 +213,14 @@ function getChineseBaseScore(
     return 76;
   }
 
+  // Same Sign - Mirror match
+  if (pattern === 'SAME_SIGN') {
+    if (elementRelation === 'same') return 78;
+    if (elementRelation === 'compatible') return 76;
+    if (elementRelation === 'semi') return 74;
+    return 70;
+  }
+
   // No Pattern / Neutral
   if (pattern === 'NO_PATTERN') {
     if (elementRelation === 'same') return 64;
@@ -334,6 +342,10 @@ function clamp(value: number, min: number, max: number): number {
 // Make sure pattern scores never leave their allowed band.
 function clampToPatternBand(pattern: ChinesePattern, score: number): number {
   const meta = PATTERN_META[pattern];
+  if (!meta) {
+    console.warn(`[MatchEngine] Pattern "${pattern}" not found in PATTERN_META, using default band (0-100)`);
+    return clamp(score, 0, 100);
+  }
   return clamp(score, meta.min, meta.max);
 }
 
@@ -367,6 +379,12 @@ export function calculateMatchScore(input: MatchInput): number {
   // Cap NO_PATTERN (Neutral) scores at 65%
   if (pattern === "NO_PATTERN" && score > 65) {
     score = 65;
+  }
+  
+  // Cap SAME_SIGN pattern at 82% (max from PATTERN_META)
+  if (pattern === "SAME_SIGN" && score > 82) {
+    console.warn(`[Match Engine] SAME_SIGN score ${score} exceeded max of 82%, clamping to 82%`);
+    score = 82;
   }
   
   score = clamp(score, 0, 100);
@@ -580,9 +598,16 @@ function getStarRatings(
 import { getPatternPillLabel, getPatternHeading } from './astrology/patternLabels';
 
 export function buildMatchResult(input: MatchInput, overlays?: ChinesePattern[]): MatchResult {
-  const score = overlays && overlays.length > 0 
+  let score = overlays && overlays.length > 0 
     ? calculateMatchScoreWithOverlays(input, overlays)
     : calculateMatchScore(input);
+  
+  // Force clamp SAME_SIGN pattern to max 82%
+  if (input.pattern === "SAME_SIGN" && score > 82) {
+    console.warn(`[buildMatchResult] SAME_SIGN score ${score} exceeded max, clamping to 82%`);
+    score = 82;
+  }
+  
   const meta = PATTERN_META[input.pattern];
 
   // Use the new pattern label functions from patternLabels.ts
@@ -824,7 +849,7 @@ export function normalizePattern(pattern: string): ChinesePattern {
   const upperPattern = pattern.toUpperCase();
   if (upperPattern === "SAN_HE") return "SAN_HE";
   if (upperPattern === "LIU_HE") return "LIU_HE";
-  if (upperPattern === "SAME_ANIMAL") return "SAME_ANIMAL";
+  if (upperPattern === "SAME_ANIMAL" || upperPattern === "SAME_SIGN") return "SAME_SIGN";
   if (upperPattern === "LIU_CHONG") return "LIU_CHONG";
   if (upperPattern === "LIU_HAI") return "LIU_HAI";
   if (upperPattern === "XING") return "XING";
@@ -871,24 +896,44 @@ export function computeMatchScore(ctx: MatchContext): MatchScoreResult {
     ctx.chineseA.yearElement,
     ctx.chineseB.yearElement
   );
+  
+  // Detect same Western sign
+  const sameWesternSign = ctx.westA.sign === ctx.westB.sign;
+  
+  // If both Chinese and Western signs are the same, ensure pattern is SAME_SIGN
+  const sameChineseAnimal = ctx.chineseA.animal === ctx.chineseB.animal;
+  const finalPattern = (sameChineseAnimal && pattern !== 'LIU_CHONG' && pattern !== 'LIU_HAI' && pattern !== 'XING' && pattern !== 'PO') 
+    ? 'SAME_SIGN' 
+    : pattern;
 
   const input: MatchInput = {
-    pattern,
+    pattern: finalPattern,
     westernElementRelation,
     westernAspectRelation,
     wuXingRelation,
+    sameWesternSign,
   };
 
   const result = buildMatchResult(input);
   
   // Map score to tier for legacy compatibility
+  // Special handling for SAME_SIGN pattern - should be Neutral Match regardless of score
   let tier: MatchTier;
-  if (result.score >= 95) tier = "Soulmate Match";
-  else if (result.score >= 85) tier = "Twin Flame Match";
-  else if (result.score >= 75) tier = "Harmonious Match";
-  else if (result.score >= 60) tier = "Neutral Match";
-  else if (ctx.isChineseOpposite || ctx.westAspect === "opposition") tier = "Opposites Attract";
-  else tier = "Difficult Match";
+  if (finalPattern === "SAME_SIGN") {
+    tier = "Neutral Match"; // Same signs are mirror matches, not high-tier matches
+  } else if (result.score >= 95) {
+    tier = "Soulmate Match";
+  } else if (result.score >= 85) {
+    tier = "Twin Flame Match";
+  } else if (result.score >= 75) {
+    tier = "Harmonious Match";
+  } else if (result.score >= 60) {
+    tier = "Neutral Match";
+  } else if (ctx.isChineseOpposite || ctx.westAspect === "opposition") {
+    tier = "Opposites Attract";
+  } else {
+    tier = "Difficult Match";
+  }
 
   console.log('[Match Engine] Scoring:', {
     pattern: result.pattern,

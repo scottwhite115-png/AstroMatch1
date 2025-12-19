@@ -10,7 +10,34 @@ const prismaClientSingleton = () => {
     throw new Error('DATABASE_URL or DIRECT_URL must be set')
   }
 
-  const pool = new Pool({ connectionString })
+  // Parse connection string manually to handle SSL properly
+  // Format: postgresql://user:password@host:port/database
+  const match = connectionString.match(/postgresql:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+?)(\?.*)?$/)
+  
+  let pool: Pool;
+  
+  if (match) {
+    const [, user, password, host, port, database] = match
+    pool = new Pool({
+      host,
+      port: parseInt(port),
+      database,
+      user: decodeURIComponent(user),
+      password: decodeURIComponent(password),
+      ssl: {
+        rejectUnauthorized: false // Supabase uses self-signed certs
+      }
+    })
+  } else {
+    // Fallback to connectionString if parsing fails
+    pool = new Pool({ 
+      connectionString,
+      ssl: {
+        rejectUnauthorized: false
+      }
+    })
+  }
+  
   const adapter = new PrismaPg(pool)
 
   return new PrismaClient({

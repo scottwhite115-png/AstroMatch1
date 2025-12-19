@@ -26,17 +26,49 @@ export interface SendMessageResult {
 
 /**
  * Send a message to a matched user
+ * Checks instant messaging settings - if disabled, requires a match first
  */
 export async function sendMessage(
   matchId: string,
   senderId: string,
   receiverId: string,
   content: string,
-  messageType: 'text' | 'gif' | 'emoji' | 'image' = 'text'
+  messageType: 'text' | 'gif' | 'emoji' | 'image' = 'text',
+  messageSource?: 'connections' | 'discover' // Track where message is coming from
 ): Promise<SendMessageResult> {
   const supabase = createClient()
 
   try {
+    // Check if receiver allows instant messages
+    const { data: receiverProfile } = await supabase
+      .from('profiles')
+      .select('allow_instant_messages_connections, allow_instant_messages_discover')
+      .eq('id', receiverId)
+      .single()
+
+    if (receiverProfile) {
+      // Determine which setting to check based on message source
+      const allowInstantMessages = messageSource === 'connections' 
+        ? (receiverProfile.allow_instant_messages_connections ?? true)
+        : (receiverProfile.allow_instant_messages_discover ?? true)
+
+      if (!allowInstantMessages) {
+        // Check if there's an active match - if not, they can't message
+        const { data: match } = await supabase
+          .from('matches')
+          .select('id, is_active')
+          .eq('id', matchId)
+          .single()
+
+        if (!match || !match.is_active) {
+          return {
+            success: false,
+            error: 'This user requires a mutual match before messaging. Please swipe right on their profile first.'
+          }
+        }
+      }
+    }
+
     const { data, error } = await supabase
       .from('messages')
       .insert({

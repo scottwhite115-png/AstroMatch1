@@ -1501,9 +1501,42 @@ export function buildSimpleConnectionBox(
     isLivelyPair: isLivelyPair(animalA, animalB),
   };
   
+  // Force SAME_SIGN pattern if both animals are the same (regardless of other patterns)
+  const sameChineseAnimal = animalA.toLowerCase() === animalB.toLowerCase();
+  const sameWesternSign = westA.toLowerCase() === westB.toLowerCase();
+  
+  if (sameChineseAnimal) {
+    newMatchContext.chinesePattern = 'SAME_SIGN';
+    console.log('[Match Engine] Same Chinese animal detected, forcing SAME_SIGN pattern');
+  }
+  
+  if (sameWesternSign) {
+    console.log('[Match Engine] Same Western sign detected, will apply penalty');
+  }
+  
   // Calculate score using new engine
   const matchResult = computeNewMatchScore(newMatchContext);
-  const score = matchResult.score;
+  let score = matchResult.score;
+  let finalTier = matchResult.tier;
+  
+  // Override tier for SAME_SIGN pattern - should always be Neutral Match
+  if (sameChineseAnimal || newMatchContext.chinesePattern === 'SAME_SIGN') {
+    finalTier = "Neutral Match";
+    // Also ensure score is clamped to SAME_SIGN max (82%)
+    if (score > 82) {
+      console.warn(`[Match Engine] SAME_SIGN score ${score} exceeded max, clamping to 82%`);
+      score = 82;
+    }
+  }
+  
+  console.log('[Match Engine] Final score calculation:', {
+    pattern: newMatchContext.chinesePattern,
+    sameChineseAnimal,
+    sameWesternSign,
+    score,
+    tier: finalTier,
+    originalTier: matchResult.tier
+  });
   
   // Map new tier system to labels (keep new tier names)
   const tierToLabel: Record<MatchTier, string> = {
@@ -1515,7 +1548,7 @@ export function buildSimpleConnectionBox(
     "Difficult Match": "Difficult Match",
   };
   
-  const matchLabel = tierToLabel[matchResult.tier] || "Neutral Match";
+  const matchLabel = tierToLabel[finalTier] || "Neutral Match";
   const headingLine = `${matchLabel} · ${score}%`;
 
   if (isLuna || isSameTrine) {
@@ -1770,7 +1803,9 @@ export function buildSimpleConnectionBox(
     
     // Map pattern to ChinesePattern enum (convert lowercase pattern to uppercase)
     const mapPatternToKey = (pattern: any): string => {
-      if (pattern === 'same_animal' || pattern === 'same_trine') return 'SAN_HE';
+      // CRITICAL: same_animal should map to SAME_SIGN, not SAN_HE
+      if (pattern === 'same_animal') return 'SAME_SIGN';
+      if (pattern === 'same_trine') return 'SAN_HE';
       const keyMap: Record<string, string> = {
         'san_he': 'SAN_HE',
         'liu_he': 'LIU_HE',
@@ -1784,12 +1819,23 @@ export function buildSimpleConnectionBox(
       return keyMap[pattern] || 'NO_PATTERN';
     };
     
-    const patternKey = mapPatternToKey(chinesePattern);
+    let patternKey = mapPatternToKey(chinesePattern);
+    
+    // Check if both animals are the same and force SAME_SIGN pattern
+    const sameChineseAnimal = animalA.toLowerCase() === animalB.toLowerCase();
+    const sameWesternSign = signA.toLowerCase() === signB.toLowerCase();
+    
+    if (sameChineseAnimal) {
+      patternKey = 'SAME_SIGN';
+      console.log('[buildSimpleConnectionBox] Same Chinese animal detected, forcing SAME_SIGN pattern');
+    }
     
     // Debug logging
     console.log('[buildSimpleConnectionBox] Match engine input:', {
       patternKey,
       chinesePattern,
+      sameChineseAnimal,
+      sameWesternSign,
       westElementRelation: newMatchContext.westElementRelation,
       westAspect: newMatchContext.westAspect,
       yearElementA,
@@ -1872,10 +1918,11 @@ export function buildSimpleConnectionBox(
       .filter((p: string) => p !== undefined);
     
     matchEngineResult = buildMatchResult({
-      pattern: patternKey,
+      pattern: patternKey as any,
       westernElementRelation: westElemRelation,
       westernAspectRelation: westAspectRelation,
       wuXingRelation,
+      sameWesternSign: sameWesternSign,
     }, overlayPatterns);
     
     console.log('[buildSimpleConnectionBox] Match engine result:', matchEngineResult);

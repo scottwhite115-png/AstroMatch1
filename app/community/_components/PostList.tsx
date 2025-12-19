@@ -54,11 +54,12 @@ export async function PostList({ topic }: PostListProps) {
 
     let posts: any[] = [];
     let currentUserProfile: any = null;
+    let canModerate = false;
 
     try {
       // Get current user and their role (for moderation)
       const viewer = await getCurrentProfileWithRole();
-      const canModerate = viewer && (viewer.role === "ADMIN" || viewer.role === "OWNER");
+      canModerate = viewer && (viewer.role === "ADMIN" || viewer.role === "OWNER");
 
       // Get all blocked relationships (both directions)
       let blockedUserIds: string[] = [];
@@ -91,7 +92,11 @@ export async function PostList({ topic }: PostListProps) {
           getCurrentUserProfile().catch(() => null),
           prismaClient.post.findMany({
             where: whereClause,
-            orderBy: { createdAt: "desc" },
+            // Sort by score (upvotes - downvotes) descending, then by createdAt
+            orderBy: [
+              { upvoteCount: "desc" },
+              { createdAt: "desc" },
+            ],
             take: 50,
             include: {
               author: {
@@ -100,7 +105,6 @@ export async function PostList({ topic }: PostListProps) {
                   display_name: true,
                   western_sign: true,
                   chinese_sign: true,
-                  east_west_code: true,
                 },
               },
             },
@@ -110,17 +114,26 @@ export async function PostList({ topic }: PostListProps) {
       );
       currentUserProfile = result[0];
       posts = result[1];
-    } catch (err) {
+    } catch (err: any) {
       console.error('[PostList] Database query failed or timed out:', err);
-      // Return empty state instead of crashing
+      // Return error state with more details in development
+      const errorMessage = err?.message || 'Unknown error';
+      const errorCode = err?.code || 'UNKNOWN';
       return (
         <div className="mt-4 rounded-xl border border-amber-800 bg-amber-950/20 p-4">
           <p className="text-sm text-amber-400">
             Unable to load posts. The database connection may be unavailable.
           </p>
+          {process.env.NODE_ENV === 'development' && (
+            <>
           <p className="mt-2 text-xs text-amber-300">
-            Please check your connection and try again.
+                Error: {errorCode} - {errorMessage}
+              </p>
+              <p className="mt-1 text-xs text-amber-300">
+                Check your DATABASE_URL in .env.local
           </p>
+            </>
+          )}
         </div>
       );
     }
@@ -134,14 +147,15 @@ export async function PostList({ topic }: PostListProps) {
       type: post.type, // Add type field
       createdAt: post.createdAt.toISOString(),
       likeCount: post.likeCount || 0,
+      upvoteCount: post.upvoteCount || 0,
+      downvoteCount: post.downvoteCount || 0,
       commentCount: post.commentCount || 0,
       author: {
         id: post.author?.id || post.authorId,
         displayName: post.author?.display_name ?? "Anonymous",
         westSign: post.author?.western_sign ?? "",
         chineseSign: post.author?.chinese_sign ?? "",
-        eastWestCode: post.author?.east_west_code ?? 
-          (post.author?.western_sign && post.author?.chinese_sign 
+        eastWestCode: (post.author?.western_sign && post.author?.chinese_sign
             ? `${post.author.western_sign} ${post.author.chinese_sign}`.trim()
             : ""),
       },
@@ -156,7 +170,7 @@ export async function PostList({ topic }: PostListProps) {
     }
 
     return (
-      <div className="mt-4 space-y-3">
+      <div className="space-y-0">
         {formattedPosts.map((post) => (
           <PostCardClient
             key={post.id}
@@ -172,6 +186,7 @@ export async function PostList({ topic }: PostListProps) {
                   }
                 : null
             }
+            canModerate={canModerate}
           />
         ))}
       </div>

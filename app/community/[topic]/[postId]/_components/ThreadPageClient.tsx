@@ -1,11 +1,24 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useState, useTransition, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useTheme } from "@/contexts/ThemeContext"
-import { formatDistanceToNow } from "date-fns"
 import type { CommunityTopic } from "../../topics"
 import { CommunityPostMenu } from "@/components/community/CommunityPostMenu"
+
+// Custom time formatter: m for minutes, h for hours, d for days
+function formatTimeAgo(date: Date): string {
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMs / 3600000)
+  const diffDays = Math.floor(diffMs / 86400000)
+
+  if (diffMins < 1) return "now"
+  if (diffMins < 60) return `${diffMins}m`
+  if (diffHours < 24) return `${diffHours}h`
+  return `${diffDays}d`
+}
 
 type Author = {
   id: string
@@ -21,6 +34,8 @@ type Reply = {
   content: string
   createdAt: string
   likeCount: number
+  upvoteCount?: number
+  downvoteCount?: number
   parentId: string | null
   author: Author
 }
@@ -30,6 +45,8 @@ type Comment = {
   content: string
   createdAt: string
   likeCount: number
+  upvoteCount?: number
+  downvoteCount?: number
   author: Author
   replies: Reply[]
 }
@@ -43,6 +60,8 @@ type Post = {
   isHidden: boolean
   createdAt: string
   likeCount: number
+  upvoteCount?: number
+  downvoteCount?: number
   commentCount: number
   author: Author
   comments: Comment[]
@@ -62,6 +81,61 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
   const [replyToCommentId, setReplyToCommentId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [upvoteCount, setUpvoteCount] = useState(post.upvoteCount || 0)
+  const [downvoteCount, setDownvoteCount] = useState(post.downvoteCount || 0)
+  const [userVote, setUserVote] = useState<number>(0) // 1 = upvote, -1 = downvote, 0 = no vote
+  const [isVoting, setIsVoting] = useState(false)
+  
+  // Track comment votes
+  const [commentVotes, setCommentVotes] = useState<Record<string, { upvotes: number, downvotes: number, userVote: number }>>({})
+
+  // Fetch user's vote on mount
+  useEffect(() => {
+    if (currentUserId) {
+      fetch(`/api/community/posts/${post.id}/vote`)
+        .then(res => res.json())
+        .then(data => setUserVote(data.userVote || 0))
+        .catch(() => {})
+    }
+  }, [post.id, currentUserId])
+
+  const handleVote = async (vote: number, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (!currentUserId || isVoting) {
+      return
+    }
+
+    const newVote = userVote === vote ? 0 : vote // Toggle if same vote
+    setIsVoting(true)
+
+    try {
+      const res = await fetch(`/api/community/posts/${post.id}/vote`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vote: newVote }),
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        setUpvoteCount(data.upvoteCount)
+        setDownvoteCount(data.downvoteCount)
+        setUserVote(data.userVote)
+      } else {
+        const errorData = await res.json().catch(() => ({ error: "Unknown error" }))
+        console.error("Vote API error:", res.status, errorData)
+        alert(`Failed to vote: ${errorData.error || "Unknown error"}`)
+      }
+    } catch (error) {
+      console.error("Vote error:", error)
+      alert(`Failed to vote: ${error instanceof Error ? error.message : "Network error"}`)
+    } finally {
+      setIsVoting(false)
+    }
+  }
+
+  const score = upvoteCount - downvoteCount
 
   async function handleSubmitReply(e: React.FormEvent) {
     e.preventDefault()
@@ -93,26 +167,42 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
     })
   }
 
-  async function handleLikeComment(commentId: string) {
+  async function handleCommentVote(commentId: string, vote: number) {
+    if (!currentUserId || isVoting) return
+    
+    setIsVoting(true)
     try {
-      const res = await fetch(`/api/community/comments/${commentId}/like`, {
+      const currentVote = commentVotes[commentId]?.userVote || 0
+      const newVote = currentVote === vote ? 0 : vote
+      
+      const res = await fetch(`/api/community/comments/${commentId}/vote`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ vote: newVote }),
       })
-
-      if (!res.ok) {
-        throw new Error("Failed to like comment")
+      
+      if (res.ok) {
+        const data = await res.json()
+        setCommentVotes(prev => ({
+          ...prev,
+          [commentId]: {
+            upvotes: data.upvoteCount,
+            downvotes: data.downvoteCount,
+            userVote: data.userVote
+          }
+        }))
       }
-
-      router.refresh()
-    } catch (err) {
-      console.error("Like error:", err)
+    } catch (error) {
+      console.error("Error voting on comment:", error)
+    } finally {
+      setIsVoting(false)
     }
   }
 
   return (
     <div className="space-y-4 pb-24">
       {/* Post Card */}
-      <article className={`rounded-xl border p-5 ${
+      <article className={`rounded-xl border px-5 pt-5 pb-0 ${
         theme === "light"
           ? "bg-white border-gray-200"
           : "bg-slate-900/60 border-slate-700"
@@ -135,19 +225,16 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
         )}
 
         {/* Header */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center gap-2">
-            {/* Type badge */}
-            <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
-              post.type === "QUESTION"
-                ? theme === "light"
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-blue-950/50 text-blue-300"
-                : theme === "light"
-                  ? "bg-purple-100 text-purple-700"
-                  : "bg-purple-950/50 text-purple-300"
+        <div className="flex items-center justify-between gap-2 mb-2 text-sm">
+          {/* Author */}
+          <div className={`flex items-center justify-between gap-2 ${
+            theme === "light" ? "text-gray-700" : "text-slate-300"
+          }`}>
+            <span className="font-medium text-base">{post.author.displayName}</span>
+            <span className={`text-base font-semibold ${
+              theme === "light" ? "text-gray-500" : "text-slate-500"
             }`}>
-              {post.type === "QUESTION" ? "Question" : "Story"}
+              {formatTimeAgo(new Date(post.createdAt))}
             </span>
           </div>
 
@@ -157,49 +244,88 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
             authorId={post.author.id}
             authorName={post.author.displayName}
             canModerate={canModerate}
-            isCurrentUser={currentUserId === post.author.id}
+            isCurrentUser={!!currentUserId && String(currentUserId).toLowerCase().trim() === String(post.author.id).toLowerCase().trim()}
             theme={theme}
             onAction={() => router.refresh()}
+            onDelete={() => router.push(`/community/${post.topic}`)}
+            onEdit={() => router.push(`/community/${post.topic}/${post.id}/edit`)}
           />
         </div>
 
         {/* Title */}
-        <h1 className={`text-lg font-bold mb-3 ${
-          theme === "light" ? "text-gray-900" : "text-slate-50"
+        <h1 className={`text-2xl sm:text-3xl font-bold mb-0.5 ${
+          theme === "light" ? "text-slate-700" : "text-slate-50"
         }`}>
           {post.title}
         </h1>
 
-        {/* Author */}
-        <div className={`flex items-center gap-2 mb-4 pb-3 border-b ${
-          theme === "light" ? "border-gray-200" : "border-slate-700"
-        }`}>
-          <span className={`text-xs font-medium ${
-            theme === "light" ? "text-gray-700" : "text-slate-300"
-          }`}>
-            {post.author.displayName}
-          </span>
-          {post.author.eastWestCode && (
-            <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-              theme === "light"
-                ? "bg-gray-100 text-gray-600"
-                : "bg-slate-800 text-slate-300"
-            }`}>
-              {post.author.eastWestCode}
-            </span>
-          )}
-          <span className={`text-[10px] ${
-            theme === "light" ? "text-gray-500" : "text-slate-500"
-          }`}>
-            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
-          </span>
-        </div>
-
         {/* Content */}
-        <div className={`text-sm whitespace-pre-wrap ${
-          theme === "light" ? "text-gray-800" : "text-slate-200"
+        <div className={`text-lg whitespace-pre-wrap mb-3 ${
+          theme === "light" ? "text-slate-600" : "text-slate-200"
         }`}>
           {post.content}
+        </div>
+
+        {/* Footer: Meta with Voting */}
+        <div className="flex items-center gap-3 mb-0">
+          {/* Voting */}
+          <div className="inline-flex items-center -space-x-1">
+            <button
+              onClick={(e) => handleVote(1, e)}
+              disabled={!currentUserId || isVoting}
+              className={`flex items-center px-1 focus:outline-none ${
+                userVote === 1
+                  ? "text-orange-500"
+                  : theme === "light"
+                    ? "text-gray-400 hover:text-orange-500"
+                    : "text-slate-500 hover:text-orange-400"
+              } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+              title="Upvote"
+            >
+              <svg className="w-5 h-5" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                <path d="M12 2L2 22h20L12 2z" />
+              </svg>
+            </button>
+            
+            <span className={`text-sm font-semibold px-0.5 min-w-[20px] text-center ${
+              score > 0
+                ? "text-orange-500"
+                : score < 0
+                  ? "text-blue-500"
+                  : theme === "light"
+                    ? "text-gray-600"
+                    : "text-slate-400"
+            }`}>
+              {score}
+            </span>
+            
+            <button
+              onClick={(e) => handleVote(-1, e)}
+              disabled={!currentUserId || isVoting}
+              className={`flex items-center px-1 focus:outline-none ${
+                userVote === -1
+                  ? "text-blue-500"
+                  : theme === "light"
+                    ? "text-gray-400 hover:text-blue-500"
+                    : "text-slate-500 hover:text-blue-400"
+              } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+              title="Downvote"
+            >
+              <svg className="w-5 h-5" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                <path d="M12 22L2 2h20L12 22z" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Comment counter */}
+          <div className={`flex items-center gap-2 text-sm ${
+            theme === "light" ? "text-gray-500" : "text-slate-500"
+          }`}>
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span className="font-semibold">{post.commentCount}</span>
+          </div>
         </div>
       </article>
 
@@ -209,69 +335,55 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
           ? "bg-white border-gray-200"
           : "bg-slate-900/60 border-slate-700"
       }`}>
-        <h3 className={`text-sm font-semibold mb-3 ${
-          theme === "light" ? "text-gray-900" : "text-slate-50"
-        }`}>
-          {replyToCommentId ? "Reply to comment" : "Add a reply"}
-        </h3>
-
         <form onSubmit={handleSubmitReply} className="space-y-3">
-          <textarea
-            value={replyContent}
-            onChange={(e) => setReplyContent(e.target.value)}
-            rows={3}
-            placeholder="Share your thoughts..."
-            maxLength={2000}
-            className={`w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 resize-none ${
-              theme === "light"
-                ? "border-gray-300 bg-white text-gray-900"
-                : "border-slate-700 bg-slate-950/60 text-slate-50"
-            }`}
-          />
-
-          {error && (
-            <p className="text-xs text-rose-400">{error}</p>
-          )}
-
-          <div className="flex items-center justify-between">
-            {replyToCommentId && (
+          {replyToCommentId && (
+            <div className="flex items-center justify-between mb-2">
+              <span className={`text-xs ${
+                theme === "light" ? "text-gray-600" : "text-slate-400"
+              }`}>
+                Replying to comment
+              </span>
               <button
                 type="button"
                 onClick={() => setReplyToCommentId(null)}
                 className={`text-xs ${
-                  theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-400 hover:text-slate-200"
+                  theme === "light" ? "text-slate-500 hover:text-slate-700" : "text-slate-400 hover:text-slate-200"
                 }`}
               >
-                Cancel reply
+                Cancel
               </button>
-            )}
-            <div className="flex-1" />
+            </div>
+          )}
+          <div className="flex items-end gap-2">
+            <textarea
+              value={replyContent}
+              onChange={(e) => setReplyContent(e.target.value)}
+              rows={3}
+              placeholder="Share your thoughts..."
+              maxLength={2000}
+              className={`flex-1 rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 resize-none ${
+                theme === "light"
+                  ? "border-gray-300 bg-white text-gray-900"
+                  : "border-slate-700 bg-slate-950/60 text-slate-50"
+              }`}
+            />
             <button
               type="submit"
               disabled={!replyContent.trim() || isPending}
-              className="px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white transition-colors"
+              className="px-4 py-2 rounded-full text-sm font-semibold bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 text-white transition-colors whitespace-nowrap"
             >
-              {isPending ? "Posting..." : "Reply"}
+              {isPending ? "Posting..." : "Post"}
             </button>
           </div>
+          {error && (
+            <p className="text-xs text-rose-400">{error}</p>
+          )}
         </form>
       </div>
 
       {/* Comments Section */}
       <div className="space-y-3">
-        <h3 className={`text-sm font-semibold ${
-          theme === "light" ? "text-gray-900" : "text-slate-50"
-        }`}>
-          {post.commentCount} {post.commentCount === 1 ? "Reply" : "Replies"}
-        </h3>
 
-        {post.comments.length === 0 && (
-          <p className={`text-xs ${
-            theme === "light" ? "text-gray-500" : "text-slate-500"
-          }`}>
-            No replies yet. Be the first to respond!
-          </p>
-        )}
 
         {post.comments.map((comment) => (
           <div key={comment.id}>
@@ -283,52 +395,68 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
             }`}>
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <span className={`text-xs font-medium ${
+                  <span className={`text-base font-medium ${
                     theme === "light" ? "text-gray-700" : "text-slate-300"
                   }`}>
                     {comment.author.displayName}
                   </span>
-                  {comment.author.eastWestCode && (
-                    <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                      theme === "light"
-                        ? "bg-gray-100 text-gray-600"
-                        : "bg-slate-800 text-slate-300"
-                    }`}>
-                      {comment.author.eastWestCode}
-                    </span>
-                  )}
-                  <span className={`text-[10px] ${
+                  <span className={`text-base font-semibold ${
                     theme === "light" ? "text-gray-500" : "text-slate-500"
                   }`}>
-                    {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                    {formatTimeAgo(new Date(comment.createdAt))}
                   </span>
                 </div>
               </div>
 
-              <p className={`text-sm mb-3 ${
-                theme === "light" ? "text-gray-800" : "text-slate-200"
+              <p className={`text-lg mb-3 ${
+                theme === "light" ? "text-slate-600" : "text-slate-200"
               }`}>
                 {comment.content}
               </p>
 
-              {/* Actions */}
+              {/* Voting and Reply */}
               <div className="flex items-center gap-3">
-                <button
-                  onClick={() => handleLikeComment(comment.id)}
-                  className={`text-[10px] flex items-center gap-1 ${
-                    theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-400 hover:text-slate-200"
-                  }`}
-                >
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                  {comment.likeCount}
-                </button>
+                <div className="flex items-center gap-1 -space-x-1">
+                  <button
+                    disabled={!currentUserId || isVoting}
+                    onClick={() => handleCommentVote(comment.id, 1)}
+                    className={`p-0.5 ${
+                      commentVotes[comment.id]?.userVote === 1
+                        ? "text-orange-500"
+                        : theme === "light" ? "text-gray-400 hover:text-orange-500" : "text-slate-500 hover:text-orange-400"
+                    } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                      <path d="M12 2L2 22h20L12 2z" />
+                    </svg>
+                  </button>
+                  <span className={`text-sm font-semibold min-w-[20px] text-center ${
+                    theme === "light" ? "text-gray-700" : "text-slate-300"
+                  }`}>
+                    {(commentVotes[comment.id]?.upvotes || 0) - (commentVotes[comment.id]?.downvotes || 0)}
+                  </span>
+                  <button
+                    disabled={!currentUserId || isVoting}
+                    onClick={() => handleCommentVote(comment.id, -1)}
+                    className={`p-0.5 ${
+                      commentVotes[comment.id]?.userVote === -1
+                        ? "text-blue-500"
+                        : theme === "light" ? "text-gray-400 hover:text-blue-500" : "text-slate-500 hover:text-blue-400"
+                    } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                      <path d="M12 22L2 2h20L12 22z" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Reply button */}
                 <button
                   onClick={() => setReplyToCommentId(comment.id)}
-                  className={`text-[10px] ${
-                    theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-400 hover:text-slate-200"
-                  }`}
+                  disabled={!currentUserId}
+                  className={`text-sm font-semibold ${
+                    theme === "light" ? "text-gray-500 hover:text-gray-700" : "text-slate-400 hover:text-slate-200"
+                  } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                 >
                   Reply
                 </button>
@@ -349,46 +477,72 @@ export function ThreadPageClient({ post, topicData, currentUserId, canModerate }
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
-                        <span className={`text-xs font-medium ${
-                          theme === "light" ? "text-gray-700" : "text-slate-300"
-                        }`}>
-                          {reply.author.displayName}
-                        </span>
-                        {reply.author.eastWestCode && (
-                          <span className={`px-2 py-0.5 rounded-full text-[10px] font-medium ${
-                            theme === "light"
-                              ? "bg-gray-100 text-gray-600"
-                              : "bg-slate-800 text-slate-300"
-                          }`}>
-                            {reply.author.eastWestCode}
-                          </span>
-                        )}
-                        <span className={`text-[10px] ${
-                          theme === "light" ? "text-gray-500" : "text-slate-500"
-                        }`}>
-                          {formatDistanceToNow(new Date(reply.createdAt), { addSuffix: true })}
-                        </span>
+                      <span className={`text-base font-medium ${
+                        theme === "light" ? "text-gray-700" : "text-slate-300"
+                      }`}>
+                        {reply.author.displayName}
+                      </span>
+                      <span className={`text-base font-semibold ${
+                        theme === "light" ? "text-gray-500" : "text-slate-500"
+                      }`}>
+                        {formatTimeAgo(new Date(reply.createdAt))}
+                      </span>
                       </div>
                     </div>
 
-                    <p className={`text-xs ${
+                    <p className={`text-lg ${
                       theme === "light" ? "text-gray-700" : "text-slate-300"
                     }`}>
                       {reply.content}
                     </p>
 
-                    {/* Like button */}
-                    <button
-                      onClick={() => handleLikeComment(reply.id)}
-                      className={`mt-2 text-[10px] flex items-center gap-1 ${
-                        theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
-                      {reply.likeCount}
-                    </button>
+                    {/* Voting and Reply */}
+                    <div className="flex items-center gap-3 mt-2">
+                      <div className="flex items-center gap-1 -space-x-1">
+                        <button
+                          disabled={!currentUserId || isVoting}
+                          onClick={() => handleCommentVote(reply.id, 1)}
+                          className={`p-0.5 ${
+                            commentVotes[reply.id]?.userVote === 1
+                              ? "text-orange-500"
+                              : theme === "light" ? "text-gray-400 hover:text-orange-500" : "text-slate-500 hover:text-orange-400"
+                          } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                            <path d="M12 2L2 22h20L12 2z" />
+                          </svg>
+                        </button>
+                        <span className={`text-sm font-semibold min-w-[20px] text-center ${
+                          theme === "light" ? "text-gray-700" : "text-slate-300"
+                        }`}>
+                          {(commentVotes[reply.id]?.upvotes || 0) - (commentVotes[reply.id]?.downvotes || 0)}
+                        </span>
+                        <button
+                          disabled={!currentUserId || isVoting}
+                          onClick={() => handleCommentVote(reply.id, -1)}
+                          className={`p-0.5 ${
+                            commentVotes[reply.id]?.userVote === -1
+                              ? "text-blue-500"
+                              : theme === "light" ? "text-gray-400 hover:text-blue-500" : "text-slate-500 hover:text-blue-400"
+                          } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                        >
+                          <svg className="w-4 h-4" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={0.5}>
+                            <path d="M12 22L2 2h20L12 22z" />
+                          </svg>
+                        </button>
+                      </div>
+
+                      {/* Reply button */}
+                      <button
+                        onClick={() => setReplyToCommentId(comment.id)}
+                        disabled={!currentUserId}
+                        className={`text-sm font-semibold ${
+                          theme === "light" ? "text-gray-500 hover:text-gray-700" : "text-slate-400 hover:text-slate-200"
+                        } ${!currentUserId ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+                      >
+                        Reply
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>

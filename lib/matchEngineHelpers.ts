@@ -75,22 +75,28 @@ export function getChinesePatternCode(
   // Use existing pattern detection (expects lowercase)
   const pattern = getChinesePattern(animalALower as any, animalBLower as any);
   
+  // Check if same animal first (before pattern detection)
+  if (animalALower === animalBLower) {
+    return 'SAME_SIGN';
+  }
+  
   // Map to new pattern type
   const patternMap: Record<string, ChinesePattern> = {
-    'san_he': 'san_he',
-    'liu_he': 'liu_he',
-    'liu_chong': 'liu_chong',
-    'liu_hai': 'liu_hai',
-    'xing': 'xing',
-    'po': 'po',
-    'same_trine': 'same_trine',
-    'cross_trine': 'cross_trine',
-    'same_animal': 'same_animal',
-    'neutral': 'none',
-    'none': 'none',
+    'san_he': 'SAN_HE',
+    'liu_he': 'LIU_HE',
+    'liu_chong': 'LIU_CHONG',
+    'liu_hai': 'LIU_HAI',
+    'xing': 'XING',
+    'po': 'PO',
+    'same_trine': 'SAN_HE', // Same trine is a type of San He
+    'cross_trine': 'SAN_HE',
+    'same_animal': 'SAME_SIGN',
+    'neutral': 'NO_PATTERN',
+    'none': 'NO_PATTERN',
   };
   
-  return patternMap[pattern] || 'none';
+  const mappedPattern = patternMap[pattern] || 'NO_PATTERN';
+  return mappedPattern;
 }
 
 /**

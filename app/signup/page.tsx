@@ -95,19 +95,56 @@ export default function SignupPage() {
       setIsLoading(true)
       setError(null)
       
+      // Use production URL from env or fallback to current origin
+      // Trim any whitespace to prevent Supabase errors
+      const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || window.location.origin).trim()
+      const redirectUrl = `${baseUrl}/auth/callback`
+
+      console.log("OAuth signup - Provider:", provider)
+      console.log("OAuth signup - Redirect URL:", redirectUrl)
+      console.log("OAuth signup - Supabase URL:", process.env.NEXT_PUBLIC_SUPABASE_URL)
+      
+      // Check current cookies before OAuth
+      console.log("OAuth signup - Current cookies:", document.cookie)
+      
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
       })
       
+      console.log("OAuth signup - Response data:", data)
+      console.log("OAuth signup - Response error:", oauthError)
+      
+      // Check cookies after OAuth call (PKCE code verifier should be set)
+      console.log("OAuth signup - Cookies after OAuth call:", document.cookie)
+      
       if (oauthError) {
+        console.error("OAuth error:", oauthError)
         setError(`Failed to sign up with ${provider}: ${oauthError.message}`)
+        setIsLoading(false)
         return
       }
+
+      // If successful, redirect to Google's OAuth page
+      if (data?.url) {
+        console.log("OAuth redirect URL:", data.url)
+        // Small delay to ensure cookies are set before redirect
+        await new Promise(resolve => setTimeout(resolve, 100))
+        window.location.href = data.url
+      } else {
+        console.error("No redirect URL returned from OAuth")
+        setError(`Failed to start ${provider} sign up. Please try again.`)
+        setIsLoading(false)
+      }
     } catch (err: any) {
-      setError(err.message || `Failed to sign up with ${provider}`)
+      console.error("OAuth exception:", err)
+      setError(err.message || `Failed to sign up with ${provider}. Please check your browser console for details.`)
     } finally {
       setIsLoading(false)
     }
@@ -156,8 +193,8 @@ export default function SignupPage() {
         // User is already confirmed, go straight to matches
         router.push("/matches")
       } else {
-        // User needs email verification
-        router.push("/auth/verify-email")
+        // User needs email verification - pass email as URL parameter
+        router.push(`/auth/verify-email?email=${encodeURIComponent(formData.email)}`)
       }
     } catch (err: any) {
       setError(err.message || "Failed to create account. Please try again.")

@@ -53,9 +53,16 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
         });
 
         if (!res.ok) {
-          const data = await res.json();
-          throw new Error(data.error || "Failed to create post");
+          const data = await res.json().catch(() => ({ error: "Unknown error" }));
+          console.error("[NewPostButton] API error:", res.status, data);
+          if (res.status === 401) {
+            throw new Error("Please log in to create a post");
+          }
+          throw new Error(data.error || `Failed to create post (${res.status})`);
         }
+
+        const result = await res.json();
+        console.log("[NewPostButton] Post created successfully:", result.id);
 
         resetForm();
         setOpen(false);
@@ -63,8 +70,8 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
         router.refresh();
         onPostCreated?.();
       } catch (err: any) {
-        console.error(err);
-        setError(err.message ?? "Something went wrong.");
+        console.error("[NewPostButton] Error creating post:", err);
+        setError(err.message ?? "Something went wrong. Please try again.");
       }
     });
   }
@@ -75,7 +82,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+        className={`inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-sm font-medium transition-all ${
           theme === "light"
             ? "bg-transparent text-emerald-400 hover:bg-emerald-50"
             : "bg-transparent text-emerald-300 hover:bg-emerald-950/30"
@@ -114,7 +121,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                       resetForm();
                     }}
                     className={`text-4xl font-medium ml-4 ${
-                      theme === "light" ? "text-gray-600 hover:text-gray-900" : "text-slate-300 hover:text-slate-50"
+                      theme === "light" ? "text-slate-500 hover:text-slate-700" : "text-slate-300 hover:text-slate-50"
                     }`}
                   >
                     ✕
@@ -125,7 +132,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     disabled={isPending}
                     className={`rounded-full px-6 py-2.5 text-sm font-medium transition-colors disabled:opacity-60 border ${
                       theme === "light"
-                        ? "text-gray-600 hover:text-gray-900 hover:bg-gray-100 border-gray-300"
+                        ? "text-slate-500 hover:text-slate-700 hover:bg-gray-100 border-gray-300"
                         : "text-slate-300 hover:text-slate-50 hover:bg-slate-800/60 border-slate-600"
                     }`}
                   >
@@ -142,7 +149,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     onChange={(e) => setTopic(e.target.value)}
                     className={`w-full rounded-xl border px-4 py-4 text-xl font-bold outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
-                        ? "border-gray-300 bg-white text-gray-900"
+                        ? "border-gray-300 bg-white text-slate-700"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
                     }`}
                     style={{ fontSize: '1.25rem', lineHeight: '1.75rem', fontWeight: 'bold' }}
@@ -164,7 +171,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     maxLength={200}
                     className={`w-full rounded-xl border px-4 py-4 text-2xl outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 ${
                       theme === "light"
-                        ? "border-gray-300 bg-white text-gray-900"
+                        ? "border-gray-300 bg-white text-slate-700"
                         : "border-slate-700 bg-slate-950/60 text-slate-50"
                     }`}
                     style={{ fontSize: '1.5rem', lineHeight: '2rem', fontWeight: 'bold' }}
@@ -180,7 +187,7 @@ export function NewPostButton({ topic: defaultTopic, topicLabel, onPostCreated }
                     rows={10}
                     className={`w-full rounded-xl px-4 py-3 text-2xl outline-none resize-none ${
                       theme === "light"
-                        ? "bg-white text-gray-900"
+                        ? "bg-white text-slate-700"
                         : "bg-slate-950/60 text-slate-50"
                     }`}
                     style={{ touchAction: 'manipulation', fontSize: '1.5rem', lineHeight: '2rem' }}

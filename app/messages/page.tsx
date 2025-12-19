@@ -9,7 +9,7 @@ import { useTheme } from "@/contexts/ThemeContext"
 import { getConversations, clearUnreadCount, deleteConversation, type Conversation } from "@/lib/utils/conversations"
 import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
 import { fetchUserMatches, fetchUserProfile } from "@/lib/supabase/profileQueries"
-import { getMessages } from "@/lib/supabase/messageActions"
+import { getMessages, subscribeToMessages } from "@/lib/supabase/messageActions"
 
 const MessageCircle = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -129,39 +129,146 @@ export default function MessagesPage() {
           return
         }
 
-        // 4. Convert matches to chat format
-        const chatList: Conversation[] = await Promise.all(
+        // 4. First, show matches immediately with basic info (no messages yet)
+        // Check which matches have been viewed (stored in localStorage)
+        const viewedMatches = JSON.parse(localStorage.getItem('viewedMatches') || '[]')
+        
+        const chatList: Conversation[] = matches.map((match: any) => {
+          const otherProfile = match.profile
+          // Handle photos - could be array or string
+          const photos = otherProfile.photos || []
+          const photoUrl = Array.isArray(photos) && photos.length > 0 
+            ? photos[0] 
+            : (typeof photos === 'string' ? photos : null)
+          
+          console.log('[Messages] Profile photo data:', {
+            userId: otherProfile.id,
+            displayName: otherProfile.display_name,
+            photosRaw: otherProfile.photos,
+            photosType: typeof otherProfile.photos,
+            photosIsArray: Array.isArray(otherProfile.photos),
+            photoUrl
+          })
+          
+          // Calculate if this is a new match (within 24 hours and not viewed)
+          const matchedAt = match.matched_at
+          const isNewMatch = matchedAt && !viewedMatches.includes(match.id) && (() => {
+            const matchDate = new Date(matchedAt)
+            const now = new Date()
+            const hoursSinceMatch = (now.getTime() - matchDate.getTime()) / (1000 * 60 * 60)
+            return hoursSinceMatch < 24 // Show "New Match" if match was created within last 24 hours
+          })()
+          
+          return {
+            id: match.id,
+            userId: otherProfile.id,
+            userName: otherProfile.display_name || 'Unknown',
+            userPhoto: photoUrl || '/placeholder.svg',
+            lastMessage: 'Loading...', // Placeholder, will update
+            timestamp: matchedAt || new Date().toISOString(),
+            unread: 0,
+            online: false,
+            messages: [],
+            westernSign: otherProfile.western_sign || 'Leo',
+            easternSign: otherProfile.chinese_sign || 'Rabbit',
+            matchedAt: matchedAt,
+            isNewMatch: isNewMatch || false,
+          }
+        })
+
+        // Set chats immediately so they appear right away
+        setChats(chatList)
+        setLoading(false) // Stop loading state so list appears
+
+        // 5. Then load last messages in parallel and update the list
+        const updatedChatList = await Promise.all(
           matches.map(async (match: any) => {
             const otherProfile = match.profile
             
             // Get last message for this match
             const messages = await getMessages(match.id, 1)
             const lastMessage = messages[0]
+            
+            // Handle photos - could be array or string
+            const photos = otherProfile.photos || []
+            const photoUrl = Array.isArray(photos) && photos.length > 0 
+              ? photos[0] 
+              : (typeof photos === 'string' ? photos : null)
 
+            // Calculate if this is a new match (within 24 hours and not viewed)
+            const matchedAt = match.matched_at
+            const isNewMatch = matchedAt && !viewedMatches.includes(match.id) && (() => {
+              const matchDate = new Date(matchedAt)
+              const now = new Date()
+              const hoursSinceMatch = (now.getTime() - matchDate.getTime()) / (1000 * 60 * 60)
+              return hoursSinceMatch < 24 // Show "New Match" if match was created within last 24 hours
+            })()
+            
             return {
               id: match.id,
               userId: otherProfile.id,
-              name: otherProfile.display_name || 'Unknown',
-              avatar: otherProfile.photos?.[0] || '/placeholder.svg',
+              userName: otherProfile.display_name || 'Unknown',
+              userPhoto: photoUrl || '/placeholder.svg',
               lastMessage: lastMessage?.content || 'Start a conversation',
-              timestamp: lastMessage?.created_at || match.matched_at,
-              unreadCount: 0, // TODO: Calculate unread count
+              timestamp: lastMessage?.created_at || matchedAt || new Date().toISOString(),
+              unread: 0,
+              online: false,
+              messages: [],
               westernSign: otherProfile.western_sign || 'Leo',
               easternSign: otherProfile.chinese_sign || 'Rabbit',
-              matchedAt: match.matched_at,
+              matchedAt: matchedAt,
+              isNewMatch: isNewMatch || false,
             }
           })
         )
 
         // Sort by most recent message
-        chatList.sort((a, b) => {
+        updatedChatList.sort((a, b) => {
           const dateA = new Date(a.timestamp).getTime()
           const dateB = new Date(b.timestamp).getTime()
           return dateB - dateA
         })
 
-        setChats(chatList)
+        // Update with messages loaded
+        setChats(updatedChatList)
         console.log('[Messages] ✅ Chats loaded successfully!')
+
+        // Set up real-time subscriptions for all matches
+        const subscriptions: any[] = []
+        matches.forEach((match: any) => {
+          const subscription = subscribeToMessages(match.id, (newMessage) => {
+            console.log('[Messages] 📨 New message received:', newMessage)
+            // Update the chat list with the new message
+            setChats(prevChats => {
+              const updatedChats = prevChats.map(chat => {
+                if (chat.id === match.id) {
+                  return {
+                    ...chat,
+                    lastMessage: newMessage.content,
+                    timestamp: newMessage.created_at
+                  }
+                }
+                return chat
+              })
+              // Sort by most recent message
+              return updatedChats.sort((a, b) => {
+                const dateA = new Date(a.timestamp).getTime()
+                const dateB = new Date(b.timestamp).getTime()
+                return dateB - dateA
+              })
+            })
+          })
+          subscriptions.push(subscription)
+        })
+
+        // Cleanup subscriptions on unmount
+        return () => {
+          subscriptions.forEach(sub => {
+            if (sub && sub.unsubscribe) {
+              sub.unsubscribe()
+            }
+          })
+        }
 
       } catch (error) {
         console.error('[Messages] ❌ Error loading matches:', error)
@@ -250,18 +357,15 @@ export default function MessagesPage() {
     
     // Mark match as seen if it's a new match
     const chat = chats.find(c => c.userId === userId)
-    if (chat?.isNewMatch) {
-      // Update in database if authenticated
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        await fetch('/api/conversations/mark-seen', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ conversationId: chat.id }),
-        })
+    if (chat?.isNewMatch && chat.id) {
+      // Mark this match as viewed in localStorage
+      const viewedMatches = JSON.parse(localStorage.getItem('viewedMatches') || '[]')
+      if (!viewedMatches.includes(chat.id)) {
+        viewedMatches.push(chat.id)
+        localStorage.setItem('viewedMatches', JSON.stringify(viewedMatches))
       }
       
-      // Update local state immediately
+      // Update local state immediately to hide the badge
       const updatedChats = chats.map((c) => 
         c.userId === userId 
           ? { ...c, unread: 0, isNewMatch: false } 
@@ -467,7 +571,7 @@ export default function MessagesPage() {
                     <img
                       src={chat.userPhoto || "/placeholder.svg"}
                       alt={chat.userName}
-                      className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover border-2 border-white/20"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border-2 border-white/20"
                     />
                     {chat.unread > 0 && (
                       <div className="absolute -top-1 -right-1 w-5 h-5 bg-purple-500 rounded-full flex items-center justify-center">
@@ -478,7 +582,7 @@ export default function MessagesPage() {
 
                   <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center justify-between mb-1">
-                      <h3 className={`text-base sm:text-lg font-bold flex items-center gap-1.5 min-w-0 ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>
+                      <h3 className={`text-lg sm:text-xl font-bold flex items-center gap-1.5 min-w-0 ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>
                         <span className="truncate">{chat.userName}</span>
                       </h3>
                     </div>
@@ -489,10 +593,10 @@ export default function MessagesPage() {
                     </p>
                   </div>
                   
-                  {/* New Match Badge - Top right corner, moves with swipe - AS LAST CHILD */}
+                  {/* New Match Badge - Right side, moves with swipe */}
                   {chat.isNewMatch && (
-                    <div className="absolute z-30" style={{ top: '0.5rem', right: '0.5rem' }}>
-                      <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide bg-gradient-to-r from-yellow-400 via-orange-400 to-orange-500 text-white rounded-full shadow-lg whitespace-nowrap">
+                    <div className="absolute z-30 flex items-center" style={{ top: '50%', right: '0.75rem', transform: 'translateY(-50%)' }}>
+                      <span className="inline-block px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide bg-gradient-to-r from-green-500 via-emerald-500 to-green-600 text-white rounded-full shadow-lg whitespace-nowrap">
                         New Match
                       </span>
                     </div>

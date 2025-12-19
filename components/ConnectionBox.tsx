@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { getWesternSignGlyph } from "@/lib/zodiacHelpers";
 import { 
   getMatchLabel, 
@@ -408,6 +408,18 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   // Use external props if provided, otherwise use internal state
   const showOverview = externalShowElements !== undefined ? externalShowElements : internalShowOverview;
   const showAbout = externalShowProfile !== undefined ? externalShowProfile : internalShowAbout;
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('[ConnectionBox] Dropdown state:', {
+      externalShowProfile,
+      externalShowElements,
+      showAbout,
+      showOverview,
+      hasConnectionOverview: !!(connectionOverviewText || westernCompatibilityDescription),
+      hasAboutContent: !!(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height),
+    });
+  }, [externalShowProfile, externalShowElements, showAbout, showOverview, connectionOverviewText, westernCompatibilityDescription, aboutPartnerText, relationshipGoals, interests, city, occupation, age, height]);
 
   const elementRelation =
     elementRelationOverride ?? getElementRelation(elements.a, elements.b);
@@ -496,7 +508,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     }
     
     // Same Animal/Sign (Teal)
-    if (basePattern === "SAME_SIGN") {
+    if (basePattern === "SAME_SIGN" || basePattern === "SAME_ANIMAL") {
       return { start: '#2dd4bf', end: '#14b8a6' }; // teal-400 to teal-500
     }
     
@@ -559,7 +571,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             marginRight: '-1rem',
             paddingLeft: '2rem',
             paddingRight: '2rem',
-            paddingTop: '0.5rem',
+            paddingTop: '1.5rem',
             paddingBottom: '1.5rem',
             marginTop: '0',
             marginBottom: '0',
@@ -606,9 +618,9 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 </div>
               </div>
             </div>
-            
+
             {/* Primary label pill - moved from connection box */}
-            <div className="mb-2 flex justify-center">
+            <div className="mb-5 flex justify-center">
               <div 
                 className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 ${
                   theme === "light" ? "bg-white" : "bg-slate-900"
@@ -629,7 +641,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
             {/* Tagline under the pill - moved from connection box */}
             {blurb && (
-              <p className={`text-lg text-center leading-relaxed mb-3 ${
+              <p className={`text-lg text-center leading-relaxed mb-6 ${
                 theme === "light" ? "text-slate-600" : "text-slate-300"
               }`}>
                 {blurb}
@@ -638,44 +650,57 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             
             {/* Chinese Zodiac Compatibility Section */}
             {connectionOverviewText && (
-              <div className="mb-2">
+              <div className="mb-2 text-center">
                 {/* Chinese Signs Display */}
                 {chineseAnimalA && chineseAnimalB && (
-                  <div className="flex items-center justify-start gap-1.5 mb-2">
+                  <div className="flex items-center justify-center gap-1.5 mb-2">
+                    {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
                     <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalA}
                     </span>
-                    <span className={`text-lg font-semibold ${
-                      theme === "light" ? "text-slate-700" : "text-slate-200"
+                    <span className={`text-lg ${
+                      theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
-                      ×
+                      ♥
                     </span>
                     <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {chineseAnimalB}
                     </span>
+                    {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
                   </div>
                 )}
                 
                 {chineseHeadingWithoutSignPair && (
-                  <h4 className={`text-lg mb-1 ${
-                    theme === "light" ? "text-slate-900" : "text-slate-100"
-                  }`}>
-                    {chineseHeadingWithoutSignPair}
-                  </h4>
+                  <div className="mb-1 text-center">
+                    {chineseHeadingWithoutSignPair
+                      .split(/,|;/)
+                      .map(part => part.trim())
+                      .filter(part => part.length > 0)
+                      .map((pattern, index) => (
+                        <h4 
+                          key={index}
+                          className={`text-lg font-bold ${
+                            theme === "light" ? "text-slate-900" : "text-slate-100"
+                          }`}
+                        >
+                          {pattern}
+                        </h4>
+                      ))}
+                  </div>
                 )}
                 {/* TAGLINE - Display if available */}
                 {connectionOverviewTagline && (
-                  <p className={`text-base italic mb-1.5 ${
+                  <p className={`text-base italic mb-1.5 text-center ${
                     theme === "light" ? "text-black" : "text-white"
                   }`}>
                     {connectionOverviewTagline}
                   </p>
                 )}
-                <div className="leading-relaxed whitespace-pre-line" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
                   {connectionOverviewText}
                 </div>
               </div>
@@ -683,30 +708,32 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             
             {/* Western Sun Sign Compatibility Section */}
             {westernCompatibilityDescription && (
-              <div className={connectionOverviewText ? "pt-2" : ""}>
+              <div className={`${connectionOverviewText ? "pt-2" : ""} text-center`}>
                 {/* Western Signs Display */}
                 {westernSignA && westernSignB && (
-                  <div className="flex items-center justify-start gap-1.5 mb-2">
+                  <div className="flex items-center justify-center gap-1.5 mb-2">
+                    {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
                     <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignA}
                     </span>
-                    <span className={`text-lg font-semibold ${
-                      theme === "light" ? "text-slate-700" : "text-slate-200"
+                    <span className={`text-lg ${
+                      theme === "light" ? "text-pink-500" : "text-pink-400"
                     }`}>
-                      ×
+                      ♥
                     </span>
                     <span className={`font-bold text-lg ${
                       theme === "light" ? "text-slate-700" : "text-slate-200"
                     }`}>
                       {westernSignB}
                     </span>
+                    {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
                   </div>
                 )}
                 
                 {westernHeadingWithoutSignPair && (
-                  <h4 className={`text-lg mb-1 ${
+                  <h4 className={`text-lg mb-1 text-center font-bold ${
                     theme === "light" ? "text-slate-900" : "text-slate-100"
                   }`}>
                     {westernHeadingWithoutSignPair}
@@ -714,13 +741,13 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
                 {/* TAGLINE - Display if available */}
                 {westernCompatibilityTagline && (
-                  <p className={`text-base italic mb-1.5 ${
+                  <p className={`text-base italic mb-1.5 text-center ${
                     theme === "light" ? "text-black" : "text-white"
                   }`}>
                     {westernCompatibilityTagline}
                   </p>
                 )}
-                <div className="leading-relaxed whitespace-pre-line" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
                   {westernCompatibilityDescription}
                 </div>
               </div>
@@ -739,16 +766,16 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             marginRight: '-1rem',
             paddingLeft: '2rem',
             paddingRight: '2rem',
-            paddingTop: '0.75rem',
+            paddingTop: '0.25rem',
             paddingBottom: '0',
-            marginTop: '1.5rem',
+            marginTop: '0.5rem',
             marginBottom: '0',
             borderRadius: '0',
             backgroundColor: 'transparent',
           }}>
             {/* About Me */}
             {aboutPartnerText && (
-              <div style={{ marginBottom: '2rem' }}>
+              <div style={{ marginBottom: '2rem', marginTop: '0' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
                   style={{ 
@@ -803,7 +830,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             )}
 
             {/* Interests */}
-            {interests && Object.keys(interests).length > 0 && (
+            {interests && (Array.isArray(interests) ? interests.length > 0 : Object.keys(interests).length > 0) && (
               <div style={{ marginBottom: '2rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
@@ -817,10 +844,11 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   Interests
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
-                  {Object.entries(interests).map(([category, interestList]) =>
-                    (interestList as string[]).map((interest: string, index: number) => (
+                  {Array.isArray(interests) ? (
+                    // Handle flat array format
+                    interests.map((interest: string, index: number) => (
                       <span
-                        key={`${category}-${index}`}
+                        key={`interest-${index}`}
                         className={`px-2 py-0.5 rounded-full text-xl font-medium ${
                           theme === "light"
                             ? "text-slate-800"
@@ -837,6 +865,32 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                         {interest}
                       </span>
                     ))
+                  ) : (
+                    // Handle organized object format
+                    Object.entries(interests).flatMap(([category, interestList]) => {
+                      if (!Array.isArray(interestList)) {
+                        return [];
+                      }
+                      return interestList.map((interest: string, index: number) => (
+                        <span
+                          key={`${category}-${index}`}
+                          className={`px-2 py-0.5 rounded-full text-xl font-medium ${
+                            theme === "light"
+                              ? "text-slate-800"
+                              : "text-slate-200"
+                          }`}
+                          style={{
+                            background: theme === "light"
+                              ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
+                              : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
+                            border: `1.5px solid ${gradientColors.start}`,
+                            boxShadow: `0 2px 4px ${gradientColors.start}20`
+                          }}
+                        >
+                          {interest}
+                        </span>
+                      ));
+                    })
                   )}
                 </div>
               </div>

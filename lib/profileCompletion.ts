@@ -8,21 +8,15 @@ export interface ProfileCompletionStatus {
   percentage: number
   missingFields: string[]
   requiredFields: {
-    hasEmail: boolean
-    hasPhone: boolean
-    emailVerified: boolean
-    phoneVerified: boolean
+    hasName: boolean
     hasBirthdate: boolean
     hasPhotos: boolean
     minPhotos: number
-    hasBio: boolean
-    hasBasicInfo: boolean
-    hasGender: boolean
-    hasPreferences: boolean
   }
 }
 
 export interface MinimalProfile {
+  display_name?: string | null
   email?: string | null
   phone?: string | null
   email_verified?: boolean | null
@@ -49,75 +43,35 @@ export function checkProfileCompletion(profile: MinimalProfile | null | undefine
       percentage: 0,
       missingFields: ['All fields'],
       requiredFields: {
-        hasEmail: false,
-        hasPhone: false,
-        emailVerified: false,
-        phoneVerified: false,
+        hasName: false,
         hasBirthdate: false,
         hasPhotos: false,
         minPhotos: 0,
-        hasBio: false,
-        hasBasicInfo: false,
-        hasGender: false,
-        hasPreferences: false,
       }
     }
   }
 
+  // Simplified requirements: Only Name, Birthdate, and Photo required
   const required = {
-    hasEmail: !!(profile.email && profile.email.length > 0),
-    hasPhone: !!(profile.phone && profile.phone.length > 0),
-    emailVerified: profile.email_verified === true,
-    phoneVerified: profile.phone_verified === true,
+    hasName: !!(profile.display_name && profile.display_name.length > 0),
     hasBirthdate: !!profile.birthdate,
-    hasPhotos: (profile.photos?.length ?? 0) >= 2,
-    minPhotos: profile.photos?.length ?? 0,
-    hasBio: (profile.bio?.length ?? 0) >= 50,
-    hasBasicInfo: !!(profile.occupation && profile.height),
-    hasGender: !!(profile.gender && profile.gender.length > 0),
-    hasPreferences: !!(
-      profile.looking_for_gender && 
-      profile.age_min && 
-      profile.age_max && 
-      profile.distance_radius
-    )
+    hasPhotos: (profile.photos?.length ?? 0) >= 1, // At least 1 photo
+    minPhotos: profile.photos?.length ?? 0
   }
 
   const missingFields: string[] = []
   
-  if (!required.emailVerified) missingFields.push('Email verification')
-  if (!required.phoneVerified) missingFields.push('Phone verification')
+  if (!required.hasName) missingFields.push('Name')
   if (!required.hasBirthdate) missingFields.push('Birthdate')
   if (!required.hasPhotos) {
-    if (required.minPhotos === 0) {
-      missingFields.push('At least 2 photos')
-    } else if (required.minPhotos === 1) {
-      missingFields.push('1 more photo (2 required)')
-    }
+    missingFields.push('At least 1 photo')
   }
-  if (!required.hasBio) {
-    const bioLength = profile.bio?.length ?? 0
-    missingFields.push(`Bio (${bioLength}/50 characters)`)
-  }
-  if (!required.hasBasicInfo) {
-    const missing: string[] = []
-    if (!profile.occupation) missing.push('occupation')
-    if (!profile.height) missing.push('height')
-    missingFields.push(`Basic info: ${missing.join(', ')}`)
-  }
-  if (!required.hasGender) missingFields.push('Gender')
-  if (!required.hasPreferences) missingFields.push('Search preferences')
 
-  // Calculate completion percentage
+  // Calculate completion percentage (3 required fields)
   const checks = [
-    required.emailVerified,
-    required.phoneVerified,
+    required.hasName,
     required.hasBirthdate,
-    required.hasPhotos,
-    required.hasBio,
-    required.hasBasicInfo,
-    required.hasGender,
-    required.hasPreferences
+    required.hasPhotos
   ]
 
   const completedChecks = checks.filter(v => v === true).length
@@ -167,14 +121,10 @@ export function getNextAction(status: ProfileCompletionStatus): string | null {
 
   const { requiredFields } = status
 
-  if (!requiredFields.emailVerified) return 'verify_email'
-  if (!requiredFields.phoneVerified) return 'verify_phone'
+  // Only check the 3 required fields: Name, Birthdate, Photo
+  if (!requiredFields.hasName) return 'add_name'
   if (!requiredFields.hasBirthdate) return 'add_birthdate'
-  if (!requiredFields.hasGender) return 'add_gender'
   if (!requiredFields.hasPhotos) return 'upload_photos'
-  if (!requiredFields.hasBio) return 'write_bio'
-  if (!requiredFields.hasBasicInfo) return 'add_basic_info'
-  if (!requiredFields.hasPreferences) return 'set_preferences'
 
   return null
 }

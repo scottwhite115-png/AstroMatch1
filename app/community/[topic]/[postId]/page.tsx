@@ -75,100 +75,200 @@ export default async function ThreadPage({ params }: PageProps) {
   }
 
   // Fetch post with comments
-  const post = await prismaClient.post.findUnique({
+  // Simplified query - fetch comments separately to avoid relation issues
+  let post;
+  try {
+    post = await prismaClient.post.findUnique({
     where: whereClause,
-    include: {
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      topic: true,
+      type: true,
+      isHidden: true,
+      createdAt: true,
+      likeCount: true,
+      upvoteCount: true,
+      downvoteCount: true,
+      commentCount: true,
       author: {
         select: {
           id: true,
           display_name: true,
           western_sign: true,
           chinese_sign: true,
-          east_west_code: true,
           photo_url: true,
         },
       },
       comments: {
         where: commentsWhere,
-        include: {
+        select: {
+          id: true,
+          content: true,
+          createdAt: true,
+          likeCount: true,
+          upvoteCount: true,
+          downvoteCount: true,
+          parentId: true,
           author: {
             select: {
               id: true,
               display_name: true,
               western_sign: true,
               chinese_sign: true,
-              east_west_code: true,
               photo_url: true,
             },
-          },
-          replies: {
-            where: repliesWhere,
-            include: {
-              author: {
-                select: {
-                  id: true,
-                  display_name: true,
-                  western_sign: true,
-                  chinese_sign: true,
-                  east_west_code: true,
-                  photo_url: true,
-                },
-              },
-            },
-            orderBy: { createdAt: "asc" },
           },
         },
         orderBy: { createdAt: "desc" },
       },
     },
-  })
+    })
+    
+    // Fetch replies separately for each comment if they exist
+    // Temporarily disabled to debug - will re-enable once basic query works
+    if (post && post.comments && post.comments.length > 0) {
+      try {
+        const commentIds = post.comments.map((c: any) => c.id);
+        const allReplies = await prismaClient.comment.findMany({
+          where: {
+            parentId: { in: commentIds },
+            ...(blockedUserIds.length > 0 ? { authorId: { notIn: blockedUserIds } } : {}),
+          },
+          select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            likeCount: true,
+            upvoteCount: true,
+            downvoteCount: true,
+            parentId: true,
+            author: {
+              select: {
+                id: true,
+                display_name: true,
+                western_sign: true,
+                chinese_sign: true,
+                photo_url: true,
+              },
+            },
+          },
+          orderBy: { createdAt: "asc" },
+        });
+        
+        // Attach replies to their parent comments
+        const repliesByParent = new Map<string, any[]>();
+        allReplies.forEach((reply: any) => {
+          if (reply.parentId) {
+            const existing = repliesByParent.get(reply.parentId) || [];
+            existing.push(reply);
+            repliesByParent.set(reply.parentId, existing);
+          }
+        });
+        
+        // Attach replies to comments (type assertion needed)
+        (post as any).comments = post.comments.map((comment: any) => ({
+          ...comment,
+          replies: repliesByParent.get(comment.id) || [],
+        }));
+      } catch (replyError: any) {
+        console.error("[ThreadPage] Error fetching replies:", replyError);
+        // Continue without replies if there's an error
+        (post as any).comments = post.comments.map((comment: any) => ({
+          ...comment,
+          replies: [],
+        }));
+      }
+    }
+  } catch (error: any) {
+    console.error("[ThreadPage] Error fetching post:", error);
+    console.error("[ThreadPage] Error details:", {
+      code: error.code,
+      message: error.message,
+      meta: error.meta,
+      postId,
+      topic,
+    });
+    // Return a more helpful error message
+    return (
+      <div className="mt-4 rounded-xl border border-rose-800 bg-rose-950/20 p-4">
+        <p className="text-sm text-rose-400">
+          Error loading post: {error.message || "Unknown error"}
+        </p>
+        <p className="mt-2 text-xs text-rose-300">
+          Code: {error.code || "N/A"} | Meta: {JSON.stringify(error.meta || {})}
+        </p>
+      </div>
+    );
+  }
 
   if (!post) {
     return notFound()
   }
 
+  // Ensure post has required structure
+  if (!post.author) {
+    console.error("[ThreadPage] Post missing author:", post);
+    return (
+      <div className="mt-4 rounded-xl border border-rose-800 bg-rose-950/20 p-4">
+        <p className="text-sm text-rose-400">Error: Post data is incomplete</p>
+      </div>
+    );
+  }
+
   // Format data for client
   const formattedPost = {
     id: post.id,
-    title: post.title,
-    content: post.content,
-    topic: post.topic,
-    type: post.type,
-    isHidden: post.isHidden,
-    createdAt: post.createdAt.toISOString(),
-    likeCount: post.likeCount,
-    commentCount: post.commentCount,
+    title: post.title || "",
+    content: post.content || "",
+    topic: post.topic || topic,
+    type: post.type || "STORY",
+    isHidden: post.isHidden || false,
+    createdAt: post.createdAt ? post.createdAt.toISOString() : new Date().toISOString(),
+    likeCount: post.likeCount || 0,
+    commentCount: post.commentCount || 0,
     author: {
       id: post.author.id,
       displayName: post.author.display_name || "Anonymous",
-      eastWestCode: post.author.east_west_code || "",
+      eastWestCode: (post.author.western_sign && post.author.chinese_sign
+        ? `${post.author.western_sign} ${post.author.chinese_sign}`.trim()
+        : ""),
       westSign: post.author.western_sign || "",
       chineseSign: post.author.chinese_sign || "",
-      photoUrl: post.author.photo_url,
+      photoUrl: post.author.photo_url || null,
     },
-    comments: post.comments.map((comment) => ({
+    comments: (post.comments || []).map((comment: any) => ({
       id: comment.id,
       content: comment.content,
       createdAt: comment.createdAt.toISOString(),
       likeCount: comment.likeCount,
+      upvoteCount: comment.upvoteCount || 0,
+      downvoteCount: comment.downvoteCount || 0,
       author: {
         id: comment.author.id,
         displayName: comment.author.display_name || "Anonymous",
-        eastWestCode: comment.author.east_west_code || "",
+        eastWestCode: (comment.author.western_sign && comment.author.chinese_sign
+          ? `${comment.author.western_sign} ${comment.author.chinese_sign}`.trim()
+          : ""),
         westSign: comment.author.western_sign || "",
         chineseSign: comment.author.chinese_sign || "",
         photoUrl: comment.author.photo_url,
       },
-      replies: comment.replies.map((reply) => ({
+      replies: (comment.replies || []).map((reply: any) => ({
         id: reply.id,
         content: reply.content,
         createdAt: reply.createdAt.toISOString(),
         likeCount: reply.likeCount,
+        upvoteCount: reply.upvoteCount || 0,
+        downvoteCount: reply.downvoteCount || 0,
         parentId: reply.parentId,
         author: {
           id: reply.author.id,
           displayName: reply.author.display_name || "Anonymous",
-          eastWestCode: reply.author.east_west_code || "",
+          eastWestCode: (reply.author.western_sign && reply.author.chinese_sign
+            ? `${reply.author.western_sign} ${reply.author.chinese_sign}`.trim()
+            : ""),
           westSign: reply.author.western_sign || "",
           chineseSign: reply.author.chinese_sign || "",
           photoUrl: reply.author.photo_url,

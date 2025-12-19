@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
@@ -97,24 +97,62 @@ export default function LoginPage() {
   const router = useRouter()
   const supabase = createClient()
 
+  // Check for error in URL params (from OAuth callback failures)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      const errorParam = params.get("error")
+      if (errorParam) {
+        setError(decodeURIComponent(errorParam))
+        // Clean up URL
+        router.replace("/login")
+      }
+    }
+  }, [router])
+
   const handleOAuthLogin = async (provider: "google" | "apple") => {
     try {
       setIsLoading(true)
       setError(null)
       
+      // Use production URL from env or fallback to current origin
+      // Trim any whitespace to prevent Supabase errors
+      const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || window.location.origin).trim()
+      const redirectUrl = `${baseUrl}/auth/callback`
+
+      console.log("OAuth login - Provider:", provider)
+      console.log("OAuth login - Redirect URL:", redirectUrl)
+      
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
         },
       })
       
       if (oauthError) {
+        console.error("OAuth error:", oauthError)
         setError(`Failed to sign in with ${provider}: ${oauthError.message}`)
+        setIsLoading(false)
         return
       }
+
+      // If successful, redirect to Google's OAuth page
+      if (data?.url) {
+        console.log("OAuth redirect URL:", data.url)
+        window.location.href = data.url
+      } else {
+        console.error("No redirect URL returned from OAuth")
+        setError(`Failed to start ${provider} sign in. Please try again.`)
+        setIsLoading(false)
+      }
     } catch (err: any) {
-      setError(err.message || `Failed to sign in with ${provider}`)
+      console.error("OAuth exception:", err)
+      setError(err.message || `Failed to sign in with ${provider}. Please check your browser console for details.`)
     } finally {
       setIsLoading(false)
     }

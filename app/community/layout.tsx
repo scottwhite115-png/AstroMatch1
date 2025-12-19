@@ -43,8 +43,8 @@ export default function CommunityLayout({
     }
   }, []);
   
-  // Show topic chips only for Stories & Q&A tab (not Live)
-  const showTopicChips = !pathname.startsWith('/community/live');
+  // Show topic chips for all community pages
+  const showTopicChips = true;
   
   // Determine current topic from pathname
   const currentTopic = pathname.startsWith('/community/') 
@@ -53,9 +53,9 @@ export default function CommunityLayout({
 
   return (
     <div className={`min-h-screen ${
-      theme === "light" ? "bg-white text-gray-900" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-slate-50"
+      theme === "light" ? "bg-gray-50 text-slate-700" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-slate-50"
     }`}>
-      <div className="mx-auto max-w-4xl">
+      <div className="w-full">
         {/* AstroLounge Header */}
         <header className="mb-4">
           <div className="px-4 pt-0.5 pb-1.5">
@@ -68,30 +68,23 @@ export default function CommunityLayout({
                     >
               <FourPointedStar className="w-4 h-4 text-orange-500" />
                       <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLounge
+                Community
               </span>
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" />
-                    </button>
-                    <button
-                      onClick={() => router.push('/astrology')}
-                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out -ml-2 ${
-                        theme === "light"
-                          ? "text-gray-600 hover:text-gray-900"
-                          : "text-gray-400 hover:text-gray-200"
-                      }`}
-                    >
-                      AstroLab
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out opacity-0" />
                     </button>
                   </div>
                 </div>
             </div>
 
-            {/* Theme Toggle Button - Top Right */}
-              <div className="flex items-center gap-2 ml-2">
+            {/* New Post Button and Theme Toggle - Top Right */}
+              <div className="flex items-center gap-2 mr-0">
+            {showTopicChips && (
+              <div className="mr-2">
+                <NewPostButton topic={currentTopic} />
+              </div>
+            )}
             <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+              className={`p-2 rounded-lg transition-colors`}
               aria-label="Toggle theme"
             >
               {theme === "light" ? (
@@ -115,29 +108,11 @@ export default function CommunityLayout({
               </div>
             </div>
           </div>
-          
-          <p className={`text-sm px-5 ${
-            theme === "light" ? "text-gray-600" : "text-slate-400"
-          }`}>
-            Stories, questions and live chats about your signs.
-          </p>
-
-          {/* Stories & Q&A | Live Tabs with New Post Button */}
-          <div className="flex items-center justify-between gap-4">
-            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-              <CommunityTabs />
-            </div>
-            {showTopicChips && (
-              <div className="mr-3">
-                <NewPostButton topic={currentTopic} />
-              </div>
-            )}
-          </div>
         </header>
 
         {/* Topic navigation chips - Only show for Stories & Q&A */}
         {showTopicChips && (
-          <nav className="mb-3 flex gap-2 overflow-x-auto pb-1 px-3" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <nav className="mb-3 flex gap-2 overflow-x-auto pb-1 px-4 sm:px-6" style={{ WebkitOverflowScrolling: 'touch' }}>
             {COMMUNITY_TOPICS.map((topic) => {
               const isActive = pathname === `/community/${topic.id}`;
               const borderWidth = '1px';
@@ -147,18 +122,18 @@ export default function CommunityLayout({
                 <Link
                   key={topic.id}
                   href={`/community/${topic.id}`}
-                  className={`whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium transition-colors duration-300 ${
+                  className={`whitespace-nowrap rounded-full px-3 py-1 text-base font-medium transition-colors duration-300 ${
                     isActive
-                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 text-white"
+                      ? "bg-gradient-to-r from-orange-700 via-orange-600 to-red-600 text-white"
                       : theme === "light"
-                        ? "bg-white text-gray-700"
+                        ? "bg-gray-100 text-gray-700"
                         : "bg-slate-900/60 text-slate-200"
                   }`}
                   style={{ 
                     minWidth: 'fit-content',
                     flexShrink: 0,
                     border: isActive 
-                      ? `${borderWidth} solid rgb(249, 115, 22)` 
+                      ? `${borderWidth} solid rgb(194, 65, 12)` 
                       : theme === "light" 
                         ? `${borderWidth} solid rgb(209, 213, 219)` 
                         : `${borderWidth} solid rgb(51, 65, 85)`,
@@ -175,7 +150,7 @@ export default function CommunityLayout({
           </nav>
         )}
 
-        <div className="px-4">
+        <div>
           {children}
         </div>
       </div>

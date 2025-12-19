@@ -11,6 +11,7 @@ export interface Conversation {
   isNewMatch?: boolean
   westernSign?: string
   easternSign?: string
+  matchedAt?: string // ISO timestamp of when the match was created
 }
 
 export interface Message {

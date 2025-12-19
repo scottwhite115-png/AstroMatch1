@@ -23,10 +23,16 @@ export async function POST(
     }
 
     // MODERATION GUARD: Check if user is suspended/banned
+    // Temporarily disabled if moderation helper has issues
+    try {
     const moderationCheck = await checkModerationStatus(user.id)
     if (!moderationCheck.allowed) {
       const errorResponse = moderationErrorResponse(moderationCheck)
       if (errorResponse) return errorResponse
+      }
+    } catch (modError) {
+      console.warn("[POST /api/community/posts/[postId]/comments] Moderation check failed, continuing:", modError);
+      // Continue without moderation check if it fails
     }
 
     const { postId } = await context.params
@@ -92,7 +98,7 @@ export async function POST(
             select: {
               id: true,
               display_name: true,
-              east_west_code: true,
+              western_sign: true,
               chinese_sign: true,
               photo_url: true,
             },
@@ -100,11 +106,13 @@ export async function POST(
         },
       })
 
-      // Increment comment count on post
-      await tx.post.update({
-        where: { id: postId },
-        data: { commentCount: { increment: 1 } },
-      })
+      // Increment comment count on post (only for top-level comments, not replies)
+      if (!parentId) {
+        await tx.post.update({
+          where: { id: postId },
+          data: { commentCount: { increment: 1 } },
+        })
+      }
 
       // Create notification for post author or parent comment author
       const notifyUserId = parentId ? parentComment!.authorId : post.authorId
@@ -135,15 +143,22 @@ export async function POST(
       author: {
         id: comment.author.id,
         displayName: comment.author.display_name || "Anonymous",
-        eastWestCode: comment.author.east_west_code,
-        chineseSign: comment.author.chinese_sign,
-        photoUrl: comment.author.photo_url,
+        eastWestCode: (comment.author.western_sign && comment.author.chinese_sign
+          ? `${comment.author.western_sign} ${comment.author.chinese_sign}`.trim()
+          : ""),
+        chineseSign: comment.author.chinese_sign || "",
+        photoUrl: comment.author.photo_url || null,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error("[POST /api/community/posts/[postId]/comments] Error:", error)
+    console.error("[POST /api/community/posts/[postId]/comments] Error details:", {
+      code: error.code,
+      message: error.message,
+      meta: error.meta,
+    })
     return NextResponse.json(
-      { error: "Failed to create comment" },
+      { error: error.message || "Failed to create comment" },
       { status: 500 }
     )
   }

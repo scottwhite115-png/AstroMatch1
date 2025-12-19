@@ -112,14 +112,17 @@ model Post {
   author       profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
   language     String? // ISO code like "en", optional
   countryCode  String? // ISO 2-letter country code, optional
-  likeCount    Int      @default(0)
+  likeCount    Int      @default(0) // Legacy - keeping for backward compatibility
+  upvoteCount  Int      @default(0) // Reddit-style upvotes
+  downvoteCount Int     @default(0) // Reddit-style downvotes
   commentCount Int      @default(0)
   isHidden     Boolean  @default(false) // Moderation: hide post without deleting
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   comments Comment[]
-  likes    PostLike[]
+  likes    PostLike[] // Legacy - keeping for backward compatibility
+  votes    PostVote[] // New voting system
   reports  PostReport[]
 
   @@index([topic, createdAt(sort: Desc)])
@@ -137,14 +140,17 @@ model Comment {
   parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
   replies  Comment[] @relation("CommentToComment")
 
-  authorId  String   @db.Uuid
-  author    profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  content   String
-  likeCount Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  authorId      String   @db.Uuid
+  author        profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content       String
+  likeCount     Int      @default(0) // Legacy - keeping for backward compatibility
+  upvoteCount   Int      @default(0) // Reddit-style upvotes
+  downvoteCount Int      @default(0) // Reddit-style downvotes
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   likes CommentLike[]
+  votes CommentVote[] // New voting system
 
   @@index([postId, createdAt])
   @@index([authorId])
@@ -162,12 +168,40 @@ model PostLike {
   @@index([userId])
 }
 
+model PostVote {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  vote      Int      // 1 for upvote, -1 for downvote
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
 model CommentLike {
   id        String   @id @default(cuid())
   commentId String
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   userId    String   @db.Uuid
   createdAt DateTime @default(now())
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+}
+
+model CommentVote {
+  id        String   @id @default(cuid())
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  vote      Int      // 1 for upvote, -1 for downvote
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([commentId, userId])
   @@index([commentId])

@@ -1,3 +1,16 @@
+// Load environment variables FIRST before any other imports
+import { config } from "dotenv"
+import { resolve } from "path"
+import { existsSync } from "fs"
+
+const envPath = resolve(process.cwd(), ".env.local")
+if (existsSync(envPath)) {
+  config({ path: envPath })
+} else {
+  config() // Try default .env
+}
+
+// Now import other modules that use env vars
 import { prisma } from "@/lib/prisma"
 import { PostType } from "@prisma/client"
 

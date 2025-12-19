@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import ProfilePhotoCarouselWithRanking from "@/components/ProfilePhotoCarouselWithRanking";
 import { ConnectionBoxNew } from "@/components/ConnectionBoxNew";
 import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple";
@@ -23,6 +23,10 @@ interface MatchProfileCardProps {
     prompts?: Array<{ question: string; answer: string }>;
     westernSign?: string;
     easternSign?: string;
+    relationshipGoals?: string[];
+    selectedRelationshipGoals?: string[];
+    interests?: any;
+    selectedOrganizedInterests?: any;
   };
   connectionBoxData?: ConnectionBoxData;
   theme?: "light" | "dark";
@@ -30,6 +34,12 @@ interface MatchProfileCardProps {
   onMessageClick?: () => void;
   onPass?: () => void;
   onLike?: () => void;
+  showProfileToggle?: boolean;
+  onShowProfileToggle?: () => void;
+  showElementsToggle?: boolean;
+  onShowElementsToggle?: () => void;
+  isNewMatch?: boolean;
+  matchedAt?: string;
 }
 
 const MessageCircle = ({ className, style }: { className?: string; style?: React.CSSProperties }) => (
@@ -87,8 +97,9 @@ function getPatternGradientColors(pattern?: string): { start: string; end: strin
     return { start: '#c084fc', end: '#e879f9' }; // purple-400 to fuchsia-400
   }
   
-  // Same Animal (Teal)
-  if (patternUpper.includes('SAME_ANIMAL') || patternUpper.includes('SAME ANIMAL')) {
+  // Same Animal/Sign (Teal)
+  if (patternUpper.includes('SAME_ANIMAL') || patternUpper.includes('SAME ANIMAL') || 
+      patternUpper.includes('SAME_SIGN') || patternUpper.includes('SAME SIGN')) {
     return { start: '#2dd4bf', end: '#14b8a6' }; // teal-400 to teal-500
   }
   
@@ -155,9 +166,48 @@ export default function MatchProfileCard({
   onMessageClick,
   onPass,
   onLike,
+  showProfileToggle: externalShowProfile,
+  onShowProfileToggle: externalOnShowProfileToggle,
+  showElementsToggle: externalShowElements,
+  onShowElementsToggle: externalOnShowElementsToggle,
+  isNewMatch,
+  matchedAt,
 }: MatchProfileCardProps) {
-  const [showProfile, setShowProfile] = useState(false);
-  const [showElements, setShowElements] = useState(false); // Toggle connection overview
+  // Use external state if provided, otherwise use internal state
+  const [internalShowProfile, setInternalShowProfile] = useState(false);
+  const [internalShowElements, setInternalShowElements] = useState(false);
+  
+  const showProfile = externalShowProfile !== undefined ? externalShowProfile : internalShowProfile;
+  const showElements = externalShowElements !== undefined ? externalShowElements : internalShowElements;
+  
+  const handleShowProfileToggle = () => {
+    console.log('[MatchProfileCard] Profile toggle clicked', { externalOnShowProfileToggle: !!externalOnShowProfileToggle, showProfile });
+    if (externalOnShowProfileToggle) {
+      externalOnShowProfileToggle();
+    } else {
+      if (showProfile) {
+        setInternalShowProfile(false);
+      } else {
+        setInternalShowProfile(true);
+        setInternalShowElements(false);
+      }
+    }
+  };
+  
+  const handleShowElementsToggle = () => {
+    console.log('[MatchProfileCard] Elements toggle clicked', { externalOnShowElementsToggle: !!externalOnShowElementsToggle, showElements });
+    if (externalOnShowElementsToggle) {
+      externalOnShowElementsToggle();
+    } else {
+      if (showElements) {
+        setInternalShowElements(false);
+      } else {
+        setInternalShowElements(true);
+        setInternalShowProfile(false);
+      }
+    }
+  };
+  
   const connectionBoxRef = useRef<HTMLDivElement>(null);
   
   // Extract the appropriate western sign based on what's provided in profile
@@ -214,84 +264,99 @@ export default function MatchProfileCard({
   // Get gradient colors based on pattern (not tier)
   const patternColors = getPatternGradientColors(connectionBoxData?.pattern);
   
+  const hasOpenDropdown = showProfile || showElements;
+  
+  // Debug logging
+  React.useEffect(() => {
+    console.log('[MatchProfileCard] State update:', {
+      showProfile,
+      showElements,
+      hasOpenDropdown,
+      hasConnectionBoxData: !!connectionBoxData,
+      externalShowProfile,
+      externalShowElements,
+      willRenderDropdown: hasOpenDropdown && !!connectionBoxData,
+    });
+  }, [showProfile, showElements, hasOpenDropdown, connectionBoxData, externalShowProfile, externalShowElements]);
+
   return (
     <div className="w-full flex justify-center">
       <div className="w-full">
-      {/* Photo Carousel with Border */}
-      {profile.photos.length > 0 && (
+      {/* Container with border that extends when dropdowns are open */}
       <div
-          className="w-full rounded-3xl relative"
+        className="w-full relative"
         style={{ 
-          border: `3px solid ${patternColors.start}`,
-          background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-          padding: '3px',
+          border: hasOpenDropdown ? `3px solid ${patternColors.start}` : 'none',
+          background: hasOpenDropdown ? `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})` : 'transparent',
+          padding: hasOpenDropdown ? '3px' : '0',
+          borderRadius: hasOpenDropdown ? '1.5rem' : '0',
           zIndex: 10,
-            marginBottom: '0',
+          marginBottom: '0',
         }}
       >
-          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
+        {/* Photo Carousel with Border (only when dropdowns are closed) */}
+        {profile.photos.length > 0 && (
+          <div
+            className="w-full rounded-3xl relative"
+            style={{ 
+              border: !hasOpenDropdown ? `3px solid ${patternColors.start}` : 'none',
+              background: !hasOpenDropdown ? `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})` : 'transparent',
+              padding: !hasOpenDropdown ? '3px' : '0',
+              marginBottom: hasOpenDropdown ? '0' : '0',
+            }}
+          >
+            <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
               <ProfilePhotoCarouselWithRanking
-            images={profile.photos}
-            profileName={profile.name}
-            profileAge={profile.age}
-            connectionBoxData={connectionBoxData}
-            theme={theme}
-            showDropdown={false}
-            badgePosition="overlay-bottom"
-            aboutMeText={profile.aboutMe}
-            selectedOccupation={profile.occupation}
-            selectedCity={profile.city}
-            cityInput={profile.city || ""}
-            selectedHeight={profile.height}
-            selectedChildrenOption={profile.children}
-            selectedReligion={profile.religion}
-            westernSign={displayWesternSign}
-            easternSign={displayEasternSign}
-            onPhotoChange={onPhotoChange}
-            showProfileToggle={showProfile}
-            onShowProfileToggle={() => {
-              if (showProfile) {
-                // If already open, close it
-                setShowProfile(false);
-              } else {
-                // Open profile and close connection overview
-                setShowProfile(true);
-                setShowElements(false);
-              }
-            }}
-            showElementsToggle={showElements}
-            onShowElementsToggle={() => {
-              if (showElements) {
-                // If already open, close it
-                setShowElements(false);
-              } else {
-                // Open connection overview and close profile
-                setShowElements(true);
-                setShowProfile(false);
-              }
-            }}
-              onMessageClick={onMessageClick}
-              patternColors={patternColors}
-            />
+                images={profile.photos}
+                profileName={profile.name}
+                profileAge={profile.age}
+                connectionBoxData={connectionBoxData}
+                theme={theme}
+                showDropdown={false}
+                badgePosition="overlay-bottom"
+                aboutMeText={profile.aboutMe}
+                selectedOccupation={profile.occupation}
+                selectedCity={profile.city}
+                cityInput={profile.city || ""}
+                selectedHeight={profile.height}
+                selectedChildrenOption={profile.children}
+                selectedReligion={profile.religion}
+                westernSign={displayWesternSign}
+                easternSign={displayEasternSign}
+                onPhotoChange={onPhotoChange}
+                showProfileToggle={showProfile}
+                onShowProfileToggle={handleShowProfileToggle}
+                showElementsToggle={showElements}
+                onShowElementsToggle={handleShowElementsToggle}
+                onMessageClick={onMessageClick}
+                patternColors={patternColors}
+                isNewMatch={isNewMatch}
+                matchedAt={matchedAt}
+              />
             </div>
           </div>
         )}
 
-      {/* Connection Box - Always visible, toggles control dropdowns */}
-      {(showProfile || showElements) && connectionBoxData && (
-        <div 
-          ref={connectionBoxRef}
-          className={`relative flex justify-center ${
-            theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
-          }`}
-          style={{
-            position: 'relative',
-            marginTop: '-3px',
-            paddingTop: '0',
-          }}
-        >
+        {/* Connection Box - Always visible, toggles control dropdowns */}
+        {hasOpenDropdown && connectionBoxData && (
+          <div 
+            ref={connectionBoxRef}
+            className={`relative flex justify-center ${
+              theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
+            }`}
+            style={{
+              position: 'relative',
+              marginTop: hasOpenDropdown ? '0' : '-3px',
+              paddingTop: '0',
+              borderTopLeftRadius: hasOpenDropdown ? '1.5rem' : '0',
+              borderTopRightRadius: hasOpenDropdown ? '1.5rem' : '0',
+              borderBottomLeftRadius: hasOpenDropdown ? '1.5rem' : '0',
+              borderBottomRightRadius: hasOpenDropdown ? '1.5rem' : '0',
+              overflow: 'hidden',
+            }}
+          >
             <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
-                <ConnectionBoxNew
+              <ConnectionBoxNew
                 tier={newTier}
                 score={connectionBoxData.score}
                 westA={westA}
@@ -333,11 +398,12 @@ export default function MatchProfileCard({
                 onPass={onPass}
                 onLike={onLike}
                 onMessage={onMessageClick}
-                onViewProfile={() => setShowProfile(!showProfile)}
+                onViewProfile={handleShowProfileToggle}
               />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       </div>
     </div>

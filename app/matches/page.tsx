@@ -31,7 +31,7 @@ import { evaluateMatch } from "@/engine/astromatch-engine"
 import { createClient } from "@/lib/supabase/client"
 import { recordLike } from "@/lib/match/recordLike"
 import { buildConnectionBox, buildConnectionBoxTop, buildMatchContext } from "@/lib/compat/engine"
-import { fetchUserProfile, fetchMatchableProfiles, fetchLikedProfileIds, fetchPassedProfileIds, filterSeenProfiles, updateLastActive, type EnrichedProfile } from "@/lib/supabase/profileQueries"
+import { fetchUserProfile, fetchMatchableProfiles, fetchLikedProfileIds, fetchPassedProfileIds, filterSeenProfiles, updateLastActive, findMatchBetweenUsers, type EnrichedProfile } from "@/lib/supabase/profileQueries"
 import { likeProfile, passProfile, type LikeResult } from "@/lib/supabase/matchActions"
 import { checkProfileCompletion } from "@/lib/profileCompletion"
 import type { UserProfile, SimpleConnectionBox, ConnectionBoxTop } from "@/lib/compat/types"
@@ -826,15 +826,6 @@ const SHUFFLED_PROFILES = typeof window !== 'undefined'
 
 
 export default function MatchesPage() {
-  // Always render something immediately on mobile
-  if (typeof window === 'undefined') {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <p className="text-gray-900">Loading...</p>
-      </div>
-    )
-  }
-
   const router = useRouter()
   const [mounted, setMounted] = useState(true) // Always true on client
   const [hasError, setHasError] = useState(false)
@@ -849,22 +840,7 @@ export default function MatchesPage() {
   
   // REMOVED: Old profile loading logic - now handled by the newer useEffect below
   
-  // Show error state if there's a critical error
-  if (hasError && enrichedProfiles.length === 0) {
-    return (
-      <div className={`flex items-center justify-center min-h-screen ${theme === "light" ? "bg-white" : "bg-slate-950"}`}>
-        <div className="text-center p-8">
-          <p className={`text-lg mb-4 ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Error loading profiles</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
-          >
-            Reload Page
-          </button>
-        </div>
-      </div>
-    )
-  }
+  // Note: Removed early returns - error state now shown in JSX below
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0)
   
   // Set mounted state on client side only
@@ -875,7 +851,6 @@ export default function MatchesPage() {
   }, [])
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
-  const [profilesLoading, setProfilesLoading] = useState(false) // Changed to false for immediate load
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
   const [searchFilters, setSearchFilters] = useState({
     westernSign: '',
@@ -1044,6 +1019,11 @@ export default function MatchesPage() {
         const completionStatus = checkProfileCompletion(profile)
         if (!completionStatus.isComplete) {
           console.warn('[Matches] ⚠️  Profile incomplete:', completionStatus.missingFields)
+          console.warn('[Matches] Missing fields details:', {
+            missingFields: completionStatus.missingFields,
+            percentage: completionStatus.percentage,
+            requirements: completionStatus.requiredFields
+          })
           // Redirect to onboarding (for now, just log warning)
           // router.push('/onboarding')
           // TODO: Uncomment above line when onboarding page is ready
@@ -1112,14 +1092,78 @@ export default function MatchesPage() {
           religion: p.religion || 'Not specified',
           relationshipGoals: p.relationship_goals || [],
           selectedRelationshipGoals: p.relationship_goals || [],
-          interests: p.interests || {},
-          selectedOrganizedInterests: p.interests || {},
+          interests: (() => {
+            // Reconstruct organized interests from flat array
+            if (!p.interests || !Array.isArray(p.interests) || p.interests.length === 0) {
+              return {}
+            }
+            
+            const interestCategories = {
+              "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
+              "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
+              "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
+              "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
+              "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
+            }
+            
+            const organized: {[category: string]: string[]} = {}
+            
+            // For each interest in the flat array, find which category it belongs to
+            p.interests.forEach((interest: string) => {
+              for (const [category, items] of Object.entries(interestCategories)) {
+                if (items.includes(interest)) {
+                  if (!organized[category]) {
+                    organized[category] = []
+                  }
+                  organized[category].push(interest)
+                  break // Found the category, move to next interest
+                }
+              }
+            })
+            
+            return organized
+          })(),
+          selectedOrganizedInterests: (() => {
+            // Same reconstruction for selectedOrganizedInterests
+            if (!p.interests || !Array.isArray(p.interests) || p.interests.length === 0) {
+              return {}
+            }
+            
+            const interestCategories = {
+              "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
+              "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
+              "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
+              "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
+              "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
+            }
+            
+            const organized: {[category: string]: string[]} = {}
+            
+            p.interests.forEach((interest: string) => {
+              for (const [category, items] of Object.entries(interestCategories)) {
+                if (items.includes(interest)) {
+                  if (!organized[category]) {
+                    organized[category] = []
+                  }
+                  organized[category].push(interest)
+                  break
+                }
+              }
+            })
+            
+            return organized
+          })(),
           distance: p.distance || 0,
         }))
 
         setEnrichedProfiles(formattedProfiles)
         setFilteredProfiles(formattedProfiles)
         console.log('[Matches] ✅ Profiles loaded and ready!')
+        console.log('[Matches] Sample profile data:', {
+          relationshipGoals: formattedProfiles[0]?.relationshipGoals,
+          interests: formattedProfiles[0]?.interests,
+          interestsKeys: formattedProfiles[0]?.interests ? Object.keys(formattedProfiles[0].interests) : []
+        })
 
       } catch (error) {
         console.error('[Matches] ❌ Error loading profiles:', error)
@@ -2411,10 +2455,17 @@ export default function MatchesPage() {
     // Step 4: Change profile while card is off screen
     setTimeout(() => {
       // Change profile FIRST while card is still off screen
-      handleNextProfile()
-      // Then reset animation state and swipe offset
-      setIsAnimating(false)
-      setSwipeOffset(0)
+      if (currentProfileIndex < filteredProfiles.length - 1) {
+        handleNextProfile()
+        // Reset animation state and swipe offset for next profile
+        setIsAnimating(false)
+        setSwipeOffset(0)
+      } else {
+        // Last profile - keep card swiped out, don't reset offset
+        console.log('[Matches] Last profile - card will stay swiped out')
+        setIsAnimating(false)
+        // Keep swipeOffset at 1000 so card stays off screen
+      }
     }, 1000) // 300ms pause + 700ms swipe animation
   }
 
@@ -2462,19 +2513,81 @@ export default function MatchesPage() {
     // Step 4: Change profile while card is off screen
     setTimeout(() => {
       // Change profile FIRST while card is still off screen
-      handleNextProfile()
-      // Then reset animation state and swipe offset
-      setIsAnimating(false)
-      setSwipeOffset(0)
+      if (currentProfileIndex < filteredProfiles.length - 1) {
+        handleNextProfile()
+        // Reset animation state and swipe offset for next profile
+        setIsAnimating(false)
+        setSwipeOffset(0)
+      } else {
+        // Last profile - keep card swiped out, don't reset offset
+        console.log('[Matches] Last profile - card will stay swiped out')
+        setIsAnimating(false)
+        // Keep swipeOffset at -1000 so card stays off screen
+      }
     }, 1000) // 300ms pause + 700ms swipe animation
   }
 
-  const handleChat = () => {
+  const handleChat = async () => {
     console.log('Chat with:', currentProfile.name)
     // Show button flash
     setMessageButtonFlash(true)
     setTimeout(() => setMessageButtonFlash(false), 400)
-    router.push(`/messages/${currentProfile.id}`)
+    
+    // Check if match exists, if not create it or like the profile first
+    if (currentUserId) {
+      try {
+        // Check receiver's instant messaging settings
+        const supabase = createClient()
+        const { data: receiverProfile } = await supabase
+          .from('profiles')
+          .select('allow_instant_messages_discover')
+          .eq('id', currentProfile.id)
+          .single()
+
+        const allowInstantMessages = receiverProfile?.allow_instant_messages_discover ?? true
+        
+        // First check if match exists
+        const match = await findMatchBetweenUsers(currentUserId, String(currentProfile.id))
+        
+        if (!match) {
+          // No match exists
+          if (!allowInstantMessages) {
+            // Instant messaging disabled - must match first
+            alert('This user requires a mutual match before messaging. Please swipe right on their profile first.')
+            return
+          }
+          
+          // Instant messaging enabled - try to like the profile to create a match
+          console.log('[Matches] No match found, attempting to like profile to create match...')
+          const likeResult = await likeProfile(currentUserId, String(currentProfile.id))
+          
+          if (likeResult.success && likeResult.isMatch) {
+            // Match created! Navigate to chat
+            console.log('[Matches] ✅ Match created! Navigating to chat...')
+            router.push(`/messages/${currentProfile.id}`)
+          } else if (likeResult.success) {
+            // Like saved but no match yet - still navigate (match might be created)
+            console.log('[Matches] Like saved, navigating to chat...')
+            router.push(`/messages/${currentProfile.id}`)
+          } else {
+            // Error liking - show message but still try to navigate
+            console.error('[Matches] Error liking profile:', likeResult.error)
+            alert('Unable to start conversation. Please try liking this profile first.')
+            return
+          }
+        } else {
+          // Match exists - navigate directly (matched users can always message)
+          console.log('[Matches] Match found, navigating to chat...')
+          router.push(`/messages/${currentProfile.id}`)
+        }
+      } catch (error) {
+        console.error('[Matches] Error in handleChat:', error)
+        // Still try to navigate - the messages page will handle the error
+        router.push(`/messages/${currentProfile.id}`)
+      }
+    } else {
+      router.push(`/messages/${currentProfile.id}`)
+    }
   }
 
   // Swipe handlers
@@ -2867,13 +2980,13 @@ export default function MatchesPage() {
     if (typeof window !== 'undefined') {
       console.log('[MatchesPage] Debug:', {
         mounted,
-        profilesLoading,
+        isLoadingProfiles,
         filteredProfilesLength: filteredProfiles.length,
         enrichedProfilesLength: enrichedProfiles.length,
         hasError
       })
     }
-  }, [mounted, profilesLoading, filteredProfiles.length, enrichedProfiles.length, hasError])
+  }, [mounted, isLoadingProfiles, filteredProfiles.length, enrichedProfiles.length, hasError])
 
   // Show loading state only on server (prevents hydration mismatch)
   if (typeof window === 'undefined') {
@@ -2893,13 +3006,16 @@ export default function MatchesPage() {
   }
 
   // Show loading indicator only if we have no profiles at all
-  if (profilesLoading && filteredProfiles.length === 0) {
+  if (isLoadingProfiles && filteredProfiles.length === 0) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
-        <div className="text-center">
-          <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-            Loading matches...
-          </p>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center -mt-32">
+          <div className="flex items-center justify-center gap-0.5 mb-2">
+            <FourPointedStar className="w-9 h-9 text-orange-500" />
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
+              AstroMatch
+            </h1>
+          </div>
         </div>
       </div>
     )
@@ -2908,34 +3024,21 @@ export default function MatchesPage() {
   // Force render even if profiles are empty - show something
   if (filteredProfiles.length === 0 && enrichedProfiles.length === 0) {
     return (
-      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-slate-950"}`}>
-        <div className="text-center px-4">
-          <p className={`text-lg mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-            No profiles available
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
-          >
-            Reload
-          </button>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center -mt-32">
+          <div className="flex items-center justify-center gap-0.5 mb-2">
+            <FourPointedStar className="w-9 h-9 text-orange-500" />
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
+              AstroMatch
+            </h1>
+          </div>
         </div>
       </div>
     )
   }
 
-  // Safety check: if no profiles, show a message instead of blank screen
-  if (filteredProfiles.length === 0 && !profilesLoading) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}>
-        <div className="text-center px-4">
-          <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-            No matches found. Try adjusting your filters.
-          </p>
-        </div>
-      </div>
-    )
-  }
+  // Note: Early returns removed to ensure header is always shown
+  // Empty state is handled in the main render below
 
   const containerStyle: React.CSSProperties = isTouchDevice
     ? {
@@ -2957,21 +3060,10 @@ export default function MatchesPage() {
         paddingTop: '0px',
       }
 
-  // Emergency fallback - always render something
-  if (typeof window !== 'undefined' && profilesToShow.length === 0) {
-    return (
-      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-slate-950"}`}>
-        <div className="text-center px-4">
-          <p className={`text-lg mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-            Loading profiles...
-          </p>
-          <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-400"}`}>
-            {enrichedProfiles.length} profiles found
-          </p>
-        </div>
-      </div>
-    )
-  }
+  // Note: Early return removed to ensure header is always shown
+  // Loading/empty states are handled in the main render below
+
+  // Note: Error state is handled in the main render to keep header visible
 
   return (
     <div
@@ -3419,7 +3511,7 @@ export default function MatchesPage() {
               {/* Theme Toggle Button */}
               <button
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+                className={`p-2 rounded-lg transition-colors`}
                 aria-label="Toggle theme"
               >
                 {theme === "light" ? (
@@ -3447,7 +3539,7 @@ export default function MatchesPage() {
 
         {/* Profile Card Stack */}
         {profilesToShow.length === 0 ? (
-          <div className="flex items-center justify-center min-h-screen">
+          <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)', paddingTop: '20px' }}>
             <div className="text-center px-4">
               <p className={`text-lg mb-2 ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
               <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
@@ -3497,7 +3589,9 @@ export default function MatchesPage() {
                       ? (filteredProfiles[currentProfileIndex + 1].siderealWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign)
                       : (filteredProfiles[currentProfileIndex + 1].tropicalWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign),
                     easternSign: filteredProfiles[currentProfileIndex + 1].easternSign,
-                  }}
+                    relationshipGoals: filteredProfiles[currentProfileIndex + 1].relationshipGoals || filteredProfiles[currentProfileIndex + 1].selectedRelationshipGoals,
+                    interests: filteredProfiles[currentProfileIndex + 1].interests || filteredProfiles[currentProfileIndex + 1].selectedOrganizedInterests,
+                  } as any}
                   connectionBoxData={compatBoxes[filteredProfiles[currentProfileIndex + 1].id]}
                   theme={theme}
                   onPhotoChange={() => {}}
@@ -3622,7 +3716,9 @@ export default function MatchesPage() {
                       ? (currentProfile.siderealWesternSign || currentProfile.westernSign)
                       : (currentProfile.tropicalWesternSign || currentProfile.westernSign),
                     easternSign: currentProfile.easternSign,
-                  }}
+                    relationshipGoals: currentProfile.relationshipGoals || currentProfile.selectedRelationshipGoals,
+                    interests: currentProfile.interests || currentProfile.selectedOrganizedInterests,
+                  } as any}
                   connectionBoxData={compatBoxes[currentProfile.id]}
                   theme={theme}
                   onPhotoChange={(index) => setCurrentPhotoIndex(index)}

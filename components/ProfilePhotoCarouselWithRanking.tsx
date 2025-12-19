@@ -194,6 +194,8 @@ interface ProfilePhotoCarouselWithRankingProps {
   onShowElementsToggle?: () => void;
   onMessageClick?: () => void;
   patternColors?: { start: string; end: string };
+  isNewMatch?: boolean; // Whether this is a new match (created within last 24 hours)
+  matchedAt?: string; // ISO timestamp of when the match was created
 }
 
 export default function ProfilePhotoCarouselWithRanking({
@@ -225,7 +227,16 @@ export default function ProfilePhotoCarouselWithRanking({
   onShowElementsToggle,
   onMessageClick,
   patternColors,
+  isNewMatch = false,
+  matchedAt,
 }: ProfilePhotoCarouselWithRankingProps) {
+  // Determine if this is a new match (within last 24 hours)
+  const isActuallyNewMatch = isNewMatch || (matchedAt ? (() => {
+    const matchDate = new Date(matchedAt);
+    const now = new Date();
+    const hoursSinceMatch = (now.getTime() - matchDate.getTime()) / (1000 * 60 * 60);
+    return hoursSinceMatch < 24; // Show "New Match" if match was created within last 24 hours
+  })() : false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [showDropdownMenu, setShowDropdownMenu] = useState(false);
   const [dropdownHeight, setDropdownHeight] = useState('auto');
@@ -398,22 +409,34 @@ export default function ProfilePhotoCarouselWithRanking({
         style={{ borderRadius: '1.5rem', margin: '0', padding: '0' }}
       >
         {/* Photo Navigation Areas - Only show when not zoomed */}
+        {/* Left side for previous photo */}
         <div
           onTouchStart={(e) => handleTouchStart(e, 'prev')}
           onTouchMove={handleTouchMove}
           onTouchEnd={() => handleTouchEnd('prev')}
           className="absolute left-0 top-0 w-1/3 cursor-pointer z-10"
           style={{
-            bottom: connectionBoxData && badgePosition === "bottom-bar" ? '80px' : '0'
+            bottom: connectionBoxData && badgePosition === "bottom-bar" ? '80px' : '0',
+            pointerEvents: 'auto',
           }}
         />
+        {/* Right side for next photo - but exclude button area */}
         <div
-          onTouchStart={(e) => handleTouchStart(e, 'next')}
+          onTouchStart={(e) => {
+            // Don't interfere with button clicks
+            const target = e.target as HTMLElement;
+            if (target.closest('button')) {
+              return;
+            }
+            handleTouchStart(e, 'next');
+          }}
           onTouchMove={handleTouchMove}
           onTouchEnd={() => handleTouchEnd('next')}
-          className="absolute right-0 top-0 w-1/3 cursor-pointer z-10"
+          className="absolute right-0 top-0 cursor-pointer z-10"
           style={{
-            bottom: connectionBoxData && badgePosition === "bottom-bar" ? '80px' : '0'
+            bottom: connectionBoxData && badgePosition === "bottom-bar" ? '80px' : '0',
+            width: 'calc(33% - 80px)', // Exclude button area (buttons are ~64px wide + padding)
+            pointerEvents: 'auto',
           }}
         />
 
@@ -434,13 +457,13 @@ export default function ProfilePhotoCarouselWithRanking({
         {profileName && (
           <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 30, pointerEvents: 'none' }}>
             <div className="px-5 pb-2">
-              <div className="text-white font-semibold text-3xl mb-1">
+              <div className="text-white font-semibold text-4xl mb-1">
                 {profileName}
               </div>
               {/* Geo Location */}
               {(selectedCity || cityInput) && (
-                <div className="text-white text-lg font-medium flex items-center gap-1">
-                  <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <div className="text-white text-xl font-medium flex items-center gap-1">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                   </svg>
                   {selectedCity || cityInput}
@@ -491,9 +514,21 @@ export default function ProfilePhotoCarouselWithRanking({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
+              console.log('[Photo Carousel] Connection Overview button clicked');
               onShowElementsToggle();
             }}
-            className="absolute right-4 z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            onTouchStart={(e) => {
+              e.stopPropagation();
+            }}
+            onTouchEnd={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              console.log('[Photo Carousel] Connection Overview button touched');
+              onShowElementsToggle();
+            }}
+            className="absolute right-4 z-[100] flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            data-interactive="true"
             style={{
               bottom: '80px', // Position above profile button with gap
               backgroundColor: 'transparent',
@@ -506,6 +541,8 @@ export default function ProfilePhotoCarouselWithRanking({
               boxShadow: theme === "light" 
                 ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
                 : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+              pointerEvents: 'auto',
+              touchAction: 'manipulation',
             }}
             aria-label="Toggle connection overview"
           >
@@ -521,9 +558,21 @@ export default function ProfilePhotoCarouselWithRanking({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
+              console.log('[Photo Carousel] Profile button clicked');
               onShowProfileToggle();
             }}
-            className="absolute right-4 z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            onTouchStart={(e) => {
+              e.stopPropagation();
+            }}
+            onTouchEnd={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              console.log('[Photo Carousel] Profile button touched');
+              onShowProfileToggle();
+            }}
+            className="absolute right-4 z-[100] flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            data-interactive="true"
             style={{
               bottom: '16px', // Position at bottom with padding
               backgroundColor: 'transparent',
@@ -536,6 +585,8 @@ export default function ProfilePhotoCarouselWithRanking({
               boxShadow: theme === "light" 
                 ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
                 : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+              pointerEvents: 'auto',
+              touchAction: 'manipulation',
             }}
             aria-label="Toggle profile"
           >
@@ -550,6 +601,29 @@ export default function ProfilePhotoCarouselWithRanking({
               <circle cx="12" cy="7" r="4" />
             </svg>
           </button>
+        )}
+
+        {/* New Match Badge - Top Left */}
+        {isActuallyNewMatch && (
+          <div className="absolute top-4 left-4 z-30">
+            <div 
+              className="px-3 py-1.5 rounded-full flex items-center gap-1.5"
+              style={{
+                backgroundColor: 'rgba(34, 197, 94, 0.9)', // Green background with transparency
+                backdropFilter: 'blur(10px)',
+                borderWidth: '2px',
+                borderStyle: 'solid',
+                borderColor: '#22c55e', // Green border
+                boxShadow: theme === "light" 
+                  ? `0 2px 12px rgba(34, 197, 94, 0.4)` 
+                  : `0 2px 12px rgba(34, 197, 94, 0.6)`,
+              }}
+            >
+              <span className="text-xs font-bold text-white">
+                NEW MATCH
+              </span>
+            </div>
+          </div>
         )}
 
         {/* Ranking Badge - Top Right (if badgePosition is "top-right") */}

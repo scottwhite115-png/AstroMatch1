@@ -1,0 +1,139 @@
+-- Safe Migration: Skips things that already exist
+-- This version won't error if columns/tables already exist
+
+-- CreateEnum (only if they don't exist)
+DO $$ BEGIN
+    CREATE TYPE "PostType" AS ENUM ('STORY', 'QUESTION');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE "NotificationType" AS ENUM ('POST_REPLY', 'COMMENT_REPLY');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE "SanHeHouse" AS ENUM ('VISIONARIES', 'STRATEGISTS', 'ADVENTURERS', 'ARTISTS');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE "ChatRegionScope" AS ENUM ('NEAR_ME', 'COUNTRY', 'GLOBAL');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+-- AlterTable: Add new fields to Post (only if they don't exist)
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='Post' AND column_name='type') THEN
+        ALTER TABLE "Post" ADD COLUMN "type" "PostType" NOT NULL DEFAULT 'STORY';
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='Post' AND column_name='language') THEN
+        ALTER TABLE "Post" ADD COLUMN "language" TEXT;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='Post' AND column_name='countryCode') THEN
+        ALTER TABLE "Post" ADD COLUMN "countryCode" TEXT;
+    END IF;
+END $$;
+
+-- AlterTable: Change Notification.type to enum (only if it's not already the enum type)
+DO $$ 
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='Notification' AND column_name='type' AND data_type != 'USER-DEFINED') THEN
+        ALTER TABLE "Notification" ALTER COLUMN "type" TYPE "NotificationType" USING ("type"::"NotificationType");
+    END IF;
+END $$;
+
+-- AlterTable: Update foreign key constraints (safe to run multiple times)
+ALTER TABLE "Comment" 
+DROP CONSTRAINT IF EXISTS "Comment_authorId_fkey";
+
+ALTER TABLE "Comment" 
+ADD CONSTRAINT "Comment_authorId_fkey" 
+  FOREIGN KEY ("authorId") REFERENCES "profiles"("id") ON DELETE CASCADE;
+
+ALTER TABLE "Post"
+DROP CONSTRAINT IF EXISTS "Post_authorId_fkey";
+
+ALTER TABLE "Post"
+ADD CONSTRAINT "Post_authorId_fkey" 
+  FOREIGN KEY ("authorId") REFERENCES "profiles"("id") ON DELETE CASCADE;
+
+-- CreateTable: SanHeRoom (only if it doesn't exist)
+CREATE TABLE IF NOT EXISTS "SanHeRoom" (
+    "id" TEXT NOT NULL,
+    "house" "SanHeHouse" NOT NULL,
+    "regionScope" "ChatRegionScope" NOT NULL,
+    "countryCode" TEXT,
+    "maxUsers" INTEGER NOT NULL DEFAULT 40,
+    "currentUsers" INTEGER NOT NULL DEFAULT 0,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SanHeRoom_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable: SanHeMessage (only if it doesn't exist)
+CREATE TABLE IF NOT EXISTS "SanHeMessage" (
+    "id" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
+    "authorId" UUID NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SanHeMessage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable: SanHePresence (only if it doesn't exist)
+CREATE TABLE IF NOT EXISTS "SanHePresence" (
+    "id" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
+    "lastSeenAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SanHePresence_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex: Post indexes (safe - DROP IF EXISTS handles it)
+DROP INDEX IF EXISTS "Post_topic_createdAt_idx";
+CREATE INDEX IF NOT EXISTS "Post_topic_createdAt_idx" ON "Post"("topic", "createdAt" DESC);
+
+DROP INDEX IF EXISTS "Post_createdAt_idx";
+CREATE INDEX IF NOT EXISTS "Post_createdAt_idx" ON "Post"("createdAt" DESC);
+
+-- CreateIndex: Notification indexes
+DROP INDEX IF EXISTS "Notification_userId_createdAt_idx";
+CREATE INDEX IF NOT EXISTS "Notification_userId_createdAt_idx" ON "Notification"("userId", "createdAt" DESC);
+
+-- CreateIndex: SanHeRoom indexes
+CREATE INDEX IF NOT EXISTS "SanHeRoom_house_regionScope_countryCode_idx" ON "SanHeRoom"("house", "regionScope", "countryCode");
+CREATE INDEX IF NOT EXISTS "SanHeRoom_isActive_idx" ON "SanHeRoom"("isActive");
+
+-- CreateIndex: SanHeMessage indexes
+CREATE INDEX IF NOT EXISTS "SanHeMessage_roomId_createdAt_idx" ON "SanHeMessage"("roomId", "createdAt");
+
+-- CreateIndex: SanHePresence indexes
+CREATE UNIQUE INDEX IF NOT EXISTS "SanHePresence_roomId_userId_key" ON "SanHePresence"("roomId", "userId");
+CREATE INDEX IF NOT EXISTS "SanHePresence_roomId_idx" ON "SanHePresence"("roomId");
+CREATE INDEX IF NOT EXISTS "SanHePresence_userId_idx" ON "SanHePresence"("userId");
+
+-- AddForeignKey: SanHeMessage relations (safe - DROP IF EXISTS handles it)
+ALTER TABLE "SanHeMessage" DROP CONSTRAINT IF EXISTS "SanHeMessage_roomId_fkey";
+ALTER TABLE "SanHeMessage" ADD CONSTRAINT "SanHeMessage_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "SanHeRoom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "SanHeMessage" DROP CONSTRAINT IF EXISTS "SanHeMessage_authorId_fkey";
+ALTER TABLE "SanHeMessage" ADD CONSTRAINT "SanHeMessage_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey: SanHePresence relations
+ALTER TABLE "SanHePresence" DROP CONSTRAINT IF EXISTS "SanHePresence_roomId_fkey";
+ALTER TABLE "SanHePresence" ADD CONSTRAINT "SanHePresence_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "SanHeRoom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE "SanHePresence" DROP CONSTRAINT IF EXISTS "SanHePresence_userId_fkey";
+ALTER TABLE "SanHePresence" ADD CONSTRAINT "SanHePresence_userId_fkey" FOREIGN KEY ("userId") REFERENCES "profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+

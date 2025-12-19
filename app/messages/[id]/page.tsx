@@ -14,6 +14,10 @@ import { getWuXingYearElement, type WuXing } from "@/lib/matchEngine"
 import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
 import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
 import MatchProfileCard from "@/components/MatchProfileCard"
+import { fetchUserProfile, fetchUserMatches, findMatchBetweenUsers } from "@/lib/supabase/profileQueries"
+import { createClient } from "@/lib/supabase/client"
+import { sendMessage, getMessages, subscribeToMessages } from "@/lib/supabase/messageActions"
+import { unmatchUser, reportUser, blockUser } from "@/lib/supabase/userActions"
 
 const ArrowLeft = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -108,13 +112,18 @@ export default function ChatPage() {
   const [gifs, setGifs] = useState<any[]>([])
   const [gifLoading, setGifLoading] = useState(false)
   const [conversation, setConversation] = useState<Conversation | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [loadError, setLoadError] = useState<string | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const menuRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [connectionBoxData, setConnectionBoxData] = useState<ConnectionBoxData | null>(null)
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const [showProfile, setShowProfile] = useState(false)
+  const [showElements, setShowElements] = useState(false)
   const sunSignSystem = useSunSignSystem()
+  const supabase = createClient()
   
   // User's zodiac signs for matching
   const [userZodiacSigns, setUserZodiacSigns] = useState<{western: string, chinese: string}>({
@@ -122,7 +131,13 @@ export default function ChatPage() {
     chinese: 'rabbit'
   })
 
-  const userId = params.id as string
+  // Profile data for both users
+  const [otherUserProfile, setOtherUserProfile] = useState<any>(null)
+  const [currentUserProfile, setCurrentUserProfile] = useState<any>(null)
+  const [matchId, setMatchId] = useState<string | null>(null)
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+
+  const userId = (params?.id as string) || ""
 
   // Load user's zodiac signs from localStorage
   useEffect(() => {
@@ -320,7 +335,7 @@ export default function ChatPage() {
       };
       
       // Get user's Wu Xing year element
-      let userYearElement: any;
+      let userYearElement: any = 'wood'; // Default fallback
       try {
         const userBirthInfo = localStorage.getItem("userBirthInfo");
         if (userBirthInfo) {
@@ -330,16 +345,20 @@ export default function ChatPage() {
             const userYear = userBirthDate.getFullYear();
             userYearElement = getWuXingYearElement(userYear);
           }
+        } else if (currentUserProfile?.birthdate) {
+          // Fallback to current user profile birthdate
+          const userBirthDate = new Date(currentUserProfile.birthdate);
+          const userYear = userBirthDate.getFullYear();
+          userYearElement = getWuXingYearElement(userYear);
         }
       } catch (error) {
         console.error('[Messages] Error calculating user Wu Xing year element:', error);
       }
       
-      // Get profile's zodiac signs (hardcoded for demo, should come from conversation in production)
-      // In production, these should be stored in the conversation object
-      const profileWesternSign = (conversation as any).westernSign || 'Gemini'
-      const profileEasternSign = (conversation as any).easternSign || 'Dragon'
-      const profileBirthdate = (conversation as any).birthdate || '1996-05-21'
+      // Get profile's zodiac signs - prioritize otherUserProfile from database
+      const profileWesternSign = otherUserProfile?.western_sign || (conversation as any).westernSign || 'Gemini'
+      const profileEasternSign = otherUserProfile?.chinese_sign || (conversation as any).easternSign || 'Dragon'
+      const profileBirthdate = otherUserProfile?.birthdate || (conversation as any).birthdate || '1996-05-21'
       const profileSunSigns = getBothSunSignsFromBirthdate(profileBirthdate)
       const profileTropical = capitalizeSign(profileSunSigns.tropical || profileWesternSign) as any
       const profileEastern = capitalizeSign(profileEasternSign)
@@ -354,10 +373,15 @@ export default function ChatPage() {
       const userDisplayWestCapitalized = capitalizeSign(userDisplayWest)
       
       // Calculate profile's Wu Xing year element
-      let profileYearElement: any;
+      let profileYearElement: any = 'wood'; // Default fallback
       try {
         if (profileBirthdate) {
           const profileBirthDate = new Date(profileBirthdate);
+          const profileYear = profileBirthDate.getFullYear();
+          profileYearElement = getWuXingYearElement(profileYear);
+        } else if (otherUserProfile?.birthdate) {
+          // Fallback to other user profile birthdate
+          const profileBirthDate = new Date(otherUserProfile.birthdate);
           const profileYear = profileBirthDate.getFullYear();
           profileYearElement = getWuXingYearElement(profileYear);
         }
@@ -397,8 +421,8 @@ export default function ChatPage() {
         selectedRelationshipGoals: (conversation as any).relationshipGoals,
         interests: (conversation as any).interests,
         selectedOrganizedInterests: (conversation as any).interests,
-        westernSign: profileDisplayWestCapitalized,
-        easternSign: profileEastern,
+        westernSign: otherUserProfile?.western_sign ? capitalizeSign(otherUserProfile.western_sign) : profileDisplayWestCapitalized,
+        easternSign: otherUserProfile?.chinese_sign ? capitalizeSign(otherUserProfile.chinese_sign) : profileEastern,
         birthdate: profileBirthdate,
       };
       
@@ -418,21 +442,208 @@ export default function ChatPage() {
       console.log('[Messages] Connection box:', boxData)
     } catch (error) {
       console.error('[Messages] Error building connection box:', error);
+      // Set a minimal connection box data to prevent errors
+      setConnectionBoxData(null)
     }
-  }, [userZodiacSigns, conversation, sunSignSystem])
+  }, [userZodiacSigns, conversation, sunSignSystem, currentUserProfile, otherUserProfile])
 
+  // Load profile data, match, and messages from database
   useEffect(() => {
-    let conv = getConversation(userId)
+    let subscription: any = null
+    let isMounted = true
+    let timeoutId: NodeJS.Timeout | null = null
+    
+    const loadChatData = async () => {
+      setIsLoading(true)
+      setLoadError(null)
+      
+      // Timeout fallback - if loading takes more than 10 seconds, show error
+      timeoutId = setTimeout(() => {
+        if (isMounted) {
+          console.error('[Chat] ⏱️ Loading timeout - taking too long')
+          setLoadError('Loading is taking longer than expected. Please try again.')
+          setIsLoading(false)
+        }
+      }, 10000)
+      
+      try {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          console.error('[Chat] No authenticated user')
+          setLoadError('Not authenticated. Please log in.')
+          setIsLoading(false)
+          return
+        }
+        
+        setCurrentUserId(user.id)
+        const currentProfile = await fetchUserProfile(user.id)
+        setCurrentUserProfile(currentProfile)
 
-    // If conversation doesn't exist, create it with placeholder data
-    if (!conv) {
-      // Try to get user info from matches or create placeholder
-      conv = createConversation(userId, `User ${userId}`, "/placeholder.svg?height=400&width=400")
+        // Get other user's profile
+        const otherProfile = await fetchUserProfile(userId)
+        if (!otherProfile) {
+          console.error('[Chat] Other user profile not found')
+          setLoadError('User profile not found.')
+          setIsLoading(false)
+          return
+        }
+        
+        setOtherUserProfile(otherProfile)
+        
+        // Find the match between current user and other user
+        // Try direct lookup first (more reliable)
+        let match = await findMatchBetweenUsers(user.id, userId)
+        console.log('[Chat] Direct match lookup result:', match)
+        
+        let matches: any[] = []
+        
+        // If direct lookup fails, try fetching all matches and finding it
+        if (!match) {
+          matches = await fetchUserMatches(user.id)
+          console.log('[Chat] All matches:', matches)
+          console.log('[Chat] Looking for match with userId:', userId, 'type:', typeof userId)
+          console.log('[Chat] Current user id:', user.id, 'type:', typeof user.id)
+          
+          // Normalize IDs to strings for comparison
+          const normalizedUserId = String(userId).trim()
+          const normalizedCurrentUserId = String(user.id).trim()
+          
+          match = matches.find((m: any) => {
+            // Normalize match IDs
+            const user1Id = String(m.user1_id || '').trim()
+            const user2Id = String(m.user2_id || '').trim()
+            
+            // Check if the other user's ID matches userId
+            const otherUserId = user1Id === normalizedCurrentUserId ? user2Id : user1Id
+            const otherUserProfile = user1Id === normalizedCurrentUserId ? m.user2 : m.user1
+            const otherUserProfileId = otherUserProfile?.id ? String(otherUserProfile.id).trim() : null
+            
+            console.log('[Chat] Checking match:', { 
+              matchId: m.id, 
+              user1_id: user1Id, 
+              user2_id: user2Id,
+              otherUserId,
+              otherUserProfileId,
+              userId: normalizedUserId,
+              currentUserId: normalizedCurrentUserId,
+              matchesUserId: otherUserId === normalizedUserId,
+              matchesProfileId: otherUserProfileId === normalizedUserId
+            })
+            
+            // Match if userId matches either the user ID or profile ID
+            return otherUserId === normalizedUserId || otherUserProfileId === normalizedUserId
+          })
+        }
+        
+        if (match) {
+          console.log('[Chat] ✅ Match found:', match.id)
+          setMatchId(match.id)
+          
+          // Mark this match as viewed in localStorage (to hide "New Match" badge)
+          const viewedMatches = JSON.parse(localStorage.getItem('viewedMatches') || '[]')
+          if (!viewedMatches.includes(match.id)) {
+            viewedMatches.push(match.id)
+            localStorage.setItem('viewedMatches', JSON.stringify(viewedMatches))
+          }
+          
+          // Load messages from database
+          const dbMessages = await getMessages(match.id, 100)
+          console.log('[Chat] Loaded messages from database:', dbMessages.length)
+          
+          // Convert database messages to chat format
+          const formattedMessages = dbMessages.map((msg: any) => ({
+            id: msg.id,
+            text: msg.content,
+            sent: msg.sender_id === user.id,
+            timestamp: msg.created_at,
+            image: msg.message_type === 'image' ? msg.content : undefined,
+            gif: msg.message_type === 'gif' ? msg.content : undefined,
+          }))
+          
+          setMessages(formattedMessages)
+          
+          // Set up real-time subscription for new messages
+          subscription = subscribeToMessages(match.id, (newMessage) => {
+            console.log('[Chat] 📨 New message received:', newMessage)
+            setMessages(prev => {
+              // Check if message already exists
+              if (prev.some(m => m.id === newMessage.id)) {
+                return prev
+              }
+              
+              return [...prev, {
+                id: newMessage.id,
+                text: newMessage.content,
+                sent: newMessage.sender_id === user.id,
+                timestamp: newMessage.created_at,
+                image: newMessage.message_type === 'image' ? newMessage.content : undefined,
+                gif: newMessage.message_type === 'gif' ? newMessage.content : undefined,
+              }]
+            })
+          })
+        } else {
+          console.error('[Chat] ❌ No match found between users')
+          console.error('[Chat] Debug info:', {
+            currentUserId: user.id,
+            otherUserId: userId,
+            totalMatches: matches.length,
+            matchUserIds: matches.map((m: any) => ({
+              user1_id: m.user1_id,
+              user2_id: m.user2_id,
+              matchId: m.id
+            }))
+          })
+          // Don't redirect here - let the user see the error when they try to send
+          // But still set conversation so the page can render
+        }
+        
+        // Update conversation with actual name (for UI) - always set this so page can render
+        let conv = getConversation(userId)
+        if (!conv) {
+          conv = createConversation(
+            userId, 
+            otherProfile.display_name || `User ${userId}`, 
+            otherProfile.photos?.[0] || "/placeholder.svg?height=400&width=400"
+          )
+        } else {
+          conv.userName = otherProfile.display_name || conv.userName
+          conv.userPhoto = otherProfile.photos?.[0] || conv.userPhoto
+        }
+        // Add matchedAt from match data if available
+        if (match && match.matched_at) {
+          conv.matchedAt = match.matched_at
+        }
+        setConversation(conv)
+        clearTimeout(timeoutId)
+        if (isMounted) {
+          setIsLoading(false)
+        }
+        
+      } catch (error) {
+        console.error('[Chat] Error loading chat data:', error)
+        clearTimeout(timeoutId)
+        if (isMounted) {
+          setLoadError('Failed to load chat. Please try again.')
+          setIsLoading(false)
+        }
+      }
     }
 
-    setConversation(conv)
-    setMessages(conv.messages)
-  }, [userId])
+    loadChatData()
+    
+    // Cleanup function for useEffect
+    return () => {
+      isMounted = false
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+      }
+      if (subscription && subscription.unsubscribe) {
+        console.log('[Chat] 🧹 Unsubscribing from messages')
+        subscription.unsubscribe()
+      }
+    }
+  }, [userId, supabase, sunSignSystem])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -461,24 +672,62 @@ export default function ChatPage() {
     }
   }, [showMenu])
 
-  const handleSend = () => {
-    if (message.trim() && conversation) {
-      updateConversation(userId, message.trim(), true)
+  const handleSend = async () => {
+    console.log('[Chat] handleSend called', { 
+      message: message.trim(), 
+      matchId, 
+      currentUserId, 
+      userId 
+    })
+    
+    if (!message.trim()) {
+      console.warn('[Chat] Message is empty')
+      return
+    }
+    
+    if (!matchId) {
+      console.error('[Chat] ❌ No matchId - cannot send message')
+      alert('Match not found. Please go back and try again.')
+      return
+    }
+    
+    if (!currentUserId) {
+      console.error('[Chat] ❌ No currentUserId - cannot send message')
+      alert('Not logged in. Please refresh the page.')
+      return
+    }
+    
+    if (!userId) {
+      console.error('[Chat] ❌ No userId - cannot send message')
+      return
+    }
 
-      const newMessage = {
-        id: messages.length + 1,
-        text: message,
-        sent: true,
-        timestamp: "Just now",
+    try {
+      console.log('[Chat] Sending message to database...')
+      // Send message to database - determine source from match context
+      // For now, default to 'connections' since chat is typically from connections page
+      const result = await sendMessage(matchId, currentUserId, userId, message.trim(), 'text', 'connections')
+      
+      console.log('[Chat] Send result:', result)
+      
+      if (result.success && result.message) {
+        // Add message to local state (optimistic update)
+        const newMessage = {
+          id: result.message.id,
+          text: result.message.content,
+          sent: true,
+          timestamp: result.message.created_at,
+        }
+        setMessages(prev => [...prev, newMessage])
+        setMessage("")
+        console.log('[Chat] ✅ Message sent successfully')
+      } else {
+        console.error('[Chat] ❌ Failed to send message:', result.error)
+        alert(`Failed to send message: ${result.error || 'Unknown error'}`)
       }
-      setMessages([...messages, newMessage])
-      setMessage("")
-
-      // Reload conversation to get updated data
-      const updatedConv = getConversation(userId)
-      if (updatedConv) {
-        setConversation(updatedConv)
-      }
+    } catch (error: any) {
+      console.error('[Chat] Error sending message:', error)
+      alert(`Failed to send message: ${error?.message || 'Unknown error'}`)
     }
   }
 
@@ -611,42 +860,130 @@ export default function ChatPage() {
     setConfirmDialog("block")
   }
 
-  const handleConfirmUnmatch = () => {
-    console.log("[v0] Unmatch confirmed")
+  const handleConfirmUnmatch = async () => {
+    console.log("[Chat] Unmatch confirmed")
     setConfirmDialog(null)
-    alert(`You have unmatched with User ${userId}. This conversation has been removed.`)
-    router.push("/messages")
+    
+    if (!currentUserId || !userId || !matchId) {
+      alert("Error: Missing user information. Please try again.")
+      return
+    }
+    
+    try {
+      const result = await unmatchUser(currentUserId, userId, matchId)
+      
+      if (result.success) {
+        alert(`You have unmatched with ${conversation?.userName || "this user"}. This conversation has been removed.`)
+        router.push("/messages")
+      } else {
+        alert(`Failed to unmatch: ${result.error || "Unknown error"}`)
+      }
+    } catch (error: any) {
+      console.error("[Chat] Error unmatching:", error)
+      alert(`Failed to unmatch: ${error?.message || "Unknown error"}`)
+    }
   }
 
-  const handleConfirmReport = () => {
-    console.log("[v0] Report confirmed")
+  const handleConfirmReport = async () => {
+    console.log("[Chat] Report confirmed")
     setConfirmDialog(null)
-    alert(
-      `Thank you for your report. User ${userId}'s profile and your chat history have been sent to Astromatch admin for review. We take all reports seriously and will investigate this matter.`,
-    )
+    
+    if (!currentUserId || !userId) {
+      alert("Error: Missing user information. Please try again.")
+      return
+    }
+    
+    try {
+      const result = await reportUser(currentUserId, userId, "Reported from chat")
+      
+      if (result.success) {
+        alert(
+          `Thank you for your report. ${conversation?.userName || "This user"}'s profile and your chat history have been sent to AstroMatch admin for review. We take all reports seriously and will investigate this matter.`,
+        )
+      } else {
+        alert(`Failed to report: ${result.error || "Unknown error"}`)
+      }
+    } catch (error: any) {
+      console.error("[Chat] Error reporting:", error)
+      alert(`Failed to report: ${error?.message || "Unknown error"}`)
+    }
   }
 
-  const handleConfirmBlock = () => {
-    console.log("[v0] Block confirmed")
+  const handleConfirmBlock = async () => {
+    console.log("[Chat] Block confirmed")
     setConfirmDialog(null)
-    alert(
-      `You have blocked User ${userId}.\n\n` +
-        `• This chat has been removed from your messages\n` +
-        `• Their profile has been removed from your matches and likes\n` +
-        `• They can no longer contact you or see your profile\n` +
-        `• You can unblock them anytime from Settings > Safety & Privacy > Blocked Users`,
-    )
-    router.push("/messages")
+    
+    if (!currentUserId || !userId) {
+      alert("Error: Missing user information. Please try again.")
+      return
+    }
+    
+    try {
+      const result = await blockUser(currentUserId, userId, matchId || undefined)
+      
+      if (result.success) {
+        alert(
+          `You have blocked ${conversation?.userName || "this user"}.\n\n` +
+            `• This chat has been removed from your messages\n` +
+            `• Their profile has been removed from your matches and likes\n` +
+            `• They can no longer contact you or see your profile\n` +
+            `• You can unblock them anytime from Settings > Safety & Privacy > Blocked Users`,
+        )
+        router.push("/messages")
+      } else {
+        alert(`Failed to block: ${result.error || "Unknown error"}`)
+      }
+    } catch (error: any) {
+      console.error("[Chat] Error blocking:", error)
+      alert(`Failed to block: ${error?.message || "Unknown error"}`)
+    }
   }
 
   const handleCancelConfirmation = () => {
     setConfirmDialog(null)
   }
 
-  if (!conversation) {
+  // Show loading state
+  if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-white">Loading conversation...</p>
+      <div className={`flex items-center justify-center min-h-screen ${theme === "light" ? "bg-white" : "bg-slate-900"}`}>
+        <div className="text-center">
+          <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>Loading conversation...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Show error state
+  if (loadError) {
+    return (
+      <div className={`flex items-center justify-center min-h-screen ${theme === "light" ? "bg-white" : "bg-slate-900"}`}>
+        <div className="text-center px-4">
+          <p className={`text-lg mb-4 ${theme === "light" ? "text-red-600" : "text-red-400"}`}>{loadError}</p>
+          <button
+            onClick={() => router.push("/messages")}
+            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+          >
+            Back to Messages
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  // Show error if no conversation and not loading
+  if (!conversation && !isLoading) {
+    return (
+      <div className={`flex items-center justify-center min-h-screen ${theme === "light" ? "bg-white" : "bg-slate-900"}`}>
+        <div className="text-center px-4">
+          <p className={`text-lg mb-4 ${theme === "light" ? "text-gray-900" : "text-white"}`}>Conversation not found</p>
+          <button
+            onClick={() => router.push("/messages")}
+            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+          >
+            Back to Messages
+          </button>
+        </div>
       </div>
     )
   }
@@ -665,13 +1002,15 @@ export default function ChatPage() {
         <div className="flex items-center gap-3">
           <div className="relative">
             <img
-              src={conversation.userPhoto || "/placeholder.svg"}
-              alt={conversation.userName}
+              src={otherUserProfile?.photos?.[0] || conversation?.userPhoto || "/placeholder.svg"}
+              alt={otherUserProfile?.display_name || conversation?.userName || "User"}
               className={`w-12 h-12 rounded-xl object-cover border-2 ${theme === "light" ? "border-gray-200" : "border-white/20"}`}
             />
           </div>
           <div>
-            <h2 className={`font-bold text-xl ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>{conversation.userName}</h2>
+            <h2 className={`font-bold text-xl ${theme === "light" ? "text-gray-900" : "text-white/80"}`}>
+              {otherUserProfile?.display_name || conversation?.userName || `User ${userId}`}
+            </h2>
           </div>
         </div>
 
@@ -836,22 +1175,26 @@ export default function ChatPage() {
             <MatchProfileCard
               profile={{
                 id: parseInt(userId) || 0,
-                name: conversation.userName,
-                age: (conversation as any).age || 28,
-                photos: (conversation as any).photos || [conversation.userPhoto || "/placeholder.svg"],
-                aboutMe: (conversation as any).aboutMe,
-                occupation: (conversation as any).occupation,
-                city: (conversation as any).city,
-                height: (conversation as any).height,
-                children: (conversation as any).children,
-                religion: (conversation as any).religion,
+                name: otherUserProfile?.display_name || conversation?.userName || `User ${userId}`,
+                age: otherUserProfile?.age || (conversation as any).age || 28,
+                photos: Array.isArray(otherUserProfile?.photos) 
+                  ? otherUserProfile.photos 
+                  : (otherUserProfile?.photos?.[0] 
+                      ? [otherUserProfile.photos[0]] 
+                      : (conversation?.userPhoto ? [conversation.userPhoto] : ["/placeholder.svg"])),
+                aboutMe: otherUserProfile?.bio || (conversation as any).aboutMe,
+                occupation: otherUserProfile?.occupation || (conversation as any).occupation,
+                city: otherUserProfile?.city || (conversation as any).city,
+                height: otherUserProfile?.height || (conversation as any).height,
+                children: otherUserProfile?.children_preference || (conversation as any).children,
+                religion: otherUserProfile?.religion || (conversation as any).religion,
                 prompts: (conversation as any).prompts,
-                westernSign: connectionBoxData?.b?.west || 'Gemini',
-                easternSign: connectionBoxData?.b?.east || 'Dragon',
-                relationshipGoals: (conversation as any).relationshipGoals || (conversation as any).selectedRelationshipGoals,
-                selectedRelationshipGoals: (conversation as any).relationshipGoals || (conversation as any).selectedRelationshipGoals,
-                interests: (conversation as any).interests || (conversation as any).selectedOrganizedInterests,
-                selectedOrganizedInterests: (conversation as any).interests || (conversation as any).selectedOrganizedInterests,
+                westernSign: otherUserProfile?.western_sign || (conversation as any)?.westernSign || 'Gemini',
+                easternSign: otherUserProfile?.chinese_sign || (conversation as any)?.easternSign || 'Dragon',
+                relationshipGoals: otherUserProfile?.relationship_goals || (conversation as any).relationshipGoals || (conversation as any).selectedRelationshipGoals || [],
+                selectedRelationshipGoals: otherUserProfile?.relationship_goals || (conversation as any).relationshipGoals || (conversation as any).selectedRelationshipGoals || [],
+                interests: otherUserProfile?.interests || (conversation as any).interests || (conversation as any).selectedOrganizedInterests || {},
+                selectedOrganizedInterests: otherUserProfile?.interests || (conversation as any).interests || (conversation as any).selectedOrganizedInterests || {},
               }}
               connectionBoxData={connectionBoxData || undefined}
               theme={theme}
@@ -859,6 +1202,32 @@ export default function ChatPage() {
               onMessageClick={() => {}}
               onPass={() => {}}
               onLike={() => {}}
+              showProfileToggle={showProfile}
+              onShowProfileToggle={() => {
+                console.log('[Chat] Profile toggle clicked, current state:', showProfile)
+                setShowProfile(prev => {
+                  const newState = !prev
+                  console.log('[Chat] Setting showProfile to:', newState)
+                  if (newState) {
+                    setShowElements(false)
+                  }
+                  return newState
+                })
+              }}
+              showElementsToggle={showElements}
+              onShowElementsToggle={() => {
+                console.log('[Chat] Elements toggle clicked, current state:', showElements)
+                setShowElements(prev => {
+                  const newState = !prev
+                  console.log('[Chat] Setting showElements to:', newState)
+                  if (newState) {
+                    setShowProfile(false)
+                  }
+                  return newState
+                })
+              }}
+              isNewMatch={false}
+              matchedAt={undefined}
             />
           )}
         </div>
@@ -868,12 +1237,20 @@ export default function ChatPage() {
       {showMenu && (
         <div
           ref={menuRef}
-          className="fixed right-4 top-16 w-56 rounded-lg shadow-xl overflow-hidden bg-white border border-gray-200"
+          className={`fixed right-4 top-16 w-56 rounded-lg shadow-xl overflow-hidden ${
+            theme === "light" 
+              ? "bg-white border border-gray-200" 
+              : "bg-slate-800 border border-slate-700"
+          }`}
           style={{ zIndex: 99999 }}
         >
           <button
             onClick={handleEnableNotifications}
-            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors text-gray-900 hover:bg-gray-100"
+            className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+              theme === "light"
+                ? "text-gray-900 hover:bg-gray-100"
+                : "text-white/90 hover:bg-slate-700"
+            }`}
           >
             <Bell className="w-5 h-5" />
             <span className="text-sm font-medium">Enable notifications</span>
@@ -881,7 +1258,11 @@ export default function ChatPage() {
 
           <button
             onClick={handleUnmatch}
-            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors text-gray-900 hover:bg-gray-100"
+            className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+              theme === "light"
+                ? "text-gray-900 hover:bg-gray-100"
+                : "text-white/90 hover:bg-slate-700"
+            }`}
           >
             <UserX className="w-5 h-5" />
             <span className="text-sm font-medium">Unmatch</span>
@@ -889,7 +1270,11 @@ export default function ChatPage() {
 
           <button
             onClick={handleReport}
-            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors text-red-600 hover:bg-red-50"
+            className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+              theme === "light"
+                ? "text-red-600 hover:bg-red-50"
+                : "text-red-400 hover:bg-red-900/20"
+            }`}
           >
             <Flag className="w-5 h-5" />
             <span className="text-sm font-medium">Report</span>
@@ -897,7 +1282,11 @@ export default function ChatPage() {
 
           <button
             onClick={handleBlock}
-            className="w-full flex items-center gap-3 px-4 py-3 text-left transition-colors text-red-600 hover:bg-red-50"
+            className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${
+              theme === "light"
+                ? "text-red-600 hover:bg-red-50"
+                : "text-red-400 hover:bg-red-900/20"
+            }`}
           >
             <ShieldOff className="w-5 h-5" />
             <span className="text-sm font-medium">Block</span>
@@ -913,17 +1302,25 @@ export default function ChatPage() {
           onClick={handleCancelConfirmation}
         >
           <div
-            className="w-full max-w-sm rounded-2xl p-6 shadow-2xl bg-white border border-gray-200"
+            className={`w-full max-w-sm rounded-2xl p-6 shadow-2xl ${
+              theme === "light"
+                ? "bg-white border border-gray-200"
+                : "bg-slate-800 border border-slate-700"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-xl font-bold mb-3 text-gray-900">
+            <h3 className={`text-xl font-bold mb-3 ${
+              theme === "light" ? "text-gray-900" : "text-white"
+            }`}>
               {confirmDialog === "unmatch"
-                ? "Unmatch with " + conversation.userName + "?"
+                ? "Unmatch with " + (conversation?.userName || "this user") + "?"
                 : confirmDialog === "report"
-                  ? "Report " + conversation.userName + "?"
-                  : "Block " + conversation.userName + "?"}
+                  ? "Report " + (conversation?.userName || "this user") + "?"
+                  : "Block " + (conversation?.userName || "this user") + "?"}
             </h3>
-            <p className="text-sm mb-6 text-gray-600">
+            <p className={`text-sm mb-6 ${
+              theme === "light" ? "text-gray-600" : "text-white/70"
+            }`}>
               {confirmDialog === "unmatch"
                 ? "You won't be able to message each other anymore and this conversation will be deleted."
                 : confirmDialog === "report"
@@ -933,7 +1330,11 @@ export default function ChatPage() {
             <div className="flex gap-3">
               <Button
                 onClick={handleCancelConfirmation}
-                className="flex-1 py-3 rounded-full font-semibold bg-gray-200 hover:bg-gray-300 text-gray-900"
+                className={`flex-1 py-3 rounded-full font-semibold ${
+                  theme === "light"
+                    ? "bg-gray-200 hover:bg-gray-300 text-gray-900"
+                    : "bg-slate-700 hover:bg-slate-600 text-white"
+                }`}
               >
                 Cancel
               </Button>

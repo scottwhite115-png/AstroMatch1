@@ -178,15 +178,29 @@ export async function fetchUserProfile(userId?: string): Promise<any | null> {
     userId = user.id
   }
 
+  console.log('[Profile Queries] Fetching profile for userId:', userId)
+
+  // Use wildcard to get all available columns (avoids 406 cache issues)
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', userId)
-    .single()
+    .maybeSingle()
+
+  console.log('[Profile Queries] Query result:', { 
+    hasData: !!data, 
+    hasError: !!error,
+    errorCode: error?.code,
+    errorMessage: error?.message 
+  })
 
   if (error) {
     console.error('[Profile Queries] Error fetching user profile:', error)
     return null
+  }
+
+  if (!data) {
+    console.warn('[Profile Queries] No profile data returned for userId:', userId)
   }
 
   return data
@@ -202,8 +216,8 @@ export async function fetchUserMatches(userId: string): Promise<any[]> {
     .from('matches')
     .select(`
       *,
-      user1:profiles!matches_user1_id_fkey(*),
-      user2:profiles!matches_user2_id_fkey(*)
+      user1:profiles!matches_user1_id_fkey(id, display_name, photos, western_sign, chinese_sign),
+      user2:profiles!matches_user2_id_fkey(id, display_name, photos, western_sign, chinese_sign)
     `)
     .or(`user1_id.eq.${userId},user2_id.eq.${userId}`)
     .eq('is_active', true)
@@ -222,6 +236,45 @@ export async function fetchUserMatches(userId: string): Promise<any[]> {
       profile: otherUser
     }
   }) || []
+}
+
+/**
+ * Find a match between two specific users
+ */
+export async function findMatchBetweenUsers(userId1: string, userId2: string): Promise<any | null> {
+  const supabase = createClient()
+  
+  // Try both orderings: user1_id/user2_id and user2_id/user1_id
+  const { data: data1, error: error1 } = await supabase
+    .from('matches')
+    .select('*')
+    .eq('user1_id', userId1)
+    .eq('user2_id', userId2)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (error1) {
+    console.error('[Profile Queries] Error finding match (order 1):', error1)
+  }
+
+  if (data1) {
+    return data1
+  }
+
+  // Try reverse order
+  const { data: data2, error: error2 } = await supabase
+    .from('matches')
+    .select('*')
+    .eq('user1_id', userId2)
+    .eq('user2_id', userId1)
+    .eq('is_active', true)
+    .maybeSingle()
+
+  if (error2) {
+    console.error('[Profile Queries] Error finding match (order 2):', error2)
+  }
+
+  return data2 || null
 }
 
 /**

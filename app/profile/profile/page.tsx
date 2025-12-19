@@ -486,6 +486,32 @@ export default function AstrologyProfilePage({
 
   const [distanceRadius, setDistanceRadius] = useState(50)
   const [ageRange, setAgeRange] = useState<[number, number]>([25, 40])
+  
+  // Instant messaging settings
+  const [allowInstantMessagesConnections, setAllowInstantMessagesConnections] = useState(true)
+  const [allowInstantMessagesDiscover, setAllowInstantMessagesDiscover] = useState(true)
+  
+  // Load instant messaging settings from profile
+  useEffect(() => {
+    const loadProfileSettings = async () => {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (!user) return
+        
+        const profile = await fetchUserProfile(user.id)
+        if (profile) {
+          setAllowInstantMessagesConnections(profile.allow_instant_messages_connections ?? true)
+          setAllowInstantMessagesDiscover(profile.allow_instant_messages_discover ?? true)
+        }
+      } catch (error) {
+        console.error('[Profile] Error loading instant messaging settings:', error)
+      }
+    }
+    
+    loadProfileSettings()
+  }, [])
 
   // Load birth info from localStorage on mount
   const [birthInfo, setBirthInfo] = useState(() => {
@@ -577,7 +603,7 @@ export default function AstrologyProfilePage({
     "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
     "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
     "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
-    "Sport & Fitness": ["Surfing", "Running", "F45", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
+    "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
     "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
   }
 
@@ -714,11 +740,11 @@ export default function AstrologyProfilePage({
     showLocation: true, // Added location visibility setting
   })
 
-  const [selectedOptions, setSelectedOptions] = useState<string[]>(["Yoga", "Hiking", "Reading", "Cooking", "Travel"])
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([])
   const [selectedOrganizedInterests, setSelectedOrganizedInterests] = useState<{[category: string]: string[]}>({})
   const [selectedLifestyleOptions, setSelectedLifestyleOptions] = useState<string[]>([])
   const [selectedFoods, setSelectedFoods] = useState<string[]>([])
-  const [selectedRelationshipGoals, setSelectedRelationshipGoals] = useState<string[]>(["Soul mate", "Best friend", "Intimate connection"])
+  const [selectedRelationshipGoals, setSelectedRelationshipGoals] = useState<string[]>([])
   const [selectedPrompts, setSelectedPrompts] = useState<string[]>([])
   const [promptAnswers, setPromptAnswers] = useState<{[key: string]: string}>({})
   const [selectedRomanticPrompts, setSelectedRomanticPrompts] = useState<string[]>([])
@@ -1239,22 +1265,38 @@ export default function AstrologyProfilePage({
     return () => clearTimeout(timeout)
   })
 
-  // Load photos from Supabase when component mounts
+  // Load profile data from Supabase when component mounts
   useEffect(() => {
-    const loadPhotos = async () => {
+    const loadProfileData = async () => {
       try {
         const supabase = createClient()
-        const { data: { user } } = await supabase.auth.getUser()
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
+        
+        console.log('[Profile] Loading profile data...')
+        console.log('[Profile] User:', user ? `${user.id.substring(0, 8)}...` : 'none')
+        console.log('[Profile] User error:', userError)
         
         if (!user) {
           console.log('[Profile] No user logged in')
           return
         }
 
-        // Fetch user profile to get photos
+        // Fetch user profile
+        console.log('[Profile] Fetching profile for user:', user.id)
         const profile = await fetchUserProfile(user.id)
         
-        if (profile && profile.photos && Array.isArray(profile.photos)) {
+        console.log('[Profile] Profile result:', profile ? 'Found' : 'NULL')
+        if (profile) {
+          console.log('[Profile] Profile has photos:', profile.photos?.length || 0)
+        }
+        
+        if (!profile) {
+          console.log('[Profile] No profile found - this user may not have completed onboarding')
+          return
+        }
+        
+        // Load photos
+        if (profile.photos && Array.isArray(profile.photos)) {
           // Map Supabase photos to component format
           const loadedPhotos = [
             { id: 1, src: profile.photos[0] || "", hasImage: !!profile.photos[0] },
@@ -1275,15 +1317,145 @@ export default function AstrologyProfilePage({
             }
           }
         }
+        
+        // Load name
+        if (profile.display_name) {
+          setName(profile.display_name)
+          if (typeof window !== 'undefined') {
+            localStorage.setItem("userFullName", profile.display_name)
+          }
+        }
+        
+        // Load about me / bio
+        if (profile.bio) {
+          setAboutMeText(profile.bio)
+        }
+        
+        // Load occupation
+        if (profile.occupation) {
+          setSelectedOccupation(profile.occupation)
+        }
+        
+        // Load city/location
+        if (profile.city) {
+          setSelectedCity(profile.city)
+          setCityInput(profile.city)
+        } else if (profile.location_name) {
+          setSelectedCity(profile.location_name)
+          setCityInput(profile.location_name)
+        }
+        
+        // Load height
+        if (profile.height) {
+          setSelectedHeight(profile.height)
+        }
+        
+        // Load children preference
+        if (profile.children_preference) {
+          setSelectedChildrenOption(profile.children_preference)
+        }
+        
+        // Load religion
+        if (profile.religion) {
+          setSelectedReligion(profile.religion)
+        }
+        
+        // Load relationship goals
+        if (profile.relationship_goals && Array.isArray(profile.relationship_goals)) {
+          setSelectedRelationshipGoals(profile.relationship_goals)
+        }
+        
+        // Load interests
+        if (profile.interests && Array.isArray(profile.interests)) {
+          // Organize interests by category
+          const organized: {[category: string]: string[]} = {}
+          Object.entries(interestCategories).forEach(([category, categoryInterests]) => {
+            const matched = categoryInterests.filter(interest => profile.interests.includes(interest))
+            if (matched.length > 0) {
+              organized[category] = matched
+            }
+          })
+          setSelectedOrganizedInterests(organized)
+          setSelectedInterests(profile.interests)
+        }
+        
+        // Load birthdate
+        if (profile.birthdate) {
+          setBirthInfo(prev => ({
+            ...prev,
+            birthdate: profile.birthdate
+          }))
+          const [year, month, day] = profile.birthdate.split("-").map(Number)
+          if (year && month && day) {
+            setSelectedYear(year)
+            setSelectedMonth(month)
+            setSelectedDay(day)
+            setCalendarMonth(month - 1)
+            setCalendarYear(year)
+          }
+        }
+        
+        // Load gender and orientation
+        if (profile.gender) {
+          setGenderOrientation(prev => ({
+            ...prev,
+            gender: profile.gender
+          }))
+        }
+        if (profile.orientation) {
+          setGenderOrientation(prev => ({
+            ...prev,
+            orientation: profile.orientation,
+            interestedIn: profile.orientation,
+            showMeTo: profile.orientation
+          }))
+        }
+        
+        // Load age range preferences
+        if (profile.age_min && profile.age_max) {
+          setAgeRange([profile.age_min, profile.age_max])
+        }
+        
+        // Load distance radius
+        if (profile.distance_radius !== undefined && profile.distance_radius !== null) {
+          setDistanceRadius(profile.distance_radius)
+        }
+        
+        // Load visibility settings
+        if (profile.show_occupation !== undefined) {
+          setVisibilitySettings(prev => ({
+            ...prev,
+            showOccupation: profile.show_occupation
+          }))
+        }
+        if (profile.show_height !== undefined) {
+          setVisibilitySettings(prev => ({
+            ...prev,
+            showHeight: profile.show_height
+          }))
+        }
+        if (profile.show_children !== undefined) {
+          setVisibilitySettings(prev => ({
+            ...prev,
+            showChildren: profile.show_children
+          }))
+        }
+        if (profile.show_location !== undefined) {
+          setVisibilitySettings(prev => ({
+            ...prev,
+            showLocation: profile.show_location
+          }))
+        }
+        
       } catch (error) {
-        console.error('[Profile] Error loading photos:', error)
+        console.error('[Profile] Error loading profile data:', error)
       }
     }
     
-    loadPhotos()
+    loadProfileData()
   }, [])
 
-  const handlePhotoUpload = (photoId: number, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoUpload = async (photoId: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (!file) return
 
@@ -1299,38 +1471,114 @@ export default function AstrologyProfilePage({
       return
     }
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const base64String = reader.result as string
-      const updatedPhotos = photos.map((photo) =>
-        photo.id === photoId ? { ...photo, src: base64String, hasImage: true } : photo,
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        alert("Please log in to upload photos")
+        return
+      }
+
+      // Upload photo to Supabase Storage
+      const photoIndex = photoId - 1 // Convert 1-6 to 0-5
+      const uploadResult = await uploadProfilePhoto(file, user.id, photoIndex)
+      
+      if (!uploadResult.success || !uploadResult.url) {
+        alert(uploadResult.error || "Failed to upload photo")
+        return
+      }
+
+      // Get current profile to update photos array
+      const profile = await fetchUserProfile(user.id)
+      const currentPhotos = profile?.photos || []
+      const updatedPhotos = [...currentPhotos]
+      updatedPhotos[photoIndex] = uploadResult.url
+
+      // Update profile in database
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ photos: updatedPhotos })
+        .eq('id', user.id)
+
+      if (updateError) {
+        console.error('[Photo Upload] Error updating profile:', updateError)
+        alert("Photo uploaded but failed to save to profile")
+        return
+      }
+
+      // Update local state
+      const updatedPhotoState = photos.map((photo) =>
+        photo.id === photoId ? { ...photo, src: uploadResult.url!, hasImage: true } : photo,
       )
-      setPhotos(updatedPhotos)
-      localStorage.setItem("userPhotos", JSON.stringify(updatedPhotos))
+      setPhotos(updatedPhotoState)
+      localStorage.setItem("userPhotos", JSON.stringify(updatedPhotoState))
       
       // If this is the first photo (id: 1), save it separately for the nav bar
       if (photoId === 1) {
-        localStorage.setItem("profilePhoto1", base64String)
+        localStorage.setItem("profilePhoto1", uploadResult.url)
         // Dispatch event to update navigation bar
         if (typeof window !== 'undefined') {
           window.dispatchEvent(new Event('profilePhotoUpdated'))
         }
       }
+    } catch (error) {
+      console.error('[Photo Upload] Error:', error)
+      alert("Failed to upload photo. Please try again.")
     }
-    reader.readAsDataURL(file)
   }
 
-  const handlePhotoDelete = (photoId: number) => {
-    const updatedPhotos = photos.map((photo) => (photo.id === photoId ? { ...photo, src: "", hasImage: false } : photo))
-    setPhotos(updatedPhotos)
-    if (typeof window !== 'undefined') {
-      localStorage.setItem("userPhotos", JSON.stringify(updatedPhotos))
+  const handlePhotoDelete = async (photoId: number) => {
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
       
-      // If deleting the first photo, also remove it from nav bar
-      if (photoId === 1) {
-        localStorage.removeItem("profilePhoto1")
-        window.dispatchEvent(new Event('profilePhotoUpdated'))
+      if (!user) {
+        alert("Please log in to delete photos")
+        return
       }
+
+      const photoIndex = photoId - 1 // Convert 1-6 to 0-5
+      const photoToDelete = photos[photoIndex]
+      
+      // Delete from Supabase Storage if it's a URL (not base64)
+      if (photoToDelete?.src && photoToDelete.src.startsWith('http')) {
+        await deleteProfilePhoto(photoToDelete.src)
+      }
+
+      // Get current profile to update photos array
+      const profile = await fetchUserProfile(user.id)
+      const currentPhotos = profile?.photos || []
+      const updatedPhotos = [...currentPhotos]
+      updatedPhotos[photoIndex] = null // Set to null instead of removing to maintain array length
+
+      // Update profile in database
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ photos: updatedPhotos })
+        .eq('id', user.id)
+
+      if (updateError) {
+        console.error('[Photo Delete] Error updating profile:', updateError)
+        alert("Failed to delete photo from profile")
+        return
+      }
+
+      // Update local state
+      const updatedPhotoState = photos.map((photo) => (photo.id === photoId ? { ...photo, src: "", hasImage: false } : photo))
+      setPhotos(updatedPhotoState)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem("userPhotos", JSON.stringify(updatedPhotoState))
+        
+        // If deleting the first photo, also remove it from nav bar
+        if (photoId === 1) {
+          localStorage.removeItem("profilePhoto1")
+          window.dispatchEvent(new Event('profilePhotoUpdated'))
+        }
+      }
+    } catch (error) {
+      console.error('[Photo Delete] Error:', error)
+      alert("Failed to delete photo. Please try again.")
     }
   }
 
@@ -2547,8 +2795,14 @@ export default function AstrologyProfilePage({
     }
     
     setSelectedOrganizedInterests(updatedSelectedOrganizedInterests)
+    
+    // Also update the flat selectedInterests array to keep it in sync
+    const flattenedInterests = Object.values(updatedSelectedOrganizedInterests).flat()
+    setSelectedInterests(flattenedInterests)
+    
     if (typeof window !== 'undefined') {
       localStorage.setItem("selectedOrganizedInterests", JSON.stringify(updatedSelectedOrganizedInterests))
+      localStorage.setItem("selectedInterests", JSON.stringify(flattenedInterests))
     }
   }
 
@@ -2580,10 +2834,28 @@ export default function AstrologyProfilePage({
   }
 
   const toggleInterestCategoryDropdown = (category: string) => {
-    setShowInterestCategoryDropdowns(prev => ({
-      ...prev,
-      [category]: !prev[category]
-    }))
+    setShowInterestCategoryDropdowns(prev => {
+      const isCurrentlyOpen = prev[category]
+      
+      // If closing the current category, just close it
+      if (isCurrentlyOpen) {
+        return {
+          ...prev,
+          [category]: false
+        }
+      }
+      
+      // If opening a category, close all others and open only this one
+      const allClosed = Object.keys(prev).reduce((acc, key) => {
+        acc[key] = false
+        return acc
+      }, {} as {[key: string]: boolean})
+      
+      return {
+        ...allClosed,
+        [category]: true
+      }
+    })
   }
 
   const toggleChildrenVisibility = () => {
@@ -2704,14 +2976,127 @@ export default function AstrologyProfilePage({
     }
   }
 
-  const handleSaveChanges = () => {
-    // Set saved state
-    setSavedSuccessfully(true)
+  const handleSaveChanges = async () => {
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (!user) {
+        alert("Please log in to save changes")
+        return
+      }
 
-    // Reset after 1.5 seconds
-    setTimeout(() => {
-      setSavedSuccessfully(false)
-    }, 1500)
+      // Calculate age from birthdate
+      let calculatedAge: number | undefined
+      if (birthInfo.birthdate) {
+        const [year, month, day] = birthInfo.birthdate.split("-").map(Number)
+        const today = new Date()
+        calculatedAge = today.getFullYear() - year
+        const monthDiff = today.getMonth() + 1 - month
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+          calculatedAge--
+        }
+      }
+
+      // Upload any base64 photos to Supabase Storage and get URLs
+      const photoUrls: (string | null)[] = []
+      for (let i = 0; i < photos.length; i++) {
+        const photo = photos[i]
+        if (photo.hasImage && photo.src) {
+          if (photo.src.startsWith('http')) {
+            // Already a URL, use it
+            photoUrls[i] = photo.src
+          } else if (photo.src.startsWith('data:image')) {
+            // Base64 image, upload it
+            try {
+              // Convert base64 to File
+              const response = await fetch(photo.src)
+              const blob = await response.blob()
+              const file = new File([blob], `photo_${i}.jpg`, { type: blob.type })
+              
+              const uploadResult = await uploadProfilePhoto(file, user.id, i)
+              if (uploadResult.success && uploadResult.url) {
+                photoUrls[i] = uploadResult.url
+                // Update local state with URL
+                const updatedPhotos = [...photos]
+                updatedPhotos[i] = { ...updatedPhotos[i], src: uploadResult.url }
+                setPhotos(updatedPhotos)
+              } else {
+                console.error('[Save Changes] Failed to upload photo:', uploadResult.error)
+                photoUrls[i] = null
+              }
+            } catch (error) {
+              console.error('[Save Changes] Error uploading base64 photo:', error)
+              photoUrls[i] = null
+            }
+          } else {
+            photoUrls[i] = null
+          }
+        } else {
+          photoUrls[i] = null
+        }
+      }
+      
+      // Filter out nulls to get final array
+      const finalPhotoUrls = photoUrls.filter((url): url is string => url !== null)
+
+      // Prepare update object
+      const updateData: any = {
+        display_name: name.trim() || null,
+        bio: aboutMeText.trim() || null,
+        occupation: selectedOccupation.trim() || null,
+        city: selectedCity || cityInput || null,
+        height: selectedHeight || null,
+        children_preference: selectedChildrenOption || null,
+        religion: selectedReligion || null,
+        relationship_goals: selectedRelationshipGoals.length > 0 ? selectedRelationshipGoals : null,
+        interests: (() => {
+          // Flatten selectedOrganizedInterests into a single array
+          const flattenedInterests = Object.values(selectedOrganizedInterests).flat()
+          return flattenedInterests.length > 0 ? flattenedInterests : null
+        })(),
+        birthdate: birthInfo.birthdate || null,
+        age: calculatedAge || null,
+        gender: genderOrientation.gender || null,
+        orientation: genderOrientation.orientation || null,
+        age_min: ageRange[0] || null,
+        age_max: ageRange[1] || null,
+        distance_radius: distanceRadius || null,
+        show_occupation: visibilitySettings.showOccupation,
+        show_height: visibilitySettings.showHeight,
+        show_children: visibilitySettings.showChildren,
+        show_location: visibilitySettings.showLocation,
+        allow_instant_messages_connections: allowInstantMessagesConnections,
+        allow_instant_messages_discover: allowInstantMessagesDiscover,
+        photos: finalPhotoUrls.length > 0 ? finalPhotoUrls : null,
+        updated_at: new Date().toISOString()
+      }
+
+      // Update profile in database
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('id', user.id)
+
+      if (updateError) {
+        console.error('[Save Changes] Error updating profile:', updateError)
+        console.error('[Save Changes] Error details:', JSON.stringify(updateError, null, 2))
+        console.error('[Save Changes] Update data:', updateData)
+        alert(`Failed to save changes: ${updateError.message || JSON.stringify(updateError)}`)
+        return
+      }
+
+      // Set saved state
+      setSavedSuccessfully(true)
+
+      // Reset after 1.5 seconds
+      setTimeout(() => {
+        setSavedSuccessfully(false)
+      }, 1500)
+    } catch (error) {
+      console.error('[Save Changes] Error:', error)
+      alert("Failed to save changes. Please try again.")
+    }
   }
 
   return (
@@ -2721,38 +3106,50 @@ export default function AstrologyProfilePage({
     >
 
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2 flex items-center justify-between">
-          <div className="flex items-center gap-0.5">
-            <FourPointedStar className="w-4 h-4 text-orange-500" />
-            <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-              AstroMatch
-            </span>
+        <div className="px-4 pt-0.5 pb-1.5">
+          <div className="flex items-center justify-between mb-1.5">
+            <div className="flex-1 -ml-8">
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+                <div className="flex gap-0.5 min-w-max">
+                  <button
+                    className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out flex items-center gap-0.5`}
+                  >
+                    <FourPointedStar className="w-4 h-4 text-orange-500" />
+                    <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                      AstroMatch
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Theme Toggle Button */}
+            <div className="flex items-center gap-2 ml-2">
+              <button
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+                aria-label="Toggle theme"
+              >
+                {theme === "light" ? (
+                  <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
-          
-          {/* Theme Toggle Button */}
-          <button
-            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-            className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? (
-              <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </svg>
-            )}
-          </button>
         </div>
 
         {/* Horizontal Tabs Navigation */}
@@ -3628,6 +4025,72 @@ export default function AstrologyProfilePage({
                 <div className="flex justify-between text-xs">
                   <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>0km</span>
                   <span className={theme === "starlight" ? "text-white/50" : theme === "light" ? "text-gray-500" : "text-white/50"}>200km</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Instant Messaging Settings */}
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <SectionHeader
+                label="Instant Messaging"
+              />
+              <div className="space-y-4">
+                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
+                  Control who can send you instant messages. When disabled, users must match with you first.
+                </p>
+                
+                {/* Connections Section Setting */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={`font-medium ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+                      Allow instant messages from Connections
+                    </p>
+                    <p className={`text-xs mt-1 ${theme === "light" ? "text-gray-500" : "text-white/50"}`}>
+                      Users in your connections can message you directly
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setAllowInstantMessagesConnections(!allowInstantMessagesConnections)}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      allowInstantMessagesConnections
+                        ? "bg-gradient-to-r from-orange-400 to-orange-500"
+                        : "bg-gray-400"
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 bg-white rounded-full shadow-md transition-all absolute top-0.5 ${
+                        allowInstantMessagesConnections ? "translate-x-6" : "translate-x-0.5"
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Discover Section Setting */}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className={`font-medium ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+                      Allow instant messages from Discover
+                    </p>
+                    <p className={`text-xs mt-1 ${theme === "light" ? "text-gray-500" : "text-white/50"}`}>
+                      Users in discover can message you directly
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setAllowInstantMessagesDiscover(!allowInstantMessagesDiscover)}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      allowInstantMessagesDiscover
+                        ? "bg-gradient-to-r from-orange-400 to-orange-500"
+                        : "bg-gray-400"
+                    }`}
+                  >
+                    <div
+                      className={`w-5 h-5 bg-white rounded-full shadow-md transition-all absolute top-0.5 ${
+                        allowInstantMessagesDiscover ? "translate-x-6" : "translate-x-0.5"
+                      }`}
+                    />
+                  </button>
                 </div>
               </div>
             </div>

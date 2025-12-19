@@ -240,7 +240,7 @@ export function CommunityClient({ initialTopic = "relationship" }: { initialTopi
         {/* Topic heading */}
         <section className="mb-3 space-y-1">
           <h1 className={`text-lg font-semibold flex items-center gap-2 ${
-            theme === "light" ? "text-gray-900" : "text-white"
+            theme === "light" ? "text-slate-700" : "text-white"
           }`}>
             <span>{activeTopic.icon}</span>
             <span>{activeTopic.label}</span>

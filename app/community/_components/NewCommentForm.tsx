@@ -57,7 +57,7 @@ export function NewCommentForm({ postId }: NewCommentFormProps) {
           rows={3}
           className={`w-full rounded-xl border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500/70 focus:border-emerald-500 resize-none ${
             theme === "light"
-              ? "border-gray-300 bg-white text-gray-900"
+              ? "border-gray-300 bg-white text-slate-700"
               : "border-slate-700 bg-slate-950/60 text-slate-50"
           }`}
           placeholder="Write a comment..."

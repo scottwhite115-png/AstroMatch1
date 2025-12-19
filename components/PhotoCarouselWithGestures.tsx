@@ -458,8 +458,22 @@ export default function PhotoCarouselWithGestures({
       <div
         ref={containerRef}
         className={`relative overflow-hidden ${className}`}
-        onClick={handleContainerClick}
-        onTouchStart={handleTouchStart}
+        onClick={(e) => {
+          // Don't handle clicks on buttons or interactive elements
+          const target = e.target as HTMLElement;
+          if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]')) {
+            return;
+          }
+          handleContainerClick(e);
+        }}
+        onTouchStart={(e) => {
+          // Don't handle touches on buttons or interactive elements
+          const target = e.target as HTMLElement;
+          if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]')) {
+            return;
+          }
+          handleTouchStart(e);
+        }}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onDoubleClick={handleDoubleClick}
@@ -514,8 +528,10 @@ export default function PhotoCarouselWithGestures({
           ))}
         </div>
         
-        {/* Overlay children (indicators, buttons, etc.) */}
-        {children}
+        {/* Overlay children (indicators, buttons, etc.) - positioned absolutely with high z-index */}
+        <div className="absolute inset-0" style={{ zIndex: 100 }}>
+          {children}
+        </div>
       </div>
 
       {/* Full-Screen Zoom Overlay */}

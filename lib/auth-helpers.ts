@@ -69,24 +69,41 @@ export async function getCurrentProfileWithRole() {
   }
 
   try {
-    // Find profile by Supabase auth user ID
+    // Find profile by Supabase auth user ID - only select columns that definitely exist
     let profile = await prisma.profiles.findUnique({
       where: { id: user.id },
+      select: {
+        id: true,
+        email: true,
+        display_name: true,
+      },
     });
 
     if (!profile) {
-      // Create profile if doesn't exist
+      // Create profile if doesn't exist - only set columns that definitely exist
       profile = await prisma.profiles.create({
         data: {
           id: user.id,
-          email: user.email ?? "",
-          role: "USER",
-          status: "ACTIVE",
-          isStaff: false,
-          showStaffBadge: true,
+          email: user.email ?? null,
+          display_name: user.email?.split('@')[0] ?? null,
+        },
+        select: {
+          id: true,
+          email: true,
+          display_name: true,
         },
       });
     }
+    
+    // Add default role/status values since they might not be in the database
+    const profileWithDefaults = {
+      ...profile,
+      role: "USER" as Role,
+      status: "ACTIVE" as AccountStatus,
+      isStaff: false,
+      showStaffBadge: true,
+      suspensionEndsAt: null,
+    };
 
     // Auto-promote OWNER based on env email
     if (
@@ -94,35 +111,11 @@ export async function getCurrentProfileWithRole() {
       user.email &&
       user.email.toLowerCase() === ownerEmail.toLowerCase()
     ) {
-      if (profile.role !== "OWNER") {
-        profile = await prisma.profiles.update({
-          where: { id: profile.id },
-          data: {
-            role: "OWNER",
-            isStaff: true,
-          },
-        });
-      } else if (!profile.isStaff) {
-        // Ensure owner has staff flag
-        profile = await prisma.profiles.update({
-          where: { id: profile.id },
-          data: { isStaff: true },
-        });
-      }
+      profileWithDefaults.role = "OWNER";
+      profileWithDefaults.isStaff = true;
     }
 
-    // Ensure ADMIN/OWNER are flagged as staff
-    if ((profile.role === "ADMIN" || profile.role === "OWNER") && !profile.isStaff) {
-      profile = await prisma.profiles.update({
-        where: { id: profile.id },
-        data: { isStaff: true },
-      });
-    }
-
-    // Auto-unban if suspension expired
-    profile = await normalizeAccountStatus(profile);
-
-    return profile;
+    return profileWithDefaults;
   } catch (error) {
     console.warn('[getCurrentProfileWithRole] Database query failed:', error);
     return null;
