@@ -43,7 +43,7 @@ export default function MessagesPage() {
   const [isDragging, setIsDragging] = useState(false)
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
   const [instantMessageEnabled, setInstantMessageEnabled] = useState(true)
-  const [activeTab, setActiveTab] = useState<'connections' | 'astrolab'>('connections')
+  const [activeTab, setActiveTab] = useState<'connections'>('connections')
 
   // Load instant message setting from localStorage
   useEffect(() => {
@@ -417,28 +417,6 @@ export default function MessagesPage() {
                 <div 
                   className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
                     activeTab === 'connections' 
-                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
-                      : "opacity-0"
-                  }`}
-                />
-              </button>
-              <button
-                onClick={() => {
-                  setActiveTab('astrolab')
-                  router.push('/astrology')
-                }}
-                className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out -ml-2 ${
-                  activeTab === 'astrolab'
-                    ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
-                    : theme === "light"
-                      ? "text-gray-600 hover:text-gray-900"
-                      : "text-gray-400 hover:text-gray-200"
-                }`}
-              >
-                AstroLab
-                <div 
-                  className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
-                    activeTab === 'astrolab' 
                       ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
                       : "opacity-0"
                   }`}

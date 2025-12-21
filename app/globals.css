@@ -446,7 +446,7 @@ body::-webkit-scrollbar {
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 16px;
-  padding: 1.5rem 1rem;
+  padding: 1rem 1rem 1.5rem 1rem;
   text-align: center;
   transition: all 0.3s ease;
   position: relative;
@@ -932,6 +932,361 @@ body::-webkit-scrollbar {
 .light .zodiac-sign-card h3,
 .light .zodiac-sign-card span {
   color: rgba(17, 24, 39, 0.9) !important;
+}
+
+/* Magnetic Opposites text - orange color override */
+.light .zodiac-sign-card .magnetic-opposites-text {
+  color: #f97316 !important;
+}
+
+.dark .zodiac-sign-card .magnetic-opposites-text {
+  color: #fb923c !important;
+}
+
+/* Self-Punishment heading - orange color override */
+.light .zodiac-sign-card .self-punishment-heading {
+  color: #f97316 !important;
+}
+
+.dark .zodiac-sign-card .self-punishment-heading {
+  color: #fb923c !important;
+}
+
+/* Punishment group names - rose color override */
+.light .zodiac-sign-card table td .punishment-group-name,
+.light .zodiac-sign-card table .punishment-group-name,
+.light .zodiac-sign-card td .punishment-group-name,
+.light .zodiac-sign-card .punishment-group-name,
+.light .zodiac-sign-card div.punishment-group-name {
+  color: #be185d !important;
+}
+
+.dark .zodiac-sign-card table td .punishment-group-name,
+.dark .zodiac-sign-card table .punishment-group-name,
+.dark .zodiac-sign-card td .punishment-group-name,
+.dark .zodiac-sign-card .punishment-group-name,
+.dark .zodiac-sign-card div.punishment-group-name {
+  color: #fb7185 !important;
+}
+
+/* Six Conflicts sign names - rose color override */
+.light .zodiac-sign-card table tbody tr td .six-conflicts-sign-name,
+.light .zodiac-sign-card table td .six-conflicts-sign-name,
+.light .zodiac-sign-card table .six-conflicts-sign-name,
+.light .zodiac-sign-card td .six-conflicts-sign-name,
+.light .zodiac-sign-card .six-conflicts-sign-name,
+.light .zodiac-sign-card div.six-conflicts-sign-name,
+.light .zodiac-sign-card table tbody tr td div.six-conflicts-sign-name {
+  color: #be185d !important;
+}
+
+.dark .zodiac-sign-card table tbody tr td .six-conflicts-sign-name,
+.dark .zodiac-sign-card table td .six-conflicts-sign-name,
+.dark .zodiac-sign-card table .six-conflicts-sign-name,
+.dark .zodiac-sign-card td .six-conflicts-sign-name,
+.dark .zodiac-sign-card .six-conflicts-sign-name,
+.dark .zodiac-sign-card div.six-conflicts-sign-name,
+.dark .zodiac-sign-card table tbody tr td div.six-conflicts-sign-name {
+  color: #fb7185 !important;
+}
+
+/* Six Conflicts sign names - additional override with higher specificity */
+#six-conflicts .zodiac-sign-card table tbody tr td div.six-conflicts-sign-name,
+#six-conflicts .zodiac-sign-card table td div.six-conflicts-sign-name,
+#six-conflicts table tbody tr td div.six-conflicts-sign-name,
+#six-conflicts table td div.six-conflicts-sign-name,
+#six-conflicts div.six-conflicts-sign-name,
+div.six-conflicts-sign-name {
+  color: #be185d !important;
+}
+
+.dark #six-conflicts .zodiac-sign-card table tbody tr td div.six-conflicts-sign-name,
+.dark #six-conflicts .zodiac-sign-card table td div.six-conflicts-sign-name,
+.dark #six-conflicts table tbody tr td div.six-conflicts-sign-name,
+.dark #six-conflicts table td div.six-conflicts-sign-name,
+.dark #six-conflicts div.six-conflicts-sign-name,
+.dark div.six-conflicts-sign-name {
+  color: #fb7185 !important;
+}
+
+/* Punishment group names - additional override with higher specificity */
+#punishment .zodiac-sign-card table tbody tr td div.punishment-group-name,
+#punishment .zodiac-sign-card table td div.punishment-group-name,
+#punishment table tbody tr td div.punishment-group-name,
+#punishment table td div.punishment-group-name,
+#punishment div.punishment-group-name,
+div.punishment-group-name {
+  color: #be185d !important;
+}
+
+.dark #punishment .zodiac-sign-card table tbody tr td div.punishment-group-name,
+.dark #punishment .zodiac-sign-card table td div.punishment-group-name,
+.dark #punishment table tbody tr td div.punishment-group-name,
+.dark #punishment table td div.punishment-group-name,
+.dark #punishment div.punishment-group-name,
+.dark div.punishment-group-name {
+  color: #fb7185 !important;
+}
+
+/* Self-Punishment sign names - rose color override */
+#punishment .zodiac-sign-card table tbody tr td div.self-punishment-sign-name,
+#punishment .zodiac-sign-card table td div.self-punishment-sign-name,
+#punishment table tbody tr td div.self-punishment-sign-name,
+#punishment table td div.self-punishment-sign-name,
+#punishment div.self-punishment-sign-name,
+div.self-punishment-sign-name {
+  color: #be185d !important;
+}
+
+.dark #punishment .zodiac-sign-card table tbody tr td div.self-punishment-sign-name,
+.dark #punishment .zodiac-sign-card table td div.self-punishment-sign-name,
+.dark #punishment table tbody tr td div.self-punishment-sign-name,
+.dark #punishment table td div.self-punishment-sign-name,
+.dark #punishment div.self-punishment-sign-name,
+.dark div.self-punishment-sign-name {
+  color: #fb7185 !important;
+}
+
+/* Disable touch highlights on all tables */
+.astrology-page table,
+.astrology-page table tr,
+.astrology-page table td,
+.astrology-page table th,
+.astrology-page .zodiac-sign-card table,
+.astrology-page .zodiac-sign-card table tr,
+.astrology-page .zodiac-sign-card table td,
+.astrology-page .zodiac-sign-card table th {
+  -webkit-tap-highlight-color: transparent !important;
+  tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none !important;
+  pointer-events: auto;
+}
+
+/* Disable all hover effects on tables */
+.astrology-page table:hover,
+.astrology-page table tr:hover,
+.astrology-page table td:hover,
+.astrology-page table th:hover,
+.astrology-page .zodiac-sign-card table:hover,
+.astrology-page .zodiac-sign-card table tr:hover,
+.astrology-page .zodiac-sign-card table td:hover,
+.astrology-page .zodiac-sign-card table th:hover {
+  background-color: inherit !important;
+  background: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+}
+
+/* Disable all active/touch effects on tables */
+.astrology-page table:active,
+.astrology-page table tr:active,
+.astrology-page table td:active,
+.astrology-page table th:active,
+.astrology-page .zodiac-sign-card table:active,
+.astrology-page .zodiac-sign-card table tr:active,
+.astrology-page .zodiac-sign-card table td:active,
+.astrology-page .zodiac-sign-card table th:active {
+  background-color: inherit !important;
+  background: inherit !important;
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Disable all focus effects on tables */
+.astrology-page table:focus,
+.astrology-page table tr:focus,
+.astrology-page table td:focus,
+.astrology-page table th:focus,
+.astrology-page .zodiac-sign-card table:focus,
+.astrology-page .zodiac-sign-card table tr:focus,
+.astrology-page .zodiac-sign-card table td:focus,
+.astrology-page .zodiac-sign-card table th:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
+  background-color: inherit !important;
+  background: inherit !important;
+}
+
+/* Disable hover/active effects on table containers (divs with borders) */
+.astrology-page .zodiac-sign-card > div:has(table):hover,
+.astrology-page .zodiac-sign-card > div:has(table):active,
+.astrology-page .zodiac-sign-card > div:has(table):focus,
+.astrology-page div[class*="border"]:has(table):hover,
+.astrology-page div[class*="border"]:has(table):active,
+.astrology-page div[class*="border"]:has(table):focus {
+  background-color: inherit !important;
+  background: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Disable all interactive effects on table wrapper divs */
+.astrology-page div:has(table):hover,
+.astrology-page div:has(table):active,
+.astrology-page div:has(table):focus {
+  background-color: inherit !important;
+  background: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* REMOVE TOUCH/ROLLOVER HIGHLIGHT FROM CHINESE PATTERN RANKING OUTER CONTAINER */
+/* Disable hover/active/touch effects on the outer zodiac-sign-card container */
+#chinese-patterns .zodiac-sign-card,
+#chinese-patterns .zodiac-sign-card:hover,
+#chinese-patterns .zodiac-sign-card:active,
+#chinese-patterns .zodiac-sign-card:focus {
+  -webkit-tap-highlight-color: transparent !important;
+  tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  outline: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Disable the ::before pseudo-element that creates the light-up effect */
+#chinese-patterns .zodiac-sign-card::before,
+#chinese-patterns .zodiac-sign-card:hover::before,
+#chinese-patterns .zodiac-sign-card:active::before,
+#chinese-patterns .zodiac-sign-card:focus::before {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Disable transition on the outer container */
+#chinese-patterns .zodiac-sign-card {
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+/* REMOVE TOUCH/ROLLOVER HIGHLIGHT FROM WHAT SHAPES YOUR MATCH SCORE SECTION */
+/* Disable hover/active/touch effects on the outer zodiac-sign-card container */
+#what-shapes-score .zodiac-sign-card,
+#what-shapes-score .zodiac-sign-card:hover,
+#what-shapes-score .zodiac-sign-card:active,
+#what-shapes-score .zodiac-sign-card:focus {
+  -webkit-tap-highlight-color: transparent !important;
+  tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  outline: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+}
+
+/* Disable the ::before pseudo-element that creates the light-up effect */
+#what-shapes-score .zodiac-sign-card::before,
+#what-shapes-score .zodiac-sign-card:hover::before,
+#what-shapes-score .zodiac-sign-card:active::before,
+#what-shapes-score .zodiac-sign-card:focus::before {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Disable transition on the outer container */
+#what-shapes-score .zodiac-sign-card {
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+/* Disable hover/active/touch effects on inner boxes */
+#what-shapes-score .border.rounded-lg:hover,
+#what-shapes-score .border.rounded-lg:active,
+#what-shapes-score .border.rounded-lg:focus,
+#what-shapes-score div[class*="border"]:hover,
+#what-shapes-score div[class*="border"]:active,
+#what-shapes-score div[class*="border"]:focus {
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+  background-color: inherit !important;
+  background: inherit !important;
+}
+
+/* Disable zodiac-sign-card hover effects when they contain tables */
+.astrology-page .zodiac-sign-card:has(table):hover,
+.astrology-page .zodiac-sign-card:has(table):active,
+.astrology-page .zodiac-sign-card:has(table):focus {
+  transform: none !important;
+  border-color: inherit !important;
+  box-shadow: none !important;
+  background-color: inherit !important;
+  background: inherit !important;
+  opacity: 1 !important;
+}
+
+.astrology-page .zodiac-sign-card:has(table):hover::before,
+.astrology-page .zodiac-sign-card:has(table):active::before,
+.astrology-page .zodiac-sign-card:has(table):focus::before {
+  opacity: 0 !important;
+}
+
+/* Alternative approach: disable all hover/active/transform on zodiac-sign-card containing tables */
+.astrology-page .zodiac-sign-card table,
+.astrology-page .zodiac-sign-card table * {
+  pointer-events: auto;
+}
+
+.astrology-page .zodiac-sign-card:has(table) {
+  transition: none !important;
+}
+
+.astrology-page .zodiac-sign-card:has(table):hover {
+  transform: none !important;
+  border-color: inherit !important;
+  box-shadow: none !important;
+}
+
+.astrology-page .zodiac-sign-card:has(table):hover::before {
+  opacity: 0 !important;
+}
+
+/* Disable all hover/active effects on table container divs (border rounded-lg) */
+.astrology-page div.border.rounded-lg:has(table):hover,
+.astrology-page div.border.rounded-lg:has(table):active,
+.astrology-page div.border.rounded-lg:has(table):focus {
+  background-color: inherit !important;
+  background: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Disable all hover/active effects on scrollable table containers */
+.astrology-page div[class*="overflow-x-auto"]:has(table):hover,
+.astrology-page div[class*="overflow-x-auto"]:has(table):active,
+.astrology-page div[class*="overflow-x-auto"]:has(table):focus {
+  background-color: inherit !important;
+  background: inherit !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 /* Override zodiac-name and zodiac-dates colors in light mode combination pages */

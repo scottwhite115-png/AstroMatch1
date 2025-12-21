@@ -84,6 +84,8 @@ model profiles {
   reports         PostReport[]  @relation("ReporterReports")
   blocksInitiated UserBlock[]   @relation("BlocksInitiated")
   blocksReceived  UserBlock[]   @relation("BlocksReceived")
+  moments         Moment[]
+  momentReports   MomentReport[] @relation("MomentReporter")
 }
 
 model connections {
@@ -301,4 +303,61 @@ model UserBlock {
   @@unique([blockerId, blockedId])
   @@index([blockerId])
   @@index([blockedId])
+}
+
+// ========================================
+// Moments Models
+// ========================================
+
+model Moment {
+  id          String   @id @default(uuid())
+  userId      String   @db.Uuid
+  content     String
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  expiresAt   DateTime
+  archivedAt  DateTime?
+  isDeleted   Boolean  @default(false)
+
+  user       profiles @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies     MomentReply[]
+  reactions   MomentReaction[]
+  reports     MomentReport[]
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model MomentReply {
+  id        String   @id @default(uuid())
+  momentId String
+  userId   String   @db.Uuid
+  content  String
+  createdAt DateTime @default(now())
+
+  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+}
+
+model MomentReaction {
+  id        String   @id @default(uuid())
+  momentId String
+  userId   String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+
+  @@unique([momentId, userId])
+}
+
+model MomentReport {
+  id        String   @id @default(uuid())
+  momentId String
+  reporterId String @db.Uuid
+  reason    String
+  createdAt DateTime @default(now())
+
+  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+  reporter profiles @relation("MomentReporter", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([momentId])
 }

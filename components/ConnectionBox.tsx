@@ -107,6 +107,7 @@ interface ConnectionBoxProps {
   city?: string;
   occupation?: string;
   height?: string;
+  children?: string;
   interests?: {[category: string]: string[]};
   relationshipGoals?: string[];
   
@@ -392,6 +393,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   city,
   occupation,
   height,
+  children,
   interests,
   relationshipGoals,
   theme = "dark",
@@ -417,9 +419,9 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
       showAbout,
       showOverview,
       hasConnectionOverview: !!(connectionOverviewText || westernCompatibilityDescription),
-      hasAboutContent: !!(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height),
+      hasAboutContent: !!(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children),
     });
-  }, [externalShowProfile, externalShowElements, showAbout, showOverview, connectionOverviewText, westernCompatibilityDescription, aboutPartnerText, relationshipGoals, interests, city, occupation, age, height]);
+  }, [externalShowProfile, externalShowElements, showAbout, showOverview, connectionOverviewText, westernCompatibilityDescription, aboutPartnerText, relationshipGoals, interests, city, occupation, age, height, children]);
 
   const elementRelation =
     elementRelationOverride ?? getElementRelation(elements.a, elements.b);
@@ -756,7 +758,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         )}
 
         {/* Dropdowns - About Partner */}
-        {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height) && (
+        {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
           <div className={`rounded-2xl text-sm relative z-20 ${
             theme === "light" 
               ? "text-slate-800" 
@@ -896,8 +898,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               </div>
             )}
 
-            {/* Essentials - Location, Occupation, Age, Height */}
-            {(city || occupation || age || height) && (
+            {/* Essentials - Location, Occupation, Age, Height, Children */}
+            {(city || occupation || age || height || children) && (
               <div style={{ marginBottom: '2rem' }}>
                 <h4 
                   className="text-base font-semibold mb-1.5"
@@ -946,6 +948,18 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                         <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
                       </svg>
                       <span>{height}</span>
+                    </div>
+                  )}
+                  {/* Children */}
+                  {children && (
+                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                      </svg>
+                      <span>{children}</span>
                     </div>
                   )}
                 </div>

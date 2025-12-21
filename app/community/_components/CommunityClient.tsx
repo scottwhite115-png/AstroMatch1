@@ -3,7 +3,7 @@
 import { useMemo, useState, useCallback } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 import { NewPostButton } from "./NewPostButton";
-import { PostList } from "./PostList";
+import MomentsFeed from "./MomentsFeed";
 
 // Four-pointed star icon for Astromatch logo
 const FourPointedStar = ({ className }: { className?: string }) => (
@@ -236,21 +236,9 @@ export function CommunityClient({ initialTopic = "relationship" }: { initialTopi
       )}
 
       {/* Main content */}
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4 py-4 pb-24">
-        {/* Topic heading */}
-        <section className="mb-3 space-y-1">
-          <h1 className={`text-lg font-semibold flex items-center gap-2 ${
-            theme === "light" ? "text-slate-700" : "text-white"
-          }`}>
-            <span>{activeTopic.icon}</span>
-            <span>{activeTopic.label}</span>
-          </h1>
-        </section>
-
-        {/* Posts feed - Server component will be rendered here */}
-        <section className="space-y-3">
-          <PostList topic={activeTopicId} />
-        </section>
+      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col pb-24">
+        {/* Moments feed */}
+        <MomentsFeed />
       </main>
     </div>
   );

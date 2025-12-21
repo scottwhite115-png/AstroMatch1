@@ -24,3 +24,5 @@ CREATE TABLE IF NOT EXISTS "CommentVote" (
 CREATE INDEX IF NOT EXISTS "CommentVote_commentId_idx" ON "CommentVote"("commentId");
 CREATE INDEX IF NOT EXISTS "CommentVote_userId_idx" ON "CommentVote"("userId");
 
+
+

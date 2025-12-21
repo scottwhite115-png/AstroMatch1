@@ -863,7 +863,7 @@ export default function MatchesPage() {
   const [friendFinderEnabled, setFriendFinderEnabled] = useState(false)
   const [allowInstantMessages, setAllowInstantMessages] = useState(true) // Default ON
   const [filteredProfiles, setFilteredProfiles] = useState(enrichedProfiles)
-  const [activeTab, setActiveTab] = useState<'matches' | 'astrolab'>('matches')
+  const [activeTab, setActiveTab] = useState<'matches'>('matches')
   const [isUserInteracting, setIsUserInteracting] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(() => {
     if (typeof window === 'undefined') return false
@@ -3237,28 +3237,6 @@ export default function MatchesPage() {
                       <div 
                         className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
                           activeTab === 'matches' 
-                            ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
-                            : "opacity-0"
-                        }`}
-                      />
-                    </button>
-                    <button
-                      onClick={() => {
-                        setActiveTab('astrolab')
-                        router.push('/astrology')
-                      }}
-                      className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out -ml-2 ${
-                        activeTab === 'astrolab'
-                          ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
-                          : theme === "light"
-                            ? "text-gray-600 hover:text-gray-900"
-                            : "text-gray-400 hover:text-gray-200"
-                      }`}
-                    >
-                      AstroLab
-                      <div 
-                        className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
-                          activeTab === 'astrolab' 
                             ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
                             : "opacity-0"
                         }`}

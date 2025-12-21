@@ -21,7 +21,7 @@ export function SectionHeader({ label, icon }: SectionHeaderProps) {
       )}
 
       {/* Label - matching Account page style */}
-      <h2 className="font-semibold text-base text-orange-600 dark:text-orange-400">
+      <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
         {label}
       </h2>
     </div>

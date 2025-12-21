@@ -50,6 +50,7 @@ import { BirthInformationSection } from "@/components/profile/BirthInformationSe
 import { SectionHeader } from "@/components/profile/SectionHeader"
 import { GenderSection } from "@/components/profile/GenderSection"
 import { OrientationSection } from "@/components/profile/OrientationSection"
+import { ChildrenSection } from "@/components/profile/ChildrenSection"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -3066,8 +3067,6 @@ export default function AstrologyProfilePage({
         show_height: visibilitySettings.showHeight,
         show_children: visibilitySettings.showChildren,
         show_location: visibilitySettings.showLocation,
-        allow_instant_messages_connections: allowInstantMessagesConnections,
-        allow_instant_messages_discover: allowInstantMessagesDiscover,
         photos: finalPhotoUrls.length > 0 ? finalPhotoUrls : null,
         updated_at: new Date().toISOString()
       }
@@ -3084,6 +3083,19 @@ export default function AstrologyProfilePage({
         console.error('[Save Changes] Update data:', updateData)
         alert(`Failed to save changes: ${updateError.message || JSON.stringify(updateError)}`)
         return
+      }
+
+      // Reload profile data to ensure view tab updates
+      try {
+        const profile = await fetchUserProfile(user.id)
+        if (profile) {
+          // Reload children preference
+          if (profile.children_preference) {
+            setSelectedChildrenOption(profile.children_preference)
+          }
+        }
+      } catch (error) {
+        console.error('[Save Changes] Error reloading profile:', error)
       }
 
       // Set saved state
@@ -3256,7 +3268,7 @@ export default function AstrologyProfilePage({
 
         {activeTab === "view" && (
           <>
-            <div className="w-full flex justify-center mb-8">
+            <div className="w-full flex justify-center mb-8 pb-32">
               <div className="w-full">
                 {/* Get pattern colors for border */}
                 {(() => {
@@ -3276,13 +3288,13 @@ export default function AstrologyProfilePage({
                           className="w-full rounded-3xl relative"
                           style={{ 
                             border: `3px solid ${patternColors.start}`,
-                            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                            padding: '3px',
+                            padding: '0',
                             zIndex: 10,
                             marginBottom: '0',
+                            overflow: 'visible',
                           }}
                         >
-                          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
+                          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem' }}>
                             <ProfilePhotoCarouselWithRanking
                               images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
                               profileName={name || ""}
@@ -3335,11 +3347,103 @@ export default function AstrologyProfilePage({
                               patternColors={patternColors}
                             />
                           </div>
+
+                          {/* Connection Box - Only visible when toggled, matches discover section - Inside border */}
+                          {(showConnectionProfile || showConnectionElements) && connectionBoxData && (() => {
+                            const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
+                            const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
+                            const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
+                            const westB = connectionBoxData.b?.west ? capitalize(connectionBoxData.b.west) : "Unknown";
+                            const eastB = connectionBoxData.b?.east ? capitalize(connectionBoxData.b.east) : "Unknown";
+                            const chineseLine = connectionBoxData.east_relation || `${eastA} × ${eastB}`;
+                            const westernLine = connectionBoxData.west_relation || `${westA} × ${westB}`;
+                            const wuXingLine = connectionBoxData.wuXingLine;
+                            const connectionBlurb = connectionBoxData.insight && connectionBoxData.insight.trim().length > 0
+                              ? connectionBoxData.insight
+                              : connectionBoxData.pattern && connectionBoxData.score
+                              ? deriveConnectionOverview(
+                                  connectionBoxData.pattern as import('@/lib/matchEngine').ChinesePattern,
+                                  connectionBoxData.score
+                                )
+                              : undefined;
+                            const calculatedAge = connectionBoxData.age ?? (() => {
+                              if (birthInfo?.birthdate) {
+                                const [year, month, day] = birthInfo.birthdate.split("-").map(Number);
+                                const today = new Date();
+                                let age = today.getFullYear() - year;
+                                const monthDiff = today.getMonth() + 1 - month;
+                                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < day)) {
+                                  age--;
+                                }
+                                return age > 0 ? age : 27;
+                              }
+                              return 27;
+                            })();
+
+                            return (
+                              <div 
+                                className="w-full"
+                                style={{
+                                  marginTop: '0',
+                                  paddingTop: '0',
+                                  borderRadius: '0 0 1.5rem 1.5rem',
+                                  overflow: 'hidden',
+                                }}
+                              >
+                                <div className="relative w-full max-w-full">
+                                  <ConnectionBoxNew
+                                    tier={newTier}
+                                    score={connectionBoxData.score}
+                                    westA={westA}
+                                    eastA={eastA}
+                                    westB={westB}
+                                    eastB={eastB}
+                                    chineseLine={chineseLine}
+                                    sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                                    westernLine={westernLine}
+                                    wuXingLine={wuXingLine}
+                                    chineseElementA={connectionBoxData.a?.chineseElement}
+                                    chineseElementB={connectionBoxData.b?.chineseElement}
+                                    connectionBlurb={connectionBlurb || undefined}
+                                    theme={theme}
+                                    aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
+                                    interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
+                                    relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
+                                    age={calculatedAge}
+                                    city={connectionBoxData.city ?? selectedCity ?? cityInput}
+                                    occupation={connectionBoxData.occupation ?? selectedOccupation}
+                                    height={connectionBoxData.height ?? selectedHeight}
+                                    children={connectionBoxData.children ?? selectedChildrenOption}
+                                    religion={connectionBoxData.religion ?? selectedReligion}
+                                    chinesePattern={connectionBoxData.chinesePattern}
+                                    westAspect={connectionBoxData.westAspect}
+                                    westElementRelation={connectionBoxData.westElementRelation}
+                                    isChineseOpposite={connectionBoxData.isChineseOpposite}
+                                    isLivelyPair={connectionBoxData.isLivelyPair}
+                                    showProfile={showConnectionProfile}
+                                    showElements={showConnectionElements}
+                                    patternFullLabel={connectionBoxData.patternFullLabel}
+                                    pillLabel={connectionBoxData.pillLabel}
+                                    baseTagline={connectionBoxData.baseTagline}
+                                    patternEmoji={connectionBoxData.patternEmoji}
+                                    pattern={connectionBoxData.pattern}
+                                    chemistryStars={connectionBoxData.chemistryStars}
+                                    stabilityStars={connectionBoxData.stabilityStars}
+                                    patternColors={patternColors}
+                                    onPass={undefined}
+                                    onLike={undefined}
+                                    onMessage={undefined}
+                                    onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
+                                  />
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </div>
                       )}
 
-                      {/* Connection Box - Only visible when toggled, matches discover section */}
-                      {(showConnectionProfile || showConnectionElements) && connectionBoxData && (() => {
+                      {/* Connection Box - Only visible when toggled, matches discover section - Outside border (fallback) */}
+                      {!photos.some(p => p.hasImage) && (showConnectionProfile || showConnectionElements) && connectionBoxData && (() => {
                         const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
                         const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
                         const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
@@ -3514,29 +3618,6 @@ export default function AstrologyProfilePage({
                     </div>
                   )}
                 </div>
-                <div className="flex items-center justify-between pt-2">
-                  <div></div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
-                      Display
-                    </span>
-                    <button
-                      onClick={toggleLocationVisibility}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        visibilitySettings.showLocation
-                          ? "bg-gray-300"
-                          : "bg-transparent border border-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
-                          visibilitySettings.showLocation ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
-                        }`}
-                        style={!visibilitySettings.showLocation ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
-                      ></div>
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -3557,29 +3638,6 @@ export default function AstrologyProfilePage({
                   className={`w-full px-4 py-3 rounded-xl focus:outline-none transition-all occupation-input ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/40" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
                   style={{ fontSize: '1.25rem !important' }}
                 />
-                <div className="flex items-center justify-between pt-2">
-                  <div></div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-xs ${theme === "light" ? "text-black/30" : "text-white/50"}`}>
-                      Display
-                    </span>
-                    <button
-                      onClick={toggleOccupationVisibility}
-                      className={`relative w-12 h-6 rounded-full transition-colors ${
-                        visibilitySettings.showOccupation
-                          ? "bg-gray-300"
-                          : "bg-transparent border border-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`w-5 h-5 bg-white rounded-full shadow-md transition-all ${
-                          visibilitySettings.showOccupation ? "absolute top-0.5 translate-x-6" : "border border-gray-300"
-                        }`}
-                        style={!visibilitySettings.showOccupation ? { position: 'absolute', top: '50%', left: '2px', transform: 'translateY(-50%)' } : {}}
-                      ></div>
-                    </button>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -3634,9 +3692,18 @@ export default function AstrologyProfilePage({
             <div
               className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
             >
-              <SectionHeader
-                label="Relationship Goals"
-              />
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
+                  Relationship Goals
+                </h2>
+                {selectedRelationshipGoals.length > 0 && (
+                  <span className={`text-xs px-2 py-0.5 rounded-full ${
+                    theme === "light" ? "bg-purple-100 text-purple-700" : "bg-purple-500/20 text-purple-300"
+                  }`}>
+                    {selectedRelationshipGoals.length}/6
+                  </span>
+                )}
+              </div>
               <div className="space-y-4">
                 {/* Selected Goals Pills */}
                 {selectedRelationshipGoals.filter(goal => goal !== "Life Companion" && goal !== "Life companion").length > 0 && (
@@ -3707,9 +3774,21 @@ export default function AstrologyProfilePage({
             <div
               className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
             >
-              <SectionHeader
-                label="Interests"
-              />
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
+                  Interests
+                </h2>
+                {(() => {
+                  const totalSelected = Object.values(selectedOrganizedInterests).reduce((sum, interests) => sum + (interests?.length || 0), 0);
+                  return totalSelected > 0 ? (
+                    <span className={`text-xs px-2 py-0.5 rounded-full ${
+                      theme === "light" ? "bg-purple-100 text-purple-700" : "bg-purple-500/20 text-purple-300"
+                    }`}>
+                      {totalSelected}/6
+                    </span>
+                  ) : null;
+                })()}
+              </div>
               <div className="space-y-4">
                 {/* Selected Interests Pills */}
                 {Object.keys(selectedOrganizedInterests).some(category => selectedOrganizedInterests[category]?.length > 0) && (
@@ -3746,18 +3825,9 @@ export default function AstrologyProfilePage({
                           }`}
                         >
                           <span className="font-medium">{category}</span>
-                          <div className="flex items-center gap-2">
-                            {categoryInterests.length > 0 && (
-                              <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                theme === "light" ? "bg-purple-100 text-purple-700" : "bg-purple-500/20 text-purple-300"
-                              }`}>
-                                {categoryInterests.length}/6
-                              </span>
-                            )}
-                            <ChevronDown
-                              className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
-                            />
-                          </div>
+                          <ChevronDown
+                            className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                          />
                         </button>
 
                         {isOpen && (
@@ -3868,6 +3938,20 @@ export default function AstrologyProfilePage({
                   </div>
                 )}
               </div>
+            </div>
+
+            <div
+              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
+            >
+              <ChildrenSection
+                value={selectedChildrenOption as "I have children" | "I don't have children" | ""}
+                onChange={(value) => {
+                  setSelectedChildrenOption(value)
+                  if (typeof window !== 'undefined') {
+                    localStorage.setItem("childrenPreference", value)
+                  }
+                }}
+              />
             </div>
 
             <div
@@ -4029,75 +4113,9 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-            {/* Instant Messaging Settings */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
-              <SectionHeader
-                label="Instant Messaging"
-              />
-              <div className="space-y-4">
-                <p className={`text-sm ${theme === "light" ? "text-gray-600" : "text-white/60"}`}>
-                  Control who can send you instant messages. When disabled, users must match with you first.
-                </p>
-                
-                {/* Connections Section Setting */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className={`font-medium ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                      Allow instant messages from Connections
-                    </p>
-                    <p className={`text-xs mt-1 ${theme === "light" ? "text-gray-500" : "text-white/50"}`}>
-                      Users in your connections can message you directly
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setAllowInstantMessagesConnections(!allowInstantMessagesConnections)}
-                    className={`relative w-12 h-6 rounded-full transition-colors ${
-                      allowInstantMessagesConnections
-                        ? "bg-gradient-to-r from-orange-400 to-orange-500"
-                        : "bg-gray-400"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 bg-white rounded-full shadow-md transition-all absolute top-0.5 ${
-                        allowInstantMessagesConnections ? "translate-x-6" : "translate-x-0.5"
-                      }`}
-                    />
-                  </button>
-                </div>
-
-                {/* Discover Section Setting */}
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className={`font-medium ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-                      Allow instant messages from Discover
-                    </p>
-                    <p className={`text-xs mt-1 ${theme === "light" ? "text-gray-500" : "text-white/50"}`}>
-                      Users in discover can message you directly
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => setAllowInstantMessagesDiscover(!allowInstantMessagesDiscover)}
-                    className={`relative w-12 h-6 rounded-full transition-colors ${
-                      allowInstantMessagesDiscover
-                        ? "bg-gradient-to-r from-orange-400 to-orange-500"
-                        : "bg-gray-400"
-                    }`}
-                  >
-                    <div
-                      className={`w-5 h-5 bg-white rounded-full shadow-md transition-all absolute top-0.5 ${
-                        allowInstantMessagesDiscover ? "translate-x-6" : "translate-x-0.5"
-                      }`}
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-
             <button 
               onClick={handleSaveChanges}
-              className="w-full py-4 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-bold rounded-xl hover:from-orange-500 hover:to-orange-600 transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
+              className="w-full py-4 bg-gradient-to-r from-purple-400 to-purple-500 text-white font-bold rounded-xl hover:from-purple-500 hover:to-purple-600 transition-all shadow-md hover:shadow-lg active:scale-[0.98]"
             >
               {savedSuccessfully ? "Saved" : "Save Changes"}
             </button>

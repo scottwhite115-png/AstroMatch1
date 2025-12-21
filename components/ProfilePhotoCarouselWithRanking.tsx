@@ -678,7 +678,13 @@ export default function ProfilePhotoCarouselWithRanking({
           <div ref={contentRef} className="p-4 pb-6 space-y-4">
             {/* Connection Box - Match Engine Details */}
             {connectionBoxData && (
-              <ConnectionBoxSimple data={connectionBoxData} alwaysExpanded={true} />
+              <ConnectionBoxSimple 
+                data={{
+                  ...connectionBoxData,
+                  children: connectionBoxData.children || selectedChildrenOption || undefined
+                }} 
+                alwaysExpanded={true} 
+              />
             )}
           </div>
         </div>

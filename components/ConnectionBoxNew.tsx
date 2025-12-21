@@ -196,6 +196,7 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
       city={props.city}
       occupation={props.occupation}
       height={props.height}
+      children={props.children}
       interests={props.interests}
       relationshipGoals={props.relationshipGoals}
       theme={theme}

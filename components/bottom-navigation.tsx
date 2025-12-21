@@ -120,6 +120,11 @@ export function BottomNavigation() {
 
   const navItems = [
     {
+      icon: FourPointedStar,
+      label: "AstroLab",
+      path: "/astrology",
+    },
+    {
       icon: Heart,
       label: "Discover",
       path: "/matches",
@@ -158,11 +163,13 @@ export function BottomNavigation() {
         <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0 pointer-events-none" />
         
         {/* Navigation buttons with flat positioning */}
-        <div className="relative grid grid-cols-4 w-full h-full items-start pt-2 z-10">
+        <div className="relative grid grid-cols-5 w-full h-full items-start pt-2 z-10">
           {navItems.map((item, index) => {
             const Icon = item.icon
-            // Check if current path matches the nav item or if it's a profile sub-route
-            const isActive = pathname === item.path || (item.path === "/profile/profile" && pathname.startsWith("/profile/"))
+            // Check if current path matches the nav item or if it's a profile sub-route or astrology sub-route
+            const isActive = pathname === item.path || 
+              (item.path === "/profile/profile" && pathname.startsWith("/profile/")) ||
+              (item.path === "/astrology" && pathname.startsWith("/astrology"))
             
             // Use label directly
             const displayLabel = item.label

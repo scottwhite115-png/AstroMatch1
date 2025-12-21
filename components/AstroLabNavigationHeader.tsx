@@ -16,19 +16,19 @@ const ASTROLAB_SECTIONS = [
   {
     id: 'triple-harmony-trines',
     label: 'Triple Harmony',
-    icon: '✨',
+    icon: '三合',
     description: 'Triple Harmony trine groups table',
   },
   {
     id: 'secret-friends',
     label: 'Secret Friends',
-    icon: '🤝',
+    icon: '六合',
     description: 'Secret Friends (Liu He) pairs table',
   },
   {
     id: 'six-conflicts',
     label: 'Magnetic Opposites',
-    icon: '⚡',
+    icon: '六冲',
     description: 'Six Conflicts (Liu Chong) pairs table',
   },
   {
@@ -168,33 +168,20 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
     }
   }
 
-  const ChevronLeft = ({ className }: { className?: string }) => (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
-      <path d="m15 18-6-6 6-6" />
-    </svg>
-  )
-
   return (
     <header className={`sticky top-0 z-50 ${
       theme === "light"
         ? "bg-white/80 backdrop-blur-sm"
         : "bg-slate-900/80 backdrop-blur-sm"
     }`}>
-      <div className="mx-auto max-w-4xl px-4 pt-0.5 pb-1.5">
-        {/* Back button, AstroLab logo, and AstroLab tab */}
+      <div className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4">
+        {/* AstroLab heading */}
         <div className="flex items-center justify-between mb-1.5">
-          {/* Left side: Back button, AstroLab logo, and AstroLab tab */}
+          {/* Left side: AstroLab heading */}
           <div className="flex-1 -ml-8">
             <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-              <div className="flex gap-0.5 min-w-max items-center ml-8">
-                <button
-                  onClick={() => router.back()}
-                  className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/10 transition-colors"
-                  aria-label="Go back"
-                >
-                  <ChevronLeft className={`w-7 h-7 ${theme === "light" ? "text-gray-700" : "text-white/70"}`} />
-                </button>
-                <div className="flex items-center gap-0.5 -ml-2">
+              <div className="flex gap-0.5 min-w-max ml-8">
+                <div className="flex items-center gap-0.5">
                   <FourPointedStar className="w-5 h-5 text-orange-500" />
                   <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
                     AstroLab
@@ -243,11 +230,16 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
               <Link
                 key={page.id}
                 href={page.path}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors ${
                   theme === "light"
-                    ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                    : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                    ? "border-amber-200 text-gray-700 hover:opacity-90"
+                    : "border-amber-800/50 text-slate-200 hover:opacity-90"
                 }`}
+                style={{
+                  background: theme === "light"
+                    ? "linear-gradient(to right, rgba(254, 240, 138, 0.8), rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8))"
+                    : "linear-gradient(to right, rgba(245, 158, 11, 0.3), rgba(251, 191, 36, 0.3), rgba(249, 115, 22, 0.3))"
+                }}
                 title={page.description}
               >
                 <span>{page.icon}</span>
@@ -271,11 +263,16 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   <Link
                     key={section.id}
                     href={sectionPath}
-                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
                       theme === "light"
-                        ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                        : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                        ? "border-amber-200 text-gray-700 hover:opacity-90"
+                        : "border-amber-800/50 text-slate-200 hover:opacity-90"
                     }`}
+                    style={{
+                      background: theme === "light"
+                        ? "linear-gradient(to right, rgba(254, 240, 138, 0.8), rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8))"
+                        : "linear-gradient(to right, rgba(245, 158, 11, 0.3), rgba(251, 191, 36, 0.3), rgba(249, 115, 22, 0.3))"
+                    }}
                     title={section.description}
                   >
                     <span>{section.icon}</span>
@@ -288,11 +285,16 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   key={section.id}
                   type="button"
                   onClick={(e) => handleSectionClick(section.id, e)}
-                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
                     theme === "light"
-                      ? "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
-                      : "border-slate-700 bg-slate-900/60 text-slate-200 hover:bg-slate-800/80"
+                      ? "border-amber-200 text-gray-700 hover:opacity-90"
+                      : "border-amber-800/50 text-slate-200 hover:opacity-90"
                   }`}
+                  style={{
+                    background: theme === "light"
+                      ? "linear-gradient(to right, rgba(254, 240, 138, 0.8), rgba(251, 191, 36, 0.8), rgba(249, 115, 22, 0.8))"
+                      : "linear-gradient(to right, rgba(245, 158, 11, 0.3), rgba(251, 191, 36, 0.3), rgba(249, 115, 22, 0.3))"
+                  }}
                   title={section.description}
                 >
                   <span>{section.icon}</span>

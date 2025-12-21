@@ -17,7 +17,7 @@ export function OrientationSection({ value, onChange }: OrientationSectionProps)
     <section className="space-y-2">
       {/* Heading */}
       <div className="mb-4 flex items-center gap-2">
-        <h2 className="font-semibold text-base text-orange-600 dark:text-orange-400">
+        <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
           Interested in
         </h2>
       </div>

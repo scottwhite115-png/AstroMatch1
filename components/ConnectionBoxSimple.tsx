@@ -740,7 +740,8 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
     data.city ||
     data.occupation ||
     data.age ||
-    data.height
+    data.height ||
+    data.children
   );
   
   // DEBUG: Log profile data being received
@@ -1183,8 +1184,8 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     </div>
                   )}
 
-                  {/* Essentials - Location, Occupation, Age, Height */}
-                  {(data.city || data.occupation || data.age || data.height) && (
+                  {/* Essentials - Location, Occupation, Age, Height, Children */}
+                  {(data.city || data.occupation || data.age || data.height || data.children) && (
                     <div>
                       <h4
                         className="text-base font-semibold mb-3 flex items-center gap-2"
@@ -1242,6 +1243,18 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                               <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
                             </svg>
                             <span>{data.height}</span>
+                          </div>
+                        )}
+                        {/* Children */}
+                        {data.children && data.children.trim() !== "" && (
+                          <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
+                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
+                              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                              <circle cx="9" cy="7" r="4"></circle>
+                              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                            <span>{data.children}</span>
                           </div>
                         )}
                       </div>

@@ -789,9 +789,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Aries wants to move and adjust on the fly; Virgo wants working systems and fewer preventable mistakes. Virgo can help Aries refine ideas, catch obvious issues, and make efforts more efficient. Aries can help Virgo stop endlessly editing life and actually pull the trigger on needed changes. It works when criticism stays practical and kind, and when Aries doesn't interpret every suggestion as an insult."
     },
     "libra": {
-      "heading": "Aries × Libra — Opposite Signs (Fire + Air)",
-      "tagline": "Impulse and equilibrium",
-      "description": "Aries and Libra stand at opposite ends of the same line: raw desire versus considered dialogue, \"I want\" versus \"we decide.\" In astrology, this opposition is often treated as a long-term growth axis rather than a guaranteed fairy tale—each holds qualities the other needs to balance out. Aries brings courage, heat, and a willingness to move when things are stuck; Libra brings perspective, grace, and an instinct for how choices land on other people. When you work with that tension instead of against it, it feels like learning to be both honest and kind; when you don't, it slips into a tug-of-war between bluntness and avoidance."
+      "heading": "Aries × Libra — Opposite Signs (Axis Pair)",
+      "tagline": "Initiative and harmony",
+      "description": "Aries and Libra sit opposite each other on the zodiac wheel, creating a natural pull between initiative and harmony. Aries brings courage, momentum, and self-direction, while Libra offers balance, perspective, and relational awareness. Together, this pairing often feels energising, as each helps the other grow beyond their default style. When both honour independence and cooperation, the connection becomes dynamic and mutually refining."
     },
     "scorpio": {
       "heading": "Aries × Scorpio — Challenging Elements (Fire + Water)",
@@ -856,9 +856,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Taurus cares about physical comfort and long-term stability; Libra cares about relationship harmony and aesthetic balance. Libra can help Taurus refine their environment and navigate complex social or relational dynamics; Taurus can help Libra feel safe, rooted, and less blown around by every outside influence. Conflict appears when Libra wants change or conversation and Taurus shuts down, or when Taurus wants a clear answer and Libra hesitates. Agreeing on decision timelines and how you handle disagreements helps."
     },
     "scorpio": {
-      "heading": "Taurus × Scorpio — Opposite Signs (Earth + Water)",
-      "tagline": "Matter and mystery",
-      "description": "Taurus and Scorpio face each other across the axis of possession and intimacy: what you can hold in your hands versus what you can only feel in your bones. Opposite signs here often show up as a deep apprenticeship in trust, where one person guards the physical and the other guards the emotional or psychic. Taurus stabilises, feeds, and protects the tangible life you share; Scorpio pushes for honesty about power, fear, loyalty, and what you're secretly attached to. This pairing can feel quietly unbreakable when both are willing to share control, and quietly suffocating when neither will."
+      "heading": "Taurus × Scorpio — Opposite Signs (Axis Pair)",
+      "tagline": "Stability and depth",
+      "description": "Taurus and Scorpio form an axis of stability and depth, drawing each other together through intensity and loyalty. Taurus offers grounding, patience, and consistency, while Scorpio brings emotional insight and transformative power. This pairing often feels deeply bonding, with a sense of shared purpose beneath the surface. It flourishes when trust allows growth without threatening security."
     },
     "sagittarius": {
       "heading": "Taurus × Sagittarius — Semi-compatible Elements (Earth + Fire)",
@@ -923,9 +923,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Gemini likes to ask, observe, and move on; Scorpio wants depth, commitment, and emotional honesty. Scorpio may see Gemini as evasive or shallow, while Gemini may see Scorpio as intense or controlling. At best, Gemini helps Scorpio loosen up, pick new paths, and verbalise what they feel, and Scorpio helps Gemini take some topics seriously enough to truly transform. Clear boundaries and mutual respect for privacy are essential."
     },
     "sagittarius": {
-      "heading": "Gemini × Sagittarius — Opposite Signs (Air + Fire)",
-      "tagline": "Questions and quests",
-      "description": "Gemini and Sagittarius sit opposite on the axis of mind: close-up facts and stories versus big-picture meaning and belief. In the language of astrology, opposites like this are often framed as travelling companions on the same road, one reading the street signs and the other reading the horizon. Gemini keeps things curious, flexible, and responsive to the moment; Sagittarius reminds the connection to point somewhere and believe in something. When you work with that axis instead of against it, it feels like learning to be both informed and inspired; when you don't, it turns into nit-picking versus preaching."
+      "heading": "Gemini × Sagittarius — Opposite Signs (Axis Pair)",
+      "tagline": "Curiosity and meaning",
+      "description": "Gemini and Sagittarius oppose each other across curiosity and meaning, linking questions with answers. Gemini explores ideas through conversation and variety, while Sagittarius searches for broader truth and direction. Their attraction comes from mutual stimulation, yet tension appears when details clash with big-picture thinking. This pairing works best when learning and wisdom are allowed to inform each other."
     },
     "capricorn": {
       "heading": "Gemini × Capricorn — Semi-compatible Elements (Air + Earth)",
@@ -990,9 +990,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Cancer is oriented toward home, continuity, and a close circle; Sagittarius toward exploration, freedom, and new experiences. Sagittarius can widen Cancer's world and help them step out of comfort zones, while Cancer can give Sagittarius a place and people to truly belong to. Resentment appears if Cancer feels left behind or Sagittarius feels guilt-tripped for wanting independence. Honest agreements about travel, social life, and shared routines are vital."
     },
     "capricorn": {
-      "heading": "Cancer × Capricorn — Opposite Signs (Water + Earth)",
-      "tagline": "Inner life, outer life",
-      "description": "Cancer and Capricorn mirror each other across the line between private roots and public structure—home, family, and memory on one side; career, duty, and long-term plans on the other. Opposite signs here often describe two people building one life from both ends at once: one tending the inside, the other shaping the outside. Cancer keeps the emotional core alive and reminds Capricorn what all the work is actually for; Capricorn gives form, boundaries, and direction so Cancer's care has something solid to hold. When you cooperate, it feels like a shared legacy; when you don't, it can feel like living in two different worlds under the same roof."
+      "heading": "Cancer × Capricorn — Opposite Signs (Axis Pair)",
+      "tagline": "Emotional care and worldly responsibility",
+      "description": "Cancer and Capricorn form an axis between emotional care and worldly responsibility. Cancer contributes sensitivity, intuition, and protection, while Capricorn provides structure, reliability, and long-term focus. This pairing often feels grounding and purposeful, with each supporting the other in complementary ways. Balance is strongest when emotional needs and practical goals are valued equally."
     },
     "aquarius": {
       "heading": "Cancer × Aquarius — Challenging Elements (Water + Air)",
@@ -1057,9 +1057,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Leo cares about creative expression, love, and being valued; Capricorn cares about responsibility, status, and long-term achievement. Capricorn can help Leo turn talents into concrete success and handle the tough, unglamorous work; Leo can help Capricorn enjoy life, connection, and play without guilt. Friction appears when Leo feels reduced to a task or trophy and Capricorn feels pressured to provide endless validation. Mutual respect for both emotional and practical labour keeps this strong."
     },
     "aquarius": {
-      "heading": "Leo × Aquarius — Opposite Signs (Fire + Air)",
-      "tagline": "The self and the system",
-      "description": "Leo and Aquarius face off along the axis of the individual and the group: personal heart versus collective vision. In many charts, this opposition shows up as a lifelong lesson in how to shine without forgetting the bigger pattern, and how to serve the pattern without erasing yourself. Leo brings warmth, courage, and a human, personal touch; Aquarius brings ideals, perspective, and the willingness to stand outside the script. At best, you teach each other how to be both special and useful; at worst, you argue over whether feelings or principles get the final say."
+      "heading": "Leo × Aquarius — Opposite Signs (Axis Pair)",
+      "tagline": "Personal expression and collective vision",
+      "description": "Leo and Aquarius sit opposite each other on the zodiac wheel, creating a strong pull between personal expression and collective vision. Leo brings warmth, creativity, and heart-led confidence, while Aquarius offers originality, independence, and future-focused thinking. Together, they often feel like two sides of a larger whole, each illuminating the other's strengths. This pairing thrives when admiration flows freely and individuality is celebrated on both sides."
     },
     "pisces": {
       "heading": "Leo × Pisces — Challenging Elements (Fire + Water)",
@@ -1124,16 +1124,16 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Virgo cares about details and reliability; Aquarius cares about ideas, systems, and what's possible in the future. Aquarius can help Virgo think beyond immediate tasks and see wider patterns; Virgo can help Aquarius turn those patterns into tangible routines that actually run. Virgo may find Aquarius detached or erratic; Aquarius may find Virgo fussy or limiting. A shared framework of \"what we're trying to improve and why\" aligns you."
     },
     "pisces": {
-      "heading": "Virgo × Pisces — Opposite Signs (Earth + Water)",
-      "tagline": "Reality and reverie",
-      "description": "Virgo and Pisces lie opposite on the axis of service: fixing what's in front of you versus tending to what can't be measured. In astrology, this pair is often treated as a kind of quiet \"soul-work\" partnership, where each person is invited to grow toward the other's missing half—Virgo toward compassion and surrender, Pisces toward discernment and practical care. Virgo offers grounding, clarity, and the willingness to deal with messy details; Pisces offers imagination, empathy, and a sense that life isn't only a to-do list. When you respect both ends of the axis, it feels like being cared for in body and spirit; when you don't, it becomes a fight between \"you're unrealistic\" and \"you're unkind.\""
+      "heading": "Virgo × Pisces — Opposite Signs (Axis Pair)",
+      "tagline": "Precision and intuition",
+      "description": "Virgo and Pisces form an axis between precision and intuition, practicality and imagination. Virgo offers clarity, usefulness, and grounded care, while Pisces brings empathy, creativity, and emotional depth. The bond often feels quietly meaningful, with each providing what the other naturally lacks. When structure supports sensitivity, this pairing becomes both healing and supportive."
     }
   },
   "libra": {
     "aries": {
-      "heading": "Libra × Aries — Opposite Signs (Fire + Air)",
-      "tagline": "Impulse and equilibrium",
-      "description": "Aries and Libra stand at opposite ends of the same line: raw desire versus considered dialogue, \"I want\" versus \"we decide.\" In astrology, this opposition is often treated as a long-term growth axis rather than a guaranteed fairy tale—each holds qualities the other needs to balance out. Aries brings courage, heat, and a willingness to move when things are stuck; Libra brings perspective, grace, and an instinct for how choices land on other people. When you work with that tension instead of against it, it feels like learning to be both honest and kind; when you don't, it slips into a tug-of-war between bluntness and avoidance."
+      "heading": "Libra × Aries — Opposite Signs (Axis Pair)",
+      "tagline": "Initiative and harmony",
+      "description": "Aries and Libra sit opposite each other on the zodiac wheel, creating a natural pull between initiative and harmony. Aries brings courage, momentum, and self-direction, while Libra offers balance, perspective, and relational awareness. Together, this pairing often feels energising, as each helps the other grow beyond their default style. When both honour independence and cooperation, the connection becomes dynamic and mutually refining."
     },
     "taurus": {
       "heading": "Libra × Taurus — Semi-compatible Elements (Earth + Air)",
@@ -1198,9 +1198,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Aries is open and quick, confronting issues head-on; Scorpio is private and strategic, confronting them in depth. The attraction can be strong because neither of you feels faint-hearted, but so can power struggles if one feels the other is hiding or bulldozing. Scorpio pushes for emotional truth and lasting transformation, while Aries pushes for immediate action and clear answers. You need shared goals and a strict no-games rule if you want the intensity without constant tests."
     },
     "taurus": {
-      "heading": "Scorpio × Taurus — Opposite Signs (Earth + Water)",
-      "tagline": "Matter and mystery",
-      "description": "Taurus and Scorpio face each other across the axis of possession and intimacy: what you can hold in your hands versus what you can only feel in your bones. Opposite signs here often show up as a deep apprenticeship in trust, where one person guards the physical and the other guards the emotional or psychic. Taurus stabilises, feeds, and protects the tangible life you share; Scorpio pushes for honesty about power, fear, loyalty, and what you're secretly attached to. This pairing can feel quietly unbreakable when both are willing to share control, and quietly suffocating when neither will."
+      "heading": "Scorpio × Taurus — Opposite Signs (Axis Pair)",
+      "tagline": "Stability and depth",
+      "description": "Taurus and Scorpio form an axis of stability and depth, drawing each other together through intensity and loyalty. Taurus offers grounding, patience, and consistency, while Scorpio brings emotional insight and transformative power. This pairing often feels deeply bonding, with a sense of shared purpose beneath the surface. It flourishes when trust allows growth without threatening security."
     },
     "gemini": {
       "heading": "Scorpio × Gemini — Challenging Elements (Air + Water)",
@@ -1265,9 +1265,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Taurus wants a reliable base; Sagittarius wants open horizons and new experiences. Sagittarius can widen Taurus' world and bring adventure, learning, and a bit of chaos; Taurus can give Sagittarius a place to rest, recover, and store what they gain. Problems arise when Sagittarius feels caged or judged, and Taurus feels abandoned or destabilised. Clear agreements about travel, social life, spending, and time together are critical."
     },
     "gemini": {
-      "heading": "Sagittarius × Gemini — Opposite Signs (Air + Fire)",
-      "tagline": "Questions and quests",
-      "description": "Gemini and Sagittarius sit opposite on the axis of mind: close-up facts and stories versus big-picture meaning and belief. In the language of astrology, opposites like this are often framed as travelling companions on the same road, one reading the street signs and the other reading the horizon. Gemini keeps things curious, flexible, and responsive to the moment; Sagittarius reminds the connection to point somewhere and believe in something. When you work with that axis instead of against it, it feels like learning to be both informed and inspired; when you don't, it turns into nit-picking versus preaching."
+      "heading": "Sagittarius × Gemini — Opposite Signs (Axis Pair)",
+      "tagline": "Curiosity and meaning",
+      "description": "Gemini and Sagittarius oppose each other across curiosity and meaning, linking questions with answers. Gemini explores ideas through conversation and variety, while Sagittarius searches for broader truth and direction. Their attraction comes from mutual stimulation, yet tension appears when details clash with big-picture thinking. This pairing works best when learning and wisdom are allowed to inform each other."
     },
     "cancer": {
       "heading": "Sagittarius × Cancer — Challenging Elements (Water + Fire)",
@@ -1332,9 +1332,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Gemini explores ideas freely, while Capricorn prefers clear plans and grounded structure. Capricorn offers steadiness and follow-through; Gemini introduces flexibility, curiosity, and fresh perspective. Their contrast creates a thoughtful mix of movement and form. The connection feels airy, structured, and quietly contrasting."
     },
     "cancer": {
-      "heading": "Capricorn × Cancer— Opposites (Earth + Water)",
-      "tagline": "Opposites that build",
-      "description": "Capricorn leads with discipline and practicality; Cancer leads with feeling and intuition — forming a classic balancing polarity. Cancer adds warmth and emotional depth to Capricorn's steady presence; Capricorn brings protection and reliability to Cancer's softness. Their interaction blends structure with tenderness in a stabilising way. The dynamic feels deeply anchoring, nurturing, and quietly resilient."
+      "heading": "Capricorn × Cancer — Opposite Signs (Axis Pair)",
+      "tagline": "Emotional care and worldly responsibility",
+      "description": "Cancer and Capricorn form an axis between emotional care and worldly responsibility. Cancer contributes sensitivity, intuition, and protection, while Capricorn provides structure, reliability, and long-term focus. This pairing often feels grounding and purposeful, with each supporting the other in complementary ways. Balance is strongest when emotional needs and practical goals are valued equally."
     },
     "leo": {
       "heading": "Capricorn × Leo— Semi-Compatible (Earth + Fire)",
@@ -1399,9 +1399,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Logic meets emotion in a pairing defined by sensitivity and contrast. Cancer offers warmth and intuition; Aquarius contributes clarity and perspective. Their differing inner rhythms create a reflective and emotionally textured dynamic. The connection feels atmospheric, delicate, and introspective."
     },
     "leo": {
-      "heading": "Aquarius × Leo— Opposites (Air + Fire)",
-      "tagline": "Bold and unconventional",
-      "description": "A dramatic polarity where expressive warmth meets originality and intellect. Leo brings heart and radiance; Aquarius brings insight and innovation. Their contrast creates a bold, magnetic interchange of ideas and emotion. The energy feels vivid, charismatic, and charged with presence."
+      "heading": "Aquarius × Leo — Opposite Signs (Axis Pair)",
+      "tagline": "Personal expression and collective vision",
+      "description": "Leo and Aquarius sit opposite each other on the zodiac wheel, creating a strong pull between personal expression and collective vision. Leo brings warmth, creativity, and heart-led confidence, while Aquarius offers originality, independence, and future-focused thinking. Together, they often feel like two sides of a larger whole, each illuminating the other's strengths. This pairing thrives when admiration flows freely and individuality is celebrated on both sides."
     },
     "virgo": {
       "heading": "Aquarius × Virgo— Mismatch (Air + Earth)",
@@ -1466,9 +1466,9 @@ export const WESTERN_DETAILED_COMPAT: Record<string, Record<string, DetailedComp
       "description": "Leo expresses with boldness and warmth; Pisces expresses with softness and emotional subtlety. Pisces opens Leo's heart to vulnerability; Leo helps Pisces feel seen and uplifted. Their interaction blends courage with compassion in a vivid contrast. The connection feels tender, colourful, and emotionally expansive."
     },
     "virgo": {
-      "heading": "Pisces × Virgo— Opposites (Water + Earth)",
-      "tagline": "Opposite healers",
-      "description": "Pisces moves through intuition and feeling; Virgo through analysis and structure — creating a classic, complementary polarity. Virgo brings clarity, grounding, and thoughtful intention; Pisces brings imagination, empathy, and emotional insight. Together they balance logic with intuition in a deeply meaningful way. The dynamic feels reflective, healing, and quietly transformative."
+      "heading": "Pisces × Virgo — Opposite Signs (Axis Pair)",
+      "tagline": "Precision and intuition",
+      "description": "Virgo and Pisces form an axis between precision and intuition, practicality and imagination. Virgo offers clarity, usefulness, and grounded care, while Pisces brings empathy, creativity, and emotional depth. The bond often feels quietly meaningful, with each providing what the other naturally lacks. When structure supports sensitivity, this pairing becomes both healing and supportive."
     },
     "libra": {
       "heading": "Pisces × Libra— Semi-Compatible (Water + Air)",

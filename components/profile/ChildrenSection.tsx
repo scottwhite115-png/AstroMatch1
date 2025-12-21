@@ -3,32 +3,32 @@
 import React from "react";
 import { useTheme } from "@/contexts/ThemeContext";
 
-type GenderValue = "man" | "woman" | "other" | "";
+type ChildrenValue = "I have children" | "I don't have children" | "";
 
-interface GenderSectionProps {
-  value: GenderValue;
-  onChange: (value: GenderValue) => void;
+interface ChildrenSectionProps {
+  value: ChildrenValue;
+  onChange: (value: ChildrenValue) => void;
 }
 
-export function GenderSection({ value, onChange }: GenderSectionProps) {
+export function ChildrenSection({ value, onChange }: ChildrenSectionProps) {
   const { theme } = useTheme();
 
   return (
-    <section className="space-y-4">
+    <section className="space-y-2">
       {/* Heading */}
       <div className="mb-4 flex items-center gap-2">
         <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
-          Gender
+          Children
         </h2>
       </div>
 
-      {/* Options – two buttons only */}
+      {/* Options – two buttons */}
       <div className="flex gap-2 text-xs">
         <button
           type="button"
-          onClick={() => onChange("man")}
+          onClick={() => onChange("I have children")}
           className={`flex-1 rounded-xl border px-3 py-2 text-center transition-colors ${
-            value === "man"
+            value === "I have children"
               ? theme === "light"
                 ? "border-purple-500 bg-purple-500/20 text-gray-900"
                 : "border-purple-400 bg-purple-500/10 text-slate-50"
@@ -37,13 +37,13 @@ export function GenderSection({ value, onChange }: GenderSectionProps) {
               : "border-slate-700 bg-slate-900/60 text-slate-300"
           }`}
         >
-          Man
+          I have children
         </button>
         <button
           type="button"
-          onClick={() => onChange("woman")}
+          onClick={() => onChange("I don't have children")}
           className={`flex-1 rounded-xl border px-3 py-2 text-center transition-colors ${
-            value === "woman"
+            value === "I don't have children"
               ? theme === "light"
                 ? "border-purple-500 bg-purple-500/20 text-gray-900"
                 : "border-purple-400 bg-purple-500/10 text-slate-50"
@@ -52,7 +52,7 @@ export function GenderSection({ value, onChange }: GenderSectionProps) {
               : "border-slate-700 bg-slate-900/60 text-slate-300"
           }`}
         >
-          Woman
+          I don't have children
         </button>
       </div>
     </section>
