@@ -196,6 +196,7 @@ interface ProfilePhotoCarouselWithRankingProps {
   patternColors?: { start: string; end: string };
   isNewMatch?: boolean; // Whether this is a new match (created within last 24 hours)
   matchedAt?: string; // ISO timestamp of when the match was created
+  alwaysOpenDropdown?: boolean; // Whether to keep the dropdown always open
 }
 
 export default function ProfilePhotoCarouselWithRanking({
@@ -229,6 +230,7 @@ export default function ProfilePhotoCarouselWithRanking({
   patternColors,
   isNewMatch = false,
   matchedAt,
+  alwaysOpenDropdown = false,
 }: ProfilePhotoCarouselWithRankingProps) {
   // Determine if this is a new match (within last 24 hours)
   const isActuallyNewMatch = isNewMatch || (matchedAt ? (() => {
@@ -238,7 +240,17 @@ export default function ProfilePhotoCarouselWithRanking({
     return hoursSinceMatch < 24; // Show "New Match" if match was created within last 24 hours
   })() : false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [showDropdownMenu, setShowDropdownMenu] = useState(false);
+  const [showDropdownMenuInternal, setShowDropdownMenuInternal] = useState(alwaysOpenDropdown);
+  
+  // Force dropdown to always be open when alwaysOpenDropdown is true
+  const showDropdownMenu = alwaysOpenDropdown ? true : showDropdownMenuInternal;
+  
+  // Force dropdown to stay open when alwaysOpenDropdown is true
+  useEffect(() => {
+    if (alwaysOpenDropdown) {
+      setShowDropdownMenuInternal(true);
+    }
+  }, [alwaysOpenDropdown]);
   const [dropdownHeight, setDropdownHeight] = useState('auto');
   const [carouselWidth, setCarouselWidth] = useState<number | null>(null);
   
@@ -327,26 +339,30 @@ export default function ProfilePhotoCarouselWithRanking({
     }
   };
 
-  // Close dropdown when clicking outside
+  // Close dropdown when clicking outside (unless alwaysOpenDropdown is true)
   useEffect(() => {
+    if (alwaysOpenDropdown) return; // Don't close if always open
+    
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as Node;
       const isDropdownButton = (target as Element)?.closest('[data-dropdown-button]');
       const isPhotoCarousel = (target as Element)?.closest('.photo-carousel-container');
       
       if (dropdownRef.current && !dropdownRef.current.contains(target) && !isDropdownButton && !isPhotoCarousel) {
-        setShowDropdownMenu(false);
+        if (!alwaysOpenDropdown) {
+          setShowDropdownMenuInternal(false);
+        }
       }
     };
 
-    if (showDropdownMenu) {
+    if (showDropdownMenuInternal && !alwaysOpenDropdown) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showDropdownMenu]);
+  }, [showDropdownMenuInternal, alwaysOpenDropdown]);
 
   // Get carousel width for dropdown - measure the actual carousel element
   useEffect(() => {
@@ -364,9 +380,9 @@ export default function ProfilePhotoCarouselWithRanking({
     // Also try after a short delay to ensure DOM is ready
     const timeout = setTimeout(updateCarouselWidth, 100);
     
-    // Re-measure when dropdown opens
+    // Re-measure when dropdown opens or when alwaysOpenDropdown is true
     let dropdownTimeout: NodeJS.Timeout | null = null;
-    if (showDropdownMenu) {
+    if (showDropdownMenu || alwaysOpenDropdown) {
       dropdownTimeout = setTimeout(updateCarouselWidth, 50);
     }
     
@@ -380,11 +396,11 @@ export default function ProfilePhotoCarouselWithRanking({
       clearTimeout(timeout);
       if (dropdownTimeout) clearTimeout(dropdownTimeout);
     };
-  }, [showDropdownMenu]);
+  }, [showDropdownMenu, alwaysOpenDropdown]);
 
   // Auto-resize dropdown based on content
   useEffect(() => {
-    if (showDropdownMenu && contentRef.current) {
+    if ((showDropdownMenu || alwaysOpenDropdown) && contentRef.current) {
       const contentHeight = contentRef.current.scrollHeight;
       const minHeight = 410; // Just a tiny bit longer than connection box
       const maxHeight = window.innerHeight * 0.8; // 80% of viewport height
@@ -392,7 +408,7 @@ export default function ProfilePhotoCarouselWithRanking({
       const newHeight = Math.max(minHeight, Math.min(contentHeight + 32, maxHeight)); // +32 for padding
       setDropdownHeight(`${newHeight}px`);
     }
-  }, [showDropdownMenu, aboutMeText, selectedDeepPrompts, deepPromptAnswers, selectedOccupation, selectedCity, cityInput, selectedHeight, selectedChildrenOption, selectedReligion, birthInfo]);
+  }, [showDropdownMenu, alwaysOpenDropdown, aboutMeText, selectedDeepPrompts, deepPromptAnswers, selectedOccupation, selectedCity, cityInput, selectedHeight, selectedChildrenOption, selectedReligion, birthInfo]);
 
 
   return (
@@ -509,14 +525,16 @@ export default function ProfilePhotoCarouselWithRanking({
           </button>
         )}
 
-        {/* Connection Overview Button - Bottom Right (top position) */}
-        {onShowElementsToggle && (
+        {/* Connection Overview Button - Bottom Right (top position) - Hidden when alwaysOpenDropdown is true */}
+        {onShowElementsToggle && !alwaysOpenDropdown && (
           <button
             onClick={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              console.log('[Photo Carousel] Connection Overview button clicked');
-              onShowElementsToggle();
+              if (!alwaysOpenDropdown) {
+                console.log('[Photo Carousel] Connection Overview button clicked');
+                onShowElementsToggle();
+              }
             }}
             onTouchStart={(e) => {
               e.stopPropagation();
@@ -524,8 +542,10 @@ export default function ProfilePhotoCarouselWithRanking({
             onTouchEnd={(e) => {
               e.stopPropagation();
               e.preventDefault();
-              console.log('[Photo Carousel] Connection Overview button touched');
-              onShowElementsToggle();
+              if (!alwaysOpenDropdown) {
+                console.log('[Photo Carousel] Connection Overview button touched');
+                onShowElementsToggle();
+              }
             }}
             className="absolute right-4 z-[100] flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
             data-interactive="true"
@@ -660,17 +680,17 @@ export default function ProfilePhotoCarouselWithRanking({
         )}
       </PhotoCarouselWithGestures>
 
-      {/* Dropdown Menu - Below Carousel */}
-      {showDropdown && showDropdownMenu && carouselWidth !== null && (
+      {/* Dropdown Menu - Below Carousel - Always visible when alwaysOpenDropdown is true */}
+      {showDropdown && alwaysOpenDropdown && (
         <div 
           ref={dropdownRef}
           className="rounded-lg"
           style={{
-            width: `${carouselWidth}px`,
+            width: carouselWidth !== null ? `${carouselWidth}px` : '100%',
             backgroundColor: theme === "light" ? 'rgba(255, 255, 255, 0.95)' : 'rgba(0, 0, 0, 0.95)',
             backdropFilter: 'blur(10px)',
             marginTop: '0px',
-            height: 'auto',
+            height: alwaysOpenDropdown ? dropdownHeight : 'auto',
             maxHeight: 'none',
             overflowY: 'visible',
           }}

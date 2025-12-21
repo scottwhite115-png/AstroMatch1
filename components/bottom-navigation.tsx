@@ -92,6 +92,7 @@ export function BottomNavigation() {
   const router = useRouter()
   const pathname = usePathname()
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
+  const [isHidden, setIsHidden] = useState(false)
 
   // Check for profile photo on mount and when page changes
   useEffect(() => {
@@ -117,6 +118,20 @@ export function BottomNavigation() {
       window.removeEventListener('storage', handlePhotoUpdate)
     }
   }, [pathname])
+
+  // Listen for moment composer focus/blur events
+  useEffect(() => {
+    const handleFocus = () => setIsHidden(true)
+    const handleBlur = () => setIsHidden(false)
+
+    window.addEventListener('momentComposerFocused', handleFocus)
+    window.addEventListener('momentComposerBlurred', handleBlur)
+
+    return () => {
+      window.removeEventListener('momentComposerFocused', handleFocus)
+      window.removeEventListener('momentComposerBlurred', handleBlur)
+    }
+  }, [])
 
   const navItems = [
     {
@@ -156,7 +171,7 @@ export function BottomNavigation() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden pb-safe">
+    <div className={`fixed bottom-0 left-0 right-0 z-50 lg:hidden pb-safe transition-transform duration-300 ${isHidden ? 'translate-y-full' : ''}`}>
       {/* Flat navigation bar */}
       <div className="relative w-full h-20">
         {/* Flat background */}

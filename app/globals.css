@@ -1209,6 +1209,60 @@ div.self-punishment-sign-name {
   -webkit-transition: none !important;
 }
 
+/* REMOVE TOUCH/ROLLOVER HIGHLIGHT FROM SAME SIGN SECTION */
+/* Disable hover/active/touch effects on the outer zodiac-sign-card container */
+#same-sign .zodiac-sign-card,
+#same-sign .zodiac-sign-card:hover,
+#same-sign .zodiac-sign-card:active,
+#same-sign .zodiac-sign-card:focus {
+  -webkit-tap-highlight-color: transparent !important;
+  tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  outline: none !important;
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+  background-color: inherit !important;
+  background: inherit !important;
+}
+
+/* Disable the ::before pseudo-element that creates the light-up effect */
+#same-sign .zodiac-sign-card::before,
+#same-sign .zodiac-sign-card:hover::before,
+#same-sign .zodiac-sign-card:active::before,
+#same-sign .zodiac-sign-card:focus::before {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Disable transition on the outer container */
+#same-sign .zodiac-sign-card {
+  transition: none !important;
+  -webkit-transition: none !important;
+}
+
+/* Disable hover/active/touch effects on inner boxes */
+#same-sign .border.rounded-lg:hover,
+#same-sign .border.rounded-lg:active,
+#same-sign .border.rounded-lg:focus,
+#same-sign div[class*="border"]:hover,
+#same-sign div[class*="border"]:active,
+#same-sign div[class*="border"]:focus,
+#same-sign #same-sign-content,
+#same-sign #same-sign-content:hover,
+#same-sign #same-sign-content:active,
+#same-sign #same-sign-content:focus {
+  -webkit-tap-highlight-color: transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  border-color: inherit !important;
+  opacity: 1 !important;
+  background-color: inherit !important;
+  background: inherit !important;
+}
+
 /* Disable hover/active/touch effects on inner boxes */
 #what-shapes-score .border.rounded-lg:hover,
 #what-shapes-score .border.rounded-lg:active,

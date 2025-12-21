@@ -177,6 +177,7 @@ export function ProfileSettings() {
               connectionBoxData={connectionBoxData || undefined}
               theme="dark"
               showDropdown={true}
+              alwaysOpenDropdown={true}
               badgePosition="overlay-bottom"
               aboutMeText="Creative soul with a passion for art and music. Seeking someone who values authenticity and emotional connection."
               selectedOccupation="Graphic Designer"
