@@ -425,13 +425,21 @@ export default function AccountPage({
       style={{ overscrollBehavior: 'contain' }}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
+        <div className="px-3 pt-0 pb-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-0.5">
-              <FourPointedStar className="w-4 h-4 text-orange-500" />
-              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroMatch
-              </span>
+            <div className="flex-1 -ml-8">
+              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
+                <div className="flex gap-0.5 min-w-max">
+                  <button
+                    className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out flex items-center gap-0.5`}
+                  >
+                    <FourPointedStar className="w-4 h-4 text-orange-500" />
+                    <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                      AstroMatch
+                    </span>
+                  </button>
+                </div>
+              </div>
             </div>
             
             {/* Theme Toggle Button */}
@@ -462,7 +470,7 @@ export default function AccountPage({
         </div>
 
         {/* Horizontal Tabs Navigation */}
-        <div className="px-3 pt-1 pb-2">
+        <div className="px-3 pt-0 pb-2 -mt-3">
           <div className="flex justify-start gap-8">
               <button
                 onClick={() => router.push("/profile/profile")}
@@ -479,12 +487,11 @@ export default function AccountPage({
                 onClick={() => router.push("/profile/account")}
                 className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "text-orange-600"
-                    : "text-orange-400"
+                    ? "text-purple-600"
+                    : "text-purple-400"
                 }`}
               >
                 Account
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 via-orange-500 to-red-500 rounded-full`} />
               </button>
               {isStaff && (
                 <button

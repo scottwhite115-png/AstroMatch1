@@ -35,9 +35,7 @@ export function BirthInformationSection({
   }, [birthDateISO]);
 
   return (
-    <div
-      className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-    >
+    <div className="mb-8">
       <SectionHeader
         label="Birth Information"
       />

@@ -20,8 +20,12 @@ export function SectionHeader({ label, icon }: SectionHeaderProps) {
         </div>
       )}
 
-      {/* Label - matching Account page style */}
-      <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
+      {/* Label - matching Profile/Account tab style */}
+      <h2 className={`font-semibold text-base ${
+        theme === "light"
+          ? "text-purple-600"
+          : "text-purple-400"
+      }`}>
         {label}
       </h2>
     </div>

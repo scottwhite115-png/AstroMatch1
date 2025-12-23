@@ -3125,8 +3125,8 @@ export default function AstrologyProfilePage({
     >
 
       <div className="relative z-10">
-        <div className="px-4 pt-0.5 pb-1.5">
-          <div className="flex items-center justify-between mb-1.5">
+        <div className="px-3 pt-0 pb-2">
+          <div className="flex items-center justify-between">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
                 <div className="flex gap-0.5 min-w-max">
@@ -3146,7 +3146,7 @@ export default function AstrologyProfilePage({
             <div className="flex items-center gap-2 ml-2">
               <button
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+                className="p-2 transition-colors"
                 aria-label="Toggle theme"
               >
                 {theme === "light" ? (
@@ -3172,18 +3172,17 @@ export default function AstrologyProfilePage({
         </div>
 
         {/* Horizontal Tabs Navigation */}
-        <div className="px-3 pt-1 pb-2">
+        <div className="px-3 pt-0 pb-2 -mt-3">
           <div className="flex justify-start gap-8">
               <button
                 onClick={() => router.push("/profile/profile")}
                 className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                   theme === "light"
-                    ? "text-orange-600"
-                    : "text-orange-400"
+                    ? "text-purple-600"
+                    : "text-purple-400"
                 }`}
               >
                 Profile
-                <div className={`absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-orange-500 via-orange-500 to-red-500 rounded-full`} />
               </button>
               <button
                 onClick={() => router.push("/profile/account")}
@@ -3194,7 +3193,6 @@ export default function AstrologyProfilePage({
                 }`}
               >
                 Account
-                <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
               </button>
               {isStaff && (
                 <button
@@ -3212,27 +3210,27 @@ export default function AstrologyProfilePage({
           </div>
         </div>
 
-        <div className="flex px-5 mb-3 pt-4">
+        <div className="flex px-5 mb-3 pt-0 -mt-1">
           <button
             onClick={() => setActiveTab("edit")}
             className={`flex-1 pb-3 pt-2 text-center font-semibold transition-all duration-300 relative profile-tab-button ${
-              activeTab === "edit" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70 hover:!text-black" : "!text-white/70 hover:!text-white")
+              activeTab === "edit" ? (theme === "light" ? "!text-purple-600" : "!text-purple-400") : (theme === "light" ? "!text-black/70 hover:!text-black" : "!text-white/70 hover:!text-white")
             }`}
           >
-            <span className={`relative z-10 text-lg ${activeTab === "edit" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70" : "!text-white/70")}`}>Edit</span>
+            <span className={`relative z-10 text-lg ${activeTab === "edit" ? (theme === "light" ? "!text-purple-600" : "!text-purple-400") : (theme === "light" ? "!text-black/70" : "!text-white/70")}`}>Edit</span>
           </button>
           <button
             onClick={() => setActiveTab("view")}
             className={`flex-1 pb-3 pt-2 text-center font-semibold transition-all duration-300 relative profile-tab-button ${
-              activeTab === "view" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70 hover:!text-black" : "!text-white/70 hover:!text-white")
+              activeTab === "view" ? (theme === "light" ? "!text-purple-600" : "!text-purple-400") : (theme === "light" ? "!text-black/70 hover:!text-black" : "!text-white/70 hover:!text-white")
             }`}
           >
-            <span className={`relative z-10 text-lg ${activeTab === "view" ? (theme === "light" ? "!text-black" : "!text-white") : (theme === "light" ? "!text-black/70" : "!text-white/70")}`}>View</span>
+            <span className={`relative z-10 text-lg ${activeTab === "view" ? (theme === "light" ? "!text-purple-600" : "!text-purple-400") : (theme === "light" ? "!text-black/70" : "!text-white/70")}`}>View</span>
           </button>
         </div>
 
         {activeTab === "edit" && (
-          <div className="px-5 mb-8">
+          <div className="px-5 mb-8 -mt-2">
             <div className="photo-grid">
               {photos.map((photo, index) => (
                 <div key={photo.id} className="photo-slot">
@@ -3275,7 +3273,7 @@ export default function AstrologyProfilePage({
 
         {activeTab === "view" && (
           <>
-            <div className="w-full pb-32">
+            <div className="w-full pb-32 -mt-2">
               <div className="w-full" style={{ marginBottom: '2rem', padding: '0', margin: '0 auto', maxWidth: '100%' }}>
                 {/* Get pattern colors for border */}
                 {(() => {
@@ -3642,21 +3640,8 @@ export default function AstrologyProfilePage({
 
         {activeTab === "edit" && (
           <div className="px-7 pb-32" style={{ position: 'relative' }}>
-            {theme !== "light" && (
-              <div 
-                className="absolute inset-x-0 bottom-0 bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
-                style={{ 
-                  height: '8rem', 
-                  left: 0, 
-                  right: 0,
-                  zIndex: 0
-                }}
-              />
-            )}
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="First name"
               />
@@ -3676,9 +3661,7 @@ export default function AstrologyProfilePage({
             </div>
 
             {/* Location Section */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="Location"
               />
@@ -3720,9 +3703,7 @@ export default function AstrologyProfilePage({
             </div>
 
             {/* Occupation / Industry Section */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="Occupation / Industry"
               />
@@ -3752,9 +3733,7 @@ export default function AstrologyProfilePage({
             />
 
             {/* About Me Section */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="About me"
               />
@@ -3787,11 +3766,13 @@ export default function AstrologyProfilePage({
             </div>
 
             {/* Relationship Goals Section */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
+                <h2 className={`font-semibold text-base ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}>
                   Relationship Goals
                 </h2>
                 {selectedRelationshipGoals.length > 0 && (
@@ -3869,11 +3850,13 @@ export default function AstrologyProfilePage({
             </div>
 
             {/* Interests Section */}
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-semibold text-base text-purple-600 dark:text-purple-400">
+                <h2 className={`font-semibold text-base ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}>
                   Interests
                 </h2>
                 {(() => {
@@ -3975,9 +3958,7 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="Height"
               />
@@ -4038,9 +4019,7 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <ChildrenSection
                 value={selectedChildrenOption as "I have children" | "I don't have children" | ""}
                 onChange={(value) => {
@@ -4052,9 +4031,7 @@ export default function AstrologyProfilePage({
               />
             </div>
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <GenderSection
                 value={genderOrientation.gender.toLowerCase() as "man" | "woman" | "other" | ""}
                 onChange={(value) => {
@@ -4068,9 +4045,7 @@ export default function AstrologyProfilePage({
               />
             </div>
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <OrientationSection
                 value={genderOrientation.orientation as "Men" | "Women" | ""}
                 onChange={(value) => {
@@ -4083,9 +4058,7 @@ export default function AstrologyProfilePage({
               />
             </div>
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="Age"
               />
@@ -4162,9 +4135,7 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-            <div
-              className={`mb-4 p-5 rounded-lg -mx-5 ${theme === "starlight" ? "bg-white/5 backdrop-blur-sm border border-white/10" : theme === "light" ? "bg-white border border-gray-200 shadow-sm" : "bg-slate-800/40 backdrop-blur-md border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}
-            >
+            <div className="mb-8">
               <SectionHeader
                 label="Distance"
               />
