@@ -472,16 +472,23 @@ export default function AstrologyProfilePage({
       if (showHeightDropdown && !(event.target as Element).closest('.height-dropdown-container')) {
         setShowHeightDropdown(false)
       }
+      
+      // Close interest category dropdowns when clicking outside
+      const hasOpenInterestCategory = Object.values(showInterestCategoryDropdowns).some(isOpen => isOpen)
+      if (hasOpenInterestCategory && !(event.target as Element).closest('.interest-category-dropdown-container') && !(event.target as Element).closest('.interest-category-item')) {
+        setShowInterestCategoryDropdowns({})
+      }
     }
 
-    if (showMatchDropdown || showInterestsDropdown || showRelationshipGoalsDropdown || showPromptsDropdown || showRomanticPromptsDropdown || showDeepPromptsDropdown || showDeepPromptsDropdown2 || showHeightDropdown) {
+    const hasOpenInterestCategory = Object.values(showInterestCategoryDropdowns).some(isOpen => isOpen)
+    if (showMatchDropdown || showInterestsDropdown || showRelationshipGoalsDropdown || showPromptsDropdown || showRomanticPromptsDropdown || showDeepPromptsDropdown || showDeepPromptsDropdown2 || showHeightDropdown || hasOpenInterestCategory) {
       document.addEventListener('mousedown', handleClickOutside)
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [showMatchDropdown, showInterestsDropdown, showRelationshipGoalsDropdown, showPromptsDropdown, showRomanticPromptsDropdown, showDeepPromptsDropdown, showDeepPromptsDropdown2, showHeightDropdown])
+  }, [showMatchDropdown, showInterestsDropdown, showRelationshipGoalsDropdown, showPromptsDropdown, showRomanticPromptsDropdown, showDeepPromptsDropdown, showDeepPromptsDropdown2, showHeightDropdown, showInterestCategoryDropdowns])
 
   const [name, setName] = useState("")
 
@@ -771,7 +778,7 @@ export default function AstrologyProfilePage({
 
   // Build self-compatibility box when user signs change using new match engine
   useEffect(() => {
-    console.log('[Profile View Tab] Building connection box...')
+    console.log('[Profile View Tab] Building profile box...')
     console.log('[Profile View Tab] calculatedSigns:', calculatedSigns)
     
     if (calculatedSigns.westernSign && calculatedSigns.chineseSign) {
@@ -887,7 +894,7 @@ export default function AstrologyProfilePage({
         const patternEmoji = getPatternIcon(chinesePattern)
 
         const boxData: ConnectionBoxData = {
-          score: astroMatch.score,
+          score: result.score, // Use new engine score (with 66% cap applied)
           rank: rankLabelDisplay,
           rankLabel: rankLabelDisplay,
           rankKey: result.rankKey,
@@ -3268,8 +3275,8 @@ export default function AstrologyProfilePage({
 
         {activeTab === "view" && (
           <>
-            <div className="w-full flex justify-center mb-8 pb-32">
-              <div className="w-full">
+            <div className="w-full pb-32">
+              <div className="w-full" style={{ marginBottom: '2rem', padding: '0', margin: '0 auto', maxWidth: '100%' }}>
                 {/* Get pattern colors for border */}
                 {(() => {
                   const patternColors = connectionBoxData?.pattern 
@@ -3282,19 +3289,37 @@ export default function AstrologyProfilePage({
                   
                   return (
                     <>
+                      {/* Outer border wrapper for entire profile card */}
+                      {photos.some(p => p.hasImage) && (
+                        <div
+                          style={{
+                            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                            padding: '4px',
+                            borderRadius: '1.5rem',
+                            boxSizing: 'border-box',
+                            width: '100%',
+                          }}
+                        >
+                          <div
+                            style={{
+                              borderRadius: '1.5rem',
+                              background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                              overflow: 'visible',
+                            }}
+                          >
                       {/* Photo Carousel with Border - matches discover section */}
                       {photos.some(p => p.hasImage) && (
                         <div
                           className="w-full rounded-3xl relative"
                           style={{ 
-                            border: `3px solid ${patternColors.start}`,
-                            padding: '0',
-                            zIndex: 10,
-                            marginBottom: '0',
-                            overflow: 'visible',
+                            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                            padding: '4px',
+                            borderRadius: '1.5rem',
+                            overflow: 'hidden',
+                            boxSizing: 'border-box',
                           }}
                         >
-                          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem' }}>
+                          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
                             <ProfilePhotoCarouselWithRanking
                               images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
                               profileName={name || ""}
@@ -3347,9 +3372,11 @@ export default function AstrologyProfilePage({
                               patternColors={patternColors}
                             />
                           </div>
+                        </div>
+                      )}
 
-                          {/* Connection Box - Only visible when toggled, matches discover section - Inside border */}
-                          {(showConnectionProfile || showConnectionElements) && connectionBoxData && (() => {
+                      {/* Match Box - Always visible, matches discover section */}
+                      {connectionBoxData && photos.some(p => p.hasImage) && (() => {
                             const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
                             const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
                             const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
@@ -3381,16 +3408,8 @@ export default function AstrologyProfilePage({
                             })();
 
                             return (
-                              <div 
-                                className="w-full"
-                                style={{
-                                  marginTop: '0',
-                                  paddingTop: '0',
-                                  borderRadius: '0 0 1.5rem 1.5rem',
-                                  overflow: 'hidden',
-                                }}
-                              >
-                                <div className="relative w-full max-w-full">
+                              <>
+                                <div className="relative w-full" style={{ marginTop: '-4px', marginBottom: '-34px', zIndex: 10 }}>
                                   <ConnectionBoxNew
                                     tier={newTier}
                                     score={connectionBoxData.score}
@@ -3420,8 +3439,8 @@ export default function AstrologyProfilePage({
                                     westElementRelation={connectionBoxData.westElementRelation}
                                     isChineseOpposite={connectionBoxData.isChineseOpposite}
                                     isLivelyPair={connectionBoxData.isLivelyPair}
-                                    showProfile={showConnectionProfile}
-                                    showElements={showConnectionElements}
+                                    showProfile={false}
+                                    showElements={true}
                                     patternFullLabel={connectionBoxData.patternFullLabel}
                                     pillLabel={connectionBoxData.pillLabel}
                                     baseTagline={connectionBoxData.baseTagline}
@@ -3436,14 +3455,93 @@ export default function AstrologyProfilePage({
                                     onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
                                   />
                                 </div>
-                              </div>
+
+                                {/* Profile Dropdown - Overlays profile box when open */}
+                                {showConnectionProfile && (
+                                  <div 
+                                    className="w-full"
+                                    style={{ 
+                                      position: 'absolute',
+                                      top: '100%',
+                                      left: 0,
+                                      right: 0,
+                                      zIndex: 100,
+                                      marginTop: '-36px',
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                                        padding: '0 4px 4px 4px',
+                                        borderRadius: '1.5rem',
+                                        boxSizing: 'border-box',
+                                        width: '100%',
+                                      }}
+                                    >
+                                      <div
+                                        style={{
+                                          borderRadius: 'calc(1.5rem - 3px)',
+                                          backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+                                          overflow: 'hidden',
+                                        }}
+                                      >
+                                    <ConnectionBoxNew
+                                      tier={newTier}
+                                      score={connectionBoxData.score}
+                                      westA={westA}
+                                      eastA={eastA}
+                                      westB={westB}
+                                      eastB={eastB}
+                                      chineseLine={chineseLine}
+                                      sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                                      westernLine={westernLine}
+                                      wuXingLine={wuXingLine}
+                                      chineseElementA={connectionBoxData.a?.chineseElement}
+                                      chineseElementB={connectionBoxData.b?.chineseElement}
+                                      connectionBlurb={connectionBlurb || undefined}
+                                      theme={theme}
+                                      aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
+                                      interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
+                                      relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
+                                      age={calculatedAge}
+                                      city={connectionBoxData.city ?? selectedCity ?? cityInput}
+                                      occupation={connectionBoxData.occupation ?? selectedOccupation}
+                                      height={connectionBoxData.height ?? selectedHeight}
+                                      children={connectionBoxData.children ?? selectedChildrenOption}
+                                      religion={connectionBoxData.religion ?? selectedReligion}
+                                      chinesePattern={connectionBoxData.chinesePattern}
+                                      westAspect={connectionBoxData.westAspect}
+                                      westElementRelation={connectionBoxData.westElementRelation}
+                                      isChineseOpposite={connectionBoxData.isChineseOpposite}
+                                      isLivelyPair={connectionBoxData.isLivelyPair}
+                                      showProfile={true}
+                                      showElements={false}
+                                      patternFullLabel={connectionBoxData.patternFullLabel}
+                                      pillLabel={connectionBoxData.pillLabel}
+                                      baseTagline={connectionBoxData.baseTagline}
+                                      patternEmoji={connectionBoxData.patternEmoji}
+                                      pattern={connectionBoxData.pattern}
+                                      chemistryStars={connectionBoxData.chemistryStars}
+                                      stabilityStars={connectionBoxData.stabilityStars}
+                                      patternColors={patternColors}
+                                      onPass={undefined}
+                                      onLike={undefined}
+                                      onMessage={undefined}
+                                      onViewProfile={() => setShowConnectionProfile(false)}
+                                    />
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </>
                             );
                           })()}
+                          </div>
                         </div>
                       )}
 
-                      {/* Connection Box - Only visible when toggled, matches discover section - Outside border (fallback) */}
-                      {!photos.some(p => p.hasImage) && (showConnectionProfile || showConnectionElements) && connectionBoxData && (() => {
+                      {/* Connection Box - Always visible, matches discover section - Outside border (fallback) */}
+                      {!photos.some(p => p.hasImage) && connectionBoxData && (() => {
                         const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
                         const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
                         const eastA = connectionBoxData.a?.east ? capitalize(connectionBoxData.a.east) : "Unknown";
@@ -3516,7 +3614,7 @@ export default function AstrologyProfilePage({
                                 isChineseOpposite={connectionBoxData.isChineseOpposite}
                                 isLivelyPair={connectionBoxData.isLivelyPair}
                                 showProfile={showConnectionProfile}
-                                showElements={showConnectionElements}
+                                showElements={true}
                                 patternFullLabel={connectionBoxData.patternFullLabel}
                                 pillLabel={connectionBoxData.pillLabel}
                                 baseTagline={connectionBoxData.baseTagline}
@@ -3533,7 +3631,7 @@ export default function AstrologyProfilePage({
                             </div>
                           </div>
                         );
-                      })()}
+                          })()}
                     </>
                   );
                 })()}
@@ -3814,7 +3912,7 @@ export default function AstrologyProfilePage({
                     const isMaxReached = categoryInterests.length >= 6
 
                     return (
-                      <div key={category} className="relative">
+                      <div key={category} className="relative interest-category-item">
                         <button
                           type="button"
                           onClick={() => toggleInterestCategoryDropdown(category)}
@@ -3832,7 +3930,7 @@ export default function AstrologyProfilePage({
 
                         {isOpen && (
                           <div
-                            className={`mt-2 rounded-lg border ${
+                            className={`interest-category-dropdown-container mt-2 rounded-lg border ${
                               theme === "light"
                                 ? "bg-white border-gray-200"
                                 : "bg-slate-900/50 border-indigo-400/20"
@@ -4000,16 +4098,16 @@ export default function AstrologyProfilePage({
                 </div>
                 
                 {/* Dual Range Slider - Single Bar */}
-                <div className="relative h-8">
+                <div className="relative h-8 px-3 overflow-hidden">
                   {/* Background Track */}
-                  <div className="absolute top-3 left-0 right-0 h-[3px] bg-gray-400/30 rounded-full"></div>
+                  <div className="absolute top-3 left-3 right-3 h-[3px] bg-gray-400/30 rounded-full"></div>
                   
                   {/* Active Range Track */}
                   <div 
-                    className="absolute top-3 h-[3px] bg-gray-400 rounded-full"
+                    className="absolute top-3 h-[3px] bg-gray-400 rounded-full left-3"
                     style={{
-                      left: `${((ageRange[0] - 18) / (80 - 18)) * 100}%`,
-                      width: `${((ageRange[1] - ageRange[0]) / (80 - 18)) * 100}%`
+                      left: `calc(0.75rem + ${((ageRange[0] - 18) / (80 - 18))} * (100% - 1.5rem))`,
+                      width: `calc(${((ageRange[1] - ageRange[0]) / (80 - 18))} * (100% - 1.5rem))`
                     }}
                   />
                   
@@ -4023,7 +4121,7 @@ export default function AstrologyProfilePage({
                       const newMin = Math.min(Number(e.target.value), ageRange[1] - 1)
                       handleAgeRangeChange([newMin, ageRange[1]])
                     }}
-                    className="absolute top-0 w-full h-8 bg-transparent appearance-none cursor-pointer pointer-events-none z-30
+                    className="absolute top-0 left-3 right-3 w-[calc(100%-1.5rem)] h-8 bg-transparent appearance-none cursor-pointer pointer-events-none z-30
                             [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
                             [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:mt-1
                             [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-400
@@ -4044,7 +4142,7 @@ export default function AstrologyProfilePage({
                       const newMax = Math.max(Number(e.target.value), ageRange[0] + 1)
                       handleAgeRangeChange([ageRange[0], newMax])
                     }}
-                    className="absolute top-0 w-full h-8 bg-transparent appearance-none cursor-pointer pointer-events-none z-20
+                    className="absolute top-0 left-3 right-3 w-[calc(100%-1.5rem)] h-8 bg-transparent appearance-none cursor-pointer pointer-events-none z-20
                             [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6
                             [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:mt-1
                             [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-gray-400

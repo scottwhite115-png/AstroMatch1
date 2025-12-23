@@ -175,10 +175,10 @@ export default function MatchProfileCard({
 }: MatchProfileCardProps) {
   // Use external state if provided, otherwise use internal state
   const [internalShowProfile, setInternalShowProfile] = useState(false);
-  const [internalShowElements, setInternalShowElements] = useState(false);
+  const [internalShowElements, setInternalShowElements] = useState(true); // Default to true - connection box always open
   
   const showProfile = externalShowProfile !== undefined ? externalShowProfile : internalShowProfile;
-  const showElements = externalShowElements !== undefined ? externalShowElements : internalShowElements;
+  const showElements = externalShowElements !== undefined ? externalShowElements : internalShowElements; // Always true - connection box always visible
   
   const handleShowProfileToggle = () => {
     console.log('[MatchProfileCard] Profile toggle clicked', { externalOnShowProfileToggle: !!externalOnShowProfileToggle, showProfile });
@@ -282,30 +282,21 @@ export default function MatchProfileCard({
   return (
     <div className="w-full flex justify-center">
       <div className="w-full">
-      {/* Container with border that extends when dropdowns are open */}
-      <div
-        className="w-full relative"
-        style={{ 
-          border: hasOpenDropdown ? `3px solid ${patternColors.start}` : 'none',
-          background: hasOpenDropdown ? `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})` : 'transparent',
-          padding: hasOpenDropdown ? '3px' : '0',
-          borderRadius: hasOpenDropdown ? '1.5rem' : '0',
-          zIndex: 10,
-          marginBottom: '0',
-        }}
-      >
-        {/* Photo Carousel with Border (only when dropdowns are closed) */}
-        {profile.photos.length > 0 && (
-          <div
-            className="w-full rounded-3xl relative"
-            style={{ 
-              border: !hasOpenDropdown ? `3px solid ${patternColors.start}` : 'none',
-              background: !hasOpenDropdown ? `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})` : 'transparent',
-              padding: !hasOpenDropdown ? '3px' : '0',
-              marginBottom: hasOpenDropdown ? '0' : '0',
-            }}
-          >
-            <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0' }}>
+        {/* Container with border - matches profile view tab design */}
+        <div
+          className="w-full rounded-3xl relative"
+          style={{ 
+            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+            padding: '3px',
+            borderRadius: '1.5rem',
+            zIndex: 10,
+            marginBottom: '0',
+            overflow: 'hidden',
+          }}
+        >
+          {/* Photo Carousel */}
+          {profile.photos.length > 0 && (
+            <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
               <ProfilePhotoCarouselWithRanking
                 images={profile.photos}
                 profileName={profile.name}
@@ -324,88 +315,153 @@ export default function MatchProfileCard({
                 westernSign={displayWesternSign}
                 easternSign={displayEasternSign}
                 onPhotoChange={onPhotoChange}
-                showProfileToggle={showProfile}
-                onShowProfileToggle={handleShowProfileToggle}
-                showElementsToggle={showElements}
-                onShowElementsToggle={handleShowElementsToggle}
+                showProfileToggle={false}
+                onShowProfileToggle={() => {}}
+                showElementsToggle={false}
+                onShowElementsToggle={() => {}}
                 onMessageClick={onMessageClick}
                 patternColors={patternColors}
                 isNewMatch={isNewMatch}
                 matchedAt={matchedAt}
               />
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Connection Box - Always visible, toggles control dropdowns */}
-        {hasOpenDropdown && connectionBoxData && (
-          <div 
-            ref={connectionBoxRef}
-            className={`relative flex justify-center ${
-              theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"
-            }`}
-            style={{
-              position: 'relative',
-              marginTop: hasOpenDropdown ? '0' : '-3px',
-              paddingTop: '0',
-              borderTopLeftRadius: hasOpenDropdown ? '1.5rem' : '0',
-              borderTopRightRadius: hasOpenDropdown ? '1.5rem' : '0',
-              borderBottomLeftRadius: hasOpenDropdown ? '1.5rem' : '0',
-              borderBottomRightRadius: hasOpenDropdown ? '1.5rem' : '0',
-              overflow: 'hidden',
-            }}
-          >
-            <div className="relative w-full max-w-full" style={{ zIndex: 10, marginBottom: '0', paddingBottom: '0' }}>
-              <ConnectionBoxNew
-                tier={newTier}
-                score={connectionBoxData.score}
-                westA={westA}
-                eastA={eastA}
-                westB={westB}
-                eastB={eastB}
-                chineseLine={chineseLine}
-                sunMatchBlurb={connectionBoxData.westernSignLine || ""}
-                westernLine={westernLine}
-                wuXingLine={wuXingLine}
-                chineseElementA={connectionBoxData.a?.chineseElement}
-                chineseElementB={connectionBoxData.b?.chineseElement}
-                connectionBlurb={connectionBlurb || undefined}
-                theme={theme}
-                aboutMe={profile.aboutMe}
-                age={profile.age}
-                city={profile.city}
-                occupation={profile.occupation}
-                height={profile.height}
-                children={profile.children}
-                religion={profile.religion}
-                chinesePattern={connectionBoxData.chinesePattern}
-                westAspect={connectionBoxData.westAspect}
-                westElementRelation={connectionBoxData.westElementRelation}
-                isChineseOpposite={connectionBoxData.isChineseOpposite}
-                isLivelyPair={connectionBoxData.isLivelyPair}
-                showProfile={showProfile}
-                showElements={showElements}
-                patternFullLabel={connectionBoxData.patternFullLabel}
-                pillLabel={connectionBoxData.pillLabel}
-                baseTagline={connectionBoxData.baseTagline}
-                patternEmoji={connectionBoxData.patternEmoji}
-                pattern={connectionBoxData.pattern}
-                chemistryStars={connectionBoxData.chemistryStars}
-                stabilityStars={connectionBoxData.stabilityStars}
-                patternColors={patternColors}
-                relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
-                interests={profile.interests || profile.selectedOrganizedInterests}
-                onPass={onPass}
-                onLike={onLike}
-                onMessage={onMessageClick}
-                onViewProfile={handleShowProfileToggle}
-              />
-            </div>
+          {/* Connection Box - Always visible, matches profile view tab design */}
+          {connectionBoxData && (
+            <div 
+              className="w-full"
+              style={{
+                position: 'relative',
+                marginTop: '0',
+                paddingTop: '0',
+                borderRadius: '1.5rem 1.5rem 1.5rem 1.5rem',
+                borderTopLeftRadius: '1.5rem',
+                borderTopRightRadius: '1.5rem',
+                overflow: 'hidden',
+                backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+              }}
+            >
+              {/* Connection Box - Always visible, behind profile dropdown */}
+              <div className="relative w-full max-w-full" style={{ backgroundColor: theme === "light" ? "#ffffff" : "#1e293b" }}>
+                  <ConnectionBoxNew
+                    tier={newTier}
+                    score={connectionBoxData.score}
+                    westA={westA}
+                    eastA={eastA}
+                    westB={westB}
+                    eastB={eastB}
+                    chineseLine={chineseLine}
+                    sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                    westernLine={westernLine}
+                    wuXingLine={wuXingLine}
+                    chineseElementA={connectionBoxData.a?.chineseElement}
+                    chineseElementB={connectionBoxData.b?.chineseElement}
+                    connectionBlurb={connectionBlurb || undefined}
+                    theme={theme}
+                    aboutMe={profile.aboutMe}
+                    age={profile.age}
+                    city={profile.city}
+                    occupation={profile.occupation}
+                    height={profile.height}
+                    children={profile.children}
+                    religion={profile.religion}
+                    chinesePattern={connectionBoxData.chinesePattern}
+                    westAspect={connectionBoxData.westAspect}
+                    westElementRelation={connectionBoxData.westElementRelation}
+                    isChineseOpposite={connectionBoxData.isChineseOpposite}
+                    isLivelyPair={connectionBoxData.isLivelyPair}
+                    showProfile={false}
+                    showElements={true}
+                    patternFullLabel={connectionBoxData.patternFullLabel}
+                    pillLabel={connectionBoxData.pillLabel}
+                    baseTagline={connectionBoxData.baseTagline}
+                    patternEmoji={connectionBoxData.patternEmoji}
+                    pattern={connectionBoxData.pattern}
+                    chemistryStars={connectionBoxData.chemistryStars}
+                    stabilityStars={connectionBoxData.stabilityStars}
+                    patternColors={patternColors}
+                    relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+                    interests={profile.interests || profile.selectedOrganizedInterests}
+                    onPass={onPass}
+                    onLike={onLike}
+                    onMessage={onMessageClick}
+                    onViewProfile={undefined}
+                  />
+                </div>
+                
+                {/* Profile Dropdown - Overlays connection box when open */}
+                {showProfile && (
+                  <div 
+                    className="w-full"
+                    style={{ 
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      zIndex: 100,
+                      backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+                      borderRadius: '1.5rem',
+                      overflow: 'hidden',
+                    }}
+                  >
+                      <ConnectionBoxNew
+                        tier={newTier}
+                        score={connectionBoxData.score}
+                        westA={westA}
+                        eastA={eastA}
+                        westB={westB}
+                        eastB={eastB}
+                        chineseLine={chineseLine}
+                        sunMatchBlurb={connectionBoxData.westernSignLine || ""}
+                        westernLine={westernLine}
+                        wuXingLine={wuXingLine}
+                        chineseElementA={connectionBoxData.a?.chineseElement}
+                        chineseElementB={connectionBoxData.b?.chineseElement}
+                        connectionBlurb={connectionBlurb || undefined}
+                        theme={theme}
+                        aboutMe={profile.aboutMe}
+                        age={profile.age}
+                        city={profile.city}
+                        occupation={profile.occupation}
+                        height={profile.height}
+                        children={profile.children}
+                        religion={profile.religion}
+                        chinesePattern={connectionBoxData.chinesePattern}
+                        westAspect={connectionBoxData.westAspect}
+                        westElementRelation={connectionBoxData.westElementRelation}
+                        isChineseOpposite={connectionBoxData.isChineseOpposite}
+                        isLivelyPair={connectionBoxData.isLivelyPair}
+                        showProfile={true}
+                        showElements={false}
+                        patternFullLabel={connectionBoxData.patternFullLabel}
+                        pillLabel={connectionBoxData.pillLabel}
+                        baseTagline={connectionBoxData.baseTagline}
+                        patternEmoji={connectionBoxData.patternEmoji}
+                        pattern={connectionBoxData.pattern}
+                        chemistryStars={connectionBoxData.chemistryStars}
+                        stabilityStars={connectionBoxData.stabilityStars}
+                        patternColors={patternColors}
+                        relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+                        interests={profile.interests || profile.selectedOrganizedInterests}
+                        onPass={onPass}
+                        onLike={onLike}
+                        onMessage={onMessageClick}
+                        onViewProfile={() => {
+                          if (externalOnShowProfileToggle) {
+                            externalOnShowProfileToggle();
+                          } else {
+                            setInternalShowProfile(false);
+                          }
+                        }}
+                      />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
-
-      </div>
-    </div>
   );
 }

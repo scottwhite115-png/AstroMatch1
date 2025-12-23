@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { ChineseZodiacIcon } from "@/components/chinese-zodiac-icon"
 import { ChevronLeft, X } from "lucide-react"
 import { useTheme } from "@/contexts/ThemeContext"
@@ -17,10 +17,10 @@ import { getWuXingYearElement } from "@/lib/matchEngine"
 import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
 
 interface ZodiacCombinationPageProps {
-  params: {
+  params: Promise<{
     western: string
     chinese: string
-  }
+  }>
 }
 
 const westernSigns = {
@@ -1288,18 +1288,21 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
   const [pageSigns, setPageSigns] = useState<{ western: string; chinese: string } | null>(null)
   const [showDropdown, setShowDropdown] = useState(false)
 
+  // Unwrap the params Promise using React.use()
+  const resolvedParams = use(params)
+
   // Extract page signs from params
   useEffect(() => {
-    console.log('[Astrology Page] Extracting page signs from params:', params)
+    console.log('[Astrology Page] Extracting page signs from params:', resolvedParams)
     setPageSigns({
-      western: params.western.toLowerCase(),
-      chinese: params.chinese.toLowerCase()
+      western: resolvedParams.western.toLowerCase(),
+      chinese: resolvedParams.chinese.toLowerCase()
     })
     console.log('[Astrology Page] Page signs set to:', {
-      western: params.western.toLowerCase(),
-      chinese: params.chinese.toLowerCase()
+      western: resolvedParams.western.toLowerCase(),
+      chinese: resolvedParams.chinese.toLowerCase()
     })
-  }, [params.western, params.chinese])
+  }, [resolvedParams.western, resolvedParams.chinese])
 
   useEffect(() => {
     setMounted(true)

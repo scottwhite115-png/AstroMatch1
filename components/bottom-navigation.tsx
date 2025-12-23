@@ -141,18 +141,13 @@ export function BottomNavigation() {
     },
     {
       icon: Heart,
-      label: "Discover",
+      label: "Matches",
       path: "/matches",
     },
     {
       icon: MessageCircle,
-      label: "Connections",
+      label: "Messages",
       path: "/messages",
-    },
-    {
-      icon: Users,
-      label: "Community",
-      path: "/community",
     },
     {
       icon: Settings,
@@ -178,7 +173,7 @@ export function BottomNavigation() {
         <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0 pointer-events-none" />
         
         {/* Navigation buttons with flat positioning */}
-        <div className="relative grid grid-cols-5 w-full h-full items-start pt-2 z-10">
+        <div className="relative grid grid-cols-4 w-full h-full items-start pt-2 z-10">
           {navItems.map((item, index) => {
             const Icon = item.icon
             // Check if current path matches the nav item or if it's a profile sub-route or astrology sub-route

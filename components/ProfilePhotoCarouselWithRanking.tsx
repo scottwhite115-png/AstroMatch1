@@ -33,11 +33,7 @@ const MessageCircle = ({ className, style }: { className?: string; style?: React
   </svg>
 );
 
-const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
-  </svg>
-);
+// FourPointedStar component removed - connection box is now permanently open
 
 // Helper to get tier gradient colors
 // Helper to get pattern-based solid color for borders, text, etc.
@@ -472,7 +468,7 @@ export default function ProfilePhotoCarouselWithRanking({
         {/* Name and Age Overlay - Bottom Left */}
         {profileName && (
           <div className="absolute bottom-0 left-0 right-0" style={{ zIndex: 30, pointerEvents: 'none' }}>
-            <div className="px-5 pb-2">
+            <div className="px-5 pb-4">
               <div className="text-white font-semibold text-4xl mb-1">
                 {profileName}
               </div>
@@ -493,88 +489,8 @@ export default function ProfilePhotoCarouselWithRanking({
 
         {/* Photo Navigation Arrows removed (touch-only navigation) */}
 
-        {/* Chat Button - Top Right */}
-        {onMessageClick && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onMessageClick();
-            }}
-            className="absolute top-4 right-4 z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
-            style={{
-              backgroundColor: 'transparent',
-              borderWidth: '2px',
-              borderStyle: 'solid',
-              borderColor: patternColors?.start || (connectionBoxData 
-                ? getPatternColor(connectionBoxData.pattern)
-                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
-              backdropFilter: 'blur(10px)',
-              boxShadow: theme === "light" 
-                ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
-                : `0 2px 12px rgba(0, 0, 0, 0.5)`,
-            }}
-            aria-label="Open chat"
-          >
-            <MessageCircle 
-              className="w-7 h-7" 
-              style={{ 
-                stroke: "white",
-                fill: "none"
-              }} 
-            />
-          </button>
-        )}
-
-        {/* Connection Overview Button - Bottom Right (top position) - Hidden when alwaysOpenDropdown is true */}
-        {onShowElementsToggle && !alwaysOpenDropdown && (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              if (!alwaysOpenDropdown) {
-                console.log('[Photo Carousel] Connection Overview button clicked');
-                onShowElementsToggle();
-              }
-            }}
-            onTouchStart={(e) => {
-              e.stopPropagation();
-            }}
-            onTouchEnd={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              if (!alwaysOpenDropdown) {
-                console.log('[Photo Carousel] Connection Overview button touched');
-                onShowElementsToggle();
-              }
-            }}
-            className="absolute right-4 z-[100] flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
-            data-interactive="true"
-            style={{
-              bottom: '80px', // Position above profile button with gap
-              backgroundColor: 'transparent',
-              borderWidth: '2px',
-              borderStyle: 'solid',
-              borderColor: patternColors?.start || (connectionBoxData 
-                ? getPatternColor(connectionBoxData.pattern)
-                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
-              backdropFilter: 'blur(10px)',
-              boxShadow: theme === "light" 
-                ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
-                : `0 2px 12px rgba(0, 0, 0, 0.5)`,
-              pointerEvents: 'auto',
-              touchAction: 'manipulation',
-            }}
-            aria-label="Toggle connection overview"
-          >
-            <FourPointedStar 
-              className="w-7 h-7 text-white" 
-              style={{ color: "white", fill: "white" }}
-            />
-          </button>
-        )}
-
         {/* Profile Button - Bottom Right (bottom position) */}
-        {onShowProfileToggle && (
+        {showProfileToggle && onShowProfileToggle && (
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -623,6 +539,40 @@ export default function ProfilePhotoCarouselWithRanking({
           </button>
         )}
 
+        {/* Chat Button - Bottom Right */}
+        {onMessageClick && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onMessageClick();
+            }}
+            className="absolute z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            style={{
+              right: '16px',
+              bottom: '16px', // Position at bottom right corner
+              backgroundColor: 'transparent',
+              borderWidth: '2px',
+              borderStyle: 'solid',
+              borderColor: patternColors?.start || (connectionBoxData 
+                ? getPatternColor(connectionBoxData.pattern)
+                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
+              backdropFilter: 'blur(10px)',
+              boxShadow: theme === "light" 
+                ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
+                : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+            }}
+            aria-label="Open chat"
+          >
+            <MessageCircle 
+              className="w-7 h-7" 
+              style={{ 
+                stroke: "white",
+                fill: "none"
+              }} 
+            />
+          </button>
+        )}
+
         {/* New Match Badge - Top Left */}
         {isActuallyNewMatch && (
           <div className="absolute top-4 left-4 z-30">
@@ -648,7 +598,7 @@ export default function ProfilePhotoCarouselWithRanking({
 
         {/* Ranking Badge - Top Right (if badgePosition is "top-right") */}
         {connectionBoxData && badgePosition === "top-right" && (
-          <div className="absolute top-4 z-20" style={{ right: onMessageClick ? '72px' : '16px' }}>
+          <div className="absolute top-4 z-20" style={{ right: '16px' }}>
             <div 
               className="px-4 py-2 rounded-full flex items-center gap-2"
               style={{

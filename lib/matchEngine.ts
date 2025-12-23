@@ -935,18 +935,33 @@ export function computeMatchScore(ctx: MatchContext): MatchScoreResult {
     tier = "Difficult Match";
   }
 
+  // Cap for Neutral when "blocked-from-top-tiers" conditions apply
+  // If same West sign OR same animal causes the pair to be classified as Neutral,
+  // then cap the final score at 66%
+  let finalScore = result.score;
+  if (tier === "Neutral Match" && (sameWesternSign || sameChineseAnimal)) {
+    if (finalScore > 66) {
+      finalScore = 66;
+      console.log('[Match Engine] Capping Neutral score at 66% due to sameWestSign or sameChineseAnimal:', {
+        sameWesternSign,
+        sameChineseAnimal,
+        originalScore: result.score
+      });
+    }
+  }
+
   console.log('[Match Engine] Scoring:', {
     pattern: result.pattern,
     westernElementRelation,
     westernAspectRelation,
     wuXingRelation,
-    score: result.score,
+    score: finalScore,
     tier
   });
 
   return {
-    score: result.score,
-    rawScore: result.score, // In new engine, these are the same after clamping
+    score: finalScore,
+    rawScore: finalScore, // In new engine, these are the same after clamping
     tier,
   };
 }

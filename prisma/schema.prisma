@@ -52,6 +52,19 @@ enum ChatRegionScope {
   GLOBAL
 }
 
+// Enums for Astrology APIs
+enum AstroSystem {
+  VEDIC
+  WESTERN_TROPICAL
+  WESTERN_SIDEREAL
+}
+
+enum AstroPeriod {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
 model profiles {
   id             String   @id @db.Uuid
   display_name   String?
@@ -71,21 +84,21 @@ model profiles {
   updated_at     DateTime @default(now())
 
   // Admin and moderation fields
-  role            Role          @default(USER)
-  isStaff         Boolean       @default(false)
-  showStaffBadge  Boolean       @default(true)
-  status          AccountStatus @default(ACTIVE)
+  role             Role          @default(USER)
+  isStaff          Boolean       @default(false)
+  showStaffBadge   Boolean       @default(true)
+  status           AccountStatus @default(ACTIVE)
   suspensionEndsAt DateTime?
 
   posts           Post[]
   comments        Comment[]
   sanHeMessages   SanHeMessage[]
   sanHePresence   SanHePresence[]
-  reports         PostReport[]  @relation("ReporterReports")
-  blocksInitiated UserBlock[]   @relation("BlocksInitiated")
-  blocksReceived  UserBlock[]   @relation("BlocksReceived")
+  reports         PostReport[]    @relation("ReporterReports")
+  blocksInitiated UserBlock[]     @relation("BlocksInitiated")
+  blocksReceived  UserBlock[]     @relation("BlocksReceived")
   moments         Moment[]
-  momentReports   MomentReport[] @relation("MomentReporter")
+  momentReports   MomentReport[]  @relation("MomentReporter")
 }
 
 model connections {
@@ -105,22 +118,22 @@ model connections {
 }
 
 model Post {
-  id           String   @id @default(cuid())
-  title        String
-  content      String
-  topic        String // e.g. "general-astrology", "sun-signs", "chinese-astrology", "vedic-astrology", "compatibility-and-synastry", "astromatch-feedback"
-  type         PostType @default(STORY) // STORY or QUESTION
-  authorId     String   @db.Uuid
-  author       profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  language     String? // ISO code like "en", optional
-  countryCode  String? // ISO 2-letter country code, optional
-  likeCount    Int      @default(0) // Legacy - keeping for backward compatibility
-  upvoteCount  Int      @default(0) // Reddit-style upvotes
-  downvoteCount Int     @default(0) // Reddit-style downvotes
-  commentCount Int      @default(0)
-  isHidden     Boolean  @default(false) // Moderation: hide post without deleting
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id            String   @id @default(cuid())
+  title         String
+  content       String
+  topic         String // e.g. "general-astrology", "sun-signs", "chinese-astrology", "vedic-astrology", "compatibility-and-synastry", "astromatch-feedback"
+  type          PostType @default(STORY) // STORY or QUESTION
+  authorId      String   @db.Uuid
+  author        profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  language      String? // ISO code like "en", optional
+  countryCode   String? // ISO 2-letter country code, optional
+  likeCount     Int      @default(0) // Legacy - keeping for backward compatibility
+  upvoteCount   Int      @default(0) // Reddit-style upvotes
+  downvoteCount Int      @default(0) // Reddit-style downvotes
+  commentCount  Int      @default(0)
+  isHidden      Boolean  @default(false) // Moderation: hide post without deleting
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   comments Comment[]
   likes    PostLike[] // Legacy - keeping for backward compatibility
@@ -175,7 +188,7 @@ model PostVote {
   postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   userId    String   @db.Uuid
-  vote      Int      // 1 for upvote, -1 for downvote
+  vote      Int // 1 for upvote, -1 for downvote
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -201,7 +214,7 @@ model CommentVote {
   commentId String
   comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   userId    String   @db.Uuid
-  vote      Int      // 1 for upvote, -1 for downvote
+  vote      Int // 1 for upvote, -1 for downvote
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -310,19 +323,19 @@ model UserBlock {
 // ========================================
 
 model Moment {
-  id          String   @id @default(uuid())
-  userId      String   @db.Uuid
-  content     String
-  imageUrl    String?
-  createdAt   DateTime @default(now())
-  expiresAt   DateTime
-  archivedAt  DateTime?
-  isDeleted   Boolean  @default(false)
+  id         String    @id @default(uuid())
+  userId     String    @db.Uuid
+  content    String
+  imageUrl   String?
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+  archivedAt DateTime?
+  isDeleted  Boolean   @default(false)
 
-  user       profiles @relation(fields: [userId], references: [id], onDelete: Cascade)
-  replies     MomentReply[]
-  reactions   MomentReaction[]
-  reports     MomentReport[]
+  user      profiles         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  replies   MomentReply[]
+  reactions MomentReaction[]
+  reports   MomentReport[]
 
   @@index([userId])
   @@index([expiresAt])
@@ -330,34 +343,64 @@ model Moment {
 
 model MomentReply {
   id        String   @id @default(uuid())
-  momentId String
-  userId   String   @db.Uuid
-  content  String
+  momentId  String
+  userId    String   @db.Uuid
+  content   String
   createdAt DateTime @default(now())
 
-  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+  moment Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
 }
 
 model MomentReaction {
   id        String   @id @default(uuid())
-  momentId String
-  userId   String   @db.Uuid
+  momentId  String
+  userId    String   @db.Uuid
   createdAt DateTime @default(now())
 
-  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+  moment Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
 
   @@unique([momentId, userId])
 }
 
 model MomentReport {
-  id        String   @id @default(uuid())
-  momentId String
-  reporterId String @db.Uuid
-  reason    String
-  createdAt DateTime @default(now())
+  id         String   @id @default(uuid())
+  momentId   String
+  reporterId String   @db.Uuid
+  reason     String
+  createdAt  DateTime @default(now())
 
-  moment   Moment @relation(fields: [momentId], references: [id], onDelete: Cascade)
+  moment   Moment   @relation(fields: [momentId], references: [id], onDelete: Cascade)
   reporter profiles @relation("MomentReporter", fields: [reporterId], references: [id], onDelete: Cascade)
 
   @@index([momentId])
+}
+
+// ========================================
+// Astrology API Models
+// ========================================
+
+model HoroscopeCache {
+  id        String      @id @default(uuid())
+  system    AstroSystem
+  period    AstroPeriod
+  sign      String // "aries"..."pisces"
+  dateKey   String // e.g. "2025-12-22" for daily, "2025-W52" for weekly, "2025-12" for monthly
+  title     String?
+  content   String
+  source    String? // provider name
+  createdAt DateTime    @default(now())
+
+  @@unique([system, period, sign, dateKey])
+  @@index([system, period, dateKey])
+}
+
+model TarotDraw {
+  id        String   @id @default(uuid())
+  userId    String?  @db.Uuid
+  dateKey   String // e.g. "2025-12-22" (daily draw)
+  spread    String // "single", "three"
+  cardsJson String // JSON string: [{id,name,orientation,meaningShort,...}]
+  createdAt DateTime @default(now())
+
+  @@index([userId, dateKey])
 }

@@ -21,15 +21,9 @@ const ASTROLAB_SECTIONS = [
   },
   {
     id: 'secret-friends',
-    label: '六合 Secret Friends',
+    label: '六合 Six Harmonies',
     icon: '',
-    description: 'Secret Friends (Liu He) pairs table',
-  },
-  {
-    id: 'six-conflicts',
-    label: '六冲 Magnetic Opposites',
-    icon: '',
-    description: 'Six Conflicts (Liu Chong) pairs table',
+    description: 'Six Harmonies (Liu He) pairs table',
   },
   {
     id: 'six-conflicts',
@@ -51,9 +45,9 @@ const ASTROLAB_SECTIONS = [
   },
   {
     id: 'break-pattern',
-    label: '破 Breakpoint',
+    label: '破 Breakpoints',
     icon: '',
-    description: 'Breakpoint (Po) pairs table',
+    description: 'Breakpoints (Po) pairs table',
   },
   {
     id: 'match-generator',

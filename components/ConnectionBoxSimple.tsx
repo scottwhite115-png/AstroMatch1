@@ -797,13 +797,13 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
       {/* Expanded Content */}
       {(isExpanded || alwaysExpanded) && (
-        <div className="pb-6 pt-0 flex-1 flex flex-col">
+        <div className="pb-6 pt-0 flex-1 flex flex-col" style={{ gap: '0' }}>
           {/* Combined Match Details */}
           <div
             className="px-4 py-4 rounded-lg space-y-4 flex-1"
             style={{ 
               backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.03)" : "rgba(255, 255, 255, 0.05)", 
-              marginBottom: '0.75rem',
+              marginBottom: '0',
               border: `1.5px solid ${labelColorStyle}`,
               minHeight: '100%',
             }}
@@ -916,7 +916,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 const displayTagline = finalChineseDetailedCompat?.tagline || chineseOverviewTagline;
                 
                 return (
-                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-4">
+                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-0">
                     <h3 className={`text-sm font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
                       Chinese Overview
                     </h3>
@@ -960,7 +960,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 const displayTagline = finalWesternDetailedCompat?.tagline || westernOverviewTagline;
                 
                 return (
-                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-4">
+                  <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30 p-4 space-y-2 mb-0">
                     <h3 className={`text-sm font-semibold ${theme === "light" ? "text-slate-800" : "text-slate-200"} mb-2`}>
                       Western Overview
                     </h3>
@@ -1083,7 +1083,6 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
 
             {hasProfileDetails && showProfile && (
               <>
-                <div className={`h-px ${theme === "light" ? "bg-black/10" : "bg-white/10"}`} />
                 <div className="space-y-4 pb-2">
                   {/* About Me */}
                   {data.aboutMeText && (

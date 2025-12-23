@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { getWesternSignGlyph } from "@/lib/zodiacHelpers";
+
+const ChevronDown = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+)
 import { 
   getMatchLabel, 
   type WesternElementRelation as MatchLabelWesternRelation,
@@ -398,14 +404,12 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   relationshipGoals,
   theme = "dark",
   patternColors,
-  onMessage,
-  onPass,
-  onLike,
   showProfile: externalShowProfile,
   showElements: externalShowElements,
 }) => {
   const [internalShowOverview, setInternalShowOverview] = useState(false);
   const [internalShowAbout, setInternalShowAbout] = useState(false);
+  const [showMatchLabelDropdown, setShowMatchLabelDropdown] = useState(false);
   
   // Use external props if provided, otherwise use internal state
   const showOverview = externalShowElements !== undefined ? externalShowElements : internalShowOverview;
@@ -454,10 +458,10 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
   const hasAnyOverlay = chineseOverlays.length > 0;
 
-  // 1) Base chip: regular base pattern chip
+  // 1 Base chip: regular base pattern chip
   const baseChipNew: Chip = getChineseBaseChip(chineseBase);
 
-  // 2) Overlay chips: includes Liu Chong + damage patterns
+  // 2 Overlay chips: includes Liu Chong + damage patterns
   const overlayChips = getChineseOverlayChips(chineseOverlays);
   const westernChipNew = getWesternChip(elements.a, elements.b, westernRelation);
 
@@ -497,71 +501,285 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
   // Get gradient colors based on pattern (matching MatchProfileCard logic exactly)
   // MatchProfileCard checks base patterns first, then overlays
-  const getGradientColors = (): { start: string; end: string } => {
+  const getGradientColors = () => {
     // Check base pattern first (matching MatchProfileCard order)
     // San He - Triple Harmony (Gold)
     if (basePattern === "SAN_HE") {
-      return { start: '#fbbf24', end: '#f59e0b' }; // amber-400 to amber-500
+      return { start: '#fbbf24', end: '#f59e0b' };
     }
     
     // Liu He - Secret Friends (Purple)
     if (basePattern === "LIU_HE") {
-      return { start: '#c084fc', end: '#e879f9' }; // purple-400 to fuchsia-400
+      return { start: '#c084fc', end: '#e879f9' };
     }
     
     // Same Animal/Sign (Teal)
     if (basePattern === "SAME_SIGN" || basePattern === "SAME_ANIMAL") {
-      return { start: '#2dd4bf', end: '#14b8a6' }; // teal-400 to teal-500
+      return { start: '#2dd4bf', end: '#14b8a6' };
     }
     
     // No Pattern (Blue)
     if (basePattern === "NO_PATTERN") {
-      return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
-    }
-    
-    // Then check overlays (only if base pattern didn't match)
-    if (overlays && overlays.length > 0) {
-      // Liu Chong - Six Conflicts (Orange)
-      if (overlays.includes('LIU_CHONG')) {
-        return { start: '#fb923c', end: '#f97316' }; // orange-400 to orange-500
-      }
-      
-      // Liu Hai - Six Harms (Rose)
-      if (overlays.includes('LIU_HAI')) {
-        return { start: '#fb7185', end: '#f43f5e' }; // rose-400 to rose-500
-      }
-      
-      // Xing - Punishment (Red)
-      if (overlays.includes('XING')) {
-        return { start: '#f87171', end: '#ef4444' }; // red-400 to red-500
-      }
-      
-      // Po - Break (Crimson)
-      if (overlays.includes('PO')) {
-        return { start: '#f43f5e', end: '#e11d48' }; // rose-500 to rose-600
-      }
+      return { start: '#60a5fa', end: '#3b82f6' };
     }
     
     // Default neutral (use blue, same as NO_PATTERN)
-    return { start: '#60a5fa', end: '#3b82f6' }; // blue-400 to blue-500
+    return { start: '#60a5fa', end: '#3b82f6' };
   };
 
   // Use provided patternColors if available, otherwise calculate
   const gradientColors = patternColors || getGradientColors();
 
   return (
-    <div 
-      className="w-full"
-      style={{
-        border: 'none',
-        borderRadius: '0',
-        paddingBottom: '0',
-        marginLeft: '-3px',
-        marginRight: '-3px',
-        width: 'calc(100% + 6px)',
-      }}
-    >
-      {/* Dropdowns - Connection Overview */}
+    <div className="w-full">
+      {/* Match Box - Signs, Match Label Pill, and Blurb */}
+        <div 
+          style={{
+            background: `linear-gradient(to right, ${gradientColors?.start || '#60a5fa'}, ${gradientColors?.end || '#3b82f6'})`,
+            padding: '0 4px 0 4px',
+            borderRadius: '1.5rem',
+            boxSizing: 'border-box',
+            width: '100%',
+            position: 'relative',
+          }}
+        >
+        <div 
+          className="w-full"
+          style={{
+            borderRadius: 'calc(1.5rem - 3px)',
+            padding: '1.5rem 1.5rem 1.5rem 1.5rem',
+            backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+          }}
+        >
+        {/* Sign combinations with emojis */}
+        <div className="py-2 w-full mb-3">
+          <div className="flex items-center gap-2">
+            {/* Left side - emojis and label */}
+            <div className="flex flex-col items-center flex-1 min-w-0">
+              {/* Left sign emojis */}
+              <div className="flex items-center gap-1 mb-1">
+                {userAWestIcon && <span className="text-3xl">{userAWestIcon}</span>}
+                {userAChineseIcon && <span className="text-3xl">{userAChineseIcon}</span>}
+              </div>
+              {/* Left sign label */}
+              <span className={`font-bold text-base whitespace-nowrap ${
+                theme === "light" ? "text-slate-700" : "text-slate-200"
+              }`}>
+                {userASignLabel}
+              </span>
+            </div>
+            
+            {/* Heart icon in the center */}
+            <span className={`text-xl flex-shrink-0 self-center ${
+              theme === "light" ? "text-pink-500" : "text-pink-400"
+            }`}>
+              ♥
+            </span>
+            
+            {/* Right side - emojis and label */}
+            <div className="flex flex-col items-center flex-1 min-w-0">
+              {/* Right sign emojis */}
+              <div className="flex items-center gap-1 mb-1">
+                {userBWestIcon && <span className="text-3xl">{userBWestIcon}</span>}
+                {userBChineseIcon && <span className="text-3xl">{userBChineseIcon}</span>}
+              </div>
+              {/* Right sign label */}
+              <span className={`font-bold text-base whitespace-nowrap ${
+                theme === "light" ? "text-slate-700" : "text-slate-200"
+              }`}>
+                {userBSignLabel}
+              </span>
+            </div>
+          </div>
+        </div>
+        {/* Primary label pill */}
+        <div className="mb-4 mt-2 flex items-center justify-center w-full" style={{ position: 'relative', zIndex: 10000 }}>
+              <div 
+                className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 cursor-pointer transition-all ${
+                  theme === "light" ? "bg-white" : "bg-slate-900"
+                }`}
+                style={{
+                  borderColor: gradientColors.start,
+                  color: theme === "light" ? "black" : "white",
+                  position: 'relative',
+                  zIndex: 10001
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  console.log('Match pill clicked, current state:', showMatchLabelDropdown);
+                  setShowMatchLabelDropdown(!showMatchLabelDropdown);
+                  console.log('Match pill clicked, new state:', !showMatchLabelDropdown);
+                }}
+              >
+                <span>{primaryLabel}</span>
+                {typeof score === "number" && (
+                  <>
+                    <span className={`ml-2 text-lg font-bold ${theme === "light" ? "text-black" : "text-white"}`}>
+                      {score}%
+                    </span>
+                    <ChevronDown className={`ml-2 w-5 h-5 transition-transform ${showMatchLabelDropdown ? "rotate-180" : ""} ${theme === "light" ? "text-black" : "text-white"}`} />
+                  </>
+                )}
+              </div>
+        </div>
+
+        {/* Blurb - Mirror-style match text */}
+        {blurb && (
+          <div className="mt-2 text-center">
+            <p className={`text-lg leading-relaxed ${
+              theme === "light" ? "text-slate-600" : "text-slate-300"
+            }`}>
+              {blurb}
+            </p>
+          </div>
+        )}
+        </div>
+        {/* Match Label Dropdown - Overlays profile box when open */}
+        {showMatchLabelDropdown && (
+          <div 
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              width: '100%',
+              zIndex: 10002,
+              marginTop: '0px',
+              background: `linear-gradient(to right, ${gradientColors?.start || '#60a5fa'}, ${gradientColors?.end || '#3b82f6'})`,
+              padding: '0 4px 4px 4px',
+              borderRadius: '1.5rem',
+              boxSizing: 'border-box',
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+                  <div
+                    style={{
+                      borderRadius: 'calc(1.5rem - 4px)',
+                      backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+                      padding: '1.5rem',
+                      overflow: 'hidden',
+                    }}
+                  >
+                  {/* Chinese Zodiac Compatibility Section */}
+                  {connectionOverviewText && (
+                    <div className="mb-4 text-center">
+                      {/* Chinese Signs Display */}
+                      {chineseAnimalA && chineseAnimalB && (
+                        <div className="flex items-center justify-center gap-1.5 mb-2">
+                          {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
+                          <span className={`font-bold text-lg ${
+                            theme === "light" ? "text-slate-700" : "text-slate-200"
+                          }`}>
+                            {chineseAnimalA}
+                          </span>
+                          <span className={`text-lg ${
+                            theme === "light" ? "text-pink-500" : "text-pink-400"
+                          }`}>
+                            ♥
+                          </span>
+                          <span className={`font-bold text-lg ${
+                            theme === "light" ? "text-slate-700" : "text-slate-200"
+                          }`}>
+                            {chineseAnimalB}
+                          </span>
+                          {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
+                        </div>
+                      )}
+                      
+                      {chineseHeadingWithoutSignPair && (
+                        <div className="mb-1 text-center">
+                          {chineseHeadingWithoutSignPair
+                            .split(/,|;/)
+                            .map(part => part.trim())
+                            .filter(part => part.length > 0)
+                            .map((pattern, index) => (
+                              <h4 
+                                key={index}
+                                className={`text-lg font-bold ${
+                                  theme === "light" ? "text-slate-900" : "text-slate-100"
+                                }`}
+                              >
+                                {pattern}
+                              </h4>
+                            ))}
+                        </div>
+                      )}
+                      {/* TAGLINE - Display if available */}
+                      {connectionOverviewTagline && (
+                        <p className={`text-lg italic font-bold mb-0.5 text-center ${
+                          theme === "light" ? "text-black" : "text-white"
+                        }`}>
+                          {connectionOverviewTagline}
+                        </p>
+                      )}
+                      <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                        {connectionOverviewText}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Western Sun Sign Compatibility Section */}
+                  {westernCompatibilityDescription && (
+                    <div className={`${connectionOverviewText ? "pt-4 border-t" : ""} text-center ${
+                      theme === "light" ? "border-gray-200" : "border-indigo-400/20"
+                    }`}
+                    style={{ paddingBottom: '1rem' }}
+                    >
+                      {/* Western Signs Display */}
+                      {westernSignA && westernSignB && (
+                        <div className="flex items-center justify-center gap-1.5 mb-2">
+                          {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
+                          <span className={`font-bold text-lg ${
+                            theme === "light" ? "text-slate-700" : "text-slate-200"
+                          }`}>
+                            {westernSignA}
+                          </span>
+                          <span className={`text-lg ${
+                            theme === "light" ? "text-pink-500" : "text-pink-400"
+                          }`}>
+                            ♥
+                          </span>
+                          <span className={`font-bold text-lg ${
+                            theme === "light" ? "text-slate-700" : "text-slate-200"
+                          }`}>
+                            {westernSignB}
+                          </span>
+                          {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
+                        </div>
+                      )}
+                      
+                      {westernHeadingWithoutSignPair && (
+                        <h4 className={`text-lg mb-1 text-center font-bold ${
+                          theme === "light" ? "text-slate-900" : "text-slate-100"
+                        }`}>
+                          {westernHeadingWithoutSignPair}
+                        </h4>
+                      )}
+                      {/* TAGLINE - Display if available */}
+                      {westernCompatibilityTagline && (
+                        <p className={`text-lg italic font-bold mb-0.5 text-center ${
+                          theme === "light" ? "text-black" : "text-white"
+                        }`}>
+                          {westernCompatibilityTagline}
+                        </p>
+                      )}
+                      <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                        {westernCompatibilityDescription}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Fallback if no content */}
+                  {!connectionOverviewText && !westernCompatibilityDescription && (
+                    <div className={`text-center py-4 ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
+                      <p>No compatibility information available</p>
+                    </div>
+                  )}
+                    </div>
+                </div>
+              )}
+      </div>
+      {/* Dropdowns - Match Overview */}
       {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
           <div className={`rounded-2xl text-lg relative z-20 ${
             theme === "light" 
@@ -571,246 +789,124 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             backgroundColor: 'transparent',
             marginLeft: '-1rem',
             marginRight: '-1rem',
-            paddingLeft: '2rem',
-            paddingRight: '2rem',
-            paddingTop: '1.5rem',
-            paddingBottom: '1.5rem',
+            paddingLeft: '1rem',
+            paddingRight: '1rem',
+            paddingTop: '1rem',
+            paddingBottom: '1rem',
             marginTop: '0',
             marginBottom: '0',
             borderRadius: '0',
           }}>
-            {/* Sign combinations with emojis - moved from top of connection box */}
-            <div className="py-2 w-full mb-3">
-              <div className="flex items-center gap-2">
-                {/* Left side - emojis and label */}
-                <div className="flex flex-col items-center flex-1 min-w-0">
-                  {/* Left sign emojis */}
-                  <div className="flex items-center gap-1 mb-1">
-                    {userAWestIcon && <span className="text-3xl">{userAWestIcon}</span>}
-                    {userAChineseIcon && <span className="text-3xl">{userAChineseIcon}</span>}
-                  </div>
-                  {/* Left sign label */}
-                  <span className={`font-bold text-base whitespace-nowrap ${
-                    theme === "light" ? "text-slate-700" : "text-slate-200"
-                  }`}>
-                    {userASignLabel}
-                  </span>
-                </div>
-                
-                {/* Heart icon in the center */}
-                <span className={`text-xl flex-shrink-0 self-center ${
-                  theme === "light" ? "text-pink-500" : "text-pink-400"
-                }`}>
-                  ♥
-                </span>
-                
-                {/* Right side - emojis and label */}
-                <div className="flex flex-col items-center flex-1 min-w-0">
-                  {/* Right sign emojis */}
-                  <div className="flex items-center gap-1 mb-1">
-                    {userBWestIcon && <span className="text-3xl">{userBWestIcon}</span>}
-                    {userBChineseIcon && <span className="text-3xl">{userBChineseIcon}</span>}
-                  </div>
-                  {/* Right sign label */}
-                  <span className={`font-bold text-base whitespace-nowrap ${
-                    theme === "light" ? "text-slate-700" : "text-slate-200"
-                  }`}>
-                    {userBSignLabel}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Primary label pill - moved from connection box */}
-            <div className="mb-5 flex justify-center">
-              <div 
-                className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 ${
-                  theme === "light" ? "bg-white" : "bg-slate-900"
-                }`}
-                style={{
-                  borderColor: gradientColors.start,
-                  color: theme === "light" ? "black" : "white",
-                }}
-              >
-                <span>{primaryLabel}</span>
-                {typeof score === "number" && (
-                  <span className={`ml-2 text-lg font-bold ${theme === "light" ? "text-black" : "text-white"}`}>
-                    {score}%
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Tagline under the pill - moved from connection box */}
-            {blurb && (
-              <p className={`text-lg text-center leading-relaxed mb-6 ${
-                theme === "light" ? "text-slate-600" : "text-slate-300"
-              }`}>
-                {blurb}
-              </p>
-            )}
-            
-            {/* Chinese Zodiac Compatibility Section */}
-            {connectionOverviewText && (
-              <div className="mb-2 text-center">
-                {/* Chinese Signs Display */}
-                {chineseAnimalA && chineseAnimalB && (
-                  <div className="flex items-center justify-center gap-1.5 mb-2">
-                    {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
-                    <span className={`font-bold text-lg ${
-                      theme === "light" ? "text-slate-700" : "text-slate-200"
-                    }`}>
-                      {chineseAnimalA}
-                    </span>
-                    <span className={`text-lg ${
-                      theme === "light" ? "text-pink-500" : "text-pink-400"
-                    }`}>
-                      ♥
-                    </span>
-                    <span className={`font-bold text-lg ${
-                      theme === "light" ? "text-slate-700" : "text-slate-200"
-                    }`}>
-                      {chineseAnimalB}
-                    </span>
-                    {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
-                  </div>
-                )}
-                
-                {chineseHeadingWithoutSignPair && (
-                  <div className="mb-1 text-center">
-                    {chineseHeadingWithoutSignPair
-                      .split(/,|;/)
-                      .map(part => part.trim())
-                      .filter(part => part.length > 0)
-                      .map((pattern, index) => (
-                        <h4 
-                          key={index}
-                          className={`text-lg font-bold ${
-                            theme === "light" ? "text-slate-900" : "text-slate-100"
-                          }`}
-                        >
-                          {pattern}
-                        </h4>
-                      ))}
-                  </div>
-                )}
-                {/* TAGLINE - Display if available */}
-                {connectionOverviewTagline && (
-                  <p className={`text-base italic mb-1.5 text-center ${
-                    theme === "light" ? "text-black" : "text-white"
-                  }`}>
-                    {connectionOverviewTagline}
-                  </p>
-                )}
-                <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
-                  {connectionOverviewText}
-                </div>
-              </div>
-            )}
-            
-            {/* Western Sun Sign Compatibility Section */}
-            {westernCompatibilityDescription && (
-              <div className={`${connectionOverviewText ? "pt-2" : ""} text-center`}>
-                {/* Western Signs Display */}
-                {westernSignA && westernSignB && (
-                  <div className="flex items-center justify-center gap-1.5 mb-2">
-                    {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
-                    <span className={`font-bold text-lg ${
-                      theme === "light" ? "text-slate-700" : "text-slate-200"
-                    }`}>
-                      {westernSignA}
-                    </span>
-                    <span className={`text-lg ${
-                      theme === "light" ? "text-pink-500" : "text-pink-400"
-                    }`}>
-                      ♥
-                    </span>
-                    <span className={`font-bold text-lg ${
-                      theme === "light" ? "text-slate-700" : "text-slate-200"
-                    }`}>
-                      {westernSignB}
-                    </span>
-                    {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
-                  </div>
-                )}
-                
-                {westernHeadingWithoutSignPair && (
-                  <h4 className={`text-lg mb-1 text-center font-bold ${
-                    theme === "light" ? "text-slate-900" : "text-slate-100"
-                  }`}>
-                    {westernHeadingWithoutSignPair}
-                  </h4>
-                )}
-                {/* TAGLINE - Display if available */}
-                {westernCompatibilityTagline && (
-                  <p className={`text-base italic mb-1.5 text-center ${
-                    theme === "light" ? "text-black" : "text-white"
-                  }`}>
-                    {westernCompatibilityTagline}
-                  </p>
-                )}
-                <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
-                  {westernCompatibilityDescription}
-                </div>
-              </div>
-            )}
           </div>
         )}
+      {/* Profile Box - Always visible under the match box */}
+      {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
+        <div
+          style={{ 
+            background: `linear-gradient(to right, ${patternColors?.start || gradientColors?.start || '#60a5fa'}, ${patternColors?.end || gradientColors?.end || '#3b82f6'})`,
+            padding: '0 4px 4px 4px',
+            borderRadius: '1.5rem',
+            zIndex: 2,
+            marginTop: '-34px',
+            overflow: 'visible',
+            boxSizing: 'border-box',
+            width: '100%',
+            borderTop: 'none',
+          }}
+        >
+          <div 
+            className="w-full rounded-3xl"
+            style={{ 
+              margin: '0',
+              padding: '1.5rem 1.5rem 1.5rem 1.5rem',
+              borderRadius: 'calc(1.5rem - 4px)',
+              backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+            }}
+          >
+          {/* About Me */}
+          {aboutPartnerText && (
+            <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
+              <h4 
+                className="text-base font-semibold mb-0.5"
+                style={{ 
+                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem'
+                }}
+              >
+                About me
+              </h4>
+              <p className="leading-relaxed text-2xl font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{aboutPartnerText}</p>
+            </div>
+          )}
 
-        {/* Dropdowns - About Partner */}
-        {showAbout && (aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
-          <div className={`rounded-2xl text-sm relative z-20 ${
-            theme === "light" 
-              ? "text-slate-800" 
-              : "text-slate-200"
-          }`} style={{
-            marginLeft: '-1rem',
-            marginRight: '-1rem',
-            paddingLeft: '2rem',
-            paddingRight: '2rem',
-            paddingTop: '0.25rem',
-            paddingBottom: '0',
-            marginTop: '0.5rem',
-            marginBottom: '0',
-            borderRadius: '0',
-            backgroundColor: 'transparent',
-          }}>
-            {/* About Me */}
-            {aboutPartnerText && (
-              <div style={{ marginBottom: '2rem', marginTop: '0' }}>
-                <h4 
-                  className="text-base font-semibold mb-1.5"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  About me
-                </h4>
-                <p className="leading-relaxed text-2xl font-bold">{aboutPartnerText}</p>
+          {/* Relationship Goals */}
+          {relationshipGoals && relationshipGoals.length > 0 && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h4 
+                className="text-base font-semibold"
+                style={{ 
+                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  marginBottom: '1rem',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem'
+                }}
+              >
+                Relationship Goals
+              </h4>
+              <div className="flex flex-wrap gap-1.5" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                {relationshipGoals.map((goal: string, index: number) => (
+                  <span
+                    key={index}
+                    className={`px-2 py-0.5 rounded-full text-xl font-medium ${
+                      theme === "light"
+                        ? "text-slate-800"
+                        : "text-slate-200"
+                    }`}
+                    style={{
+                      background: theme === "light"
+                        ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
+                        : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
+                      border: `1.5px solid ${gradientColors.start}`,
+                      boxShadow: `0 2px 4px ${gradientColors.start}20`
+                    }}
+                  >
+                    {goal}
+                  </span>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Relationship Goals */}
-            {relationshipGoals && relationshipGoals.length > 0 && (
-              <div style={{ marginBottom: '2rem' }}>
-                <h4 
-                  className="text-base font-semibold mb-1.5"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  Relationship Goals
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {relationshipGoals.map((goal: string, index: number) => (
+          {/* Interests */}
+          {interests && (Array.isArray(interests) ? interests.length > 0 : Object.keys(interests).length > 0) && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h4 
+                className="text-base font-semibold"
+                style={{ 
+                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  marginBottom: '1rem',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem'
+                }}
+              >
+                Interests
+              </h4>
+              <div className="flex flex-wrap gap-1.5" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                {Array.isArray(interests) ? (
+                  // Handle flat array format
+                  interests.map((interest: string, index: number) => (
                     <span
-                      key={index}
+                      key={`interest-${index}`}
                       className={`px-2 py-0.5 rounded-full text-xl font-medium ${
                         theme === "light"
                           ? "text-slate-800"
@@ -824,33 +920,18 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                         boxShadow: `0 2px 4px ${gradientColors.start}20`
                       }}
                     >
-                      {goal}
+                      {interest}
                     </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Interests */}
-            {interests && (Array.isArray(interests) ? interests.length > 0 : Object.keys(interests).length > 0) && (
-              <div style={{ marginBottom: '2rem' }}>
-                <h4 
-                  className="text-base font-semibold mb-1.5"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  Interests
-                </h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {Array.isArray(interests) ? (
-                    // Handle flat array format
-                    interests.map((interest: string, index: number) => (
+                  ))
+                ) : (
+                  // Handle organized object format
+                  Object.entries(interests).flatMap(([category, interestList]) => {
+                    if (!Array.isArray(interestList)) {
+                      return [];
+                    }
+                    return interestList.map((interest: string, index: number) => (
                       <span
-                        key={`interest-${index}`}
+                        key={`${category}-${index}`}
                         className={`px-2 py-0.5 rounded-full text-xl font-medium ${
                           theme === "light"
                             ? "text-slate-800"
@@ -866,107 +947,86 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                       >
                         {interest}
                       </span>
-                    ))
-                  ) : (
-                    // Handle organized object format
-                    Object.entries(interests).flatMap(([category, interestList]) => {
-                      if (!Array.isArray(interestList)) {
-                        return [];
-                      }
-                      return interestList.map((interest: string, index: number) => (
-                        <span
-                          key={`${category}-${index}`}
-                          className={`px-2 py-0.5 rounded-full text-xl font-medium ${
-                            theme === "light"
-                              ? "text-slate-800"
-                              : "text-slate-200"
-                          }`}
-                          style={{
-                            background: theme === "light"
-                              ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
-                              : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
-                            border: `1.5px solid ${gradientColors.start}`,
-                            boxShadow: `0 2px 4px ${gradientColors.start}20`
-                          }}
-                        >
-                          {interest}
-                        </span>
-                      ));
-                    })
-                  )}
-                </div>
+                    ));
+                  })
+                )}
               </div>
-            )}
+            </div>
+          )}
 
-            {/* Essentials - Location, Occupation, Age, Height, Children */}
-            {(city || occupation || age || height || children) && (
-              <div style={{ marginBottom: '2rem' }}>
-                <h4 
-                  className="text-base font-semibold mb-1.5"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text'
-                  }}
-                >
-                  Essentials
-                </h4>
-                <div className="space-y-1 text-xl">
-                  {/* Location */}
-                  {city && (
-                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                      </svg>
-                      <span>{city}</span>
-                    </div>
-                  )}
-                  {/* Occupation */}
-                  {occupation && (
-                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
-                      </svg>
-                      <span>{occupation}</span>
-                    </div>
-                  )}
-                  {/* Age */}
-                  {age && (
-                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                        <path d="M16 2v4M8 2v4M3 10h18"/>
-                      </svg>
-                      <span>{age} years old</span>
-                    </div>
-                  )}
-                  {/* Height */}
-                  {height && (
-                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
-                      </svg>
-                      <span>{height}</span>
-                    </div>
-                  )}
-                  {/* Children */}
-                  {children && (
-                    <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                      </svg>
-                      <span>{children}</span>
-                    </div>
-                  )}
-                </div>
+          {/* Essentials - Location, Occupation, Age, Height, Children */}
+          {(city || occupation || age || height || children) && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h4 
+                className="text-base font-semibold"
+                style={{ 
+                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  marginBottom: '1rem',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem'
+                }}
+              >
+                Essentials
+              </h4>
+              <div className="space-y-0.5 text-xl" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                {/* Location */}
+                {city && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <span>{city}</span>
+                  </div>
+                )}
+                {/* Occupation */}
+                {occupation && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
+                    </svg>
+                    <span>{occupation}</span>
+                  </div>
+                )}
+                {/* Age */}
+                {age && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                      <path d="M16 2v4M8 2v4M3 10h18"/>
+                    </svg>
+                    <span>{age} years old</span>
+                  </div>
+                )}
+                {/* Height */}
+                {height && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
+                    </svg>
+                    <span>{height}</span>
+                  </div>
+                )}
+                {/* Children */}
+                {children && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>{children}</span>
+                  </div>
+                )}
               </div>
-            )}
+            </div>
+          )}
           </div>
-        )}
+        </div>
+      )}
     </div>
   );
 };
+

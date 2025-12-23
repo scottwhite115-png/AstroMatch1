@@ -904,10 +904,10 @@ export default function ProfileViewPage() {
           >
             <div
               ref={setProfileCardRef}
-              className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col overflow-hidden ${
+              className={`w-full !h-auto !min-h-0 rounded-3xl flex flex-col ${
                 theme === "light" ? "bg-gray-50" : "bg-slate-900"
               }`}
-              style={{ zIndex: 1 }}
+              style={{ zIndex: 1, overflow: 'visible' }}
             >
             {/* Photo Carousel */}
             <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', marginTop: '-3px', zIndex: 0, marginBottom: '0' }}>
@@ -964,11 +964,6 @@ export default function ProfileViewPage() {
               </div>
               </div>
             </div>
-
-            {/* Your Connection Section - Connected to carousel */}
-            {connectionBoxData && (
-              <ConnectionBoxSimple data={connectionBoxData} />
-            )}
             </div>
           </div>
         </div>

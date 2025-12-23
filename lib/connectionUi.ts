@@ -246,7 +246,7 @@ export function getConnectionBlurb(
 
     case 'MIRROR':
       if (ease === 'EASY') {
-        return 'Mirror-style match where you see a lot of yourself; feeling understood is easier, but your shared habits get doubled.';
+        return 'Mirror-style match where you see a lot of yourself; feeling understood is easy, but you share the same negative habits.';
       }
       if (ease === 'MEDIUM') {
         return 'Strong familiarity and similar instincts; you \'get\' each other quickly but also amplify each other\'s patterns, good and bad.';

@@ -1529,6 +1529,31 @@ export function buildSimpleConnectionBox(
     }
   }
   
+  // If same Western sign causes Neutral classification, set tier to Neutral Match
+  // (This happens when sameWestSign blocks from top tiers)
+  if (sameWesternSign && !sameChineseAnimal && finalTier !== "Neutral Match") {
+    // Check if score is in neutral range (60-74) - if so, it's a Neutral Match
+    if (score >= 60 && score < 75) {
+      finalTier = "Neutral Match";
+      console.log('[Match Engine] Same Western sign detected, setting tier to Neutral Match');
+    }
+  }
+  
+  // Cap for Neutral when "blocked-from-top-tiers" conditions apply
+  // If same West sign OR same animal causes the pair to be classified as Neutral,
+  // then cap the final score at 66%
+  if (finalTier === "Neutral Match" && (sameWesternSign || sameChineseAnimal)) {
+    if (score > 66) {
+      console.log('[Match Engine] Capping Neutral score at 66% due to sameWestSign or sameChineseAnimal:', {
+        sameWesternSign,
+        sameChineseAnimal,
+        finalTier,
+        originalScore: score
+      });
+      score = 66;
+    }
+  }
+  
   console.log('[Match Engine] Final score calculation:', {
     pattern: newMatchContext.chinesePattern,
     sameChineseAnimal,
@@ -1550,6 +1575,9 @@ export function buildSimpleConnectionBox(
   
   const matchLabel = tierToLabel[finalTier] || "Neutral Match";
   const headingLine = `${matchLabel} · ${score}%`;
+  
+  // Update matchResult.score to use the capped score
+  matchResult.score = score;
 
   if (isLuna || isSameTrine) {
     console.log(`Match Result from New Engine:`);
@@ -1925,6 +1953,23 @@ export function buildSimpleConnectionBox(
       sameWesternSign: sameWesternSign,
     }, overlayPatterns);
     
+    // Apply 66% cap for Neutral matches when blocked from top tiers
+    // This must happen AFTER buildMatchResult since it recalculates the score
+    if (finalTier === "Neutral Match" && (sameWesternSign || sameChineseAnimal)) {
+      if (matchEngineResult.score > 66) {
+        console.log('[buildSimpleConnectionBox] Capping Neutral score at 66% due to sameWestSign or sameChineseAnimal:', {
+          sameWesternSign,
+          sameChineseAnimal,
+          finalTier,
+          originalScore: matchEngineResult.score
+        });
+        matchEngineResult.score = 66;
+        // Also update the pillLabel and patternFullLabel to reflect the capped score
+        matchEngineResult.pillLabel = matchEngineResult.pillLabel.replace(/\d+%/, '66%');
+        matchEngineResult.patternFullLabel = matchEngineResult.patternFullLabel.replace(/\d+%/, '66%');
+      }
+    }
+    
     console.log('[buildSimpleConnectionBox] Match engine result:', matchEngineResult);
   } catch (error) {
     console.error('[buildSimpleConnectionBox] Error calling match engine:', error);
@@ -1963,7 +2008,7 @@ export function buildSimpleConnectionBox(
 
   return {
     matchLabel,
-    score: matchEngineResult.score, // Use NEW match engine score
+    score: matchEngineResult.score, // Use match engine score (already capped if applicable)
     headingLine,
     pairLine,
     chineseLine,

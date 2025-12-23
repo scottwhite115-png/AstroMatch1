@@ -126,7 +126,10 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-300"}`}>Triple Harmony</span>
-                        <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>三合</span>
+                        <div className="flex flex-col">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>三合</span>
+                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Sān Hé</span>
+                        </div>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-yellow-100 text-yellow-800" : "bg-yellow-900/30 text-yellow-300"}`}>
                           Harmony
                         </span>
@@ -139,7 +142,7 @@ export default function AstrologySection() {
                   </div>
                 </button>
 
-                {/* Secret Friends - Liu He */}
+                {/* Six Harmonies - Liu He */}
                 <button
                   onClick={() => scrollToSection('secret-friends')}
                   className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-pink-300" : "border-white/10 hover:border-pink-700/50"}`}
@@ -147,8 +150,11 @@ export default function AstrologySection() {
                   <div className={`${theme === "light" ? "bg-pink-50" : "bg-pink-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Secret Friends</span>
-                        <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六合</span>
+                        <span className={`font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Six Harmonies</span>
+                        <div className="flex flex-col">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六合</span>
+                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hé</span>
+                        </div>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-pink-100 text-pink-800" : "bg-pink-900/30 text-pink-400"}`}>
                           Harmony
                         </span>
@@ -170,7 +176,6 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`font-semibold ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>Same Sign</span>
-                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>同生肖</span>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-emerald-100 text-emerald-800" : "bg-emerald-900/30 text-emerald-400"}`}>
                           Neutral +
                         </span>
@@ -214,7 +219,10 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`font-semibold ${theme === "light" ? "text-orange-600" : "text-orange-400"}`}>Six Conflicts</span>
-                        <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六冲</span>
+                        <div className="flex flex-col">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六冲</span>
+                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Chōng</span>
+                        </div>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-orange-100 text-orange-800" : "bg-orange-900/30 text-orange-400"}`}>
                           Conflict
                         </span>
@@ -236,7 +244,10 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`font-semibold ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Six Harms</span>
-                        <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六害</span>
+                        <div className="flex flex-col">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六害</span>
+                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hài</span>
+                        </div>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-400"}`}>
                           Conflict
                         </span>
@@ -258,7 +269,10 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`font-semibold ${theme === "light" ? "text-rose-600" : "text-rose-400"}`}>Punishment</span>
-                        <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>刑</span>
+                        <div className="flex flex-col">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>刑</span>
+                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Xíng</span>
+                        </div>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-rose-100 text-rose-800" : "bg-rose-900/30 text-rose-400"}`}>
                           Conflict
                         </span>
@@ -280,7 +294,10 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <span className={`font-semibold ${theme === "light" ? "text-red-700" : "text-red-300"}`}>Breakpoint</span>
-                        <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>破</span>
+                        <div className="flex flex-col">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>破</span>
+                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Pò</span>
+                        </div>
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-300"}`}>
                           Conflict
                         </span>
@@ -376,7 +393,7 @@ export default function AstrologySection() {
           {/* Secret Friends Table */}
           <div id="secret-friends" className="mb-6">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Secret Friends · 六合</h2>
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Harmonies · 六合</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -574,7 +591,7 @@ export default function AstrologySection() {
           {/* Six Conflicts Table */}
           <div id="six-conflicts" className="mb-6">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Magnetic Opposites · 六冲</h2>
+              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Conflicts · 六冲</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>

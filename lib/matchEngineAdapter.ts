@@ -454,6 +454,53 @@ export function computeMatchWithNewEngine(
     partnerSignKey: partnerKey
   });
   
+  // Detect same Western sign and same Chinese animal
+  const sameWesternSign = sunA.toLowerCase() === sunB.toLowerCase();
+  const sameChineseAnimal = animalA.toLowerCase() === animalB.toLowerCase();
+  
+  let finalScore = scoreOutput.total;
+  
+  // If same Western sign or same animal causes Neutral classification, ensure tier reflects this
+  // matchEngineV2 uses "Learning Match" (40-54) and "Mixed Match" (55-69) for neutral ranges
+  const isNeutralTier = scoreOutput.tier === "Learning Match" || 
+                        scoreOutput.tier === "Mixed Match" || 
+                        scoreOutput.tier === "Fair Match" ||
+                        scoreOutput.tier === "Neutral Match";
+  
+  // Force Neutral Match tier when sameWestSign or sameAnimal applies
+  // This ensures the cap logic works correctly
+  if ((sameWesternSign || sameChineseAnimal) && !isNeutralTier) {
+    // Check if score is in neutral range (60-74) - if so, it's a Neutral Match
+    if (finalScore >= 60 && finalScore < 75) {
+      scoreOutput.tier = "Neutral Match";
+      console.log('[Match Engine Adapter] Setting tier to Neutral Match due to sameWestSign or sameChineseAnimal');
+    }
+  }
+  
+  // If both are same (user comparing to themselves), always set to Neutral Match
+  if (sameWesternSign && sameChineseAnimal) {
+    scoreOutput.tier = "Neutral Match";
+    console.log('[Match Engine Adapter] Same sign and animal detected, forcing Neutral Match tier');
+  }
+  
+  // Cap for Neutral when "blocked-from-top-tiers" conditions apply
+  // If same West sign OR same animal causes the pair to be classified as Neutral,
+  // then cap the final score at 66%
+  const isNowNeutralTier = scoreOutput.tier === "Neutral Match" || isNeutralTier;
+  const shouldCap = isNowNeutralTier && (sameWesternSign || sameChineseAnimal);
+  
+  if (shouldCap && finalScore > 66) {
+    console.log('[Match Engine Adapter] Capping Neutral score at 66% due to sameWestSign or sameChineseAnimal:', {
+      sameWesternSign,
+      sameChineseAnimal,
+      tier: scoreOutput.tier,
+      originalScore: finalScore
+    });
+    finalScore = 66;
+    // Update the scoreOutput with the capped score
+    scoreOutput.total = finalScore;
+  }
+  
   // Debug logging for development
   if (process.env.NODE_ENV === 'development') {
     console.log(`[New Engine] ${aWest}-${aEast} × ${bWest}-${bEast}:`, {
