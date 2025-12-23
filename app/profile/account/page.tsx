@@ -516,7 +516,11 @@ export default function AccountPage({
             {/* Notifications Section */}
             <div className="mb-8">
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Notifications
               </h2>
@@ -548,7 +552,11 @@ export default function AccountPage({
             {/* Instant Message Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Instant Message
               </h2>
@@ -585,7 +593,11 @@ export default function AccountPage({
             {/* Friend Finder Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Friend Finder
               </h2>
@@ -620,7 +632,11 @@ export default function AccountPage({
             {/* Sun Signs Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Sun Signs
               </h2>
@@ -665,7 +681,11 @@ export default function AccountPage({
 
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Profile Details
               </h2>
@@ -704,7 +724,11 @@ export default function AccountPage({
 
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Change Password
               </h2>
@@ -743,7 +767,11 @@ export default function AccountPage({
             {/* Report & Block Management Section */}
             <div className="mb-8">
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Blocked Users
               </h2>
@@ -785,7 +813,11 @@ export default function AccountPage({
 
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Linked Logins
               </h2>
@@ -845,7 +877,11 @@ export default function AccountPage({
             {/* Contact Support Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Contact Support
               </h2>
@@ -866,7 +902,11 @@ export default function AccountPage({
             {/* Community Guidelines Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Community Guidelines
               </h2>
@@ -898,7 +938,11 @@ export default function AccountPage({
             {/* Legal Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Legal
               </h2>
@@ -927,7 +971,11 @@ export default function AccountPage({
             {/* Account Actions Section */}
             <div>
               <h2
-                className="font-semibold text-base mb-4 text-purple-600 dark:text-purple-400 flex items-center gap-2"
+                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
+                  theme === "light"
+                    ? "text-purple-600"
+                    : "text-purple-400"
+                }`}
               >
                 Account Actions
               </h2>

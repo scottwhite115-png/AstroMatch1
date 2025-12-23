@@ -193,7 +193,7 @@ const EAST_BASE = {
   secretFriend: 86,
   clash: 64,
   adjacent: 78,
-  sameAnimal: 82,
+  sameAnimal: 68, // Same sign pairs should never score above 68
   neutral: 80,
 };
 
@@ -483,20 +483,16 @@ export function computeMatchWithNewEngine(
     console.log('[Match Engine Adapter] Same sign and animal detected, forcing Neutral Match tier');
   }
   
-  // Cap for Neutral when "blocked-from-top-tiers" conditions apply
-  // If same West sign OR same animal causes the pair to be classified as Neutral,
-  // then cap the final score at 66%
-  const isNowNeutralTier = scoreOutput.tier === "Neutral Match" || isNeutralTier;
-  const shouldCap = isNowNeutralTier && (sameWesternSign || sameChineseAnimal);
-  
-  if (shouldCap && finalScore > 66) {
-    console.log('[Match Engine Adapter] Capping Neutral score at 66% due to sameWestSign or sameChineseAnimal:', {
+  // Cap for same sign pairs - should never score above 68
+  // If same West sign OR same animal, cap the final score at 68
+  if ((sameWesternSign || sameChineseAnimal) && finalScore > 68) {
+    console.log('[Match Engine Adapter] Capping same sign score at 68%:', {
       sameWesternSign,
       sameChineseAnimal,
       tier: scoreOutput.tier,
       originalScore: finalScore
     });
-    finalScore = 66;
+    finalScore = 68;
     // Update the scoreOutput with the capped score
     scoreOutput.total = finalScore;
   }

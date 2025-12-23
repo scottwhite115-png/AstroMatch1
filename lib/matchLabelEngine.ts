@@ -1,24 +1,15 @@
 // matchLabelEngine.ts
 
-import { taglines } from './matchTaglines';
+// -----------------------------
+// Types
+// -----------------------------
 
-// ----------------------
-// 1. Basic enums / types
-// ----------------------
+export type ChineseBasePattern = 'SAN_HE' | 'LIU_HE' | 'SAME_SIGN' | 'NO_PATTERN';
 
-export type ChineseBasePattern =
-  | 'SAN_HE'      // 三合 - Triple Harmony
-  | 'LIU_HE'      // 六合 - Secret Friends
-  | 'SAME_SIGN'   // 同生肖
-  | 'NO_PATTERN'; // 无显著格局
+export type ChineseOverlayPattern = 'LIU_CHONG' | 'LIU_HAI' | 'XING' | 'PO';
 
-export type ChineseOverlayPattern =
-  | 'LIU_CHONG'   // 六冲 – Conflicts / Opposites
-  | 'LIU_HAI'     // 六害 – Harms
-  | 'XING'        // 刑 – Punishment
-  | 'PO';         // 破 – Break
+export type WesternEase = 'EASY' | 'MEDIUM' | 'HARD';
 
-// How your Western logic classifies element interaction
 export type WesternElementRelation =
   | 'SAME'
   | 'COMPATIBLE'
@@ -26,50 +17,50 @@ export type WesternElementRelation =
   | 'NEUTRAL'
   | 'CLASH';
 
-// Internal "ease" category based on Western relation
-type WesternEase = 'EASY' | 'MEDIUM' | 'HARD';
+export type ConnectionArchetype =
+  | 'TRIPLE_HARMONY'   // San He 三合 · same tribe
+  | 'SUPPORTIVE_ALLY'  // Liu He 六合 · Six Harmonies / Secret Friends
+  | 'OPPOSITES'        // Liu Chong 六冲 · Six Conflicts / Magnetic opposites
+  | 'LESSON_REPAIR'    // Hai / Xing / Po without San He, Liu He, Same sign
+  | 'MIRROR'           // Same-sign archetype (West or Chinese)
+  | 'OPEN_PATTERN';    // No big Chinese pattern
 
-// Score bands – adjust thresholds to match your engine
-type ScoreBand = 'TOP' | 'HIGH' | 'MID' | 'LOW';
+// -----------------------------
+// Helpers
+// -----------------------------
 
-// Internal archetype: what kind of connection this is at a deep level
-type ConnectionArchetype =
-  | 'TRIPLE_HARMONY'    // San He
-  | 'SUPPORTIVE_ALLY'   // Liu He
-  | 'MIRROR'            // Same sign
-  | 'OPEN_PATTERN'      // No major Chinese pattern
-  | 'OPPOSITES'         // Liu Chong
-  | 'LESSON_REPAIR';    // Liu Hai / Xing / Po
-
-export type PrimaryMatchLabel =
-  | 'Soulmate Match'
-  | 'Twin Flame Match'
-  | 'Secret Friends Match'
-  | 'Magnetic Opposites'
-  | 'Challenging Match'
-  | 'Neutral Match'
-  | 'Strong Harmony Match'
-  | 'Mirror Match';
-
-export interface MatchLabelResult {
-  primaryLabel: PrimaryMatchLabel;
-  subLabel: string; // one-line explanation shown under the pill
+export function hasDamageOverlay(overlays: ChineseOverlayPattern[]): boolean {
+  return overlays.some(o => o === 'LIU_HAI' || o === 'XING' || o === 'PO');
 }
 
-// Helper input type for the engine
-export interface MatchContext {
-  chineseBase: ChineseBasePattern;
-  chineseOverlays: ChineseOverlayPattern[]; // can be empty
-  westernRelation: WesternElementRelation;
-  score: number; // 0–100
-  sameWesternSign?: boolean; // Optional: true if both users have same Western sign
+// Decide archetype from Chinese patterns only
+export function deriveArchetype(
+  chineseBase: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[]
+): ConnectionArchetype {
+  const hasLiuChong = overlays.includes('LIU_CHONG');
+  const hasDamage = hasDamageOverlay(overlays);
+
+  // 1) Six Conflicts (Liu Chong) always reads as Opposites archetype
+  if (hasLiuChong) return 'OPPOSITES';
+
+  // 2) Respect base pattern first
+  switch (chineseBase) {
+    case 'SAN_HE':
+      return 'TRIPLE_HARMONY';
+    case 'LIU_HE':
+      return 'SUPPORTIVE_ALLY';
+    case 'SAME_SIGN':
+      return 'MIRROR';
+    case 'NO_PATTERN':
+    default:
+      // 3) Only pure lesson archetype when there is no San He / Liu He / Same sign
+      return hasDamage ? 'LESSON_REPAIR' : 'OPEN_PATTERN';
+  }
 }
 
-// ----------------------------
-// 2. Helper classification
-// ----------------------------
-
-function getWesternEase(relation: WesternElementRelation): WesternEase {
+// Derive Western ease from element relation
+export function deriveWesternEase(relation: WesternElementRelation): WesternEase {
   switch (relation) {
     case 'SAME':
     case 'COMPATIBLE':
@@ -83,251 +74,141 @@ function getWesternEase(relation: WesternElementRelation): WesternEase {
   }
 }
 
-function getScoreBand(score: number): ScoreBand {
-  if (score >= 90) return 'TOP';
-  if (score >= 80) return 'HIGH';
-  if (score >= 65) return 'MID';
-  return 'LOW';
+// Same-sign (Chinese) must never show above 68%
+export function applySameSignCap(
+  score: number,
+  chineseBase: ChineseBasePattern
+): number {
+  if (chineseBase === 'SAME_SIGN') {
+    return Math.min(score, 68);
+  }
+  return score;
 }
 
-function hasOverlay(overlays: ChineseOverlayPattern[], pattern: ChineseOverlayPattern): boolean {
-  return overlays.includes(pattern);
-}
+// -----------------------------
+// Pill label logic
+// -----------------------------
 
-function hasAnyDamageOverlay(overlays: ChineseOverlayPattern[]): boolean {
-  return overlays.some(o => o === 'LIU_HAI' || o === 'XING' || o === 'PO');
-}
-
-function getConnectionArchetype(
+export function getMatchLabel(
+  archetype: ConnectionArchetype,
   chineseBase: ChineseBasePattern,
-  overlays: ChineseOverlayPattern[]
-): ConnectionArchetype {
-  const hasLiuChong = hasOverlay(overlays, 'LIU_CHONG');
-  const hasDamage = hasAnyDamageOverlay(overlays);
+  overlays: ChineseOverlayPattern[],
+  finalScore: number
+): string {
+  const hasLiuChong = overlays.includes('LIU_CHONG');
+  const hasDamage = hasDamageOverlay(overlays);
 
-  // Liu Chong (Opposites) has highest priority
+  // 1) Six Conflicts (Liu Chong)
   if (hasLiuChong) {
-    return 'OPPOSITES';
+    return 'Six Conflicts';
   }
 
-  // Liu He base pattern - prioritize this even with damage overlays
-  // Liu He + damage should still be SUPPORTIVE_ALLY (not LESSON_REPAIR)
+  // 2) Six Harmonies (Liu He)
   if (chineseBase === 'LIU_HE') {
-    return 'SUPPORTIVE_ALLY';
+    return 'Six Harmonies';
   }
 
-  // Damage overlays (but not Liu Chong, and not Liu He base)
-  if (hasDamage) {
-    return 'LESSON_REPAIR';
+  // 3) Triple Harmony (San He)
+  if (chineseBase === 'SAN_HE') {
+    return 'Triple Harmony';
   }
 
-  // Then other base patterns
-  switch (chineseBase) {
-    case 'SAN_HE':
-      return 'TRIPLE_HARMONY';
-    case 'SAME_SIGN':
-      return 'MIRROR';
-    case 'NO_PATTERN':
+  // 4) Same Sign
+  if (chineseBase === 'SAME_SIGN') {
+    return 'Same Sign Match';
+  }
+
+  // 5) Damage-only / lesson-heavy cases
+  if (archetype === 'LESSON_REPAIR' || hasDamage) {
+    return 'Challenging Match';
+  }
+
+  // 6) Everything else
+  return 'Neutral Match';
+}
+
+// -----------------------------
+// Connection blurb logic
+// -----------------------------
+
+export function getConnectionBlurb(
+  archetype: ConnectionArchetype,
+  ease: WesternEase,
+  opts?: { hasDamage?: boolean }
+): string {
+  const hasDamage = opts?.hasDamage ?? false;
+
+  switch (archetype) {
+    // San He · Triple Harmony – same tribe
+    case 'TRIPLE_HARMONY':
+      if (ease === 'EASY') {
+        return 'Same-tribe match with easy flow; more supportive than dramatic and good for building a life together.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Strong same-tribe bond with style differences that works when you stay curious about each other\'s ways.';
+      }
+      // HARD
+      return 'Deep same-tribe connection with real friction; powerful when you share goals, draining when you keep pulling apart.';
+
+    // Liu He · Six Harmonies – Supportive Ally / Secret Friends
+    case 'SUPPORTIVE_ALLY': {
+      if (hasDamage) {
+        return 'Supportive ally bond with lessons underneath; things improve when you name stuck patterns and change how you both respond.';
+      }
+
+      if (ease === 'EASY') {
+        return 'Soft, steady ally bond with a warm, friend-like tone; you quietly back each other up when life is stressful.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Grounded ally match with different pace or priorities; it smooths out when you say what support actually looks like for you.';
+      }
+      // HARD, no damage
+      return 'Ally bond with friction around needs and timing; it works when you\'re upfront about limits instead of expecting mind-reading.';
+    }
+
+    // Liu Chong · Six Conflicts – Magnetic Opposites
+    case 'OPPOSITES':
+      if (ease === 'EASY') {
+        return 'Magnetic opposite-style match with strong spark; it thrives when you enjoy your differences instead of trying to fix each other.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Magnetic opposites with both spark and friction; you stretch each other, so clear talk keeps things feeling fair.';
+      }
+      // HARD
+      return 'Intense magnetic opposites where attraction and conflict sit close together; good boundaries keep drama in check.';
+
+    // Hai / Xing / Po without San He / Liu He / Same sign – Lesson/Repair
+    case 'LESSON_REPAIR':
+      if (ease === 'EASY') {
+        return 'Lesson-heavy connection with genuine care; you grow if you name problems early and work on them together.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Connection with both pull and pressure; the same issues return until you decide to handle them differently.';
+      }
+      // HARD
+      return 'Intense, lesson-driven match; memorable but tiring without firm boundaries, honesty, and regular check-ins.';
+
+    // Same-sign archetype (West or Chinese, depending how you use it)
+    case 'MIRROR':
+      if (ease === 'EASY') {
+        return 'Mirror-style match where you see a lot of yourself; feeling understood is easy, but your habits get doubled.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Strong familiarity and similar instincts; you "get" each other quickly but also amplify each other\'s patterns.';
+      }
+      // HARD
+      return 'Mirror-clash match—very similar nature but different needs; it stings when what annoys you in them lives in you too.';
+
+    // No big Chinese pattern – Open path
+    case 'OPEN_PATTERN':
     default:
-      return 'OPEN_PATTERN';
+      if (ease === 'EASY') {
+        return 'Open-ended connection with light, easy flow that can deepen if you keep showing up and communicating.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Balanced match with no fixed script; everyday choices matter more than any built-in pattern.';
+      }
+      // HARD
+      return 'Free-form connection with some friction; it works when you\'re honest about differences and willing to adjust.';
   }
 }
-
-// -----------------------------------
-// 3. Main: derive primary + sub label
-// -----------------------------------
-
-export function getMatchLabel(context: MatchContext): MatchLabelResult {
-  const { chineseBase, chineseOverlays, westernRelation, score } = context;
-
-  const archetype = getConnectionArchetype(chineseBase, chineseOverlays);
-  const westernEase = getWesternEase(westernRelation);
-  const scoreBand = getScoreBand(score);
-
-  const hasLiuChong = hasOverlay(chineseOverlays, 'LIU_CHONG');
-  const hasDamage = hasAnyDamageOverlay(chineseOverlays);
-
-  // CASE 0: Liu Chong always gets "Magnetic Opposites"
-  if (hasLiuChong) {
-    // Use appropriate sublabel based on ease
-    if (westernEase === 'EASY') {
-      return {
-        primaryLabel: 'Magnetic Opposites',
-        subLabel: taglines.magneticOpposites
-      };
-    }
-    if (westernEase === 'MEDIUM') {
-      return {
-        primaryLabel: 'Magnetic Opposites',
-        subLabel: taglines.lessonSoftened
-      };
-    }
-    // HARD ease
-    return {
-      primaryLabel: 'Magnetic Opposites',
-      subLabel: taglines.volatileOpposites
-    };
-  }
-
-  // CASE 1: Heavy lesson / damage patterns first
-  if (archetype === 'LESSON_REPAIR') {
-    if (westernEase === 'HARD') {
-      return {
-        primaryLabel: 'Challenging Match',
-        subLabel: taglines.lessonHard
-      };
-    }
-
-    // Damage + some Western support
-    return {
-      primaryLabel: 'Challenging Match',
-      subLabel: taglines.lessonSoftened
-    };
-  }
-
-  // CASE 2: Opposites (Liu Chong) - This case should no longer be reached due to CASE 0 above
-  // Keeping for safety, but it should be redundant now
-  if (archetype === 'OPPOSITES') {
-    // This should already be handled by CASE 0, but keeping as fallback
-    if (westernEase === 'EASY') {
-      return {
-        primaryLabel: 'Magnetic Opposites',
-        subLabel: taglines.magneticOpposites
-      };
-    }
-    if (westernEase === 'MEDIUM') {
-      return {
-        primaryLabel: 'Magnetic Opposites',
-        subLabel: taglines.lessonSoftened
-      };
-    }
-    return {
-      primaryLabel: 'Magnetic Opposites',
-      subLabel: taglines.volatileOpposites
-    };
-  }
-
-  // CASE 3: Triple Harmony (San He)
-  if (archetype === 'TRIPLE_HARMONY' && !hasDamage) {
-    // San He + same element + same Western sign → Strong Harmony (not Soulmate)
-    if (westernEase === 'EASY' && context.sameWesternSign) {
-      return {
-        primaryLabel: 'Strong Harmony Match',
-        subLabel: taglines.strongHarmony
-      };
-    }
-
-    // Easiest, top-band San He (different signs) → Soulmate
-    if (westernEase === 'EASY' && scoreBand === 'TOP') {
-      return {
-        primaryLabel: 'Soulmate Match',
-        subLabel: taglines.soulmate
-      };
-    }
-
-    // Very good San He, but not quite top-tier → Strong Harmony
-    if (westernEase !== 'HARD' && (scoreBand === 'HIGH' || scoreBand === 'MID')) {
-      return {
-        primaryLabel: 'Strong Harmony Match',
-        subLabel: taglines.strongHarmony
-      };
-    }
-
-    // San He + element clash → still Strong Harmony (San He never gets Challenging Match)
-    if (westernEase === 'HARD') {
-      return {
-        primaryLabel: 'Strong Harmony Match',
-        subLabel: taglines.strongHarmony
-      };
-    }
-  }
-
-  // CASE 4: Supportive Ally (Liu He)
-  if (archetype === 'SUPPORTIVE_ALLY') {
-    // Rule: Only escalate to Challenging if score < 60 AND CLASH AND damage overlays
-    // All other Liu He cases → Secret Friends Match
-    if (score < 60 && westernRelation === 'CLASH' && hasDamage) {
-      return {
-        primaryLabel: 'Challenging Match',
-        subLabel: taglines.lessonHard
-      };
-    }
-
-    // Default: Secret Friends Match for all Liu He (score >= 60, or not heavy clash+damage)
-    if (westernEase === 'EASY' && (scoreBand === 'TOP' || scoreBand === 'HIGH')) {
-      return {
-        primaryLabel: 'Secret Friends Match',
-        subLabel: taglines.quietAlly
-      };
-    }
-
-    if (westernEase === 'MEDIUM') {
-      return {
-        primaryLabel: 'Secret Friends Match',
-        subLabel: taglines.steadyAlly
-      };
-    }
-
-    // Liu He with HARD western → still Secret Friends (unless caught by the < 60 + CLASH + damage rule above)
-    return {
-      primaryLabel: 'Secret Friends Match',
-      subLabel: taglines.softSteadyFriend
-    };
-  }
-
-  // CASE 5: Mirror (Same sign)
-  if (archetype === 'MIRROR') {
-    if (westernEase === 'EASY' && (scoreBand === 'HIGH' || scoreBand === 'TOP')) {
-      return {
-        primaryLabel: 'Mirror Match',
-        subLabel: taglines.mirrorStrong
-      };
-    }
-
-    // Mirror + HARD - return Neutral Match, not Challenging
-    if (westernEase === 'HARD') {
-      return {
-        primaryLabel: 'Neutral Match',
-        subLabel: taglines.mirrorClash
-      };
-    }
-
-    // Middle-lane same sign
-    return {
-      primaryLabel: 'Neutral Match',
-      subLabel: taglines.mirrorMid
-    };
-  }
-
-  // CASE 6: Open pattern (no major Chinese pattern)
-  if (archetype === 'OPEN_PATTERN') {
-    // Always return Neutral Match for open patterns, regardless of ease
-    if (westernEase === 'EASY') {
-      return {
-        primaryLabel: 'Neutral Match',
-        subLabel: taglines.neutralEasy
-      };
-    }
-
-    if (westernEase === 'MEDIUM') {
-      return {
-        primaryLabel: 'Neutral Match',
-        subLabel: taglines.neutralWorkable
-      };
-    }
-
-    // OPEN + HARD - still Neutral Match, not Challenging
-    return {
-      primaryLabel: 'Neutral Match',
-      subLabel: taglines.neutralMixedSignals
-    };
-  }
-
-  // Fallback (should be rare)
-  return {
-    primaryLabel: 'Neutral Match',
-    subLabel: taglines.fallbackBalanced
-  };
-}
-
-

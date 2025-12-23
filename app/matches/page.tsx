@@ -39,6 +39,18 @@ import { getChineseZodiacFromDate, type ChineseElement } from "@/lib/chineseZodi
 import { TIER_LABEL, type Tier } from "@/engine/labels"
 import type { RankKey } from "@/data/rankTheme"
 import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
+import {
+  getMatchLabel,
+  deriveArchetype,
+  getConnectionBlurb,
+  hasDamageOverlay,
+  applySameSignCap,
+  deriveWesternEase,
+  type ChineseBasePattern,
+  type ChineseOverlayPattern,
+  type WesternEase,
+  type WesternElementRelation
+} from "@/lib/matchLabelEngine"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -1367,12 +1379,12 @@ export default function MatchesPage() {
     } = require('@/lib/connectionUiHelpers');
     
     // Extract connection UI data
-    const chineseBase = extractChineseBase(simpleBox.chinesePattern || simpleBox.pattern);
+    const chineseBase = extractChineseBase(simpleBox.chinesePattern || simpleBox.pattern) as ChineseBasePattern;
     let chineseOverlays = extractChineseOverlays(
       simpleBox.chinesePattern || simpleBox.pattern,
       undefined, // allPatterns not available in SimpleConnectionBox yet
       simpleBox.chineseLine // Use chineseLine as fallback
-    );
+    ) as ChineseOverlayPattern[];
     
     // If the primary pattern is LIU_CHONG, XING, LIU_HAI, or PO, add it to overlays for display
     const primaryPattern = String(simpleBox.chinesePattern || simpleBox.pattern || '').toUpperCase();
@@ -1385,8 +1397,23 @@ export default function MatchesPage() {
     } else if (primaryPattern.includes('PO') && !chineseOverlays.includes('PO')) {
       chineseOverlays.push('PO');
     }
-    const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
-    const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
+    const westernRelation = extractWesternRelation(simpleBox.westElementRelation) as WesternElementRelation;
+    
+    // Use new match label engine pattern
+    const archetype = deriveArchetype(chineseBase, chineseOverlays);
+    const ease: WesternEase = deriveWesternEase(westernRelation);
+    
+    // Apply same-sign cap after blending Chinese + West
+    // Use simpleBox.score as the blended score
+    const blendedScore = simpleBox.score || 0;
+    const cappedScore = applySameSignCap(blendedScore, chineseBase);
+    
+    // Get pill label using new match label engine
+    const primaryLabel = getMatchLabel(archetype, chineseBase, chineseOverlays, cappedScore);
+    
+    // Get connection blurb
+    const hasDamage = hasDamageOverlay(chineseOverlays);
+    const connectionBlurb = getConnectionBlurb(archetype, ease, { hasDamage });
     // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
     const labelToRankKey: Record<string, RankKey> = {
       "Soulmate Match": "perfect",
@@ -1565,10 +1592,10 @@ export default function MatchesPage() {
       wuXingA: userYearElement as WuXing, // Wu Xing element for User A
       wuXingB: profileYearElement as WuXing, // Wu Xing element for User B
       // NEW: Match engine result fields from simpleBox
-      pillLabel: simpleBox.pillLabel,
+      pillLabel: primaryLabel, // Use new match label engine
       pattern: simpleBox.pattern,
       patternFullLabel: simpleBox.patternFullLabel,
-      baseTagline: simpleBox.baseTagline,
+      baseTagline: connectionBlurb, // Use new match label engine connection blurb
       patternEmoji: simpleBox.patternEmoji,
       chemistryStars: simpleBox.chemistryStars,
       stabilityStars: simpleBox.stabilityStars,

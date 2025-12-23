@@ -42,6 +42,22 @@ import {
   getPatternIcon,
   type ChinesePattern as PatternType
 } from "@/lib/astrology/patternLabels"
+import { 
+  getMatchLabel,
+  deriveArchetype,
+  getConnectionBlurb,
+  hasDamageOverlay,
+  applySameSignCap,
+  type ChineseBasePattern,
+  type ChineseOverlayPattern,
+  type WesternEase
+} from "@/lib/matchLabelEngine"
+import {
+  detectBasePattern,
+  detectOverlayPatterns,
+  normalizeChineseAnimal,
+  type ChineseBasePattern as EnhancedBasePattern
+} from "@/lib/matchEngineEnhanced"
 import ProfilePhotoCarouselWithRanking from "@/components/ProfilePhotoCarouselWithRanking"
 import PhotoCarouselWithGestures from "@/components/PhotoCarouselWithGestures"
 import { computeMatchWithNewEngine } from "@/lib/matchEngineAdapter"
@@ -885,16 +901,63 @@ export default function AstrologyProfilePage({
         const combinedTags = Array.from(new Set([...(result.tags ?? []), ...badgeTags]))
         const rankLabelDisplay = `${astroMatch.tier} Match`
 
-        // In profile view tab, we're comparing user to themselves, so it's always same Chinese animal sign
-        // Set pattern to SAME_SIGN and get appropriate labels/taglines
-        const chinesePattern: PatternType = "SAME_SIGN"
+        // Use match label engine to get proper match label and description
+        // Normalize Chinese animals for pattern detection
+        const animalA = normalizeChineseAnimal(eastern)
+        const animalB = normalizeChineseAnimal(eastern) // Same sign for self-compatibility
+        
+        // Detect patterns
+        const { basePattern, sanHeTrineName } = detectBasePattern(animalA, animalB)
+        const overlays = detectOverlayPatterns(animalA, animalB)
+        
+        // Get Western elements
+        const getElementFromSign = (sign: string): "Fire" | "Earth" | "Air" | "Water" => {
+          const signLower = sign.toLowerCase()
+          if (["aries", "leo", "sagittarius"].includes(signLower)) return "Fire"
+          if (["taurus", "virgo", "capricorn"].includes(signLower)) return "Earth"
+          if (["gemini", "libra", "aquarius"].includes(signLower)) return "Air"
+          if (["cancer", "scorpio", "pisces"].includes(signLower)) return "Water"
+          return "Fire"
+        }
+        
+        const elementA = getElementFromSign(western)
+        const elementB = getElementFromSign(western) // Same sign
+        
+        // Get element relation
+        const getElementRelation = (a: string, b: string): WesternElementRelation => {
+          if (a === b) return 'SAME'
+          if ((a === "Fire" && b === "Air") || (a === "Air" && b === "Fire")) return 'COMPATIBLE'
+          if ((a === "Earth" && b === "Water") || (a === "Water" && b === "Earth")) return 'COMPATIBLE'
+          if ((a === "Fire" && b === "Water") || (a === "Water" && b === "Fire")) return 'CLASH'
+          if ((a === "Earth" && b === "Air") || (a === "Air" && b === "Earth")) return 'CLASH'
+          return 'NEUTRAL'
+        }
+        
+        // Cap score at 68% for same sign pairs (self-compatibility)
+        const cappedScore = applySameSignCap(result.score, basePattern as ChineseBasePattern)
+        
+        // Get archetype and ease for match label
+        const archetype = deriveArchetype(basePattern as ChineseBasePattern, overlays as ChineseOverlayPattern[])
+        const westernRelation = getElementRelation(elementA, elementB)
+        const ease: WesternEase = westernRelation === 'SAME' || westernRelation === 'COMPATIBLE' ? 'EASY' :
+                                  westernRelation === 'SEMI_COMPATIBLE' || westernRelation === 'NEUTRAL' ? 'MEDIUM' : 'HARD'
+        
+        // Get match label using the new match label engine API
+        const pillLabel = getMatchLabel(archetype, basePattern as ChineseBasePattern, overlays as ChineseOverlayPattern[], cappedScore)
+        
+        // Get connection blurb (description)
+        const hasDamage = hasDamageOverlay(overlays as ChineseOverlayPattern[])
+        const baseTagline = getConnectionBlurb(archetype, ease, { hasDamage })
+        
+        // Keep pattern info for display
+        const chinesePattern: PatternType = basePattern === "SAME_SIGN" ? "SAME_SIGN" : 
+                                          basePattern === "SAN_HE" ? "SAN_HE" :
+                                          basePattern === "LIU_HE" ? "LIU_HE" : "NO_PATTERN"
         const patternFullLabel = getPatternHeaderText(chinesePattern)
-        const pillLabel = getPatternPillLabel(chinesePattern)
-        const baseTagline = getPatternTagline(chinesePattern)
         const patternEmoji = getPatternIcon(chinesePattern)
 
         const boxData: ConnectionBoxData = {
-          score: result.score, // Use new engine score (with 66% cap applied)
+          score: cappedScore, // Cap at 68% for same sign pairs (self-compatibility)
           rank: rankLabelDisplay,
           rankLabel: rankLabelDisplay,
           rankKey: result.rankKey,

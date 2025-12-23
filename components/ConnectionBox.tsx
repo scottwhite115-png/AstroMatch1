@@ -7,20 +7,21 @@ const ChevronDown = ({ className }: { className?: string }) => (
   </svg>
 )
 import { 
-  getMatchLabel, 
-  type WesternElementRelation as MatchLabelWesternRelation,
-  type PrimaryMatchLabel 
+  getMatchLabel,
+  deriveArchetype,
+  getConnectionBlurb,
+  hasDamageOverlay,
+  type ChineseBasePattern,
+  type ChineseOverlayPattern,
+  type ConnectionArchetype,
+  type WesternEase
 } from "@/lib/matchLabelEngine";
 import {
-  ChineseBasePattern,
-  ChineseOverlayPattern,
   WesternElementRelation,
-  deriveArchetype,
   deriveWesternEase,
   getChineseBaseChip,
   getChineseOverlayChips,
   getWesternChip,
-  getConnectionBlurb,
   type Chip,
 } from '@/lib/connectionUi';
 
@@ -34,7 +35,7 @@ type ElementRelation =
   | "semiCompatible"
   | "opposite";
 
-type PrimaryLabel = PrimaryMatchLabel;
+// PrimaryLabel is now just a string from getMatchLabel
 
 type ChineseBasePattern =
   | "SAN_HE"
@@ -196,20 +197,23 @@ function getMatchLabelAndTagline(
   sameChineseAnimal?: boolean,
   sameWesternSign?: boolean,
   score?: number
-): { primaryLabel: PrimaryLabel; tagline: string } {
+): { primaryLabel: string; tagline: string } {
+  const finalScore = score !== undefined ? score : 75;
+  const archetype = deriveArchetype(basePattern, overlays);
+  
+  // Get the match label using new API
+  const primaryLabel = getMatchLabel(archetype, basePattern, overlays, finalScore);
+  
+  // Get the blurb (tagline) using new API
   const westernRelation = convertToWesternRelation(elementRelation);
-
-  const result = getMatchLabel({
-    chineseBase: basePattern,
-    chineseOverlays: overlays,
-    westernRelation,
-    score: score !== undefined ? score : 75, // Default to mid-range if no score
-    sameWesternSign: sameWesternSign ?? false
-  });
+  const ease: WesternEase = westernRelation === 'SAME' || westernRelation === 'COMPATIBLE' ? 'EASY' :
+                            westernRelation === 'SEMI_COMPATIBLE' || westernRelation === 'NEUTRAL' ? 'MEDIUM' : 'HARD';
+  const hasDamage = hasDamageOverlay(overlays);
+  const tagline = getConnectionBlurb(archetype, ease, { hasDamage });
 
   return {
-    primaryLabel: result.primaryLabel,
-    tagline: result.subLabel
+    primaryLabel,
+    tagline
   };
 }
 
@@ -224,7 +228,7 @@ function getPrimaryLabel(
   sameChineseAnimal?: boolean,
   sameWesternSign?: boolean,
   score?: number
-): PrimaryLabel {
+): string {
   const { primaryLabel } = getMatchLabelAndTagline(
     basePattern,
     overlays,
@@ -306,7 +310,7 @@ function getElementChip(
  * One-line headline under the chips.
  */
 function getHeadlineSummary(
-  primaryLabel: PrimaryLabel,
+  primaryLabel: string,
   basePattern: ChineseBasePattern,
   overlays: ChineseOverlayPattern[] = [],
   isOppositeBranches: boolean
@@ -453,8 +457,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
     o => o === 'LIU_HAI' || o === 'XING' || o === 'PO'
   );
   
-  // Use the label from getMatchLabel (which already handles Liu Chong → Magnetic Opposites)
-  const primaryLabel: PrimaryMatchLabel = initialPrimaryLabel;
+  // Use the label from getMatchLabel (which already handles Liu Chong → Six Conflicts)
+  const primaryLabel: string = initialPrimaryLabel;
 
   const hasAnyOverlay = chineseOverlays.length > 0;
 
@@ -468,7 +472,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   // Only show "No strong pattern" when there are no overlays at all
   const showBaseChip = chineseBase !== 'NO_PATTERN' || !hasAnyOverlay;
 
-  const blurb = getConnectionBlurb(archetype, ease, sameWesternSign, hasDamage);
+  const blurb = getConnectionBlurb(archetype, ease as WesternEase, { hasDamage });
 
   // Keep existing chip functions for backward compatibility (not used in new UI)
   const baseChip = getBasePatternChip(basePattern, sanHeTrineName);
