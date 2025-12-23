@@ -540,7 +540,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         <div 
           style={{
             background: `linear-gradient(to right, ${gradientColors?.start || '#60a5fa'}, ${gradientColors?.end || '#3b82f6'})`,
-            padding: '0 4px 0 4px',
+            padding: '4px 4px 4px 4px',
             borderRadius: '1.5rem',
             boxSizing: 'border-box',
             width: '100%',
@@ -550,7 +550,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         <div 
           className="w-full"
           style={{
-            borderRadius: 'calc(1.5rem - 3px)',
+            borderRadius: 'calc(1.5rem - 4px)',
             padding: '1.5rem 1.5rem 1.5rem 1.5rem',
             backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
           }}
@@ -808,10 +808,10 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         <div
           style={{ 
             background: `linear-gradient(to right, ${patternColors?.start || gradientColors?.start || '#60a5fa'}, ${patternColors?.end || gradientColors?.end || '#3b82f6'})`,
-            padding: '0 4px 4px 4px',
+            padding: '8px 4px 4px 4px',
             borderRadius: '1.5rem',
             zIndex: 2,
-            marginTop: '-34px',
+            marginTop: '-42px',
             overflow: 'visible',
             boxSizing: 'border-box',
             width: '100%',

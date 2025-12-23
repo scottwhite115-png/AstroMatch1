@@ -282,68 +282,71 @@ export default function MatchProfileCard({
   return (
     <div className="w-full flex justify-center">
       <div className="w-full">
-        {/* Container with border - matches profile view tab design */}
-        <div
-          className="w-full rounded-3xl relative"
-          style={{ 
-            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-            padding: '3px',
-            borderRadius: '1.5rem',
-            zIndex: 10,
-            marginBottom: '0',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Photo Carousel */}
-          {profile.photos.length > 0 && (
-            <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
-              <ProfilePhotoCarouselWithRanking
-                images={profile.photos}
-                profileName={profile.name}
-                profileAge={profile.age}
-                connectionBoxData={connectionBoxData}
-                theme={theme}
-                showDropdown={false}
-                badgePosition="overlay-bottom"
-                aboutMeText={profile.aboutMe}
-                selectedOccupation={profile.occupation}
-                selectedCity={profile.city}
-                cityInput={profile.city || ""}
-                selectedHeight={profile.height}
-                selectedChildrenOption={profile.children}
-                selectedReligion={profile.religion}
-                westernSign={displayWesternSign}
-                easternSign={displayEasternSign}
-                onPhotoChange={onPhotoChange}
-                showProfileToggle={false}
-                onShowProfileToggle={() => {}}
-                showElementsToggle={false}
-                onShowElementsToggle={() => {}}
-                onMessageClick={onMessageClick}
-                patternColors={patternColors}
-                isNewMatch={isNewMatch}
-                matchedAt={matchedAt}
-              />
-            </div>
-          )}
-
-          {/* Connection Box - Always visible, matches profile view tab design */}
-          {connectionBoxData && (
-            <div 
-              className="w-full"
+        {/* Outer border wrapper for entire profile card - matches profile view tab exactly */}
+        {profile.photos.length > 0 && (
+          <div
+            style={{
+              background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+              padding: '4px',
+              borderRadius: '1.5rem',
+              boxSizing: 'border-box',
+              width: '100%',
+            }}
+          >
+            <div
               style={{
-                position: 'relative',
-                marginTop: '0',
-                paddingTop: '0',
-                borderRadius: '1.5rem 1.5rem 1.5rem 1.5rem',
-                borderTopLeftRadius: '1.5rem',
-                borderTopRightRadius: '1.5rem',
-                overflow: 'hidden',
-                backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+                borderRadius: '1.5rem',
+                background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                overflow: 'visible',
               }}
             >
-              {/* Connection Box - Always visible, behind profile dropdown */}
-              <div className="relative w-full max-w-full" style={{ backgroundColor: theme === "light" ? "#ffffff" : "#1e293b" }}>
+              {/* Photo Carousel with Border - matches profile view tab exactly */}
+              {profile.photos.length > 0 && (
+                <div
+                  className="w-full rounded-3xl relative"
+                  style={{ 
+                    background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                    padding: '4px',
+                    borderRadius: '1.5rem',
+                    overflow: 'hidden',
+                    boxSizing: 'border-box',
+                  }}
+                >
+                  <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
+                    <ProfilePhotoCarouselWithRanking
+                      images={profile.photos}
+                      profileName={profile.name}
+                      profileAge={profile.age}
+                      connectionBoxData={connectionBoxData}
+                      theme={theme}
+                      showDropdown={false}
+                      badgePosition="overlay-bottom"
+                      aboutMeText={profile.aboutMe}
+                      selectedOccupation={profile.occupation}
+                      selectedCity={profile.city}
+                      cityInput={profile.city || ""}
+                      selectedHeight={profile.height}
+                      selectedChildrenOption={profile.children}
+                      selectedReligion={profile.religion}
+                      westernSign={displayWesternSign}
+                      easternSign={displayEasternSign}
+                      onPhotoChange={onPhotoChange}
+                      showProfileToggle={false}
+                      onShowProfileToggle={() => {}}
+                      showElementsToggle={false}
+                      onShowElementsToggle={() => {}}
+                      onMessageClick={onMessageClick}
+                      patternColors={patternColors}
+                      isNewMatch={isNewMatch}
+                      matchedAt={matchedAt}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Match Box - Always visible, matches profile view tab exactly */}
+              {connectionBoxData && profile.photos.length > 0 && (
+                <div className="relative w-full" style={{ marginTop: '-4px', marginBottom: '-34px', zIndex: 10 }}>
                   <ConnectionBoxNew
                     tier={newTier}
                     score={connectionBoxData.score}
@@ -386,26 +389,46 @@ export default function MatchProfileCard({
                     onPass={onPass}
                     onLike={onLike}
                     onMessage={onMessageClick}
-                    onViewProfile={undefined}
+                    onViewProfile={() => {
+                      if (externalOnShowProfileToggle) {
+                        externalOnShowProfileToggle();
+                      } else {
+                        setInternalShowProfile(false);
+                      }
+                    }}
                   />
                 </div>
-                
-                {/* Profile Dropdown - Overlays connection box when open */}
-                {showProfile && (
-                  <div 
-                    className="w-full"
-                    style={{ 
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      zIndex: 100,
-                      backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+              )}
+
+              {/* Profile Dropdown - Overlays profile box when open - matches profile view tab exactly */}
+              {showProfile && connectionBoxData && profile.photos.length > 0 && (
+                <div 
+                  className="w-full"
+                  style={{ 
+                    position: 'absolute',
+                    top: '100%',
+                    left: 0,
+                    right: 0,
+                    zIndex: 100,
+                    marginTop: '-36px',
+                  }}
+                >
+                  <div
+                    style={{
+                      background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
+                      padding: '0 4px 4px 4px',
                       borderRadius: '1.5rem',
-                      overflow: 'hidden',
+                      boxSizing: 'border-box',
+                      width: '100%',
                     }}
                   >
+                    <div
+                      style={{
+                        borderRadius: 'calc(1.5rem - 3px)',
+                        backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+                        overflow: 'hidden',
+                      }}
+                    >
                       <ConnectionBoxNew
                         tier={newTier}
                         score={connectionBoxData.score}
@@ -456,12 +479,14 @@ export default function MatchProfileCard({
                           }
                         }}
                       />
+                    </div>
                   </div>
-                )}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </div>
+    </div>
   );
 }

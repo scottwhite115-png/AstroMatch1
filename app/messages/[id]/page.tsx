@@ -14,6 +14,10 @@ import { getWuXingYearElement, type WuXing } from "@/lib/matchEngine"
 import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
 import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
 import MatchProfileCard from "@/components/MatchProfileCard"
+import { 
+  applySameSignCap,
+  type ChineseBasePattern
+} from "@/lib/matchLabelEngine"
 import { fetchUserProfile, fetchUserMatches, findMatchBetweenUsers } from "@/lib/supabase/profileQueries"
 import { createClient } from "@/lib/supabase/client"
 import { sendMessage, getMessages, subscribeToMessages } from "@/lib/supabase/messageActions"
@@ -249,8 +253,32 @@ export default function ChatPage() {
     const tier = labelToTier(simpleBox.matchLabel);
     const westernSignLine = getSunMatchBlurb(userWest as WesternSign, profileWest as WesternSign);
     
+    // Apply same-sign cap at 68% (same as profile view tab)
+    // Check if it's a same-sign match (same Chinese animal)
+    const isSameSign = userEast.toLowerCase() === profileEast.toLowerCase();
+    const chineseBaseForCap = isSameSign ? 'SAME_SIGN' : (chineseBase as ChineseBasePattern);
+    let cappedScore = applySameSignCap(simpleBox.score, chineseBaseForCap);
+    
+    // If it's a same-sign match and score is below 68%, ensure it's at least 68% (matching profile view tab behavior)
+    if (isSameSign && cappedScore < 68) {
+      cappedScore = 68;
+    }
+    
+    // Debug logging
+    if (process.env.NODE_ENV === 'development') {
+      console.log('[Messages] Score capping:', {
+        originalScore: simpleBox.score,
+        chineseBase,
+        isSameSign,
+        chineseBaseForCap,
+        cappedScore,
+        userEast,
+        profileEast
+      });
+    }
+    
     return {
-      score: simpleBox.score,
+      score: cappedScore,
       rank: simpleBox.matchLabel,
       rankLabel: simpleBox.matchLabel,
       rankKey: rankKey as any,
