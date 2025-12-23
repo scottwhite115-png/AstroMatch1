@@ -544,9 +544,21 @@ export default function ProfilePhotoCarouselWithRanking({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
+              console.log('[Photo Carousel] Chat button clicked');
               onMessageClick();
             }}
-            className="absolute z-20 flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            onTouchStart={(e) => {
+              e.stopPropagation();
+            }}
+            onTouchEnd={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              console.log('[Photo Carousel] Chat button touched');
+              onMessageClick();
+            }}
+            className="absolute z-[100] flex items-center justify-center w-14 h-14 rounded-full transition-all hover:scale-110 active:scale-95"
+            data-interactive="true"
             style={{
               right: '16px',
               bottom: '16px', // Position at bottom right corner
@@ -560,6 +572,8 @@ export default function ProfilePhotoCarouselWithRanking({
               boxShadow: theme === "light" 
                 ? `0 2px 12px rgba(0, 0, 0, 0.15)` 
                 : `0 2px 12px rgba(0, 0, 0, 0.5)`,
+              pointerEvents: 'auto',
+              touchAction: 'manipulation',
             }}
             aria-label="Open chat"
           >

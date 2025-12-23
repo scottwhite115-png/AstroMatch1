@@ -1227,7 +1227,14 @@ export default function ChatPage() {
               connectionBoxData={connectionBoxData || undefined}
               theme={theme}
               onPhotoChange={(index) => setCurrentPhotoIndex(index)}
-              onMessageClick={() => {}}
+              onMessageClick={() => {
+                console.log('[Chat] Chat button clicked - switching to chat tab');
+                setActiveTab("chat");
+                // Scroll to top of chat messages
+                setTimeout(() => {
+                  messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
               onPass={() => {}}
               onLike={() => {}}
               showProfileToggle={showProfile}

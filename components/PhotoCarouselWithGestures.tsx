@@ -129,7 +129,7 @@ export default function PhotoCarouselWithGestures({
   const handleContainerClick = (e: React.MouseEvent) => {
     // Don't handle click if on a button or interactive element
     const target = e.target as HTMLElement;
-    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]')) {
+    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]') || target.closest('[data-interactive]')) {
       return;
     }
     
@@ -175,7 +175,7 @@ export default function PhotoCarouselWithGestures({
     const target = e.target as HTMLElement;
     
     // Check if touch is on a button or interactive element
-    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]')) {
+    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]') || target.closest('[data-interactive]')) {
       return;
     }
     
@@ -225,7 +225,7 @@ export default function PhotoCarouselWithGestures({
     const target = e.target as HTMLElement;
     
     // Check if touch is on a button or interactive element
-    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]')) {
+    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]') || target.closest('[data-interactive]')) {
       return;
     }
     
@@ -314,7 +314,7 @@ export default function PhotoCarouselWithGestures({
     const target = e.target as HTMLElement;
     
     // Check if touch is on a button or interactive element
-    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]')) {
+    if (target.closest('button') || target.closest('a') || target.closest('[data-dropdown-button]') || target.closest('[data-interactive]')) {
       return;
     }
     
@@ -461,7 +461,7 @@ export default function PhotoCarouselWithGestures({
         onClick={(e) => {
           // Don't handle clicks on buttons or interactive elements
           const target = e.target as HTMLElement;
-          if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]')) {
+          if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]') || target.closest('[data-dropdown-button]')) {
             return;
           }
           handleContainerClick(e);
@@ -469,7 +469,7 @@ export default function PhotoCarouselWithGestures({
         onTouchStart={(e) => {
           // Don't handle touches on buttons or interactive elements
           const target = e.target as HTMLElement;
-          if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]')) {
+          if (target.closest('button') || target.closest('a') || target.closest('[data-interactive]') || target.closest('[data-dropdown-button]')) {
             return;
           }
           handleTouchStart(e);
