@@ -191,7 +191,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
       theme === "light"
         ? "bg-white/80 backdrop-blur-sm"
         : "bg-slate-900/80 backdrop-blur-sm"
-    }`}>
+    }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
       <div className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4">
         {/* AstroLab heading */}
         <div className="flex items-center justify-between mb-1.5">

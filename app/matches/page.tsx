@@ -3237,7 +3237,7 @@ export default function MatchesPage() {
           theme === "light"
             ? "bg-white/80 backdrop-blur-sm"
             : "bg-slate-900/80 backdrop-blur-sm"
-        }`}>
+        }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
           <div className="px-4 pt-0.5 pb-1.5">
             {/* Tabs: Matches | AstroLab */}
             <div className="flex items-center justify-between mb-1.5">
