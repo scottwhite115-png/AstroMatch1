@@ -10,12 +10,12 @@ export type WesternElementRelation =
   | 'CLASH';
 
 export type ConnectionArchetype =
-  | 'TRIPLE_HARMONY'
-  | 'SUPPORTIVE_ALLY'
-  | 'MIRROR'
-  | 'OPEN_PATTERN'
-  | 'OPPOSITES'
-  | 'LESSON_REPAIR';
+  | 'TRIPLE_HARMONY'   // San He 三合 · same tribe
+  | 'SUPPORTIVE_ALLY'  // Liu He 六合 · Six Harmonies
+  | 'OPPOSITES'        // Liu Chong 六冲 · Six Conflicts / opposites
+  | 'LESSON_REPAIR'    // Hai / Xing / Po without San He / Liu He / Same sign
+  | 'MIRROR'           // Same-sign archetype (Chinese same animal)
+  | 'OPEN_PATTERN';    // No big Chinese pattern
 
 export type WesternEase = 'EASY' | 'MEDIUM' | 'HARD';
 
@@ -24,39 +24,63 @@ export interface Chip {
   label: string;
 }
 
+// ------------------------------------
+// Helpers
+// ------------------------------------
+
+export function hasDamageOverlay(
+  overlays: ChineseOverlayPattern[]
+): boolean {
+  return overlays.some(o => o === 'LIU_HAI' || o === 'XING' || o === 'PO');
+}
+
+export function hasLiuHai(overlays: ChineseOverlayPattern[]): boolean {
+  return overlays.includes('LIU_HAI');
+}
+
+export function hasSelfPunishment(
+  chineseBase: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[]
+): boolean {
+  // self-punishment = same animal + Xing overlay
+  return chineseBase === 'SAME_SIGN' && overlays.includes('XING');
+}
+
+// Decide archetype from Chinese patterns only
 export function deriveArchetype(
   chineseBase: ChineseBasePattern,
   overlays: ChineseOverlayPattern[]
 ): ConnectionArchetype {
   const hasLiuChong = overlays.includes('LIU_CHONG');
-  const hasDamage = overlays.some(o => o === 'LIU_HAI' || o === 'XING' || o === 'PO');
+  const hasDamage = hasDamageOverlay(overlays);
 
-  // 1) Opposites take priority if present
-  if (hasLiuChong) {
-    return 'OPPOSITES';
-  }
+  // 1) Six Conflicts (Liu Chong) → Opposites archetype
+  if (hasLiuChong) return 'OPPOSITES';
 
-  // 2) Liu He base pattern - prioritize this even with damage overlays
-  // Liu He + damage should still be SUPPORTIVE_ALLY (not LESSON_REPAIR)
-  if (chineseBase === 'LIU_HE') {
-    return 'SUPPORTIVE_ALLY';
-  }
-
-  // 3) Then pure damage patterns (but not Liu He base)
-  if (hasDamage) {
-    return 'LESSON_REPAIR';
-  }
-
-  // 4) Then other base patterns
+  // 2) Respect base pattern first
   switch (chineseBase) {
     case 'SAN_HE':
       return 'TRIPLE_HARMONY';
+    case 'LIU_HE':
+      return 'SUPPORTIVE_ALLY';
     case 'SAME_SIGN':
       return 'MIRROR';
     case 'NO_PATTERN':
     default:
-      return 'OPEN_PATTERN';
+      // 3) Lesson archetype only when no San He / Liu He / Same sign
+      return hasDamage ? 'LESSON_REPAIR' : 'OPEN_PATTERN';
   }
+}
+
+// Same Chinese sign must never show above 70%
+export function applySameSignCap(
+  score: number,
+  chineseBase: ChineseBasePattern
+): number {
+  if (chineseBase === 'SAME_SIGN') {
+    return Math.min(score, 70);
+  }
+  return score;
 }
 
 export function deriveWesternEase(relation: WesternElementRelation): WesternEase {
@@ -191,76 +215,157 @@ export function getWesternChip(
   }
 }
 
+// ------------------------------------
+// Pill label logic
+// ------------------------------------
+
+export function getMatchLabel(
+  archetype: ConnectionArchetype,
+  chineseBase: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[],
+  finalScore: number
+): string {
+  const hasLiuChong = overlays.includes('LIU_CHONG');
+  const hasDamage = hasDamageOverlay(overlays);
+
+  // Liu Chong → Six Conflicts
+  if (hasLiuChong) {
+    return 'Six Conflicts Match';
+  }
+
+  // Liu He → Six Harmonies
+  if (chineseBase === 'LIU_HE') {
+    return 'Six Harmonies Match';
+  }
+
+  // San He → Triple Harmony
+  if (chineseBase === 'SAN_HE') {
+    return 'Triple Harmony Match';
+  }
+
+  // Same Chinese sign (normal or self-punishment)
+  if (chineseBase === 'SAME_SIGN') {
+    return 'Same Sign Match';
+  }
+
+  // Damage-only / lesson-heavy cases
+  if (archetype === 'LESSON_REPAIR' || hasDamage) {
+    return 'Challenging Match';
+  }
+
+  // Everything else (no pattern, no damage)
+  return 'Neutral Match';
+}
+
+// ------------------------------------
+// Connection blurb logic
+// ------------------------------------
+
 export function getConnectionBlurb(
   archetype: ConnectionArchetype,
   ease: WesternEase,
-  sameWesternSign?: boolean,
-  hasDamage?: boolean
+  chineseBase: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[]
 ): string {
+  const hasDamage = hasDamageOverlay(overlays);
+  const selfPunish = hasSelfPunishment(chineseBase, overlays);
+  const harms = hasLiuHai(overlays);
+
   switch (archetype) {
+    // --------------------------------
+    // San He · Triple Harmony – same tribe
+    // --------------------------------
     case 'TRIPLE_HARMONY':
       if (ease === 'EASY') {
-        return 'Same-trine match with easy flow; more supportive than dramatic, so building a life together tends to feel simpler.';
+        return 'Triple Harmony match; same-tribe connection with rare ease, strong mutual backing, and a natural sense that you can build a lot together over time.';
       }
       if (ease === 'MEDIUM') {
-        return 'Strong same-trine bond with some style differences; it works when you stay curious about each other instead of assuming your way is right.';
-      }
-      return 'Deep same-trine connection with real friction; powerful when you chase a shared goal, draining when you keep pulling in different directions.';
-
-    case 'SUPPORTIVE_ALLY':
-      // Blurb C: Secret Friends + lesson overlay (has damage)
-      if (hasDamage) {
-        return 'Supportive, friendship connection with lessons underneath; you\'re good for each other, but patterns repeat until you speak up and change how you respond.';
-      }
-      
-      // Blurb A: Clean Secret Friends with easy elements (EASY, no damage)
-      if (ease === 'EASY') {
-        return 'Soft, steady friendship bond with a warm, friend-like tone; you quietly back each other up when life is stressful.';
-      }
-      
-      // Blurb B: Secret Friends with mixed elements (MEDIUM, no damage)
-      if (ease === 'MEDIUM') {
-        return 'Grounded friendship match with different pace or priorities; naming what support looks like for each of you keeps it smooth.';
-      }
-      // HARD (no damage)
-      return 'Friendship bond with more friction around needs and timing; it works when you\'re upfront about limits instead of expecting mind-reading.';
-
-    case 'OPPOSITES':
-      if (ease === 'EASY') {
-        return 'Magnetic opposite-style match with strong spark; it works when you enjoy your differences instead of trying to fix each other.';
-      }
-      if (ease === 'MEDIUM') {
-        return 'Magnetic opposites with both spark and friction; you stretch each other\'s comfort zones, so clear talk about differences keeps things feeling fair.';
+        return 'Triple Harmony bond; you\'re clearly on the same wavelength, and your different styles become an asset when you respect how each of you moves through life.';
       }
       // HARD
-      return 'Intense magnetic opposites where attraction and conflict sit close; clear boundaries stop drama from outweighing the good stuff.';
+      return 'Triple Harmony tie; deep loyalty sits underneath real tension, and it\'s powerful when you point that intensity at shared goals instead of at each other.';
 
+    // --------------------------------
+    // Liu He · Six Harmonies – Supportive / secret-friends vibe
+    // --------------------------------
+    case 'SUPPORTIVE_ALLY': {
+      if (hasDamage) {
+        // Liu He + Hai/Xing/Po
+        return 'Six Harmonies with extra edge; there\'s real support underneath, and the sharper moments can deepen trust when you name them early and adjust together.';
+      }
+
+      if (ease === 'EASY') {
+        return 'Six Harmonies match; classic secret-friends connection that feels warm, loyal, and makes day-to-day decisions easier to carry as a team.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Six Harmonies bond; you\'re clearly on the same side, and your different pace or priorities help you cover more ground when you talk about what you each need.';
+      }
+      // HARD, no damage
+      return 'Six Harmonies tie; the goodwill runs deep, and even when rhythms clash you have a solid base to find fair, workable ways of sharing life.';
+    }
+
+    // --------------------------------
+    // Liu Chong · Six Conflicts – Magnetic opposites vibe
+    // --------------------------------
+    case 'OPPOSITES':
+      if (ease === 'EASY') {
+        return 'Six Conflicts match; magnetic opposites with big spark and chemistry when you enjoy the contrast and let each other be yourselves.';
+      }
+      if (ease === 'MEDIUM') {
+        return 'Six Conflicts bond; strong pull between very different styles that works best when you can laugh about clashes, reset quickly, and keep the focus on learning, not winning.';
+      }
+      // HARD
+      return 'Six Conflicts tie; intense, memorable connection that can fast-track growth if you hold clear boundaries and treat each other as teammates, not opponents.';
+
+    // --------------------------------
+    // Hai / Xing / Po without San He / Liu He / Same sign – Lesson/Repair
+    // --------------------------------
     case 'LESSON_REPAIR':
-      if (ease === 'EASY') {
-        return 'Lesson-heavy connection with genuine care; you grow together if you name problems early and tackle them as a team.';
+      if (harms) {
+        // Six Harms specific wording
+        if (ease === 'EASY') {
+          return 'Six Harms match; real pull, but small hurts land hard unless you\'re gentle with each other.';
+        }
+        if (ease === 'MEDIUM') {
+          return 'Six Harms pattern; push–pull tension repeats until you both own your triggers and adjust.';
+        }
+        // HARD
+        return 'Six Harms tie; emotional volume is high and needs firm limits to stay healthy.';
+      } else {
+        // Generic lesson pattern (Xing/Po only)
+        if (ease === 'EASY') {
+          return 'Lesson match; there\'s genuine pull, and naming issues early can turn tests into growth.';
+        }
+        if (ease === 'MEDIUM') {
+          return 'Lesson pattern; recurring arguments signal a need to change how you respond, not who you blame.';
+        }
+        // HARD
+        return 'Intense lesson tie; demanding, but it can leave you wiser if you stay honest about your limits.';
       }
-      if (ease === 'MEDIUM') {
-        return 'Connection with both pull and pressure; similar issues return until you talk honestly and choose to handle them differently.';
-      }
-      return 'Intense, lesson-driven match; unforgettable but tiring unless you have firm boundaries, honesty, and regular check-ins about how it feels.';
 
+    // --------------------------------
+    // Same-sign archetype (Chinese same sign)
+    // --------------------------------
     case 'MIRROR':
-      if (ease === 'EASY') {
-        return 'Mirror-style match where you see a lot of yourself; feeling understood is easy, but you share the same negative habits.';
+      if (selfPunish) {
+        // same sign + Xing = self-punishment
+        return 'Same-sign with a self-punishment streak; similar habits repeat until you handle them more gently.';
       }
-      if (ease === 'MEDIUM') {
-        return 'Strong familiarity and similar instincts; you \'get\' each other quickly but also amplify each other\'s patterns, good and bad.';
-      }
-      return 'Mirror-clash connection—very similar nature but different needs; it can sting when traits you dislike in them also belong to you.';
+      // normal same-sign
+      return 'Same-sign match; you see yourself in each other, doubling both your strengths and weaker spots.';
 
+    // --------------------------------
+    // No big Chinese pattern – Open / Neutral
+    // --------------------------------
     case 'OPEN_PATTERN':
     default:
       if (ease === 'EASY') {
-        return 'Open-ended connection with light, easy flow; it can deepen if you keep showing up and communicating clearly.';
+        return 'Open match; light, easy flow with room to grow if you both keep showing up.';
       }
       if (ease === 'MEDIUM') {
-        return 'Balanced match with no fixed script; it\'s shaped more by daily choices than by any built-in pattern.';
+        return 'Open pattern; no fixed script, so the bond reflects your values and everyday choices.';
       }
-      return 'Free-form connection with some friction; it works when you\'re honest about differences and willing to adjust over time.';
+      // HARD
+      return 'Open match with some friction; without honest tweaks it can quietly drift into frustration.';
   }
 }

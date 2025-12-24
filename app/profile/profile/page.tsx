@@ -946,8 +946,7 @@ export default function AstrologyProfilePage({
         const pillLabel = getMatchLabel(archetype, basePattern as ChineseBasePattern, overlays as ChineseOverlayPattern[], cappedScore)
         
         // Get connection blurb (description)
-        const hasDamage = hasDamageOverlay(overlays as ChineseOverlayPattern[])
-        const baseTagline = getConnectionBlurb(archetype, ease, { hasDamage })
+        const baseTagline = getConnectionBlurb(archetype, ease, basePattern as ChineseBasePattern, overlays as ChineseOverlayPattern[])
         
         // Keep pattern info for display
         const chinesePattern: PatternType = basePattern === "SAME_SIGN" ? "SAME_SIGN" : 

@@ -208,8 +208,7 @@ function getMatchLabelAndTagline(
   const westernRelation = convertToWesternRelation(elementRelation);
   const ease: WesternEase = westernRelation === 'SAME' || westernRelation === 'COMPATIBLE' ? 'EASY' :
                             westernRelation === 'SEMI_COMPATIBLE' || westernRelation === 'NEUTRAL' ? 'MEDIUM' : 'HARD';
-  const hasDamage = hasDamageOverlay(overlays);
-  const tagline = getConnectionBlurb(archetype, ease, { hasDamage });
+  const tagline = getConnectionBlurb(archetype, ease, basePattern, overlays);
 
   return {
     primaryLabel,
@@ -472,7 +471,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   // Only show "No strong pattern" when there are no overlays at all
   const showBaseChip = chineseBase !== 'NO_PATTERN' || !hasAnyOverlay;
 
-  const blurb = getConnectionBlurb(archetype, ease as WesternEase, { hasDamage });
+  const blurb = getConnectionBlurb(archetype, ease as WesternEase, chineseBase, chineseOverlays);
 
   // Keep existing chip functions for backward compatibility (not used in new UI)
   const baseChip = getBasePatternChip(basePattern, sanHeTrineName);

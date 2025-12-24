@@ -170,7 +170,7 @@ export default function AstrologySection() {
                       <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>68-91%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Quietly strong bond that feels safe, loyal, and steady when you choose each other.
+                      "Secret Friends" Quietly strong bond that feels safe, loyal, and steady when you choose each other.
                     </div>
                   </div>
                 </button>
@@ -188,7 +188,7 @@ export default function AstrologySection() {
                           Neutral +
                         </span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>68-82%</span>
+                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>54-70%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.

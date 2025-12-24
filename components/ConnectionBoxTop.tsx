@@ -37,7 +37,7 @@ export function ConnectionBoxTop(props: ConnectionBoxProps) {
   const overlayChip = getChineseOverlayChip(chineseOverlays);
   const westernChip = getWesternChip(westernRelation);
 
-  const blurb = getConnectionBlurb(archetype, ease);
+  const blurb = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
 
   return (
     <div className="rounded-2xl border border-slate-800 bg-slate-950/70 p-4 shadow-lg space-y-3">

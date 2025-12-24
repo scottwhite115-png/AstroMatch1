@@ -1449,8 +1449,7 @@ export default function MatchesPage() {
     const primaryLabel = getMatchLabel(archetype, chineseBase, chineseOverlays, cappedScore);
     
     // Get connection blurb
-    const hasDamage = hasDamageOverlay(chineseOverlays);
-    const connectionBlurb = getConnectionBlurb(archetype, ease, { hasDamage });
+    const connectionBlurb = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
     // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
     const labelToRankKey: Record<string, RankKey> = {
       "Soulmate Match": "perfect",

@@ -44,6 +44,19 @@ import {
   type OldElementRelation,
   type OldAspectRelation,
 } from "@/lib/astrology/matchEngineAdapter";
+// Import new match engine functions for labels and blurbs
+import {
+  getMatchLabel,
+  getConnectionBlurb,
+  deriveArchetype,
+  applySameSignCap,
+  deriveWesternEase,
+  type ChineseBasePattern,
+  type ChineseOverlayPattern,
+  type WesternEase,
+  type WesternElementRelation,
+  type ConnectionArchetype,
+} from "@/lib/connectionUi";
 
 // Chinese animal type used in AstroMatch
 export type ChineseAnimal =
@@ -1969,6 +1982,52 @@ export function buildSimpleConnectionBox(
         matchEngineResult.patternFullLabel = matchEngineResult.patternFullLabel.replace(/\d+%/, '66%');
       }
     }
+    
+    // NEW: Use new match engine functions for labels and blurbs
+    // Map Chinese pattern to ChineseBasePattern
+    const mapToChineseBasePattern = (pattern: string): ChineseBasePattern => {
+      if (pattern === 'san_he' || pattern === 'same_trine') return 'SAN_HE';
+      if (pattern === 'liu_he') return 'LIU_HE';
+      if (pattern === 'same_animal' || sameChineseAnimal) return 'SAME_SIGN';
+      return 'NO_PATTERN';
+    };
+    
+    const chineseBase: ChineseBasePattern = mapToChineseBasePattern(chinesePattern);
+    
+    // Map overlay patterns to ChineseOverlayPattern[]
+    const chineseOverlays: ChineseOverlayPattern[] = overlayPatterns
+      .filter((p): p is ChineseOverlayPattern => 
+        p === 'LIU_CHONG' || p === 'LIU_HAI' || p === 'XING' || p === 'PO'
+      );
+    
+    // Derive archetype
+    const archetype: ConnectionArchetype = deriveArchetype(chineseBase, chineseOverlays);
+    
+    // Derive Western ease from element relation
+    // Map westElemRelation to WesternElementRelation type
+    const mapToWesternElementRelation = (rel: string): WesternElementRelation => {
+      if (rel === 'SAME_ELEMENT') return 'SAME';
+      if (rel === 'COMPATIBLE_ELEMENT') return 'COMPATIBLE';
+      if (rel === 'SEMI_COMPATIBLE') return 'SEMI_COMPATIBLE';
+      if (rel === 'MISMATCH' || rel === 'INCOMPATIBLE') return 'CLASH';
+      return 'NEUTRAL';
+    };
+    
+    const westernElementRelation = mapToWesternElementRelation(westElemRelation);
+    const westernEase: WesternEase = deriveWesternEase(westernElementRelation);
+    
+    // Apply same sign cap to score
+    const cappedScore = applySameSignCap(matchEngineResult.score, chineseBase);
+    
+    // Get new match label and connection blurb
+    const newPillLabel = getMatchLabel(archetype, chineseBase, chineseOverlays, cappedScore);
+    const newBaseTagline = getConnectionBlurb(archetype, westernEase, chineseBase, chineseOverlays);
+    
+    // Override with new values
+    matchEngineResult.pillLabel = newPillLabel;
+    matchEngineResult.baseTagline = newBaseTagline;
+    matchEngineResult.score = cappedScore; // Use capped score
+    matchEngineResult.patternFullLabel = `${newPillLabel} · ${cappedScore}%`;
     
     console.log('[buildSimpleConnectionBox] Match engine result:', matchEngineResult);
   } catch (error) {

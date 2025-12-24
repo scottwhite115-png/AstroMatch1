@@ -1379,8 +1379,16 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
     const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
     
-    // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
+    // Map match label to rank key (updated to support new match engine labels)
     const labelToRankKey: Record<string, string> = {
+      // New match engine labels
+      "Six Conflicts Match": "fair",
+      "Six Harmonies Match": "excellent",
+      "Triple Harmony Match": "excellent",
+      "Same Sign Match": "fair",
+      "Challenging Match": "challenging",
+      "Neutral Match": "fair",
+      // Legacy labels
       "Soulmate Match": "perfect",
       "Twin Flame Match": "excellent",
       "Excellent Match": "excellent",
@@ -1390,28 +1398,48 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       "Good Friends Match": "good", // Now maps to good
       "Opposites Attract": "fair",
       "Magnetic Opposites": "fair",
-      "Neutral Match": "fair",
       "Difficult Match": "challenging",
     };
     
-    const rankKey = labelToRankKey[simpleBox.matchLabel] || "neutral";
+    // Use pillLabel if available (new match engine), otherwise fall back to matchLabel
+    // pillLabel might contain score in old format (e.g., "Six Conflicts Match · 75%"), so extract just the label
+    const pillLabelText = simpleBox.pillLabel?.includes(' · ') 
+      ? simpleBox.pillLabel.split(' · ')[0] 
+      : simpleBox.pillLabel;
+    const displayLabel = pillLabelText || simpleBox.matchLabel;
+    
+    const rankKey = labelToRankKey[displayLabel] || labelToRankKey[simpleBox.matchLabel] || "neutral";
     
     // Map label to tier (updated to support new match engine labels)
     const labelToTier = (label: string): any => {
-      // New match engine labels (from matchLabels.ts)
+      // New match engine labels (from connectionUi.ts)
+      if (label === "Six Conflicts Match") return "Magnetic Opposites";
+      if (label === "Six Harmonies Match" || label === "Triple Harmony Match") return "Excellent";
+      if (label === "Same Sign Match") return "Neutral";
+      if (label === "Challenging Match") return "Difficult";
+      if (label === "Neutral Match") return "Neutral";
+      // Legacy labels (from matchLabels.ts)
       if (label === "SOULMATE" || label === "SOULMATE MATCH" || label === "Soulmate Match") return "Soulmate";
       if (label === "TWIN FLAME" || label === "TWIN FLAME MATCH" || label === "Twin Flame Match") return "Twin Flame";
       if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
       if (label === "Favourable Match") return "Favourable";
       if (label === "Good Friends" || label === "Good Friends Match") return "Favourable"; // Maps to Favourable
       if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
-      if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
+      if (label === "NEUTRAL" || label === "NEUTRAL MATCH") return "Neutral";
       if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
       return "Neutral";
     };
     
     // Extract emoji and color from label (updated to support new match engine)
     const labelToEmoji: Record<string, string> = {
+      // New match engine labels
+      "Six Conflicts Match": "⚡",
+      "Six Harmonies Match": "✨",
+      "Triple Harmony Match": "🌟",
+      "Same Sign Match": "🪞",
+      "Challenging Match": "💔",
+      "Neutral Match": "✨",
+      // Legacy labels
       "SOULMATE": "💫",
       "SOULMATE MATCH": "💫",
       "Soulmate Match": "💫",
@@ -1430,13 +1458,20 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       "Magnetic Opposites": "⚡",
       "NEUTRAL": "✨",
       "NEUTRAL MATCH": "✨",
-      "Neutral Match": "✨",
       "DIFFICULT": "💔",
       "DIFFICULT MATCH": "💔",
       "Difficult Match": "💔",
     };
     
     const labelToColor: Record<string, string> = {
+      // New match engine labels
+      "Six Conflicts Match": "rgb(239, 68, 68)",        // Red
+      "Six Harmonies Match": "rgb(219, 39, 119)",     // Hot Pink
+      "Triple Harmony Match": "rgb(219, 39, 119)",    // Hot Pink
+      "Same Sign Match": "rgb(34, 139, 34)",          // Green
+      "Challenging Match": "rgb(239, 68, 68)",        // Red
+      "Neutral Match": "rgb(34, 139, 34)",            // Green
+      // Legacy labels
       "SOULMATE": "rgb(212, 175, 55)",                // Gold
       "SOULMATE MATCH": "rgb(212, 175, 55)",          // Gold
       "Soulmate Match": "rgb(212, 175, 55)",          // Gold
@@ -1455,13 +1490,12 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       "Magnetic Opposites": "rgb(239, 68, 68)",       // Red (same as Opposites Attract)
       "NEUTRAL": "rgb(34, 139, 34)",                  // Green
       "NEUTRAL MATCH": "rgb(34, 139, 34)",            // Green
-      "Neutral Match": "rgb(34, 139, 34)",            // Green
       "DIFFICULT": "rgb(239, 68, 68)",                // Red
       "DIFFICULT MATCH": "rgb(239, 68, 68)",          // Red
       "Difficult Match": "rgb(239, 68, 68)",          // Red
     };
     
-    const tier = labelToTier(simpleBox.matchLabel);
+    const tier = labelToTier(displayLabel);
     
     // Generate Western sun sign relationship blurb
     const westernSignLine = getSunMatchBlurb(
@@ -1471,11 +1505,11 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     
     return {
       score: simpleBox.score,
-      rank: simpleBox.matchLabel,
-      rankLabel: simpleBox.matchLabel,
+      rank: displayLabel,
+      rankLabel: displayLabel,
       rankKey: rankKey as any,
-      emoji: labelToEmoji[simpleBox.matchLabel] || "🌟",
-      colorRgb: labelToColor[simpleBox.matchLabel] || "rgb(34, 139, 34)",
+      emoji: labelToEmoji[displayLabel] || labelToEmoji[simpleBox.matchLabel] || "🌟",
+      colorRgb: labelToColor[displayLabel] || labelToColor[simpleBox.matchLabel] || "rgb(34, 139, 34)",
       connectionLabel: simpleBox.headingLine, // "Harmonious Match · 76%"
       tagline: simpleBox.matchLabel,
       east_tagline: simpleBox.chineseLine,

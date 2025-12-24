@@ -61,9 +61,16 @@ export default function MatchGeneratorPage() {
 
       console.log('[Match Generator] SimpleBox result:', simpleBox)
 
-      // Map to match label format
+      // Map to match label format (updated to support new match engine labels)
       const mapTier = (label: string): "Soulmate Match" | "Twin Flame Match" | "Excellent Match" | "Favourable Match" | "Neutral Match" | "Opposites Attract" | "Difficult Match" => {
         const l = label.toLowerCase();
+        // New match engine labels
+        if (l.includes("six conflicts match")) return "Opposites Attract";
+        if (l.includes("six harmonies match") || l.includes("triple harmony match")) return "Excellent Match";
+        if (l.includes("same sign match")) return "Neutral Match";
+        if (l.includes("challenging match")) return "Difficult Match";
+        if (l.includes("neutral match")) return "Neutral Match";
+        // Legacy labels
         if (l.includes("soulmate")) return "Soulmate Match";
         if (l.includes("twin flame")) return "Twin Flame Match";
         if (l.includes("excellent")) return "Excellent Match";
@@ -73,9 +80,12 @@ export default function MatchGeneratorPage() {
         return "Neutral Match";
       };
 
+      // Use pillLabel if available (new match engine), otherwise fall back to matchLabel
+      const displayLabel = simpleBox.pillLabel || simpleBox.matchLabel;
+      
       // Create connection box data matching discover section format
       const boxData = {
-        tier: mapTier(simpleBox.matchLabel) as any,
+        tier: mapTier(displayLabel) as any,
         score: simpleBox.score,
         westA: person1.sunSign.charAt(0).toUpperCase() + person1.sunSign.slice(1),
         eastA: person1.animal.charAt(0).toUpperCase() + person1.animal.slice(1),
