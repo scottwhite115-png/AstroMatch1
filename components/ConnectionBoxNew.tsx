@@ -142,6 +142,13 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
     connectionOverviewHeading = chineseCompat.heading;
     connectionOverviewTagline = chineseCompat.tagline;
     connectionOverviewText = chineseCompat.description;
+    console.log('[ConnectionBoxNew] Chinese compat data:', {
+      heading: connectionOverviewHeading,
+      tagline: connectionOverviewTagline,
+      text: connectionOverviewText,
+      animalA,
+      animalB,
+    });
   }
   
   // REMOVED: Fallback to connectionBlurb - we don't want pattern one-liners displayed
