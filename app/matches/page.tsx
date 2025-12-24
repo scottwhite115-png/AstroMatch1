@@ -42,7 +42,6 @@ import { getSunMatchBlurb, type WesternSign } from "@/lib/connectionSunVibes"
 import {
   getMatchLabel,
   deriveArchetype,
-  getConnectionBlurb,
   hasDamageOverlay,
   applySameSignCap,
   deriveWesternEase,
@@ -51,6 +50,7 @@ import {
   type WesternEase,
   type WesternElementRelation
 } from "@/lib/matchLabelEngine"
+import { getConnectionBlurb } from "@/lib/connectionUi"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -1448,8 +1448,8 @@ export default function MatchesPage() {
     // Get pill label using new match label engine
     const primaryLabel = getMatchLabel(archetype, chineseBase, chineseOverlays, cappedScore);
     
-    // Get connection blurb
-    const connectionBlurb = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
+    // Use baseTagline from simpleBox if available (from buildConnectionBox), otherwise calculate it
+    const connectionBlurb = simpleBox.baseTagline || getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
     // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
     const labelToRankKey: Record<string, RankKey> = {
       "Soulmate Match": "perfect",
