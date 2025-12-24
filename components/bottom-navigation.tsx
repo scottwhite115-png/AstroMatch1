@@ -166,7 +166,12 @@ export function BottomNavigation() {
   }
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 lg:hidden pb-safe transition-transform duration-300 ${isHidden ? 'translate-y-full' : ''}`}>
+    <div 
+      className={`fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-transform duration-300 ${isHidden ? 'translate-y-full' : ''}`}
+      style={{
+        paddingBottom: 'max(env(safe-area-inset-bottom), 20px)'
+      }}
+    >
       {/* Flat navigation bar */}
       <div className="relative w-full h-20">
         {/* Flat background */}
