@@ -627,15 +627,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         </div>
 
         {/* Blurb - Mirror-style match text */}
-        {blurb && (
-          <div className="mt-2 text-center">
-            <p className={`text-lg leading-relaxed ${
-              theme === "light" ? "text-slate-600" : "text-slate-300"
-            }`}>
-              {blurb}
-            </p>
-          </div>
-        )}
+        {/* Blurb - REMOVED */}
         </div>
         {/* Match Label Dropdown - Overlays profile box when open */}
         {showMatchLabelDropdown && (

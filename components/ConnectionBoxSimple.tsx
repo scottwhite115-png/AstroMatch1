@@ -892,16 +892,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                 </div>
               </div>
               {/* Tagline from matchLabelTaglines */}
-              {(() => {
-                // Map "Six Conflicts" to "Opposites Attract" for tagline lookup
-                const matchLabel = (headerText === "Six Conflicts" ? "Opposites Attract" : headerText) as MatchLabel;
-                const tagline = matchLabelTaglines[matchLabel];
-                return tagline ? (
-                  <p className={`text-center text-base leading-relaxed mb-4 ${theme === "light" ? "text-black" : "text-white/80"}`}>
-                    {tagline}
-                  </p>
-                ) : null;
-              })()}
+              {/* Tagline from matchLabelTaglines - REMOVED */}
 
               {/* Connection Overview Section - Removed, kept only for Astrology/education screens */}
 
