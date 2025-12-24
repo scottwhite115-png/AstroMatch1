@@ -3032,38 +3032,6 @@ export default function MatchesPage() {
     console.warn('[MatchesPage] No filtered profiles, showing all profiles as fallback')
   }
 
-  // Show loading indicator only if we have no profiles at all
-  if (isLoadingProfiles && filteredProfiles.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center" style={{ marginTop: '-120px' }}>
-          <div className="flex items-center justify-center gap-0.5 mb-4">
-            <FourPointedStar className="w-9 h-9 text-orange-500" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
-              AstroMatch
-            </h1>
-          </div>
-        </div>
-      </div>
-    )
-  }
-  
-  // Force render even if profiles are empty - show something
-  if (filteredProfiles.length === 0 && enrichedProfiles.length === 0) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center" style={{ marginTop: '-120px' }}>
-          <div className="flex items-center justify-center gap-0.5 mb-4">
-            <FourPointedStar className="w-9 h-9 text-orange-500" />
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
-              AstroMatch
-            </h1>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
   // Note: Early returns removed to ensure header is always shown
   // Empty state is handled in the main render below
 
