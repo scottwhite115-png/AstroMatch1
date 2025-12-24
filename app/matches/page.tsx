@@ -3231,7 +3231,7 @@ export default function MatchesPage() {
         }
       `}</style>
       
-      <div className={`relative z-10 max-w-sm mx-auto overflow-visible ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : ""}`}>
+       <div className={`relative z-10 w-full overflow-visible ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : ""}`}>
         {/* Header */}
         <header className={`sticky top-0 z-50 ${
           theme === "light"
