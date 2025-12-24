@@ -5,6 +5,207 @@
 import { createClient } from './client'
 
 /**
+ * Get the number of times a user has been reported
+ */
+async function getReportCount(userId: string): Promise<number> {
+  const supabase = createClient()
+  
+  const { count, error } = await supabase
+    .from('reports')
+    .select('*', { count: 'exact', head: true })
+    .eq('reported_user_id', userId)
+  
+  if (error) {
+    console.error('[Report Count] Error:', error)
+    return 0
+  }
+  
+  return count || 0
+}
+
+/**
+ * Get the number of times a user has been blocked
+ */
+async function getBlockCount(userId: string): Promise<number> {
+  const supabase = createClient()
+  
+  const { count, error } = await supabase
+    .from('blocks')
+    .select('*', { count: 'exact', head: true })
+    .eq('blocked_user_id', userId)
+  
+  if (error) {
+    console.error('[Block Count] Error:', error)
+    return 0
+  }
+  
+  return count || 0
+}
+
+/**
+ * Ban a user with a specific ban type
+ */
+async function banUser(userId: string, banType: '2week' | 'permanent'): Promise<boolean> {
+  const supabase = createClient()
+  
+  try {
+    const updateData: any = {
+      status: banType === 'permanent' ? 'BANNED' : 'SUSPENDED',
+    }
+    
+    // For 2-week ban, set the suspension end date
+    if (banType === '2week') {
+      const twoWeeksFromNow = new Date()
+      twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14)
+      updateData.suspensionEndsAt = twoWeeksFromNow.toISOString()
+    } else {
+      // Permanent ban - set to null
+      updateData.suspensionEndsAt = null
+    }
+    
+    const { error } = await supabase
+      .from('profiles')
+      .update(updateData)
+      .eq('id', userId)
+    
+    if (error) {
+      console.error('[Ban User] Error:', error)
+      return false
+    }
+    
+    console.log(`[Ban User] User ${userId} banned with ${banType}`)
+    return true
+  } catch (error) {
+    console.error('[Ban User] Unexpected error:', error)
+    return false
+  }
+}
+
+/**
+ * Check report violations and return warning/ban info
+ * Rules:
+ * - 2 reports: Warning
+ * - 3rd report: 2-week ban
+ * - 4th report (after returning): Permanent ban
+ */
+export async function checkReportViolation(userId: string): Promise<{
+  shouldWarn: boolean
+  shouldBan: boolean
+  banType?: '2week' | 'permanent'
+  warningMessage?: string
+}> {
+  const supabase = createClient()
+  
+  // Get user's current status
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('status, suspensionEndsAt')
+    .eq('id', userId)
+    .single()
+  
+  const reportCount = await getReportCount(userId)
+  const hasBeenBanned = profile?.status === 'BANNED' || profile?.status === 'SUSPENDED'
+  
+  // 2 reports = warning
+  if (reportCount === 2 && !hasBeenBanned) {
+    return {
+      shouldWarn: true,
+      shouldBan: false,
+      warningMessage: '⚠️ Warning: You have been reported twice. One more report will result in a 2-week ban from the platform.'
+    }
+  }
+  
+  // 3rd report = 2-week ban
+  if (reportCount === 3 && !hasBeenBanned) {
+    await banUser(userId, '2week')
+    return {
+      shouldWarn: true,
+      shouldBan: true,
+      banType: '2week',
+      warningMessage: '🚫 You have been banned for 2 weeks due to multiple reports. If you are reported again after your ban ends, it will result in a permanent ban.'
+    }
+  }
+  
+  // 4th report (after being banned once) = permanent ban
+  if (reportCount >= 4) {
+    await banUser(userId, 'permanent')
+    return {
+      shouldWarn: true,
+      shouldBan: true,
+      banType: 'permanent',
+      warningMessage: '🚫 You have been permanently banned from the platform due to repeated violations.'
+    }
+  }
+  
+  return {
+    shouldWarn: false,
+    shouldBan: false
+  }
+}
+
+/**
+ * Check block violations and return warning/ban info
+ * Rules:
+ * - 2 blocks: Warning
+ * - 3rd block: 2-week ban
+ * - 4th block (after returning): Permanent ban
+ */
+export async function checkBlockViolation(userId: string): Promise<{
+  shouldWarn: boolean
+  shouldBan: boolean
+  banType?: '2week' | 'permanent'
+  warningMessage?: string
+}> {
+  const supabase = createClient()
+  
+  // Get user's current status
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('status, suspensionEndsAt')
+    .eq('id', userId)
+    .single()
+  
+  const blockCount = await getBlockCount(userId)
+  const hasBeenBanned = profile?.status === 'BANNED' || profile?.status === 'SUSPENDED'
+  
+  // 2 blocks = warning
+  if (blockCount === 2 && !hasBeenBanned) {
+    return {
+      shouldWarn: true,
+      shouldBan: false,
+      warningMessage: '⚠️ Warning: You have been blocked twice. One more block will result in a 2-week ban from the platform.'
+    }
+  }
+  
+  // 3rd block = 2-week ban
+  if (blockCount === 3 && !hasBeenBanned) {
+    await banUser(userId, '2week')
+    return {
+      shouldWarn: true,
+      shouldBan: true,
+      banType: '2week',
+      warningMessage: '🚫 You have been banned for 2 weeks due to multiple blocks. If you are blocked again after your ban ends, it will result in a permanent ban.'
+    }
+  }
+  
+  // 4th block (after being banned once) = permanent ban
+  if (blockCount >= 4) {
+    await banUser(userId, 'permanent')
+    return {
+      shouldWarn: true,
+      shouldBan: true,
+      banType: 'permanent',
+      warningMessage: '🚫 You have been permanently banned from the platform due to repeated violations.'
+    }
+  }
+  
+  return {
+    shouldWarn: false,
+    shouldBan: false
+  }
+}
+
+/**
  * Unmatch with a user - deletes the match record
  */
 export async function unmatchUser(currentUserId: string, otherUserId: string, matchId: string): Promise<{ success: boolean; error?: string }> {
@@ -36,13 +237,20 @@ export async function unmatchUser(currentUserId: string, otherUserId: string, ma
 }
 
 /**
- * Report a user - creates a report record for admin review
+ * Report a user - creates a report record and checks for violations
  */
 export async function reportUser(
   reporterId: string,
   reportedUserId: string,
   reason?: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ 
+  success: boolean
+  error?: string
+  shouldWarn?: boolean
+  shouldBan?: boolean
+  banType?: '2week' | 'permanent'
+  warningMessage?: string
+}> {
   const supabase = createClient()
   
   try {
@@ -61,7 +269,13 @@ export async function reportUser(
       return { success: false, error: error.message }
     }
     
-    return { success: true }
+    // Check for violations
+    const violation = await checkReportViolation(reportedUserId)
+    
+    return { 
+      success: true,
+      ...violation
+    }
   } catch (error: any) {
     console.error('[Report] Unexpected error:', error)
     return { success: false, error: error?.message || 'Failed to report user' }
@@ -69,13 +283,20 @@ export async function reportUser(
 }
 
 /**
- * Block a user - creates a block record and also unmatch
+ * Block a user - creates a block record, unmatch, and checks for violations
  */
 export async function blockUser(
   blockerId: string,
   blockedUserId: string,
   matchId?: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ 
+  success: boolean
+  error?: string
+  shouldWarn?: boolean
+  shouldBan?: boolean
+  banType?: '2week' | 'permanent'
+  warningMessage?: string
+}> {
   const supabase = createClient()
   
   try {
@@ -98,7 +319,13 @@ export async function blockUser(
       await unmatchUser(blockerId, blockedUserId, matchId)
     }
     
-    return { success: true }
+    // Check for violations
+    const violation = await checkBlockViolation(blockedUserId)
+    
+    return { 
+      success: true,
+      ...violation
+    }
   } catch (error: any) {
     console.error('[Block] Unexpected error:', error)
     return { success: false, error: error?.message || 'Failed to block user' }

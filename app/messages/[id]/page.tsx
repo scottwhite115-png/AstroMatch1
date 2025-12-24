@@ -21,7 +21,7 @@ import {
 import { fetchUserProfile, fetchUserMatches, findMatchBetweenUsers } from "@/lib/supabase/profileQueries"
 import { createClient } from "@/lib/supabase/client"
 import { sendMessage, getMessages, subscribeToMessages } from "@/lib/supabase/messageActions"
-import { unmatchUser, reportUser, blockUser } from "@/lib/supabase/userActions"
+import { unmatchUser, reportUser, blockUser, checkReportViolation, checkBlockViolation } from "@/lib/supabase/userActions"
 
 const ArrowLeft = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -140,6 +140,8 @@ export default function ChatPage() {
   const [currentUserProfile, setCurrentUserProfile] = useState<any>(null)
   const [matchId, setMatchId] = useState<string | null>(null)
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [showViolationWarning, setShowViolationWarning] = useState(false)
+  const [violationWarningMessage, setViolationWarningMessage] = useState('')
 
   const userId = (params?.id as string) || ""
 
@@ -164,6 +166,41 @@ export default function ChatPage() {
       })
     }
   }, [])
+  
+  // Check for violation warnings on page load
+  useEffect(() => {
+    const checkForViolations = async () => {
+      if (!currentUserId) return
+      
+      try {
+        // Check both report and block violations
+        const reportCheck = await checkReportViolation(currentUserId)
+        const blockCheck = await checkBlockViolation(currentUserId)
+        
+        // Show warning if either has a violation
+        if (reportCheck.shouldWarn && reportCheck.warningMessage) {
+          // Only show if not already seen this session
+          const storageKey = `violation_warning_${currentUserId}_${reportCheck.warningMessage.substring(0, 20)}`
+          if (!sessionStorage.getItem(storageKey)) {
+            setViolationWarningMessage(reportCheck.warningMessage)
+            setShowViolationWarning(true)
+            sessionStorage.setItem(storageKey, 'shown')
+          }
+        } else if (blockCheck.shouldWarn && blockCheck.warningMessage) {
+          const storageKey = `violation_warning_${currentUserId}_${blockCheck.warningMessage.substring(0, 20)}`
+          if (!sessionStorage.getItem(storageKey)) {
+            setViolationWarningMessage(blockCheck.warningMessage)
+            setShowViolationWarning(true)
+            sessionStorage.setItem(storageKey, 'shown')
+          }
+        }
+      } catch (error) {
+        console.error('[Chat] Error checking violations:', error)
+      }
+    }
+    
+    checkForViolations()
+  }, [currentUserId])
   
   // Helper function to convert SimpleConnectionBox to ConnectionBoxData (same as profile view page)
   const convertSimpleToConnectionBoxData = (
@@ -925,9 +962,14 @@ export default function ChatPage() {
       const result = await reportUser(currentUserId, userId, "Reported from chat")
       
       if (result.success) {
-        alert(
-          `Thank you for your report. ${conversation?.userName || "This user"}'s profile and your chat history have been sent to AstroMatch admin for review. We take all reports seriously and will investigate this matter.`,
-        )
+        let message = `Thank you for your report. ${conversation?.userName || "This user"}'s profile and your chat history have been sent to AstroMatch admin for review. We take all reports seriously and will investigate this matter.`
+        
+        // Show warning/ban message if applicable
+        if (result.shouldWarn && result.warningMessage) {
+          message += `\n\n${result.warningMessage}`
+        }
+        
+        alert(message)
       } else {
         alert(`Failed to report: ${result.error || "Unknown error"}`)
       }
@@ -950,13 +992,18 @@ export default function ChatPage() {
       const result = await blockUser(currentUserId, userId, matchId || undefined)
       
       if (result.success) {
-        alert(
-          `You have blocked ${conversation?.userName || "this user"}.\n\n` +
-            `• This chat has been removed from your messages\n` +
-            `• Their profile has been removed from your matches and likes\n` +
-            `• They can no longer contact you or see your profile\n` +
-            `• You can unblock them anytime from Settings > Safety & Privacy > Blocked Users`,
-        )
+        let message = `You have blocked ${conversation?.userName || "this user"}.\n\n` +
+          `• This chat has been removed from your messages\n` +
+          `• Their profile has been removed from your matches and likes\n` +
+          `• They can no longer contact you or see your profile\n` +
+          `• You can unblock them anytime from Settings > Safety & Privacy > Blocked Users`
+        
+        // Show warning/ban message if applicable
+        if (result.shouldWarn && result.warningMessage) {
+          message += `\n\n${result.warningMessage}`
+        }
+        
+        alert(message)
         router.push("/messages")
       } else {
         alert(`Failed to block: ${result.error || "Unknown error"}`)
@@ -1394,6 +1441,41 @@ export default function ChatPage() {
                 }`}
               >
                 {confirmDialog === "unmatch" ? "Unmatch" : confirmDialog === "report" ? "Report" : "Block"}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Violation Warning Dialog */}
+      {showViolationWarning && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center px-4"
+          style={{ zIndex: 100001 }}
+        >
+          <div
+            className={`w-full max-w-sm rounded-2xl p-6 shadow-2xl ${
+              theme === "light"
+                ? "bg-white border border-gray-200"
+                : "bg-slate-800 border border-slate-700"
+            }`}
+          >
+            <h3 className={`text-xl font-bold mb-3 ${
+              theme === "light" ? "text-gray-900" : "text-white"
+            }`}>
+              Important Notice
+            </h3>
+            <p className={`text-sm mb-6 whitespace-pre-line ${
+              theme === "light" ? "text-gray-600" : "text-white/70"
+            }`}>
+              {violationWarningMessage}
+            </p>
+            <div className="flex justify-end">
+              <Button
+                onClick={() => setShowViolationWarning(false)}
+                className="px-6 py-3 rounded-full font-semibold text-white bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600"
+              >
+                I Understand
               </Button>
             </div>
           </div>
