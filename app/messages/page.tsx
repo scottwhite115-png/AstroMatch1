@@ -392,6 +392,11 @@ export default function MessagesPage() {
   return (
     <div className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} min-h-screen w-full fixed inset-0`}>
       <div className="flex flex-col min-h-screen relative z-10">
+        <header className={`sticky top-0 z-50 ${
+          theme === "light"
+            ? "bg-white/80 backdrop-blur-sm"
+            : "bg-slate-900/80 backdrop-blur-sm"
+        }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
         <div className="px-4 pt-0.5 pb-1.5">
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex-1 -ml-8">
@@ -497,8 +502,9 @@ export default function MessagesPage() {
             </div>
           </div>
         </div>
+        </header>
 
-        <div className="flex-1 overflow-y-auto px-2 sm:px-4 pb-16" style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 44px) + 60px)' }}>
+        <div className="flex-1 overflow-y-auto px-2 sm:px-4 pb-16">
           {chats.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-20">
               <MessageCircle className="w-16 h-16 mb-4 text-gray-300" />
