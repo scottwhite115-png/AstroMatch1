@@ -414,13 +414,6 @@ export default function MessagesPage() {
                 }>
                 Connections
               </span>
-                <div 
-                  className={`absolute bottom-0 left-0 right-0 h-0.5 rounded-full transition-all duration-300 ease-in-out ${
-                    activeTab === 'connections' 
-                      ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 opacity-100" 
-                      : "opacity-0"
-                  }`}
-                />
               </button>
                 </div>
               </div>
