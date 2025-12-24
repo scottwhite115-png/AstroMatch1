@@ -34,7 +34,11 @@ export default function AstrologySection() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId)
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const safeAreaTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top') || '0', 10)
+      const headerHeight = 50
+      const offset = safeAreaTop + headerHeight
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' })
     }
   }
 
