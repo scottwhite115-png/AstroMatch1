@@ -424,11 +424,12 @@ export default function AccountPage({
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} profile-page min-h-screen relative overflow-x-hidden touch-pan-y`}
       style={{ overscrollBehavior: 'contain' }}
     >
-      <div className="relative z-10">
-        <div 
-          className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4"
-          style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}
-        >
+      <header className={`sticky top-0 z-50 ${
+        theme === "light"
+          ? "bg-white/80 backdrop-blur-sm"
+          : "bg-slate-900/80 backdrop-blur-sm"
+      }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
+        <div className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4">
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
@@ -444,7 +445,8 @@ export default function AccountPage({
             </div>
             
             {/* Theme Toggle Button */}
-            <button
+            <div className="flex items-center gap-2 ml-2">
+              <button
               onClick={() => setTheme(theme === "light" ? "dark" : "light")}
               className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
               aria-label="Toggle theme"

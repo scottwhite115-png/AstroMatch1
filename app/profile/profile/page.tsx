@@ -3187,11 +3187,12 @@ export default function AstrologyProfilePage({
       style={{ overscrollBehavior: 'contain' }}
     >
 
-      <div className="relative z-10">
-        <div 
-          className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4"
-          style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}
-        >
+      <header className={`sticky top-0 z-50 ${
+        theme === "light"
+          ? "bg-white/80 backdrop-blur-sm"
+          : "bg-slate-900/80 backdrop-blur-sm"
+      }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
+        <div className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4">
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
@@ -3205,7 +3206,7 @@ export default function AstrologyProfilePage({
                 </div>
               </div>
             </div>
-
+            
             {/* Theme Toggle Button */}
             <div className="flex items-center gap-2 ml-2">
               <button
@@ -3234,7 +3235,9 @@ export default function AstrologyProfilePage({
             </div>
           </div>
         </div>
+      </header>
 
+      <div className="relative z-10">
         {/* Horizontal Tabs Navigation */}
         <div className="px-3 pt-0 pb-2 -mt-3">
           <div className="flex justify-start gap-8">
