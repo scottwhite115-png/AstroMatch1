@@ -3227,7 +3227,7 @@ export default function MatchesPage() {
                         ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
                         : ""
                       }>
-                        Discover
+                        Matches
                       </span>
                     </button>
                   </div>

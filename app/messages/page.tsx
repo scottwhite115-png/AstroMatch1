@@ -412,7 +412,7 @@ export default function MessagesPage() {
                   ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent"
                   : ""
                 }>
-                Connections
+                Messages
               </span>
               </button>
                 </div>
