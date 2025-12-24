@@ -874,6 +874,7 @@ export default function MatchesPage() {
   })
   const [friendFinderEnabled, setFriendFinderEnabled] = useState(false)
   const [allowInstantMessages, setAllowInstantMessages] = useState(true) // Default ON
+  const [onlySanHeLiuHeMessages, setOnlySanHeLiuHeMessages] = useState(false)
   const [filteredProfiles, setFilteredProfiles] = useState(enrichedProfiles)
   const [activeTab, setActiveTab] = useState<'matches'>('matches')
   const [isUserInteracting, setIsUserInteracting] = useState(false)
@@ -1005,6 +1006,42 @@ export default function MatchesPage() {
     window.addEventListener('sunSignSystemChanged', handleSystemChange)
     return () => window.removeEventListener('sunSignSystemChanged', handleSystemChange)
   }, [])
+
+  // Load messaging preference from database
+  useEffect(() => {
+    const loadMessagingPreference = async () => {
+      if (!currentUserId) return
+      
+      try {
+        const profile = await fetchUserProfile(currentUserId)
+        if (profile) {
+          setOnlySanHeLiuHeMessages(profile.only_sanhe_liuhe_messages ?? false)
+        }
+      } catch (error) {
+        console.error('[Matches] Error loading messaging preference:', error)
+      }
+    }
+    
+    loadMessagingPreference()
+  }, [currentUserId])
+
+  // Save messaging preference to database
+  const saveOnlySanHeLiuHePreference = async (value: boolean) => {
+    if (!currentUserId) return
+    
+    try {
+      const supabase = createClient()
+      const { error } = await supabase
+        .from('profiles')
+        .update({ only_sanhe_liuhe_messages: value })
+        .eq('id', currentUserId)
+      
+      if (error) throw error
+      console.log('[Matches] Messaging preference saved:', value)
+    } catch (error) {
+      console.error('[Matches] Error saving messaging preference:', error)
+    }
+  }
 
   // REAL DATABASE: Fetch user profile and matchable profiles
   useEffect(() => {
@@ -3445,6 +3482,37 @@ export default function MatchesPage() {
                       </p>
                     </div>
                     
+                    {/* Only San He & Liu He Messages Toggle */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                            ⭐ Only San He & Liu He
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => {
+                            setOnlySanHeLiuHeMessages(!onlySanHeLiuHeMessages)
+                            saveOnlySanHeLiuHePreference(!onlySanHeLiuHeMessages)
+                          }}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                            onlySanHeLiuHeMessages 
+                              ? 'bg-purple-600' 
+                              : theme === "light" ? 'bg-gray-300' : 'bg-slate-700'
+                          }`}
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              onlySanHeLiuHeMessages ? 'translate-x-6' : 'translate-x-1'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
+                        Only San He (Triple Harmony) and Liu He (Six Harmonies) profiles can message you
+                      </p>
+                    </div>
+                    
                     {/* Action Buttons */}
                     <div className="flex gap-2">
                       <button
@@ -3453,6 +3521,8 @@ export default function MatchesPage() {
                           setChinesePatternFilters({ SanHe: false, LiuHe: false })
                           setFriendFinderEnabled(false)
                           setAllowInstantMessages(false)
+                          setOnlySanHeLiuHeMessages(false)
+                          saveOnlySanHeLiuHePreference(false)
                           setShowSettingsDropdown(false)
                         }}
                         className={`flex-1 px-3 py-2 text-sm rounded-lg transition-colors ${

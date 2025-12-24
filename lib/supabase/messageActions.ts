@@ -4,6 +4,8 @@
  */
 
 import { createClient } from './client'
+import { fetchUserProfile } from './profileQueries'
+import { getChinesePatternCode } from '../matchEngineHelpers'
 
 export interface Message {
   id: string
@@ -42,7 +44,7 @@ export async function sendMessage(
     // Check if receiver allows instant messages
     const { data: receiverProfile } = await supabase
       .from('profiles')
-      .select('allow_instant_messages_connections, allow_instant_messages_discover')
+      .select('allow_instant_messages_connections, allow_instant_messages_discover, only_sanhe_liuhe_messages, chinese_sign')
       .eq('id', receiverId)
       .single()
 
@@ -64,6 +66,25 @@ export async function sendMessage(
           return {
             success: false,
             error: 'This user requires a mutual match before messaging. Please swipe right on their profile first.'
+          }
+        }
+      }
+
+      // Check if receiver only accepts San He & Liu He messages
+      if (receiverProfile.only_sanhe_liuhe_messages) {
+        // Fetch sender's profile to get Chinese sign
+        const senderProfile = await fetchUserProfile(senderId)
+        
+        if (senderProfile && receiverProfile.chinese_sign && senderProfile.chinese_sign) {
+          // Calculate Chinese pattern between sender and receiver
+          const pattern = getChinesePatternCode(senderProfile.chinese_sign, receiverProfile.chinese_sign)
+          
+          // Only allow San He or Liu He patterns
+          if (pattern !== 'SAN_HE' && pattern !== 'LIU_HE') {
+            return {
+              success: false,
+              error: 'This user only accepts messages from San He (Triple Harmony) or Liu He (Six Harmonies) matches.'
+            }
           }
         }
       }
