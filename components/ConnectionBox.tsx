@@ -420,6 +420,9 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   
   // Debug logging
   React.useEffect(() => {
+    console.log('[ConnectionBox] connectionOverviewText value:', connectionOverviewText);
+    console.log('[ConnectionBox] westernCompatibilityDescription value:', westernCompatibilityDescription);
+    console.log('[ConnectionBox] showMatchLabelDropdown value:', showMatchLabelDropdown);
     console.log('[ConnectionBox] Dropdown state:', {
       externalShowProfile,
       externalShowElements,
@@ -427,6 +430,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
       showOverview,
       hasConnectionOverview: !!(connectionOverviewText || westernCompatibilityDescription),
       hasAboutContent: !!(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children),
+      connectionOverviewText,
+      westernCompatibilityDescription,
     });
   }, [externalShowProfile, externalShowElements, showAbout, showOverview, connectionOverviewText, westernCompatibilityDescription, aboutPartnerText, relationshipGoals, interests, city, occupation, age, height, children]);
 
