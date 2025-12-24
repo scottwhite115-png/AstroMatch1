@@ -1379,6 +1379,14 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     const westernRelation = extractWesternRelation(simpleBox.westElementRelation);
     const primaryLabel = extractPrimaryLabel(simpleBox.matchLabel);
     
+    // Import match engine functions to ensure we use latest descriptions
+    const { getConnectionBlurb, deriveArchetype, deriveWesternEase } = require('@/lib/connectionUi');
+    const archetype = deriveArchetype(chineseBase as any, chineseOverlays as any);
+    const ease = deriveWesternEase(westernRelation as any);
+    
+    // Use baseTagline from simpleBox (from buildConnectionBox) if available, otherwise calculate it
+    const finalBaseTagline = simpleBox.baseTagline || getConnectionBlurb(archetype, ease, chineseBase as any, chineseOverlays as any);
+    
     // Map match label to rank key (updated to support new match engine labels)
     const labelToRankKey: Record<string, string> = {
       // New match engine labels
@@ -1555,7 +1563,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       pillLabel: simpleBox.pillLabel,
       pattern: simpleBox.pattern,
       patternFullLabel: simpleBox.patternFullLabel,
-      baseTagline: simpleBox.baseTagline,
+      baseTagline: finalBaseTagline,
       patternEmoji: simpleBox.patternEmoji,
       chemistryStars: simpleBox.chemistryStars,
       stabilityStars: simpleBox.stabilityStars,
