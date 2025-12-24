@@ -494,7 +494,7 @@ export default function MessagesPage() {
 
         <div 
           className="flex-1 overflow-y-auto px-2 sm:px-4 pb-16"
-          style={{ paddingTop: '1rem' }}
+          style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 44px) + 3rem)' }}
         >
           {chats.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-20">

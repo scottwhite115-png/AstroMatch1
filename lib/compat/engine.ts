@@ -2019,13 +2019,14 @@ export function buildSimpleConnectionBox(
     // Apply same sign cap to score
     const cappedScore = applySameSignCap(matchEngineResult.score, chineseBase);
     
-    // Get new match label and connection blurb
+    // Get new match label (but keep baseTagline from matchEngine.ts)
     const newPillLabel = getMatchLabel(archetype, chineseBase, chineseOverlays, cappedScore);
-    const newBaseTagline = getConnectionBlurb(archetype, westernEase, chineseBase, chineseOverlays);
+    // Use baseTagline from matchEngine.ts (meta.tagline) - don't override with getConnectionBlurb
+    // const newBaseTagline = getConnectionBlurb(archetype, westernEase, chineseBase, chineseOverlays);
     
-    // Override with new values
+    // Override with new values (but keep original baseTagline from matchEngine)
     matchEngineResult.pillLabel = newPillLabel;
-    matchEngineResult.baseTagline = newBaseTagline;
+    // matchEngineResult.baseTagline = newBaseTagline; // Keep original from matchEngine.ts
     matchEngineResult.score = cappedScore; // Use capped score
     matchEngineResult.patternFullLabel = `${newPillLabel} · ${cappedScore}%`;
     
