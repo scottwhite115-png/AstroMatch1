@@ -111,7 +111,7 @@ export default function AstrologySection() {
           {/* Combined Chinese Pattern Ranking & Relationship Patterns */}
           <div id="chinese-patterns" className="mb-6">
             <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Chinese Relationship Patterns</h2>
+              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Chinese Zodiac Patterns</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
