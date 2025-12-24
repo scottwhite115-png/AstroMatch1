@@ -498,7 +498,7 @@ export default function MessagesPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-2 sm:px-4 pb-16">
+        <div className="flex-1 overflow-y-auto px-2 sm:px-4 pb-16" style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 44px) + 60px)' }}>
           {chats.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full py-20">
               <MessageCircle className="w-16 h-16 mb-4 text-gray-300" />
