@@ -49,7 +49,11 @@ export default function AstrologySection() {
       if (hash) {
         const element = document.getElementById(hash)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          const safeAreaTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top') || '0', 10)
+          const headerHeight = 50
+          const offset = safeAreaTop + headerHeight
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+          window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' })
           return true
         }
       }
@@ -1388,7 +1392,7 @@ export default function AstrologySection() {
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed top-4 right-4 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 cursor-pointer touch-manipulation ${
+          className={`fixed top-20 right-4 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 cursor-pointer touch-manipulation ${
             theme === "light"
               ? "bg-white text-gray-900 border-2 border-gray-200 hover:bg-gray-50"
               : "bg-white/10 text-white border-2 border-white/20 hover:bg-white/20 backdrop-blur-sm"
