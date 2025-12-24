@@ -283,32 +283,15 @@ export default function MatchProfileCard({
     <div className="w-full">
       {/* Outer border wrapper for entire profile card - matches profile view tab exactly */}
         {profile.photos.length > 0 && (
-          <div
-            style={{
-              background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-              padding: '4px',
-              borderRadius: '1.5rem',
-              boxSizing: 'border-box',
-              width: '100%',
-            }}
-          >
-            <div
-              style={{
-                borderRadius: '1.5rem',
-                background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                overflow: 'visible',
-              }}
-            >
-              {/* Photo Carousel with Border - matches profile view tab exactly */}
+          <div style={{ width: '100%' }}>
+            <div style={{ overflow: 'visible' }}>
+              {/* Photo Carousel - border removed */}
               {profile.photos.length > 0 && (
                 <div
                   className="w-full rounded-3xl relative"
                   style={{ 
-                    background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                    padding: '4px',
                     borderRadius: '1.5rem',
                     overflow: 'hidden',
-                    boxSizing: 'border-box',
                   }}
                 >
                   <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
