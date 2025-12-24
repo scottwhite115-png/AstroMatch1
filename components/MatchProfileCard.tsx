@@ -280,9 +280,8 @@ export default function MatchProfileCard({
   }, [showProfile, showElements, hasOpenDropdown, connectionBoxData, externalShowProfile, externalShowElements]);
 
   return (
-    <div className="w-full flex justify-center">
-      <div className="w-full">
-        {/* Outer border wrapper for entire profile card - matches profile view tab exactly */}
+    <div className="w-full">
+      {/* Outer border wrapper for entire profile card - matches profile view tab exactly */}
         {profile.photos.length > 0 && (
           <div
             style={{
@@ -486,7 +485,6 @@ export default function MatchProfileCard({
             </div>
           </div>
         )}
-      </div>
     </div>
   );
 }
