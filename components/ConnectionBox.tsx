@@ -761,7 +761,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                     </div>
                 </div>
               )}
-
       {/* Dropdowns - Match Overview */}
       {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
           <div className={`rounded-2xl text-lg relative z-20 ${
