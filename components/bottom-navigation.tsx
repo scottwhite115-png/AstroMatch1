@@ -227,6 +227,7 @@ export function BottomNavigation() {
             )
           })}
         </div>
+        </div>
       </div>
     </div>
   )
