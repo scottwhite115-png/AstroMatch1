@@ -535,23 +535,14 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
   return (
     <div className="w-full">
-      {/* Match Box - Signs, Match Label Pill, and Blurb */}
-        <div 
-          style={{
-            background: `linear-gradient(to right, ${gradientColors?.start || '#60a5fa'}, ${gradientColors?.end || '#3b82f6'})`,
-            padding: '4px 4px 4px 4px',
-            borderRadius: '1.5rem',
-            boxSizing: 'border-box',
-            width: '100%',
-            position: 'relative',
-          }}
-        >
+      {/* Match Box - Signs, Match Label Pill, and Blurb - border removed */}
         <div 
           className="w-full"
           style={{
-            borderRadius: 'calc(1.5rem - 4px)',
+            borderRadius: '1.5rem',
             padding: '1.5rem 1.5rem 1.5rem 1.5rem',
             backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+            position: 'relative',
           }}
         >
         {/* Sign combinations with emojis */}
@@ -629,7 +620,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Blurb - Mirror-style match text */}
         {/* Blurb - REMOVED */}
         </div>
-        {/* Match Label Dropdown - Overlays profile box when open */}
+        {/* Match Label Dropdown - Overlays profile box when open - border removed */}
         {showMatchLabelDropdown && (
           <div 
             style={{
@@ -640,16 +631,12 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               width: '100%',
               zIndex: 10002,
               marginTop: '0px',
-              background: `linear-gradient(to right, ${gradientColors?.start || '#60a5fa'}, ${gradientColors?.end || '#3b82f6'})`,
-              padding: '0 4px 4px 4px',
-              borderRadius: '1.5rem',
-              boxSizing: 'border-box',
             }}
             onClick={(e) => e.stopPropagation()}
           >
                   <div
                     style={{
-                      borderRadius: 'calc(1.5rem - 4px)',
+                      borderRadius: '1.5rem',
                       backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
                       padding: '1.5rem',
                       overflow: 'hidden',
@@ -793,31 +780,21 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             borderRadius: '0',
           }}>
           </div>
+          </div>
         )}
-      {/* Profile Box - Always visible under the match box */}
+      {/* Profile Box - Always visible under the match box - border removed */}
       {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
-        <div
+        <div 
+          className="w-full rounded-3xl"
           style={{ 
-            background: `linear-gradient(to right, ${patternColors?.start || gradientColors?.start || '#60a5fa'}, ${patternColors?.end || gradientColors?.end || '#3b82f6'})`,
-            padding: '8px 4px 4px 4px',
+            margin: '0',
+            padding: '1.5rem 1.5rem 1.5rem 1.5rem',
             borderRadius: '1.5rem',
+            backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
             zIndex: 2,
             marginTop: '-42px',
-            overflow: 'visible',
-            boxSizing: 'border-box',
-            width: '100%',
-            borderTop: 'none',
           }}
         >
-          <div 
-            className="w-full rounded-3xl"
-            style={{ 
-              margin: '0',
-              padding: '1.5rem 1.5rem 1.5rem 1.5rem',
-              borderRadius: 'calc(1.5rem - 4px)',
-              backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
-            }}
-          >
           {/* About Me */}
           {aboutPartnerText && (
             <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
@@ -1019,7 +996,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             </div>
           )}
           </div>
-        </div>
       )}
     </div>
   );

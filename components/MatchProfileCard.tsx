@@ -382,7 +382,7 @@ export default function MatchProfileCard({
                 </div>
               )}
 
-              {/* Profile Dropdown - Overlays profile box when open - matches profile view tab exactly */}
+              {/* Profile Dropdown - Overlays profile box when open - border removed */}
               {showProfile && connectionBoxData && profile.photos.length > 0 && (
                 <div 
                   className="w-full"
@@ -395,18 +395,10 @@ export default function MatchProfileCard({
                     marginTop: '-36px',
                   }}
                 >
-                  <div
-                    style={{
-                      background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                      padding: '0 4px 4px 4px',
-                      borderRadius: '1.5rem',
-                      boxSizing: 'border-box',
-                      width: '100%',
-                    }}
-                  >
+                  <div style={{ width: '100%' }}>
                     <div
                       style={{
-                        borderRadius: 'calc(1.5rem - 3px)',
+                        borderRadius: '1.5rem',
                         backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
                         overflow: 'hidden',
                       }}
