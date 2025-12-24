@@ -58,10 +58,7 @@ export function ConnectionBoxTop(props: ConnectionBoxProps) {
         <Chip icon={westernChip.icon} label={westernChip.label} />
       </div>
 
-      {/* Human-readable blurb */}
-      <p className="text-xs leading-relaxed text-slate-200">
-        {blurb}
-      </p>
+      {/* Human-readable blurb - REMOVED */}
     </div>
   );
 }

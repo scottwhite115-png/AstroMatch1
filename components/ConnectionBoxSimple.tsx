@@ -609,8 +609,8 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   // Always prioritize data.colorRgb (from classifier) over astroMatch.color to avoid old colors
   const isMagneticOppositesCheck = astroMatch?.chinese.relation === "opposite" || 
     data.rankLabel?.includes("Opposites Attract") || 
-    data.rankLabel?.includes("Magnetic Opposites") ||
-    data.rank?.includes("Magnetic Opposites") ||
+    data.rankLabel?.includes("Six Conflicts") ||
+    data.rank?.includes("Six Conflicts") ||
     data.tier === "opposites_attract";
   
   // Match engine color scheme (RGB values matching match engine colors with theme support)
@@ -622,7 +622,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
     "Favourable Match": "rgb(2, 132, 199)",      // darker sky for light mode
     "Neutral Match": "rgb(5, 150, 105)",         // darker emerald for light mode
     "Opposites Attract": "rgb(147, 51, 234)",    // darker purple for light mode
-    "Magnetic Opposites": "rgb(147, 51, 234)",   // darker purple for light mode
+    "Six Conflicts": "rgb(147, 51, 234)",   // darker purple for light mode
     "Difficult Match": "rgb(71, 85, 105)",       // darker slate for light mode
   } : {
     "Soulmate Match": "rgb(253, 224, 71)",       // text-yellow-300
@@ -631,7 +631,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
     "Favourable Match": "rgb(56, 189, 248)",     // text-sky-400
     "Neutral Match": "rgb(52, 211, 153)",        // text-emerald-400
     "Opposites Attract": "rgb(192, 132, 252)",   // text-purple-400
-    "Magnetic Opposites": "rgb(192, 132, 252)",  // text-purple-400
+    "Six Conflicts": "rgb(192, 132, 252)",  // text-purple-400
     "Difficult Match": "rgb(203, 213, 225)",     // text-slate-300
   };
   
@@ -655,7 +655,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
   
   // Determine primary color based on match label
   const primaryColor = (() => {
-    // First check if it's Opposites Attract / Magnetic Opposites
+    // First check if it's Opposites Attract / Six Conflicts
     if (isMagneticOppositesCheck) {
       return oppositesAttractColor;
     }
@@ -668,12 +668,12 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
     return data.colorRgb || astroMatch?.color || "#FFD700";
   })();
   
-  // Use the tier color consistently - Magnetic Opposites should always use purple
+  // Use the tier color consistently - Six Conflicts should always use purple
   // isMagneticOpposites is already determined above via isMagneticOppositesCheck
   const isMagneticOpposites = isMagneticOppositesCheck;
   // Remove score percentage - just show rank label
   const headerText = (() => {
-    const text = isMagneticOpposites ? "Magnetic Opposites" : rankText;
+    const text = isMagneticOpposites ? "Six Conflicts" : rankText;
     return formatTierLabel(text);
   })();
   
@@ -837,12 +837,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                   </div>
                 )}
                 
-                {/* Base tagline */}
-                {data.baseTagline && (
-                  <p className={`text-base leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    {data.baseTagline}
-                  </p>
-                )}
+                {/* Base tagline - REMOVED */}
                 
                 {/* Star Ratings */}
                 {(data.chemistryStars !== undefined || data.stabilityStars !== undefined) && (
@@ -898,8 +893,8 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
               </div>
               {/* Tagline from matchLabelTaglines */}
               {(() => {
-                // Map "Magnetic Opposites" to "Opposites Attract" for tagline lookup
-                const matchLabel = (headerText === "Magnetic Opposites" ? "Opposites Attract" : headerText) as MatchLabel;
+                // Map "Six Conflicts" to "Opposites Attract" for tagline lookup
+                const matchLabel = (headerText === "Six Conflicts" ? "Opposites Attract" : headerText) as MatchLabel;
                 const tagline = matchLabelTaglines[matchLabel];
                 return tagline ? (
                   <p className={`text-center text-base leading-relaxed mb-4 ${theme === "light" ? "text-black" : "text-white/80"}`}>
@@ -1089,7 +1084,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     <div>
                       <h4
                         className="text-base font-semibold mb-2 flex items-center gap-2"
-                        style={{ color: primaryColor }}
+                        style={{ color: primaryColor, fontFamily: 'inherit' }}
                       >
                         <svg
                           className="w-5 h-5"
@@ -1101,7 +1096,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                           <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        About me
+                        <span style={{ fontFamily: 'inherit', display: 'inline-block' }}>About me</span>
                       </h4>
                       <p className={`text-lg leading-relaxed ${theme === "light" ? "text-gray-700" : "text-gray-300"}`}>
                         {data.aboutMeText}
@@ -1114,7 +1109,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     <div>
                       <h4
                         className="text-base font-semibold mb-2 flex items-center gap-2"
-                        style={{ color: primaryColor }}
+                        style={{ color: primaryColor, fontFamily: 'inherit' }}
                       >
                         <svg
                           className="w-5 h-5"
@@ -1125,7 +1120,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         >
                           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
-                        Relationship Goals
+                        <span style={{ fontFamily: 'inherit', display: 'inline-block' }}>Relationship Goals</span>
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {data.selectedRelationshipGoals.map((goal: string, index: number) => (
@@ -1150,7 +1145,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     <div>
                       <h4
                         className="text-base font-semibold mb-2 flex items-center gap-2"
-                        style={{ color: primaryColor }}
+                        style={{ color: primaryColor, fontFamily: 'inherit' }}
                       >
                         <svg
                           className="w-5 h-5"
@@ -1161,7 +1156,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         >
                           <path d="M12 2v20M2 12h20"/>
                         </svg>
-                        Interests
+                        <span style={{ fontFamily: 'inherit', display: 'inline-block' }}>Interests</span>
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {Object.entries(data.selectedOrganizedInterests).map(([category, interests]) =>
@@ -1188,7 +1183,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                     <div>
                       <h4
                         className="text-base font-semibold mb-3 flex items-center gap-2"
-                        style={{ color: primaryColor }}
+                        style={{ color: primaryColor, fontFamily: 'inherit' }}
                       >
                         <svg
                           className="w-5 h-5"
@@ -1199,7 +1194,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         >
                           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                         </svg>
-                        Essentials
+                        <span style={{ fontFamily: 'inherit', display: 'inline-block' }}>Essentials</span>
                       </h4>
                       <div className="space-y-2 text-base">
                         {/* Location */}
