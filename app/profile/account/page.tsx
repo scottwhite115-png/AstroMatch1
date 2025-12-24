@@ -426,21 +426,19 @@ export default function AccountPage({
     >
       <div className="relative z-10">
         <div 
-          className="px-3 pt-0 pb-2"
+          className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4"
           style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-1.5">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-                <div className="flex gap-0.5 min-w-max">
-                  <button
-                    className={`relative px-5 py-2.5 font-bold whitespace-nowrap transition-all duration-300 ease-in-out flex items-center gap-0.5`}
-                  >
-                    <FourPointedStar className="w-4 h-4 text-orange-500" />
-                    <span className="bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                <div className="flex gap-0.5 min-w-max ml-8">
+                  <div className="flex items-center gap-0.5">
+                    <FourPointedStar className="w-5 h-5 text-orange-500" />
+                    <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
                       AstroMatch
                     </span>
-                  </button>
+                  </div>
                 </div>
               </div>
             </div>
