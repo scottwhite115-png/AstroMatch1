@@ -1019,7 +1019,13 @@ export default function ChatPage() {
   return (
     <div className={`${theme === "light" ? "bg-white" : "bg-slate-900"} min-h-screen w-full fixed inset-0 flex flex-col`}>
       {/* Header */}
-      <div className={`flex items-center justify-center px-4 pt-2 relative z-10 ${theme === "light" ? "bg-white" : "bg-slate-900"}`} style={{ minHeight: '60px' }}>
+      <div 
+        className={`flex items-center justify-center px-4 pt-2 relative z-10 ${theme === "light" ? "bg-white" : "bg-slate-900"}`} 
+        style={{ 
+          minHeight: '60px',
+          paddingTop: 'max(env(safe-area-inset-top), 44px)'
+        }}
+      >
         <button
           onClick={() => router.push("/messages")}
           className={`${theme === "light" ? "text-gray-700 hover:bg-gray-100" : "text-white/80 hover:bg-slate-900/50"} absolute left-4 p-2 rounded-lg transition-colors`}
