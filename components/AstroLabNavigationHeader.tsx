@@ -163,7 +163,11 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
       const scrollToSection = () => {
         const element = document.getElementById(sectionId)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          const safeAreaTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top') || '0', 10)
+          const headerHeight = 140 // Increased to account for header + safe area + status bar
+          const offset = safeAreaTop + headerHeight
+          const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+          window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' })
           return true
         }
         return false

@@ -35,7 +35,7 @@ export default function AstrologySection() {
     const element = document.getElementById(sectionId)
     if (element) {
       const safeAreaTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top') || '0', 10)
-      const headerHeight = 120 // Increased to account for header + safe area
+      const headerHeight = 140 // Increased to account for header + safe area + status bar
       const offset = safeAreaTop + headerHeight
       const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
       window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' })
@@ -50,7 +50,7 @@ export default function AstrologySection() {
         const element = document.getElementById(hash)
         if (element) {
           const safeAreaTop = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-top') || '0', 10)
-          const headerHeight = 120 // Increased to account for header + safe area
+          const headerHeight = 140 // Increased to account for header + safe area + status bar
           const offset = safeAreaTop + headerHeight
           const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
           window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' })
