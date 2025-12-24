@@ -620,6 +620,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Blurb - Mirror-style match text */}
         {/* Blurb - REMOVED */}
         </div>
+
         {/* Match Label Dropdown - Overlays profile box when open - border removed */}
         {showMatchLabelDropdown && (
           <div 
@@ -760,7 +761,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                     </div>
                 </div>
               )}
-      </div>
+
       {/* Dropdowns - Match Overview */}
       {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
           <div className={`rounded-2xl text-lg relative z-20 ${
@@ -779,7 +780,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             marginBottom: '0',
             borderRadius: '0',
           }}>
-          </div>
           </div>
         )}
       {/* Profile Box - Always visible under the match box - border removed */}
