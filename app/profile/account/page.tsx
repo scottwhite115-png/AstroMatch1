@@ -468,10 +468,13 @@ export default function AccountPage({
                   <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                 </svg>
               )}
-            </button>
+              </button>
+            </div>
           </div>
         </div>
+      </header>
 
+      <div className="relative z-10">
         {/* Horizontal Tabs Navigation */}
         <div className="px-3 pt-0 pb-2 -mt-3">
           <div className="flex justify-start gap-8">
