@@ -2032,17 +2032,54 @@ export function buildSimpleConnectionBox(
     console.log('[buildSimpleConnectionBox] Match engine result:', matchEngineResult);
   } catch (error) {
     console.error('[buildSimpleConnectionBox] Error calling match engine:', error);
-    // Fallback values
-    matchEngineResult = {
-      score,
-      pillLabel: `${score}% · ${matchLabel}`,
-      pattern: chinesePattern,
-      patternFullLabel: `${matchLabel} · ${score}%`,
-      baseTagline: overview.substring(0, 100),
-      patternEmoji: '✨',
-      chemistryStars: 3,
-      stabilityStars: 3,
-    };
+    // Fallback values - use getConnectionBlurb for descriptions
+    try {
+      const { getConnectionBlurb, deriveArchetype, deriveWesternEase } = require('@/lib/connectionUi');
+      const { extractChineseBase, extractChineseOverlays, extractWesternRelation } = require('@/lib/connectionUiHelpers');
+      const fallbackChineseBase = extractChineseBase(chinesePattern) as ChineseBasePattern;
+      const fallbackChineseOverlays = extractChineseOverlays(chinesePattern, undefined, '') as ChineseOverlayPattern[];
+      const fallbackWesternRelation = extractWesternRelation(newMatchContext.westElementRelation);
+      const fallbackArchetype = deriveArchetype(fallbackChineseBase, fallbackChineseOverlays);
+      const fallbackEase = deriveWesternEase(fallbackWesternRelation);
+      const fallbackBaseTagline = getConnectionBlurb(fallbackArchetype, fallbackEase, fallbackChineseBase, fallbackChineseOverlays);
+      
+      matchEngineResult = {
+        score,
+        pillLabel: `${score}% · ${matchLabel}`,
+        pattern: chinesePattern,
+        patternFullLabel: `${matchLabel} · ${score}%`,
+        baseTagline: fallbackBaseTagline,
+        patternEmoji: '✨',
+        chemistryStars: 3,
+        stabilityStars: 3,
+      };
+    } catch (fallbackError) {
+      console.error('[buildSimpleConnectionBox] Error in fallback getConnectionBlurb:', fallbackError);
+      // Final fallback
+      matchEngineResult = {
+        score,
+        pillLabel: `${score}% · ${matchLabel}`,
+        pattern: chinesePattern,
+        patternFullLabel: `${matchLabel} · ${score}%`,
+        baseTagline: overview.substring(0, 100),
+        patternEmoji: '✨',
+        chemistryStars: 3,
+        stabilityStars: 3,
+      };
+    }
+  }
+  
+  // CRITICAL: Always override baseTagline with getConnectionBlurb to ensure latest descriptions are used
+  // This ensures we ALWAYS use the latest descriptions even if matchEngine returned old ones
+  try {
+    const { getConnectionBlurb, deriveArchetype, deriveWesternEase } = require('@/lib/connectionUi');
+    const archetype = deriveArchetype(chineseBase, chineseOverlays);
+    const ease = deriveWesternEase(westernEase);
+    const finalBaseTagline = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
+    matchEngineResult.baseTagline = finalBaseTagline;
+    console.log('[buildSimpleConnectionBox] ✅ Overrode baseTagline with getConnectionBlurb:', finalBaseTagline);
+  } catch (overrideError) {
+    console.error('[buildSimpleConnectionBox] Error overriding baseTagline:', overrideError);
   }
 
   // ===== EXTRACT TAGLINES FROM DETAILED COMPATIBILITY DESCRIPTIONS =====
