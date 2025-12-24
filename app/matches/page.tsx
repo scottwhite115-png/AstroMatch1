@@ -3036,8 +3036,8 @@ export default function MatchesPage() {
   if (isLoadingProfiles && filteredProfiles.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center -mt-32">
-          <div className="flex items-center justify-center gap-0.5 mb-2">
+        <div className="text-center" style={{ marginTop: '-120px' }}>
+          <div className="flex items-center justify-center gap-0.5 mb-4">
             <FourPointedStar className="w-9 h-9 text-orange-500" />
             <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
               AstroMatch
@@ -3052,8 +3052,8 @@ export default function MatchesPage() {
   if (filteredProfiles.length === 0 && enrichedProfiles.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center -mt-32">
-          <div className="flex items-center justify-center gap-0.5 mb-2">
+        <div className="text-center" style={{ marginTop: '-120px' }}>
+          <div className="flex items-center justify-center gap-0.5 mb-4">
             <FourPointedStar className="w-9 h-9 text-orange-500" />
             <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
               AstroMatch
