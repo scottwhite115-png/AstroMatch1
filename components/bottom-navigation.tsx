@@ -168,17 +168,24 @@ export function BottomNavigation() {
   return (
     <div 
       className={`fixed bottom-0 left-0 right-0 z-50 lg:hidden transition-transform duration-300 ${isHidden ? 'translate-y-full' : ''}`}
-      style={{
-        paddingBottom: 'max(env(safe-area-inset-bottom), 20px)'
-      }}
     >
-      {/* Flat navigation bar */}
-      <div className="relative w-full h-20">
-        {/* Flat background */}
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-0 pointer-events-none" />
+      {/* Background that extends to screen bottom */}
+      <div 
+        className="absolute inset-0 bg-black/30 backdrop-blur-md pointer-events-none" 
+        style={{
+          paddingBottom: 'max(env(safe-area-inset-bottom), 20px)'
+        }}
+      />
+      
+      {/* Navigation content */}
+      <div className="relative w-full h-20" style={{
+        marginBottom: 'max(env(safe-area-inset-bottom), 20px)'
+      }}>
+        {/* Flat navigation bar */}
+        <div className="relative w-full h-full">
         
         {/* Navigation buttons with flat positioning */}
-        <div className="relative grid grid-cols-4 w-full h-full items-start pt-2 z-10">
+        <div className="grid grid-cols-4 w-full h-full items-start pt-2">
           {navItems.map((item, index) => {
             const Icon = item.icon
             // Check if current path matches the nav item or if it's a profile sub-route or astrology sub-route
