@@ -425,7 +425,10 @@ export default function AccountPage({
       style={{ overscrollBehavior: 'contain' }}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-0 pb-2">
+        <div 
+          className="px-3 pt-0 pb-2"
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}
+        >
           <div className="flex items-center justify-between">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
