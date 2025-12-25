@@ -474,7 +474,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   // Only show "No strong pattern" when there are no overlays at all
   const showBaseChip = chineseBase !== 'NO_PATTERN' || !hasAnyOverlay;
 
-  const blurb = getConnectionBlurb(archetype, ease as WesternEase, chineseBase, chineseOverlays);
+  const blurb = getConnectionTagline(archetype, chineseBase, chineseOverlays);
 
   // Keep existing chip functions for backward compatibility (not used in new UI)
   const baseChip = getBasePatternChip(basePattern, sanHeTrineName);
