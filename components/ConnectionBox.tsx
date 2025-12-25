@@ -6,15 +6,15 @@ const ChevronDown = ({ className }: { className?: string }) => (
     <path d="m6 9 6 6 6-6" />
   </svg>
 )
+
 import { 
   getMatchLabel,
   deriveArchetype,
-  getConnectionBlurb,
+  getConnectionTagline,
   hasDamageOverlay,
   type ChineseBasePattern,
   type ChineseOverlayPattern,
-  type ConnectionArchetype,
-  type WesternEase
+  type ConnectionArchetype
 } from "@/lib/matchLabelEngine";
 import {
   WesternElementRelation,
@@ -620,6 +620,15 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   </>
                 )}
               </div>
+
+          {/* Tagline under the pill */}
+          {tagline && (
+            <div className={`text-center px-4 mt-3 text-base italic ${
+              theme === "light" ? "text-slate-700" : "text-slate-300"
+            }`}>
+              {tagline}
+            </div>
+          )}
 
           {/* Match Label Dropdown - Shows astrology details when pill is clicked */}
           {showMatchLabelDropdown && (
