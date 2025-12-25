@@ -18,12 +18,14 @@ export type WesternElementRelation =
   | 'CLASH';
 
 export type ConnectionArchetype =
-  | 'TRIPLE_HARMONY'   // San He 三合 · same tribe
-  | 'SUPPORTIVE_ALLY'  // Liu He 六合 · Six Harmonies / Six Harmoniess
-  | 'OPPOSITES'        // Liu Chong 六冲 · Six Conflicts / Magnetic opposites
-  | 'LESSON_REPAIR'    // Hai / Xing / Po without San He, Liu He, Same sign
-  | 'MIRROR'           // Same-sign archetype (West or Chinese)
-  | 'OPEN_PATTERN';    // No big Chinese pattern
+  | 'TRIPLE_HARMONY'   // San He
+  | 'SUPPORTIVE_ALLY'  // Liu He
+  | 'OPPOSITES'        // Liu Chong
+  | 'LESSON_REPAIR'    // Hai / Xing / Po only
+  | 'MIRROR'           // Same sign
+  | 'OPEN_PATTERN';    // No big pattern
+
+export type Element = 'Air' | 'Fire' | 'Earth' | 'Water';
 
 // -----------------------------
 // Helpers
@@ -31,6 +33,14 @@ export type ConnectionArchetype =
 
 export function hasDamageOverlay(overlays: ChineseOverlayPattern[]): boolean {
   return overlays.some(o => o === 'LIU_HAI' || o === 'XING' || o === 'PO');
+}
+
+export function hasSelfPunishment(
+  chineseBase: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[]
+): boolean {
+  // self-punishment = same animal + Xing overlay
+  return chineseBase === 'SAME_SIGN' && overlays.includes('XING');
 }
 
 // Decide archetype from Chinese patterns only
@@ -41,10 +51,8 @@ export function deriveArchetype(
   const hasLiuChong = overlays.includes('LIU_CHONG');
   const hasDamage = hasDamageOverlay(overlays);
 
-  // 1) Six Conflicts (Liu Chong) always reads as Opposites archetype
   if (hasLiuChong) return 'OPPOSITES';
 
-  // 2) Respect base pattern first
   switch (chineseBase) {
     case 'SAN_HE':
       return 'TRIPLE_HARMONY';
@@ -54,7 +62,6 @@ export function deriveArchetype(
       return 'MIRROR';
     case 'NO_PATTERN':
     default:
-      // 3) Only pure lesson archetype when there is no San He / Liu He / Same sign
       return hasDamage ? 'LESSON_REPAIR' : 'OPEN_PATTERN';
   }
 }
@@ -75,12 +82,13 @@ export function deriveWesternEase(relation: WesternElementRelation): WesternEase
 }
 
 // Same-sign (Chinese) must never show above 68%
+// Optional: only use if you want to cap same-sign scores at 70
 export function applySameSignCap(
   score: number,
   chineseBase: ChineseBasePattern
 ): number {
   if (chineseBase === 'SAME_SIGN') {
-    return Math.min(score, 68);
+    return Math.min(score, 70);
   }
   return score;
 }
@@ -98,39 +106,76 @@ export function getMatchLabel(
   const hasLiuChong = overlays.includes('LIU_CHONG');
   const hasDamage = hasDamageOverlay(overlays);
 
-  // 1) Six Conflicts (Liu Chong)
   if (hasLiuChong) {
-    return 'Magnetic Opposites';
+    return 'Magnetic Opposites Match';
   }
 
-  // 2) Six Harmonies (Liu He)
-  if (chineseBase === 'LIU_HE') {
-    return 'Secret Friends Match';
-  }
-
-  // 3) Triple Harmony (San He)
   if (chineseBase === 'SAN_HE') {
     return 'Soulmate Match';
   }
 
-  // 4) Same Sign
+  if (chineseBase === 'LIU_HE') {
+    return 'Secret Friends Match';
+  }
+
   if (chineseBase === 'SAME_SIGN') {
     return 'Same Sign Match';
   }
 
-  // 5) Damage-only / lesson-heavy cases
   if (archetype === 'LESSON_REPAIR' || hasDamage) {
     return 'Challenging Match';
   }
 
-  // 6) Everything else
   return 'Neutral Match';
 }
 
 // -----------------------------
-// Connection blurb logic
+// Tagline under the pill (chemistry only)
 // -----------------------------
 
+export function getConnectionTagline(
+  archetype: ConnectionArchetype,
+  chineseBase: ChineseBasePattern,
+  overlays: ChineseOverlayPattern[]
+): string {
+  const hasLiuChong = overlays.includes('LIU_CHONG');
+  const hasDamage = hasDamageOverlay(overlays);
+  const selfPunish = hasSelfPunishment(chineseBase, overlays);
+
+  // Magnetic Opposites / Six Conflicts
+  if (hasLiuChong) {
+    return 'Strong, opposite-style spark between very different types – exciting, vivid, and rarely boring.';
+  }
+
+  // Soulmate / San He
+  if (chineseBase === 'SAN_HE') {
+    return 'Two souls moving in perfect rhythm – effortless harmony and shared purpose.';
+  }
+
+  // Secret Friends / Six Harmonies
+  if (chineseBase === 'LIU_HE') {
+    // you said one line is fine even if there are overlays
+    return 'Quiet, loyal connection that feels safe to lean on and good in everyday life.';
+  }
+
+  // Same Sign (Chinese)
+  if (chineseBase === 'SAME_SIGN') {
+    if (selfPunish) {
+      return 'Familiar mirror where the same scenes repeat until one of you finally changes the script.';
+    }
+    return 'Mirror-like connection where you recognise your own strengths and blind spots in each other.';
+  }
+
+  // Challenging Match (damage, no big harmony pattern)
+  if (archetype === 'LESSON_REPAIR' || hasDamage) {
+    return 'Lesson-heavy connection where attraction is mixed with extra tests and tension.';
+  }
+
+  // Neutral Match (no major Chinese pattern, no damage)
+  return 'Open-ended, easygoing connection that mostly becomes what you make of it together.';
+}
+
+// Keep the old function name as an alias for backward compatibility
 export function getConnectionBlurb(
   archetype: ConnectionArchetype,
   ease: WesternEase,
@@ -230,4 +275,54 @@ export function getConnectionBlurb(
       }
       return 'Some friction and not much built-in glue, so it can fade if nobody steers it.';
   }
+}
+
+// -----------------------------
+// Element line
+// -----------------------------
+
+function isSameElement(e1: Element, e2: Element): boolean {
+  return e1 === e2;
+}
+
+function isSupportivePair(e1: Element, e2: Element): boolean {
+  // Air–Fire & Earth–Water are your supportive pairs
+  return (
+    (e1 === 'Air' && e2 === 'Fire') ||
+    (e1 === 'Fire' && e2 === 'Air') ||
+    (e1 === 'Earth' && e2 === 'Water') ||
+    (e1 === 'Water' && e2 === 'Earth')
+  );
+}
+
+function isClashPair(e1: Element, e2: Element): boolean {
+  // Air–Earth & Fire–Water are your clash pairs
+  return (
+    (e1 === 'Air' && e2 === 'Earth') ||
+    (e1 === 'Earth' && e2 === 'Air') ||
+    (e1 === 'Fire' && e2 === 'Water') ||
+    (e1 === 'Water' && e2 === 'Fire')
+  );
+}
+
+export function getElementLine(
+  e1: Element,
+  e2: Element
+): string {
+  const pair = `${e1} + ${e2}`;
+
+  if (isSameElement(e1, e2)) {
+    return `${pair} · Same element – similar style and easy mutual understanding.`;
+  }
+
+  if (isSupportivePair(e1, e2)) {
+    return `${pair} · Supportive elements, easy flow.`;
+  }
+
+  if (isClashPair(e1, e2)) {
+    return `${pair} · Clash elements – attraction with extra tension in timing and style.`;
+  }
+
+  // Everything else = mixed / neutral
+  return `${pair} · Mixed elements – interesting combination that depends on how you work with your differences.`;
 }
