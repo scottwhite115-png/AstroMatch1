@@ -3653,11 +3653,9 @@ export default function AstrologyProfilePage({
                                 onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
                               />
                           </div>
+                        </div>
                         );
                           })()}
-                    </>
-                  );
-                })()}
               </div>
             </div>
           </>
