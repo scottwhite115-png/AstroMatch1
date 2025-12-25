@@ -3411,7 +3411,7 @@ export default function AstrologyProfilePage({
                           </div>
                       )}
 
-                      {/* Match Box - Always visible, matches discover section */}
+                      {/* Match Box - Always visible, matches discover section  */}
                       {connectionBoxData && photos.some(p => p.hasImage) && (() => {
                             const newTier = mapToNewTier(connectionBoxData.rankLabel, connectionBoxData.rank);
                             const westA = connectionBoxData.a?.west ? capitalize(connectionBoxData.a.west) : "Unknown";
@@ -3656,6 +3656,9 @@ export default function AstrologyProfilePage({
                         </div>
                         );
                           })()}
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </>
