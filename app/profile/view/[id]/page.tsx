@@ -891,14 +891,11 @@ export default function ProfileViewPage() {
           <div className="w-9 h-9" />
         </div>
 
-        {/* Profile Content - Wrapped in border like discover section */}
+        {/* Profile Content - Border removed */}
         <div className="w-full flex justify-center px-2 pt-0 mb-4">
           <div
             className="w-full rounded-3xl flex flex-col relative"
             style={{ 
-              border: `3px solid ${patternColors.start}`,
-              background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-              padding: '3px',
               zIndex: 10,
             }}
           >
@@ -910,7 +907,7 @@ export default function ProfileViewPage() {
               style={{ zIndex: 1, overflow: 'visible' }}
             >
             {/* Photo Carousel */}
-            <div className="relative" style={{ marginLeft: '-3px', marginRight: '-3px', marginTop: '-3px', zIndex: 0, marginBottom: '0' }}>
+            <div className="relative" style={{ zIndex: 0, marginBottom: '0' }}>
               <div className="w-full aspect-[4/5] rounded-t-3xl overflow-hidden">
               <button
                 onClick={() => router.push(`/messages/${profileId}`)}
