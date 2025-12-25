@@ -590,7 +590,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           </div>
         </div>
         {/* Primary label pill */}
-        <div className="mb-4 mt-2 flex items-center justify-center w-full" style={{ position: 'relative', zIndex: 10000 }}>
+        <div className="mb-4 mt-2 flex flex-col items-center justify-center w-full" style={{ position: 'relative', zIndex: 10000 }}>
               <div 
                 className={`inline-flex items-center rounded-full px-4 py-2 text-lg font-bold shadow-lg whitespace-nowrap border-2 cursor-pointer transition-all ${
                   theme === "light" ? "bg-white" : "bg-slate-900"
