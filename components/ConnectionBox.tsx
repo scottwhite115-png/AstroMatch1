@@ -634,9 +634,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               style={{
                 position: 'absolute',
                 top: '100%',
-                left: 0,
-                right: 0,
-                width: '100%',
+                left: '1.5rem',
+                right: '1.5rem',
                 zIndex: 10002,
                 marginTop: '0.5rem',
               }}
