@@ -13,8 +13,8 @@ type ElementRelation =
 type PrimaryLabel =
   | "Soulmate Match"
   | "Twin Flame Match"
-  | "Secret Friends Match"
-  | "Magnetic Opposites"
+  | "Six Harmoniess Match"
+  | "Six Conflicts"
   | "Challenging Match"
   | "Neutral Match";
 
@@ -102,10 +102,10 @@ function getPrimaryLabel(
 ): PrimaryLabel {
   const hasDamage = overlays.length > 0;
 
-  // 1) Opposite branches ALWAYS show as Magnetic Opposites.
+  // 1) Opposite branches ALWAYS show as Six Conflicts.
   // Liu Chong etc. are then shown in description, not as label.
   if (isOppositeBranches) {
-    return "Magnetic Opposites";
+    return "Six Conflicts";
   }
 
   // 2) Non-opposite damage patterns → Challenging Match
@@ -134,7 +134,7 @@ function getPrimaryLabel(
     }
 
     // Fallback: treat as warm but not cosmic
-    return "Secret Friends Match";
+    return "Six Harmoniess Match";
   }
 
   // 4) LIU_HE logic
@@ -144,7 +144,7 @@ function getPrimaryLabel(
       elementRelation === "compatible" ||
       elementRelation === "semiCompatible"
     ) {
-      return "Secret Friends Match";
+      return "Six Harmoniess Match";
     }
     return "Challenging Match";
   }
@@ -173,7 +173,7 @@ function getBasePatternChip(
         sanHeTrineName ? ` · ${sanHeTrineName} trine` : ""
       }`;
     case "LIU_HE":
-      return "💫 Liu He 六合 · Secret Friends";
+      return "💫 Liu He 六合 · Six Harmoniess";
     case "SAME_SIGN":
       return "🪞 Same Sign 同生肖";
     case "NO_PATTERN":
@@ -245,14 +245,14 @@ function getHeadlineSummary(
     return "Triple Harmony with supportive elements – intense, high-growth twin flame style energy.";
   }
 
-  if (primaryLabel === "Secret Friends Match") {
+  if (primaryLabel === "Six Harmoniess Match") {
     if (hasDamage) {
-      return "Secret Friends pattern under tension – loyalty is there, but the dynamic needs patience.";
+      return "Six Harmoniess pattern under tension – loyalty is there, but the dynamic needs patience.";
     }
-    return "Secret Friends pattern – quietly strong, loyal and steady when you choose each other.";
+    return "Six Harmoniess pattern – quietly strong, loyal and steady when you choose each other.";
   }
 
-  if (primaryLabel === "Magnetic Opposites") {
+  if (primaryLabel === "Six Conflicts") {
     if (hasDamage) {
       return "Magnetic opposite with a clash pattern – high spark, low default harmony.";
     }
@@ -347,9 +347,9 @@ export const ConnectionBoxUpdated: React.FC<ConnectionBoxUpdatedProps> = ({
         return { start: "#fbbf24", end: "#fb923c" }; // amber-400 to orange-400
       case "Twin Flame Match":
         return { start: "#c026d3", end: "#fb923c" }; // fuchsia-600 to orange-400
-      case "Secret Friends Match":
+      case "Six Harmoniess Match":
         return { start: "#c084fc", end: "#f472b6" }; // purple-400 to pink-400
-      case "Magnetic Opposites":
+      case "Six Conflicts":
         return { start: "#67e8f9", end: "#c084fc" }; // cyan-300 to purple-400
       case "Challenging Match":
         return { start: "#fb7185", end: "#ef4444" }; // rose-400 to red-500
@@ -467,13 +467,6 @@ export const ConnectionBoxUpdated: React.FC<ConnectionBoxUpdatedProps> = ({
                 {chip}
               </span>
             ))}
-            <span className={`rounded-full border px-2 py-0.5 text-[10px] ${
-              theme === "light" 
-                ? "border-slate-400/80 bg-slate-200/80 text-slate-700" 
-                : "border-slate-600/80 bg-slate-800/80 text-slate-200"
-            }`}>
-              {elementChip}
-            </span>
           </div>
 
           {/* Headline summary */}

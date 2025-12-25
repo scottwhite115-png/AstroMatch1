@@ -67,7 +67,7 @@ export type MatchLabel =
   | "Excellent Match"
   | "Favourable Match"
   | "Neutral Match"
-  | "Magnetic Opposites"
+  | "Six Conflicts"
   | "Difficult Match";
 
 export interface MatchLabelInfo {
@@ -92,7 +92,7 @@ const MATCH_LABEL_COLORS: Record<MatchLabel, string> = {
   "Excellent Match": "#FF4FA3",      // Hot pink
   "Favourable Match": "#4A90E2",     // Blue
   "Neutral Match": "#4CAF50",        // Green
-  "Magnetic Opposites": "#E53935",   // Red
+  "Six Conflicts": "#E53935",   // Red
   "Difficult Match": "#7E57C2",      // Purple
 };
 
@@ -170,7 +170,7 @@ function normalizeSign(sign: string): WesternSign {
 
 const PATTERN_LABELS: Record<ChinesePattern, { label: string; nameEn: string }> = {
   san_he: { label: "San He (三合)", nameEn: "Three Harmonies" },
-  liu_he: { label: "Liu He (六合)", nameEn: "Six Harmonies / Secret Friends" },
+  liu_he: { label: "Liu He (六合)", nameEn: "Six Harmonies / Six Harmoniess" },
   liu_chong: { label: "Liu Chong (六冲)", nameEn: "Opposition Pattern" },
   liu_hai: { label: "Liu Hai (六害)", nameEn: "Harm Pattern" },
   po: { label: "Po (破)", nameEn: "Break Pattern" },
@@ -385,9 +385,9 @@ function getMatchLabel(ctx: LabelContext): MatchLabel {
   const { pattern, isSameAnimal } = east;
   const r = west.relation;
 
-  // 1. Magnetic Opposites: all Liu Chong
+  // 1. Six Conflicts: all Liu Chong
   if (pattern === "liu_chong") {
-    return "Magnetic Opposites";
+    return "Six Conflicts";
   }
 
   // 2. Damage patterns default to Difficult (unless overridden)
@@ -524,7 +524,7 @@ function bandForLabel(label: MatchLabel): Band {
       return { min: 62, max: 80 };
     case "Neutral Match":
       return { min: 40, max: 72 };
-    case "Magnetic Opposites":
+    case "Six Conflicts":
       return { min: 35, max: 55 };
     case "Difficult Match":
       return { min: 20, max: 50 };

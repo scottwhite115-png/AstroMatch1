@@ -957,11 +957,6 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         </h4>
                       </div>
                     )}
-                    {westernOverviewElement && (
-                      <p className={`text-xs font-medium ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
-                        {westernOverviewElement}
-                      </p>
-                    )}
                     {/* TAGLINE - Display if available */}
                     {displayTagline && (
                       <p className={`text-xs italic mb-2 ${theme === "light" ? "text-black" : "text-white"}`}>
@@ -1089,7 +1084,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         </svg>
                         <span style={{ fontFamily: 'inherit', display: 'inline-block' }}>About me</span>
                       </h4>
-                      <p className={`text-lg leading-relaxed ${theme === "light" ? "text-gray-700" : "text-gray-300"}`}>
+                      <p className={`text-2xl leading-relaxed ${theme === "light" ? "text-gray-700" : "text-gray-300"}`}>
                         {data.aboutMeText}
                       </p>
                     </div>
@@ -1187,11 +1182,11 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         </svg>
                         <span style={{ fontFamily: 'inherit', display: 'inline-block' }}>Essentials</span>
                       </h4>
-                      <div className="space-y-2 text-base">
+                      <div className="space-y-2 text-2xl">
                         {/* Location */}
                         {data.city && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
+                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
                               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
                             </svg>
                             <span>
@@ -1205,7 +1200,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         {/* Occupation */}
                         {data.occupation && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
+                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill={primaryColor}>
                               <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
                             </svg>
                             <span>{data.occupation}</span>
@@ -1214,7 +1209,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         {/* Age */}
                         {data.age && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
+                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
                               <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
                               <path d="M16 2v4M8 2v4M3 10h18"/>
                             </svg>
@@ -1224,7 +1219,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         {/* Height */}
                         {data.height && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
+                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
                               <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
                             </svg>
                             <span>{data.height}</span>
@@ -1233,7 +1228,7 @@ export default function ConnectionBoxSimple({ data, alwaysExpanded = false, hide
                         {/* Children */}
                         {data.children && data.children.trim() !== "" && (
                           <div className={`flex items-center gap-2 font-medium ${theme === "light" ? "text-gray-700" : "text-gray-100"}`}>
-                            <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
+                            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={primaryColor} strokeWidth="2">
                               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                               <circle cx="9" cy="7" r="4"></circle>
                               <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>

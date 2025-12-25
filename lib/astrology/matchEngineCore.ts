@@ -4,7 +4,7 @@
 
 export type ChinesePattern =
   | "SAN_HE"     // San He 三合 - Triple Harmony
-  | "LIU_HE"     // Liu He 六合 - Secret Friends
+  | "LIU_HE"     // Liu He 六合 - Six Harmoniess
   | "SAME_SIGN"  // Same animal sign
   | "NEUTRAL"    // No major pattern
   | "LIU_CHONG"  // 六冲 - Six Conflicts
@@ -45,7 +45,7 @@ export interface MatchResult {
 // Base values before we add the small West adjustment
 const CHINESE_BASE: Record<ChinesePattern, number> = {
   SAN_HE: 88,     // Triple Harmony · strongest overall
-  LIU_HE: 84,     // Secret Friends · very strong
+  LIU_HE: 84,     // Six Harmoniess · very strong
   SAME_SIGN: 78,  // Same animal · strong, but below San He / Liu He
   NEUTRAL: 58,    // Mid-range only
 
@@ -61,7 +61,7 @@ const CHINESE_BASE: Record<ChinesePattern, number> = {
 // - All conflicts below 50
 const CHINESE_BOUNDS: Record<ChinesePattern, [number, number]> = {
   SAN_HE: [84, 96],      // Triple Harmony
-  LIU_HE: [80, 92],      // Secret Friends
+  LIU_HE: [80, 92],      // Six Harmoniess
   SAME_SIGN: [74, 82],   // Same animal
   NEUTRAL: [50, 65],     // Neutral, mid-range only
 
@@ -104,7 +104,7 @@ export function getPatternMeta(pattern: ChinesePattern): PatternMeta {
       return {
         code: pattern,
         emoji: "💫",
-        labelEn: "Secret Friends",
+        labelEn: "Six Harmoniess",
         labelZh: "六合",
         tagline: "Close one-to-one bond with a quietly supportive tone.",
       };

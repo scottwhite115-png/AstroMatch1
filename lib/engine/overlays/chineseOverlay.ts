@@ -159,7 +159,7 @@ export function applyChineseOverlay(input: OverlayInput): OverlayResult {
 
   // 1) East opposites: floor to Fair, add badge (never elevate to Good)
   if (areEastOpposites(eastA, eastB)) {
-    badges.push("Magnetic Opposites");
+    badges.push("Six Conflicts");
     tier = worseTier(tier, "Fair");
   }
 

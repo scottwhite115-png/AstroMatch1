@@ -62,7 +62,7 @@ export type Classification = {
 
   tier: Tier;
 
-  badges: string[];    // explanatory badges, e.g., ["Same Trine","Secret Friend"]
+  badges: string[];    // explanatory badges, e.g., ["Same Trine","Six Harmonies"]
 
   score: number;       // optional numeric score for ordering inside tiers
 
@@ -453,7 +453,7 @@ export function classifyPair(
 
   if (sameTrine) { score += 3.0; badges.push("Same Trine"); }
 
-  if (secret) { score += 2.0; badges.push("Secret Friend"); }
+  if (secret) { score += 2.0; badges.push("Six Harmonies"); }
 
   if (lively) { score += 0.5; badges.push("Lively Pair"); }
 
@@ -472,7 +472,7 @@ export function classifyPair(
 
 
   // Western element badges (check zodiac opposites first)
-  if (westOpp) { badges.push("Magnetic Opposites (West)"); score += 1.0; }
+  if (westOpp) { badges.push("Six Conflicts (West)"); score += 1.0; }
   else if (sameElement(westA, westB)) { badges.push("Same Element (West)"); score += 2.0; }
   else if (compatibleElement(westA, westB)) { badges.push("Compatible West Elements"); score += 1.0; }
   else if (oppositeElement(westA, westB)) { badges.push("Opposite West Elements"); score -= 1.0; }
@@ -527,7 +527,7 @@ export function classifyPair(
   if (conflict) {
     // Ensure score is boosted for Opposites Attract to be > 60%
     const boostedScore = Math.max(score, 3.0); // Minimum score of 3.0 ensures > 60% after calculation
-    return { tier: "opposites_attract", badges, score: boostedScore, reason: "Six Conflicts (Magnetic Opposites) applied", flags };
+    return { tier: "opposites_attract", badges, score: boostedScore, reason: "Six Conflicts (Six Conflicts) applied", flags };
   }
 
 

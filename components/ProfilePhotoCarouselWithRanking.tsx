@@ -47,7 +47,7 @@ function getPatternColor(pattern?: string): string {
     return 'rgb(251, 191, 36)'; // amber-400
   }
   
-// Liu He - Secret Friends (Purple)
+// Liu He - Six Harmoniess (Purple)
   if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES')) {
     return 'rgb(192, 132, 252)'; // purple-400
   }
@@ -122,7 +122,7 @@ function getPatternGradient(pattern?: string): string {
     return 'from-amber-400 via-yellow-400 to-amber-500';
   }
   
-  // Liu He / LIU_HE - Secret Friends (Purple/Pink)
+  // Liu He / LIU_HE - Six Harmoniess (Purple/Pink)
   if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES') || patternUpper.includes('SECRET FRIENDS')) {
     return 'from-purple-400 via-fuchsia-400 to-pink-400';
   }
@@ -137,7 +137,7 @@ function getPatternGradient(pattern?: string): string {
     return 'from-blue-400 via-indigo-400 to-blue-500';
   }
   
-  // Liu Chong / LIU_CHONG - Six Conflicts (Orange/Red)
+  // Liu Chong - Six Conflicts (Orange/Red)
   if (patternUpper.includes('LIU_CHONG') || patternUpper.includes('SIX CONFLICTS')) {
     return 'from-orange-400 via-orange-500 to-red-500';
   }
@@ -565,9 +565,7 @@ export default function ProfilePhotoCarouselWithRanking({
               backgroundColor: 'transparent',
               borderWidth: '2px',
               borderStyle: 'solid',
-              borderColor: patternColors?.start || (connectionBoxData 
-                ? getPatternColor(connectionBoxData.pattern)
-                : (theme === "light" ? "rgb(148, 163, 184)" : "rgba(255, 255, 255, 0.3)")),
+              borderColor: 'white',
               backdropFilter: 'blur(10px)',
               boxShadow: theme === "light" 
                 ? `0 2px 12px rgba(0, 0, 0, 0.15)` 

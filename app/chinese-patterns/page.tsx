@@ -203,7 +203,7 @@ export default function ChinesePatternsPage() {
           >
             <div className="text-xl sm:text-2xl mb-1">💫</div>
             <div className="text-xl sm:text-2xl font-bold">{stats.liuHe}</div>
-            <div className="text-xs sm:text-sm opacity-80">Liu He (Secret Friends)</div>
+            <div className="text-xs sm:text-sm opacity-80">Liu He (Six Harmoniess)</div>
           </div>
           <div
             className={`p-3 sm:p-4 rounded-xl border ${

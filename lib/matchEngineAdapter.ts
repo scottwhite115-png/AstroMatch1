@@ -305,19 +305,19 @@ export function adaptScoreOutputToConnectionBox(
   const classification = classifyMatch(aWest, aEast, bWest, bEast);
 
   // Extract relationship tags and blurbs from score output
-  // The tags array contains strings like "Same Trine: Natural Harmony", "⚡ Magnetic Opposites", etc.
+  // The tags array contains strings like "Same Trine: Natural Harmony", "⚡ Six Conflicts", etc.
   const eastTags = scoreOutput.tags.filter(t =>
-    t.includes("Same Trine") || t.includes("Magnetic Opposites") || t.includes("Cross-Trine")
+    t.includes("Same Trine") || t.includes("Six Conflicts") || t.includes("Cross-Trine")
   );
   const westTags = scoreOutput.tags.filter(t =>
-    t.includes("Magnetic Opposites") || t.includes("Mirror Effect")
+    t.includes("Six Conflicts") || t.includes("Mirror Effect")
   );
 
   const chineseRelation = describeChineseRelation(aEast, bEast);
 
   let east_relation = `${aEast} × ${bEast} — ${chineseRelation.title}`;
   if (chineseRelation.relation === 'opposite') {
-    east_relation = `${aEast} × ${bEast} — ⚡ Magnetic Opposites • ${chineseRelation.title}`;
+    east_relation = `${aEast} × ${bEast} — ⚡ Six Conflicts • ${chineseRelation.title}`;
   } else if (chineseRelation.relation === 'damage') {
     east_relation = `${aEast} × ${bEast} — 🚫 Six Damages • ${chineseRelation.title}`;
   }
@@ -328,12 +328,12 @@ export function adaptScoreOutputToConnectionBox(
     : scoreOutput.tagline;
 
   // Build west_relation and west_summary
-  // IMPORTANT: Verify that signs are actually opposites before showing "Magnetic Opposites"
+  // IMPORTANT: Verify that signs are actually opposites before showing "Six Conflicts"
   const westTag = westTags[0] || "";
   
-  // Double-check that signs are actually opposites if tag says "Magnetic Opposites"
+  // Double-check that signs are actually opposites if tag says "Six Conflicts"
   let verifiedWestTag = westTag;
-  if (westTag.includes("Magnetic Opposites")) {
+  if (westTag.includes("Six Conflicts")) {
     const normalizedA = normalizeSun(aWest);
     const normalizedB = normalizeSun(bWest);
     const WEST_OPPOSITES: Record<string, string> = {
@@ -346,7 +346,7 @@ export function adaptScoreOutputToConnectionBox(
       // Remove the tag if signs are not actually opposites
       verifiedWestTag = "";
       if (process.env.NODE_ENV === 'development') {
-        console.warn(`[Adapter] Removed incorrect "Magnetic Opposites" tag for ${aWest} × ${bWest} (not actually opposites)`);
+        console.warn(`[Adapter] Removed incorrect "Six Conflicts" tag for ${aWest} × ${bWest} (not actually opposites)`);
       }
     }
   }
@@ -367,7 +367,7 @@ export function adaptScoreOutputToConnectionBox(
   
   // Get the correct blurb based on the tag
   let west_summary = "";
-  if (verifiedWestTag.includes("Magnetic Opposites")) {
+  if (verifiedWestTag.includes("Six Conflicts")) {
     west_summary = SETTINGS.blurbs.west_opposite;
   } else if (verifiedWestTag.includes("Mirror Effect")) {
     west_summary = SETTINGS.blurbs.west_same_sign;

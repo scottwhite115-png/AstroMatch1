@@ -9,7 +9,7 @@ export function getChinesePatternLabel(pattern?: string): string {
   }
   
   if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES') || patternUpper.includes('SECRET FRIENDS')) {
-    return "Liu He 六合 · Secret Friends";
+    return "Liu He 六合 · Six Harmoniess";
   }
   
   if (patternUpper.includes('SAME_SIGN') || patternUpper.includes('SAME ANIMAL') || patternUpper.includes('SAME_SIGN') || patternUpper.includes('SAME SIGN')) {

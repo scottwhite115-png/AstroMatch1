@@ -15,37 +15,37 @@ const FourPointedStar = ({ className }: { className?: string }) => (
 const ASTROLAB_SECTIONS = [
   {
     id: 'triple-harmony-trines',
-    label: '三合 Triple Harmony',
+    label: '💛 Soulmate',
     icon: '',
     description: 'Triple Harmony trine groups table',
   },
   {
     id: 'secret-friends',
-    label: '六合 Six Harmonies',
+    label: '💕 Secret Friends',
     icon: '',
     description: 'Six Harmonies (Liu He) pairs table',
   },
   {
     id: 'six-conflicts',
-    label: '六冲 Six Conflicts',
+    label: '🧲 Magnetic Opposites',
     icon: '',
     description: 'Six Conflicts (Liu Chong) pairs table',
   },
   {
     id: 'six-harms',
-    label: '六害 Six Harms',
+    label: '⚠️ Challenging',
     icon: '',
     description: 'Six Harms (Liu Hai) pairs table',
   },
   {
     id: 'punishment',
-    label: '刑 Punishment',
+    label: '⚠️ Challenging',
     icon: '',
     description: 'Punishment (Xing) groups table',
   },
   {
     id: 'break-pattern',
-    label: '破 Breakpoints',
+    label: '⚠️ Challenging',
     icon: '',
     description: 'Breakpoints (Po) pairs table',
   },

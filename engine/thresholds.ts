@@ -6,7 +6,7 @@ export function tierFromScore(score: number): Tier {
   if (score >= 75) return "Excellent";
   if (score >= 60) return "Favourable";
   if (score >= 50) return "Neutral";
-  if (score >= 35) return "Magnetic Opposites";
+  if (score >= 35) return "Six Conflicts";
   return "Difficult";
 }
 

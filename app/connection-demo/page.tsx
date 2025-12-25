@@ -44,7 +44,7 @@ export default function ConnectionBoxDemo() {
 
         <div className="mt-8">
           <ConnectionBox
-            matchLabel="Liu He 六合 · Secret Friends"
+            matchLabel="Liu He 六合 · Six Harmoniess"
             matchLabelColor="pink"
             leftSunLabel="Aries"
             leftSunEmoji="♈️"

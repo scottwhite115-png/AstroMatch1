@@ -137,7 +137,7 @@ export function getConnectionTagline(
   // Same Sign (Chinese)
   if (chineseBase === 'SAME_SIGN') {
     if (selfPunish) {
-      return 'Familiar mirror where the same scenes repeat until one of you finally changes the script.';
+      return 'Same-sign dynamic where similar traits on both sides tend to replay the same themes.';
     }
     return 'Mirror-like connection where you recognise your own strengths and blind spots in each other.';
   }

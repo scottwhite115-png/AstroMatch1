@@ -324,9 +324,13 @@ export default function LoginPage() {
               <div className="text-center">
                 <p className="text-sm text-gray-700">
                   Don't have an account?{" "}
-                  <Link href="/signup" className="text-red-400 hover:text-red-300 font-medium transition-colors">
+                  <button
+                    type="button"
+                    onClick={() => window.location.href = '/signup'}
+                    className="text-red-400 hover:text-red-300 font-medium transition-colors cursor-pointer underline bg-transparent border-none p-0"
+                  >
                     Sign up
-                  </Link>
+                  </button>
                 </p>
               </div>
             </div>

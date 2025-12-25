@@ -361,9 +361,14 @@ export default function SignupPage() {
             <div className="text-center">
               <p className="text-sm text-gray-700">
                 Already have an account?{" "}
-                <Link href="/login" className="text-red-400 hover:text-red-300 font-medium transition-colors">
+                <button
+                  type="button"
+                  onClick={() => window.location.href = '/login'}
+                  className="text-red-400 hover:text-red-300 font-medium transition-colors cursor-pointer underline bg-transparent border-none p-0"
+                  style={{ position: 'relative', zIndex: 10 }}
+                >
                   Sign in
-                </Link>
+                </button>
               </p>
             </div>
           </div>

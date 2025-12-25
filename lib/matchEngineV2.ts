@@ -41,9 +41,9 @@ export const SETTINGS = {
   ],
   uiTags: {
     east_same_trine: "Same Trine: Natural Harmony",
-    east_opposite: "⚡ Magnetic Opposites",
+    east_opposite: "⚡ Six Conflicts",
     east_cross_trine: "Cross-Trine Contrast",
-    west_opposite: "⚡ Magnetic Opposites",
+    west_opposite: "⚡ Six Conflicts",
     west_same_sign: "Mirror Effect",
   },
   blurbs: {

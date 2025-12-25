@@ -5,7 +5,7 @@ export const chinesePatternLine: Record<
   string
 > = {
   SAN_HE: "San He (三合) \"Three Harmonies\" — Classic trine alignment with strong natural compatibility and long-term growth potential.",
-  LIU_HE: "Liu He (六合) \"Secret Friends\" — Hidden harmony connection with complementary strengths and mutual support.",
+  LIU_HE: "Liu He (六合) \"Six Harmoniess\" — Hidden harmony connection with complementary strengths and mutual support.",
   NEUTRAL: "Neutral Pattern — Balanced connection with room for growth and understanding through communication.",
   SAME_SIGN: "Same Animal — Mirror match with deep familiarity and shared instincts, requiring conscious variety to avoid blind spots.",
   SAME_SIGN_XING: "Same Sign with Xing (刑) — Self-punishment pattern requiring self-awareness and personal growth.",

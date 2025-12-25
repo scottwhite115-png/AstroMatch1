@@ -45,7 +45,7 @@ export const chineseConnectionBlurbs: Record<string, string> = {
   "Rat-Rat":
     "Same Sign 同生肖: two quick, alert Rats; sharp minds and busy lives, good at scheming and problem-solving together.",
   "Rat-Ox":
-    "Liu He 六合 \"Secret Friends\": Rat brings ideas, Ox brings endurance; a quietly strong, practical partnership.",
+    "Liu He 六合 \"Six Harmoniess\": Rat brings ideas, Ox brings endurance; a quietly strong, practical partnership.",
   "Rat-Tiger":
     "Curious Rat with bold Tiger; fast, changeable energy that thrives on shared risks and projects.",
   "Rat-Rabbit":
@@ -111,7 +111,7 @@ export const chineseConnectionBlurbs: Record<string, string> = {
   "Tiger-Dog":
     "San He 三合 \"Adventurers\": loyal, brave, team-oriented, good for shared missions.",
   "Tiger-Pig":
-    "Liu He 六合 \"Secret Friends\": Tiger's fire and Pig's kindness support each other in a warm, generous match.",
+    "Liu He 六合 \"Six Harmoniess\": Tiger's fire and Pig's kindness support each other in a warm, generous match.",
 
   // ---- Rabbit row ----
   "Rabbit-Rabbit":
@@ -129,7 +129,7 @@ export const chineseConnectionBlurbs: Record<string, string> = {
   "Rabbit-Rooster":
     "Liu Chong 六冲: Rabbit likes peace, Rooster likes clarity; sharp criticism can sting if not softened.",
   "Rabbit-Dog":
-    "Liu He 六合 \"Secret Friends\": Dog protects, Rabbit soothes, forming a kind, companionable bond.",
+    "Liu He 六合 \"Six Harmoniess\": Dog protects, Rabbit soothes, forming a kind, companionable bond.",
   "Rabbit-Pig":
     "San He 三合 \"Artists\": easygoing, affectionate, and fond of shared pleasures and comfort.",
 
@@ -145,7 +145,7 @@ export const chineseConnectionBlurbs: Record<string, string> = {
   "Dragon-Monkey":
     "San He 三合 \"Visionaries\": inventive, high-energy, full of big projects and ideas.",
   "Dragon-Rooster":
-    "Liu He 六合 \"Secret Friends\": Dragon shines, Rooster refines, forming a proud, organised alliance.",
+    "Liu He 六合 \"Six Harmoniess\": Dragon shines, Rooster refines, forming a proud, organised alliance.",
   "Dragon-Dog":
     "Liu Chong 六冲: Dragon's autonomy versus Dog's watchful loyalty; clashes often centre on control and principles.",
   "Dragon-Pig":
@@ -159,7 +159,7 @@ export const chineseConnectionBlurbs: Record<string, string> = {
   "Snake-Goat":
     "Snake's subtlety plus Goat's empathy; quiet, artistic, and emotionally tuned connection.",
   "Snake-Monkey":
-    "Liu He 六合 \"Secret Friends\": cerebral, witty, and agile, with strong mental and social synergy.",
+    "Liu He 六合 \"Six Harmoniess\": cerebral, witty, and agile, with strong mental and social synergy.",
   "Snake-Rooster":
     "San He 三合 \"Strategists\": precise, analytical, and image-conscious, good for long-term plans.",
   "Snake-Dog":
@@ -171,7 +171,7 @@ export const chineseConnectionBlurbs: Record<string, string> = {
   "Horse-Horse":
     "Same Sign 同生肖: two Horses; restless, sociable, freedom-loving, lots of movement needing shared direction.",
   "Horse-Goat":
-    "Liu He 六合 \"Secret Friends\": Horse brings momentum, Goat brings care, forming a warm, supportive flow.",
+    "Liu He 六合 \"Six Harmoniess\": Horse brings momentum, Goat brings care, forming a warm, supportive flow.",
   "Horse-Monkey":
     "Lively Monkey and adventurous Horse; quick, humorous, and always on the go.",
   "Horse-Rooster":

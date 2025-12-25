@@ -12,10 +12,12 @@ import {
   getMatchLabel,
   deriveArchetype,
   getConnectionTagline,
+  getElementLine,
   hasDamageOverlay,
   type ChineseBasePattern,
   type ChineseOverlayPattern,
-  type ConnectionArchetype
+  type ConnectionArchetype,
+  type Element
 } from "@/lib/matchLabelEngine";
 import {
   WesternElementRelation,
@@ -621,7 +623,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
           {/* Tagline under the pill */}
           {tagline && (
-            <div className={`text-center px-4 mt-3 text-base italic ${
+            <div className={`text-center px-4 mt-3 text-base font-bold ${
               theme === "light" ? "text-slate-700" : "text-slate-300"
             }`}>
               {tagline}
@@ -634,8 +636,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               style={{
                 position: 'absolute',
                 top: '100%',
-                left: '1.5rem',
-                right: '1.5rem',
+                left: '-1.5rem',
+                right: '-1.5rem',
                 zIndex: 10002,
                 marginTop: '0.5rem',
               }}
@@ -774,12 +776,12 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Profile Information - Combined into match box */}
         {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}` }}>
+          <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: showMatchLabelDropdown ? 'none' : `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}` }}>
             {/* About Me */}
             {aboutPartnerText && (
               <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
                 <h4 
-                  className="text-base font-semibold mb-0.5"
+                  className="text-lg font-semibold mb-0.5"
                   style={{ 
                     background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
                     WebkitBackgroundClip: 'text',
@@ -792,7 +794,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   About me
                 </h4>
                 <p 
-                  className={`text-sm leading-relaxed whitespace-pre-wrap ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                  className={`text-2xl font-bold leading-relaxed whitespace-pre-wrap ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
                   style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                 >
                   {aboutPartnerText}
@@ -804,7 +806,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             {relationshipGoals && (
               <div style={{ marginBottom: '1.5rem' }}>
                 <h4 
-                  className="text-base font-semibold mb-0.5"
+                  className="text-lg font-semibold mb-0.5"
                   style={{ 
                     background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
                     WebkitBackgroundClip: 'text',
@@ -817,13 +819,32 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   Relationship Goals
                 </h4>
                 <div 
-                  className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                  className="flex flex-wrap gap-2"
                   style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                 >
                   {typeof relationshipGoals === 'string' ? (
-                    relationshipGoals
+                    <span 
+                      className="px-3 py-1.5 rounded-full text-base font-medium text-white"
+                      style={{
+                        background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 100%)',
+                        boxShadow: '0 4px 15px rgba(236, 72, 153, 0.4)',
+                      }}
+                    >
+                      {relationshipGoals}
+                    </span>
                   ) : Array.isArray(relationshipGoals) ? (
-                    relationshipGoals.join(', ')
+                    relationshipGoals.map((goal, index) => (
+                      <span 
+                        key={index}
+                        className="px-3 py-1.5 rounded-full text-base font-medium text-white"
+                        style={{
+                          background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 100%)',
+                          boxShadow: '0 4px 15px rgba(236, 72, 153, 0.4)',
+                        }}
+                      >
+                        {goal}
+                      </span>
+                    ))
                   ) : null}
                 </div>
               </div>
@@ -833,7 +854,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             {interests && (
               <div style={{ marginBottom: '1.5rem' }}>
                 <h4 
-                  className="text-base font-semibold mb-0.5"
+                  className="text-lg font-semibold mb-0.5"
                   style={{ 
                     background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
                     WebkitBackgroundClip: 'text',
@@ -846,83 +867,128 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   Interests
                 </h4>
                 <div 
-                  className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                  className="flex flex-wrap gap-2"
                   style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
                 >
                   {typeof interests === 'string' ? (
-                    interests
+                    <span 
+                      className="px-3 py-1.5 rounded-full text-base font-medium text-white"
+                      style={{
+                        background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 100%)',
+                        boxShadow: '0 4px 15px rgba(236, 72, 153, 0.4)',
+                      }}
+                    >
+                      {interests}
+                    </span>
                   ) : Array.isArray(interests) ? (
-                    interests.join(', ')
+                    interests.map((interest, index) => (
+                      <span 
+                        key={index}
+                        className="px-3 py-1.5 rounded-full text-base font-medium text-white"
+                        style={{
+                          background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 100%)',
+                          boxShadow: '0 4px 15px rgba(236, 72, 153, 0.4)',
+                        }}
+                      >
+                        {interest}
+                      </span>
+                    ))
                   ) : typeof interests === 'object' ? (
                     Object.entries(interests)
                       .flatMap(([category, interestList]) => 
                         Array.isArray(interestList) ? interestList : []
                       )
-                      .join(', ')
+                      .map((interest, index) => (
+                        <span 
+                          key={index}
+                          className="px-3 py-1.5 rounded-full text-base font-medium text-white"
+                          style={{
+                            background: 'linear-gradient(135deg, #f472b6 0%, #d946ef 100%)',
+                            boxShadow: '0 4px 15px rgba(236, 72, 153, 0.4)',
+                          }}
+                        >
+                          {interest}
+                        </span>
+                      ))
                   ) : null}
                 </div>
               </div>
             )}
 
-            {/* Basic Info Grid */}
+            {/* Essentials */}
             {(city || occupation || age || height || children) && (
-              <div className="grid grid-cols-2 gap-3" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                {/* Location */}
-                {city && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                      <circle cx="12" cy="10" r="3"/>
-                    </svg>
-                    <span>{city}</span>
-                  </div>
-                )}
-                
-                {/* Occupation */}
-                {occupation && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-                    </svg>
-                    <span>{occupation}</span>
-                  </div>
-                )}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 
+                  className="text-lg font-semibold mb-0.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem'
+                  }}
+                >
+                  Essentials
+                </h4>
+                <div className="grid grid-cols-1 gap-3" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                  {/* Location */}
+                  {city && (
+                    <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                      </svg>
+                      <span>{city}</span>
+                    </div>
+                  )}
+                  
+                  {/* Occupation */}
+                  {occupation && (
+                    <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                      </svg>
+                      <span>{occupation}</span>
+                    </div>
+                  )}
 
-                {/* Age */}
-                {age && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    <span>{age} years old</span>
-                  </div>
-                )}
+                  {/* Age */}
+                  {age && (
+                    <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12 6 12 12 16 14"/>
+                      </svg>
+                      <span>{age} years old</span>
+                    </div>
+                  )}
 
-                {/* Height */}
-                {height && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="12" y1="2" x2="12" y2="22"/>
-                      <polyline points="8 6 12 2 16 6"/>
-                      <polyline points="8 18 12 22 16 18"/>
-                    </svg>
-                    <span>{height}</span>
-                  </div>
-                )}
+                  {/* Height */}
+                  {height && (
+                    <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="12" y1="2" x2="12" y2="22"/>
+                        <polyline points="8 6 12 2 16 6"/>
+                        <polyline points="8 18 12 22 16 18"/>
+                      </svg>
+                      <span>{height}</span>
+                    </div>
+                  )}
 
-                {/* Children */}
-                {children && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                    <span>{children}</span>
-                  </div>
-                )}
+                  {/* Children */}
+                  {children && (
+                    <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                      <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                        <circle cx="9" cy="7" r="4"/>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                      </svg>
+                      <span>{children}</span>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>

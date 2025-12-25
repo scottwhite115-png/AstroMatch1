@@ -13,7 +13,7 @@ export type Category =
   | "Best Match"
   | "Strong Match"
   | "Mixed Match"
-  | "Magnetic Opposites"
+  | "Six Conflicts"
   | "Challenging";
 
 export interface InputPair {
@@ -141,8 +141,8 @@ export function classify(pair: InputPair, cfg: ClassifierConfig = {}): Classifie
   const cnWorst = CN_WORST[eastA] === eastB || CN_WORST[eastB] === eastA;
 
   if (oppEast) {
-    badges.push("Magnetic Opposites");
-    return { category: "Magnetic Opposites", badges, reason: "East opposites" };
+    badges.push("Six Conflicts");
+    return { category: "Six Conflicts", badges, reason: "East opposites" };
   }
 
   if (capIdenticalWestToGood && sameWest) {

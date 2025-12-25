@@ -83,7 +83,7 @@ function buildChineseHeading(
     case 'san_he':
       return `${animalA} × ${animalB} — San He (三合) "Three Harmonies" ${trineTag}`;
     case 'liu_he':
-      return `${animalA} × ${animalB} — Liu He (六合) "Six Harmonies / Secret Friends" ${trineTag}`;
+      return `${animalA} × ${animalB} — Liu He (六合) "Six Harmonies / Six Harmoniess" ${trineTag}`;
     case 'same_trine':
       return `${animalA} × ${animalB} — Same Trine (三会) "Shared Elemental Nature" (Same Trine: ${opts?.trineName ?? '三会'})`;
     case 'same_animal':
@@ -289,7 +289,7 @@ export function getChinesePatternLines(
     }
 
     case "LIU_HE": {
-      const heading = `${animalAName} × ${animalBName} — Liu He 六合 "Secret Friends"`;
+      const heading = `${animalAName} × ${animalBName} — Liu He 六合 "Six Harmoniess"`;
       const description = animalSpecificDesc || "A gentle, complementary pattern that favours loyalty, mutual help, and a quietly reliable bond.";
       return { heading, description };
     }

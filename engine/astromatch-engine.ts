@@ -14,7 +14,7 @@ export type Tier =
   | "Excellent"
   | "Favourable"
   | "Neutral"
-  | "Magnetic Opposites"
+  | "Six Conflicts"
   | "Difficult";
 
 export type Aspect =
@@ -26,7 +26,7 @@ export type Aspect =
   | "quincunx"
   | "opposite";
 
-export type Badge = "Magnetic Opposites" | "Opposites Attract — not recommended";
+export type Badge = "Six Conflicts" | "Opposites Attract — not recommended";
 
 export interface MatchResult {
   tier: Tier;
@@ -126,7 +126,7 @@ const TIER_RANGES: Record<Tier,[number,number]> = {
   Excellent:[75,84],
   Favourable:[60,74], 
   Neutral:[50,59], 
-  "Magnetic Opposites":[35,49],
+  "Six Conflicts":[35,49],
   Difficult:[0,34],
 };
 
@@ -136,7 +136,7 @@ const TIER_COLORS: Record<Tier,string> = {
   Excellent:"#FF69B4",       // Pink
   Favourable:"#32CD32",     // Green
   Neutral:"#00D4FF",        // Electric cyan
-  "Magnetic Opposites":"#FF6B9D", // Pink/Magenta
+  "Six Conflicts":"#FF6B9D", // Pink/Magenta
   Difficult:"#FF0000",       // Red
 };
 
@@ -170,8 +170,8 @@ export function evaluateMatch(westA:West,eastA:East,westB:West,eastB:East):Match
   else if(cRel==="same-trine" && (asp==="trine" || asp==="sextile" || asp==="same")) baseScore = 67; // Favourable
   else if(asp==="trine" || asp==="sextile") baseScore = 57; // Neutral-positive
   else if((sameWest||oppWest) && (cRel==="same-trine"||cRel==="same-animal"||cRel==="supportive")) baseScore = 54; // Neutral
-  else if(cRel==="same-trine" && (asp==="square"||asp==="semi-sextile"||asp==="quincunx")) baseScore = 42; // Magnetic Opposites
-  else if(cRel==="opposite" && (elemRel==="same"||elemRel==="compatible")) baseScore = 42; // Magnetic Opposites
+  else if(cRel==="same-trine" && (asp==="square"||asp==="semi-sextile"||asp==="quincunx")) baseScore = 42; // Six Conflicts
+  else if(cRel==="opposite" && (elemRel==="same"||elemRel==="compatible")) baseScore = 42; // Six Conflicts
   else if(cRel==="opposite" && (asp==="square"||asp==="semi-sextile"||asp==="quincunx")) baseScore = 17; // Difficult
   else if(cRel==="damage") baseScore = 10; // Difficult
   else if(asp==="square"||asp==="quincunx"||asp==="semi-sextile") baseScore = 20; // Difficult
@@ -188,12 +188,12 @@ export function evaluateMatch(westA:West,eastA:East,westB:West,eastB:East):Match
   else if(score >= 75) tier = "Excellent";
   else if(score >= 60) tier = "Favourable";
   else if(score >= 50) tier = "Neutral";
-  else if(score >= 35) tier = "Magnetic Opposites";
+  else if(score >= 35) tier = "Six Conflicts";
   else tier = "Difficult";
 
   // Add badges for special cases
-  if((oppWest || cRel==="opposite") && tier !== "Magnetic Opposites") {
-    badges.push("Magnetic Opposites");
+  if((oppWest || cRel==="opposite") && tier !== "Six Conflicts") {
+    badges.push("Six Conflicts");
   }
   if(tier==="Difficult" && cRel==="opposite") {
     badges.push("Opposites Attract — not recommended");

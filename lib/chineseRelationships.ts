@@ -57,7 +57,7 @@ export const chineseRelationships: Record<string, ChineseRel> = {
 
 // UI tags for relationship types
 export const uiTags: Record<RelationType | string, string> = {
-  "opposite": "⚡ Magnetic Opposites",
+  "opposite": "⚡ Six Conflicts",
   "same_trine": "Same Trine: Natural Harmony",
   "opposed_trine": "Cross-Trine Contrast",
   "neutral": "Neutral Connection"
@@ -134,7 +134,7 @@ export function buildConnectionBox({
 
   return {
     headline: labelHints,               // e.g., "Opposite Signs"
-    tag,                                // e.g., "⚡ Magnetic Opposites"
+    tag,                                // e.g., "⚡ Six Conflicts"
     blurb:
       `${howTheyConnect}\n\n` +
       `Western: ${westSummary}${chineseLine}`

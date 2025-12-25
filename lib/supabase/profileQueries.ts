@@ -47,6 +47,15 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
     const supabase = createClient()
     
   try {
+    console.log('[Profile Queries] Fetching profiles with filters:', {
+      userId: filters.userId,
+      userLat: filters.userLat,
+      userLon: filters.userLon,
+      radius: filters.distanceRadius,
+      lookingForGender: filters.lookingForGender,
+      ageRange: `${filters.ageMin}-${filters.ageMax}`
+    })
+
     // First, get profiles within distance radius
     // Using earthdistance extension for geo queries
     const { data: nearbyProfiles, error } = await supabase
@@ -61,35 +70,77 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
       return []
     }
 
+    console.log(`[Profile Queries] Found ${nearbyProfiles?.length || 0} profiles within radius`)
+
     if (!nearbyProfiles || nearbyProfiles.length === 0) {
       console.log('[Profile Queries] No profiles found within radius')
       return []
     }
 
     // Filter profiles based on preferences
+    let filteredCount = 0
     const matchableProfiles = nearbyProfiles.filter((profile: any) => {
       // Exclude own profile
-      if (profile.id === filters.userId) return false
+      if (profile.id === filters.userId) {
+        filteredCount++
+        console.log(`[Profile Queries] Filtered out own profile: ${profile.email || profile.id}`)
+        return false
+      }
       
       // Must be complete and active
-      if (!profile.profile_complete || !profile.account_active) return false
+      if (!profile.profile_complete || !profile.account_active) {
+        filteredCount++
+        console.log(`[Profile Queries] Filtered out incomplete/inactive: ${profile.email || profile.id} (complete: ${profile.profile_complete}, active: ${profile.account_active})`)
+        return false
+      }
       
-      // Gender filter
+      // Gender filter - check if user wants to see this profile's gender
       if (filters.lookingForGender !== 'Everyone') {
-        if (profile.gender !== filters.lookingForGender) return false
+        const profileGender = profile.gender?.toLowerCase() || ''
+        const lookingFor = filters.lookingForGender.toLowerCase()
+        
+        // Handle variations: Man/Male, Woman/Female, Men/Women
+        const isMatch = 
+          lookingFor === 'everyone' ||
+          profileGender === lookingFor ||
+          (lookingFor === 'men' && (profileGender === 'man' || profileGender === 'male')) ||
+          (lookingFor === 'women' && (profileGender === 'woman' || profileGender === 'female')) ||
+          (lookingFor === 'man' && (profileGender === 'man' || profileGender === 'male')) ||
+          (lookingFor === 'woman' && (profileGender === 'woman' || profileGender === 'female'))
+        
+        if (!isMatch) {
+          filteredCount++
+          console.log(`[Profile Queries] Filtered out gender mismatch: ${profile.email || profile.id} (profile: ${profile.gender}, looking for: ${filters.lookingForGender})`)
+          return false
+        }
       }
       
       // Age filter
-      if (profile.age < filters.ageMin || profile.age > filters.ageMax) return false
+      if (profile.age < filters.ageMin || profile.age > filters.ageMax) {
+        filteredCount++
+        console.log(`[Profile Queries] Filtered out age: ${profile.email || profile.id} (age: ${profile.age}, range: ${filters.ageMin}-${filters.ageMax})`)
+        return false
+      }
 
       // Has required fields
-      if (!profile.birthdate || !profile.western_sign || !profile.chinese_sign) return false
+      if (!profile.birthdate || !profile.western_sign || !profile.chinese_sign) {
+        filteredCount++
+        console.log(`[Profile Queries] Filtered out missing fields: ${profile.email || profile.id} (birthdate: ${!!profile.birthdate}, western: ${!!profile.western_sign}, chinese: ${!!profile.chinese_sign})`)
+        return false
+      }
 
       // Has at least one photo
-      if (!profile.photos || profile.photos.length === 0) return false
+      if (!profile.photos || profile.photos.length === 0) {
+        filteredCount++
+        console.log(`[Profile Queries] Filtered out no photos: ${profile.email || profile.id}`)
+        return false
+      }
       
+      console.log(`[Profile Queries] ✅ Profile passed all filters: ${profile.email || profile.id}`)
       return true
     })
+
+    console.log(`[Profile Queries] After filtering: ${matchableProfiles.length} matchable profiles (filtered out ${filteredCount})`)
 
     // Map to EnrichedProfile format
     const enrichedProfiles: EnrichedProfile[] = matchableProfiles.map((profile: any) => ({

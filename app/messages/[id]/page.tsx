@@ -256,7 +256,7 @@ export default function ChatPage() {
       "Good Friends": "good",
       "Good Friends Match": "good",
       "Opposites Attract": "fair",
-      "Magnetic Opposites": "fair",
+      "Six Conflicts": "fair",
       "Neutral Match": "fair",
       "Difficult Match": "challenging",
     };
@@ -269,7 +269,7 @@ export default function ChatPage() {
       if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
       if (label === "Favourable Match") return "Favourable";
       if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
-      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Six Conflicts") return "Six Conflicts";
       if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
       if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
       return "Neutral";
@@ -280,7 +280,7 @@ export default function ChatPage() {
       "TWIN FLAME": "🔥", "TWIN FLAME MATCH": "🔥", "Twin Flame Match": "🔥",
       "HARMONIOUS": "✨", "HARMONIOUS MATCH": "✨", "Excellent Match": "✨",
       "Favourable Match": "✨", "Good Friends": "✨", "Good Friends Match": "✨",
-      "OPPOSITES_ATTRACT": "⚡", "OPPOSITES ATTRACT": "⚡", "Opposites Attract": "⚡", "Magnetic Opposites": "⚡",
+      "OPPOSITES_ATTRACT": "⚡", "OPPOSITES ATTRACT": "⚡", "Opposites Attract": "⚡", "Six Conflicts": "⚡",
       "NEUTRAL": "✨", "NEUTRAL MATCH": "✨", "Neutral Match": "✨",
       "DIFFICULT": "💔", "DIFFICULT MATCH": "💔", "Difficult Match": "💔",
     };
@@ -290,7 +290,7 @@ export default function ChatPage() {
       "TWIN FLAME": "rgb(255, 140, 0)", "TWIN FLAME MATCH": "rgb(255, 140, 0)", "Twin Flame Match": "rgb(255, 140, 0)",
       "HARMONIOUS": "rgb(219, 39, 119)", "HARMONIOUS MATCH": "rgb(219, 39, 119)", "Excellent Match": "rgb(219, 39, 119)",
       "Favourable Match": "rgb(219, 39, 119)", "Good Friends": "rgb(34, 139, 34)", "Good Friends Match": "rgb(34, 139, 34)",
-      "OPPOSITES_ATTRACT": "rgb(239, 68, 68)", "OPPOSITES ATTRACT": "rgb(239, 68, 68)", "Opposites Attract": "rgb(239, 68, 68)", "Magnetic Opposites": "rgb(239, 68, 68)",
+      "OPPOSITES_ATTRACT": "rgb(239, 68, 68)", "OPPOSITES ATTRACT": "rgb(239, 68, 68)", "Opposites Attract": "rgb(239, 68, 68)", "Six Conflicts": "rgb(239, 68, 68)",
       "NEUTRAL": "rgb(34, 139, 34)", "NEUTRAL MATCH": "rgb(34, 139, 34)", "Neutral Match": "rgb(34, 139, 34)",
       "DIFFICULT": "rgb(239, 68, 68)", "DIFFICULT MATCH": "rgb(239, 68, 68)", "Difficult Match": "rgb(239, 68, 68)",
     };

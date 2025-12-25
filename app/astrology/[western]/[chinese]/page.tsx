@@ -1391,7 +1391,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     const labelToRankKey: Record<string, string> = {
       // New match engine labels
       "Six Conflicts Match": "fair",
-      "Six Harmonies Match": "excellent",
+      "Six Harmoniess Match": "excellent",
       "Triple Harmony Match": "excellent",
       "Same Sign Match": "fair",
       "Challenging Match": "challenging",
@@ -1405,7 +1405,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       "Good Friends": "good", // Now maps to good
       "Good Friends Match": "good", // Now maps to good
       "Opposites Attract": "fair",
-      "Magnetic Opposites": "fair",
+      "Six Conflicts": "fair",
       "Difficult Match": "challenging",
     };
     
@@ -1421,8 +1421,8 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     // Map label to tier (updated to support new match engine labels)
     const labelToTier = (label: string): any => {
       // New match engine labels (from connectionUi.ts)
-      if (label === "Six Conflicts Match") return "Magnetic Opposites";
-      if (label === "Six Harmonies Match" || label === "Triple Harmony Match") return "Excellent";
+      if (label === "Six Conflicts Match") return "Six Conflicts";
+      if (label === "Six Harmoniess Match" || label === "Triple Harmony Match") return "Excellent";
       if (label === "Same Sign Match") return "Neutral";
       if (label === "Challenging Match") return "Difficult";
       if (label === "Neutral Match") return "Neutral";
@@ -1432,7 +1432,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
       if (label === "Favourable Match") return "Favourable";
       if (label === "Good Friends" || label === "Good Friends Match") return "Favourable"; // Maps to Favourable
-      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Six Conflicts") return "Six Conflicts";
       if (label === "NEUTRAL" || label === "NEUTRAL MATCH") return "Neutral";
       if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
       return "Neutral";
@@ -1442,7 +1442,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     const labelToEmoji: Record<string, string> = {
       // New match engine labels
       "Six Conflicts Match": "⚡",
-      "Six Harmonies Match": "✨",
+      "Six Harmoniess Match": "✨",
       "Triple Harmony Match": "🌟",
       "Same Sign Match": "🪞",
       "Challenging Match": "💔",
@@ -1463,7 +1463,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       "OPPOSITES_ATTRACT": "⚡",
       "OPPOSITES ATTRACT": "⚡",
       "Opposites Attract": "⚡",
-      "Magnetic Opposites": "⚡",
+      "Six Conflicts": "⚡",
       "NEUTRAL": "✨",
       "NEUTRAL MATCH": "✨",
       "DIFFICULT": "💔",
@@ -1474,7 +1474,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
     const labelToColor: Record<string, string> = {
       // New match engine labels
       "Six Conflicts Match": "rgb(239, 68, 68)",        // Red
-      "Six Harmonies Match": "rgb(219, 39, 119)",     // Hot Pink
+      "Six Harmoniess Match": "rgb(219, 39, 119)",     // Hot Pink
       "Triple Harmony Match": "rgb(219, 39, 119)",    // Hot Pink
       "Same Sign Match": "rgb(34, 139, 34)",          // Green
       "Challenging Match": "rgb(239, 68, 68)",        // Red
@@ -1495,7 +1495,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
       "OPPOSITES_ATTRACT": "rgb(239, 68, 68)",        // Red
       "OPPOSITES ATTRACT": "rgb(239, 68, 68)",        // Red
       "Opposites Attract": "rgb(239, 68, 68)",        // Red
-      "Magnetic Opposites": "rgb(239, 68, 68)",       // Red (same as Opposites Attract)
+      "Six Conflicts": "rgb(239, 68, 68)",       // Red (same as Opposites Attract)
       "NEUTRAL": "rgb(34, 139, 34)",                  // Green
       "NEUTRAL MATCH": "rgb(34, 139, 34)",            // Green
       "DIFFICULT": "rgb(239, 68, 68)",                // Red

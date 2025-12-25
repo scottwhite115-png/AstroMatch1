@@ -145,13 +145,13 @@ export function extractPrimaryLabel(
     return 'Twin Flame Match';
   }
   if (label.toLowerCase().includes('secret friends')) {
-    return 'Secret Friends Match';
+    return 'Six Harmoniess Match';
   }
   if (label.toLowerCase().includes('strong harmony')) {
     return 'Strong Harmony Match';
   }
   if (label.toLowerCase().includes('magnetic opposites') || label.toLowerCase().includes('opposites attract')) {
-    return 'Magnetic Opposites';
+    return 'Six Conflicts';
   }
   if (label.toLowerCase().includes('challenging') || label.toLowerCase().includes('difficult')) {
     return 'Challenging Match';

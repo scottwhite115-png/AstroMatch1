@@ -6,7 +6,7 @@ export type MatchLabel =
   | "Excellent Match"
   | "Favourable Match"
   | "Neutral Match"
-  | "Magnetic Opposites"
+  | "Six Conflicts"
   | "Difficult Match";
 
 // Clean, human taglines for under "Label · 92%"
@@ -21,7 +21,7 @@ export const MATCH_LABEL_TAGLINES: Record<MatchLabel, string> = {
     "Good overall fit that works well with steady effort from both sides.",
   "Neutral Match":
     "Balanced match where personality, timing, and choice make the biggest difference.",
-  "Magnetic Opposites":
+  "Six Conflicts":
     "Strong pull through contrast that keeps the connection lively and dynamic.",
   "Difficult Match":
     "Lower natural alignment that benefits from extra patience, clarity, and self-awareness.",
@@ -35,7 +35,7 @@ export const MATCH_LABEL_COLOR_CLASSES: Record<MatchLabel, string> = {
   "Excellent Match": "text-pink-500",      // Hot pink
   "Favourable Match": "text-sky-400",      // Blue
   "Neutral Match": "text-emerald-400",     // Green
-  "Magnetic Opposites": "text-red-500",    // Red
+  "Six Conflicts": "text-red-500",    // Red
   "Difficult Match": "text-slate-300",     // Grey
 };
 

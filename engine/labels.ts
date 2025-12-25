@@ -1,4 +1,4 @@
-export type Tier = "Soulmate" | "Twin Flame" | "Excellent" | "Favourable" | "Neutral" | "Magnetic Opposites" | "Difficult";
+export type Tier = "Soulmate" | "Twin Flame" | "Excellent" | "Favourable" | "Neutral" | "Six Conflicts" | "Difficult";
 
 export const TIER_LABEL: Record<Tier, string> = {
   Soulmate: "Soulmate Match",
@@ -6,7 +6,7 @@ export const TIER_LABEL: Record<Tier, string> = {
   Excellent: "Excellent Match",
   Favourable: "Favourable Match",
   Neutral: "Neutral Match",
-  "Magnetic Opposites": "Magnetic Opposites",
+  "Six Conflicts": "Six Conflicts",
   Difficult: "Difficult Match",
 };
 
@@ -16,7 +16,7 @@ export const TIER_TOOLTIP: Record<Tier, string> = {
   Excellent: "Strong synergy; great potential for growth.",
   Favourable: "Workable match with positive dynamics.",
   Neutral: "Steady connection; depends on timing and effort.",
-  "Magnetic Opposites": "Powerful attraction with contrasting energies.",
+  "Six Conflicts": "Powerful attraction with contrasting energies.",
   Difficult: "High friction; significant effort required.",
 };
 
@@ -27,7 +27,7 @@ export const TIER_THEME: Record<Tier, { textColor: string; borderColor: string }
   Excellent: { textColor: "#db2777", borderColor: "#ec4899" }, // pink-600 / pink-500
   Favourable: { textColor: "#16a34a", borderColor: "#22c55e" }, // green-600 / green-500
   Neutral: { textColor: "#0891b2", borderColor: "#06b6d4" }, // cyan-600 / cyan-500
-  "Magnetic Opposites": { textColor: "#e11d48", borderColor: "#f43f5e" }, // rose-600 / rose-500
+  "Six Conflicts": { textColor: "#e11d48", borderColor: "#f43f5e" }, // rose-600 / rose-500
   Difficult: { textColor: "#dc2626", borderColor: "#ef4444" }, // red-600 / red-500
 };
 

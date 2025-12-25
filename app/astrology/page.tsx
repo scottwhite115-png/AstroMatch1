@@ -114,7 +114,7 @@ export default function AstrologySection() {
 
           {/* Combined Chinese Pattern Ranking & Relationship Patterns */}
           <div id="chinese-patterns" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+            <div className="zodiac-sign-card">
               <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Chinese Zodiac Patterns</h2>
               
               <div className="mb-4">
@@ -126,205 +126,250 @@ export default function AstrologySection() {
               {/* Combined Table - No scrolling, restructured layout */}
               <div className="space-y-3">
                 {/* Triple Harmony - San He */}
-                <button
-                  onClick={() => scrollToSection('triple-harmony-trines')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-yellow-300" : "border-white/10 hover:border-yellow-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}
                 >
                   <div className={`${theme === "light" ? "bg-yellow-50" : "bg-yellow-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-300"}`}>Triple Harmony</span>
                         <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-300"}`}>Soulmate</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-400"}`}>Triple Harmony</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
                           <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>三合</span>
                           <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Sān Hé</span>
                         </div>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-yellow-100 text-yellow-800" : "bg-yellow-900/30 text-yellow-300"}`}>
-                          Harmony
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-yellow-100 text-yellow-800" : "bg-yellow-900/30 text-yellow-300"}`}>
+                            Harmony
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>72-98%</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>72-98%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       High natural harmony and shared rhythm; when you're aligned, this connection moves fast and far.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* Six Harmonies - Liu He */}
-                <button
-                  onClick={() => scrollToSection('secret-friends')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-pink-300" : "border-white/10 hover:border-pink-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}
                 >
                   <div className={`${theme === "light" ? "bg-pink-50" : "bg-pink-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Six Harmonies</span>
                         <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Secret Friends</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-pink-500" : "text-pink-300"}`}>Six Harmonies</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
                           <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六合</span>
                           <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hé</span>
                         </div>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-pink-100 text-pink-800" : "bg-pink-900/30 text-pink-400"}`}>
-                          Harmony
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-pink-100 text-pink-800" : "bg-pink-900/30 text-pink-400"}`}>
+                            Harmony
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>68-91%</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>68-91%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      "Secret Friends" Quietly strong bond that feels safe, loyal, and steady when you choose each other.
+                      "Six Harmoniess" Quietly strong bond that feels safe, loyal, and steady when you choose each other.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* Same Sign */}
-                <button
-                  onClick={() => scrollToSection('same-sign')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-emerald-300" : "border-white/10 hover:border-emerald-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}
                 >
                   <div className={`${theme === "light" ? "bg-emerald-50" : "bg-emerald-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>Same Sign</span>
+                        <span className={`text-lg font-semibold ${theme === "light" ? "text-emerald-600" : "text-emerald-400"}`}>Same Sign</span>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
                         <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-emerald-100 text-emerald-800" : "bg-emerald-900/30 text-emerald-400"}`}>
                           Neutral +
                         </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>54-70%</span>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #2dd4bf, #14b8a6)" }}>54-70%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* No Major Pattern */}
-                <button
-                  onClick={() => scrollToSection('what-shapes-score')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-blue-300" : "border-white/10 hover:border-blue-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}
                 >
                   <div className={`${theme === "light" ? "bg-blue-50" : "bg-blue-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-blue-600" : "text-blue-400"}`}>No Major Pattern</span>
-                        <span className={`text-sm ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>—</span>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-blue-100 text-blue-800" : "bg-blue-900/30 text-blue-400"}`}>
-                          Neutral
-                        </span>
+                        <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-blue-600" : "text-blue-400"}`}>Neutral</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-blue-500" : "text-blue-300"}`}>No Major Pattern</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>52-68%</span>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
+                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>中</span>
+                        </div>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-blue-100 text-blue-800" : "bg-blue-900/30 text-blue-400"}`}>
+                            Neutral
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>52-68%</span>
+                        </div>
+                      </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* Six Conflicts */}
-                <button
-                  onClick={() => scrollToSection('six-conflicts')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-orange-300" : "border-white/10 hover:border-orange-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200" : "border-white/10"}`}
                 >
                   <div className={`${theme === "light" ? "bg-orange-50" : "bg-orange-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-orange-600" : "text-orange-400"}`}>Six Conflicts</span>
                         <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-orange-600" : "text-orange-400"}`}>Magnetic Opposites</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-orange-500" : "text-orange-300"}`}>Six Conflicts</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
                           <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六冲</span>
                           <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Chōng</span>
                         </div>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-orange-100 text-orange-800" : "bg-orange-900/30 text-orange-400"}`}>
-                          Conflict
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-orange-100 text-orange-800" : "bg-orange-900/30 text-orange-400"}`}>
+                            Conflict
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>45-62%</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>45-62%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       Magnetic opposites with sharp edges; big lessons, not automatic comfort.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* Six Harms */}
-                <button
-                  onClick={() => scrollToSection('six-harms')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-red-300" : "border-white/10 hover:border-red-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200 hover:border-red-300" : "border-white/10 hover:border-red-700/50"}`}
                 >
                   <div className={`${theme === "light" ? "bg-red-50" : "bg-red-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Six Harms</span>
                         <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Challenging</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-red-500" : "text-red-300"}`}>Six Harms</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
                           <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六害</span>
                           <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hài</span>
                         </div>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-400"}`}>
-                          Conflict
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-400"}`}>
+                            Conflict
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>38-60%</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       Sensitive pattern where small misreads can snowball; this match needs extra patience and very clear communication.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* Punishment */}
-                <button
-                  onClick={() => scrollToSection('punishment')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-rose-300" : "border-white/10 hover:border-rose-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200 hover:border-rose-300" : "border-white/10 hover:border-rose-700/50"}`}
                 >
                   <div className={`${theme === "light" ? "bg-rose-50" : "bg-rose-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-rose-600" : "text-rose-400"}`}>Punishment</span>
                         <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-rose-600" : "text-rose-400"}`}>Challenging</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-rose-500" : "text-rose-300"}`}>Punishment</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
                           <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>刑</span>
                           <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Xíng</span>
                         </div>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-rose-100 text-rose-800" : "bg-rose-900/30 text-rose-400"}`}>
-                          Conflict
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-rose-100 text-rose-800" : "bg-rose-900/30 text-rose-400"}`}>
+                            Conflict
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>38-60%</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       Tension and sharp edges; situations can feel strict or demanding.
                     </div>
                   </div>
-                </button>
+                </div>
 
                 {/* Break */}
-                <button
-                  onClick={() => scrollToSection('break-pattern')}
-                  className={`w-full text-left border rounded-lg overflow-hidden transition-all hover:shadow-md cursor-pointer ${theme === "light" ? "border-gray-200 hover:border-red-300" : "border-white/10 hover:border-red-700/50"}`}
+                <div
+                  className={`w-full border rounded-lg overflow-hidden ${theme === "light" ? "border-gray-200 hover:border-red-300" : "border-white/10 hover:border-red-700/50"}`}
                 >
                   <div className={`${theme === "light" ? "bg-red-50" : "bg-red-900/10"}`}>
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
-                        <span className={`font-semibold ${theme === "light" ? "text-red-700" : "text-red-300"}`}>Breakpoint</span>
                         <div className="flex flex-col">
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-red-700" : "text-red-300"}`}>Challenging</span>
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-red-600" : "text-red-200"}`}>Breakpoint</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col items-center">
                           <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>破</span>
                           <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Pò</span>
                         </div>
-                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-300"}`}>
-                          Conflict
-                        </span>
+                        <div className="flex flex-col items-end gap-1">
+                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-300"}`}>
+                            Conflict
+                          </span>
+                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>38-60%</span>
+                        </div>
                       </div>
-                      <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>38-60%</span>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
                       This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.
                     </div>
                   </div>
-                </button>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Triple Harmony Trine Groups Table */}
           <div id="triple-harmony-trines" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Triple Harmony · 三合</h2>
+            <div className="zodiac-sign-card">
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Soulmate · 三合</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -398,10 +443,10 @@ export default function AstrologySection() {
             </div>
           </div>
 
-          {/* Secret Friends Table */}
+          {/* Six Harmoniess Table */}
           <div id="secret-friends" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Harmonies · 六合</h2>
+            <div className="zodiac-sign-card">
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Secret Friends · 六合</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -499,7 +544,7 @@ export default function AstrologySection() {
 
           {/* Same Sign Explanation */}
           <div id="same-sign" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+            <div className="zodiac-sign-card">
               <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Same Sign · 同生肖</h2>
               
               <div className="mb-4">
@@ -586,7 +631,7 @@ export default function AstrologySection() {
                           You understand each other's moods quickly
                         </li>
                         <li>
-                          Is not as karmically special as a "Triple Harmony or Secret Friends" pattern.
+                          Is not as karmically special as a "Triple Harmony or Six Harmoniess" pattern.
                         </li>
                       </ul>
                     </div>
@@ -598,8 +643,8 @@ export default function AstrologySection() {
 
           {/* Six Conflicts Table */}
           <div id="six-conflicts" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Conflicts · 六冲</h2>
+            <div className="zodiac-sign-card">
+              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Magnetic Opposites · 六冲</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -698,8 +743,8 @@ export default function AstrologySection() {
 
           {/* Six Harms Table */}
           <div id="six-harms" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Harms · 六害</h2>
+            <div className="zodiac-sign-card">
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Challenging · 六害</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -798,8 +843,8 @@ export default function AstrologySection() {
 
           {/* Punishment Table */}
           <div id="punishment" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Punishment · 刑</h2>
+            <div className="zodiac-sign-card">
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Challenging · 刑</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -942,8 +987,8 @@ export default function AstrologySection() {
 
           {/* Break Table */}
           <div id="break-pattern" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Breakpoints · 破</h2>
+            <div className="zodiac-sign-card">
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Challenging · 破</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -1042,7 +1087,7 @@ export default function AstrologySection() {
 
           {/* What Shapes Your Match Score Section */}
           <div id="what-shapes-score" className="mb-6">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+            <div className="zodiac-sign-card">
               <h2 className="astrology-heading-secondary mb-4" style={{ fontSize: '1.5rem', fontWeight: '600' }}>What Shapes Your Match Score</h2>
               
               <div className="space-y-3">
@@ -1091,7 +1136,7 @@ export default function AstrologySection() {
 
           {/* Five Elements Reference Section */}
           <div id="five-elements" className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+            <div className="zodiac-sign-card">
               <h2 className="astrology-heading-secondary mb-4" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Five Elements (五行)</h2>
 
               <div className="mb-6">
@@ -1259,7 +1304,7 @@ export default function AstrologySection() {
 
           {/* Chinese Zodiac Calendar Section */}
           <div id="chinese-zodiac-calendar" className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+            <div className="zodiac-sign-card">
               <h2 className="astrology-heading-secondary mb-4" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Chinese Zodiac Calendar</h2>
 
               <div className="mb-6">

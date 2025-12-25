@@ -86,7 +86,7 @@ function getChinesePatternLine(
     san_he: "San He (三合) \"Three Harmonies\"",
     same_trine: "Same Trine (三会)",
     same_animal: "Same Animal",
-    liu_he: "Liu He (六合) \"Secret Friends\"",
+    liu_he: "Liu He (六合) \"Six Harmoniess\"",
     liu_chong: "Liu Chong (六冲) \"Six Conflicts\"",
     liu_hai: "Liu Hai (六害) \"Six Harms\"",
     xing: "Xing (刑) \"Punishment\"",
@@ -147,7 +147,7 @@ export function calculateConnection(a: MatchInput, b: MatchInput): MatchResult {
     Excellent: "Excellent Match",
     Favourable: "Favourable Match",
     Neutral: "Neutral Match",
-    "Magnetic Opposites": "Magnetic Opposites",
+    "Six Conflicts": "Six Conflicts",
     Difficult: "Difficult Match",
   };
   const label = tierLabels[matchResult.tier] || chinesePatternType;

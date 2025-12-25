@@ -96,7 +96,7 @@ export interface SimpleConnectionBox {
   score: number;               // e.g. 95
   headingLine: string;         // "Soulmate Match · 95%"
   pairLine: string;            // "Aquarius/Monkey × Sagittarius/Rabbit"
-  chineseLine: string;         // "Monkey × Rabbit — Liu He (六合) "Six Harmonies / Secret Friends" (Cross-Trine)"
+  chineseLine: string;         // "Monkey × Rabbit — Liu He (六合) "Six Harmonies / Six Harmoniess" (Cross-Trine)"
   chineseDescription?: string; // Pattern-specific description paragraph
   chineseTagline?: string;     // NEW: Tagline from detailed compatibility (e.g. "Action and antics")
   westernSignLine: string;     // "Aquarius × Pisces — Dreamy and imaginative; Aquarius thinks in systems..."

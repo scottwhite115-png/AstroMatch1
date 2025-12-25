@@ -90,9 +90,9 @@ const PATTERN_META: Record<ChinesePattern, PatternMeta> = {
   LIU_HE: {
     id: "LIU_HE",
     emoji: "💫",
-    labelEn: "Secret Friends",
-    labelFull: "Liu He 六合 · Secret Friends",
-    tagline: "Quietly strong bond that feels safe, loyal, and steady when you choose each other.",
+    labelEn: "Six Harmoniess",
+    labelFull: "Liu He 六合 · Six Harmoniess",
+    tagline: "Six Harmonies pattern; quick, idea-driven connection with generally easy rapport and the occasional sharp edge when you're both wound up.",
     min: 68,
     max: 91,
     highStart: 82,
@@ -205,7 +205,7 @@ function getChineseBaseScore(
     return 82;
   }
 
-  // Liu He - Secret Friends
+  // Liu He - Six Harmoniess
   if (pattern === 'LIU_HE') {
     if (elementRelation === 'same') return 86;
     if (elementRelation === 'compatible') return 84;
@@ -305,7 +305,7 @@ function scoreFromWesternAspect(rel: WesternAspectRelation): number {
     case "HARD":
       return -6;
     case "OPPOSITION":
-      // you may choose -4 and then separately mark Magnetic Opposites in UI
+      // you may choose -4 and then separately mark Six Conflicts in UI
       return -4;
     default:
       return 0;

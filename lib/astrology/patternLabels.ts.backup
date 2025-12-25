@@ -10,35 +10,6 @@ export type ChinesePattern =
   | "XING"
   | "PO";
 
-export type ChineseOverlayPattern = 'LIU_CHONG' | 'LIU_HAI' | 'XING' | 'PO';
-
-export type ConnectionArchetype =
-  | 'TRIPLE_HARMONY'   // San He
-  | 'SUPPORTIVE_ALLY'  // Liu He
-  | 'OPPOSITES'        // Liu Chong
-  | 'LESSON_REPAIR'    // Hai / Xing / Po only
-  | 'MIRROR'           // Same sign
-  | 'OPEN_PATTERN';    // No big pattern
-
-/**
- * Helper to check for damage overlays
- */
-export function hasDamageOverlay(
-  overlays: ChineseOverlayPattern[]
-): boolean {
-  return overlays.some(o => o === 'LIU_HAI' || o === 'XING' || o === 'PO');
-}
-
-/**
- * Helper to check for self-punishment
- */
-export function hasSelfPunishment(
-  pattern: ChinesePattern,
-  overlays: ChineseOverlayPattern[]
-): boolean {
-  return pattern === 'SAME_SIGN' && overlays.includes('XING');
-}
-
 /**
  * Short label used in the small pill, before the score.
  * Returns English translation phrase only (Chinese symbols handled separately).
@@ -48,17 +19,17 @@ export function hasSelfPunishment(
 export function getPatternPillLabel(pattern: ChinesePattern): string {
   switch (pattern) {
     case "SAN_HE":
-      return "Soulmate Match";
+      return "Triple Harmony";
     case "LIU_HE":
-      return "Secret Friends Match";
+      return "Secret Friends";
     case "SAME_SIGN":
       return "Same Sign";
     case "NEUTRAL":
       return "Neutral";
     case "LIU_CHONG":
-      return "Magnetic Opposites";
+      return "Six Conflicts";
     case "LIU_HAI":
-      return "Challenging Match";
+      return "Six Harms";
     case "XING":
       return "Punishment";
     case "PO":
@@ -106,7 +77,7 @@ export function getPatternHeaderLabel(pattern: ChinesePattern): string {
     case "SAN_HE":
       return "Triple Harmony 三合";
     case "LIU_HE":
-      return "Six Harmonies 六合";
+      return "Secret Friends 六合";
     case "SAME_SIGN":
       return "Same Sign";
     case "NEUTRAL":
@@ -152,55 +123,33 @@ export function getPatternIcon(pattern: ChinesePattern): string {
 
 /**
  * Short educational tagline explaining the Chinese structure.
- * This sits directly under the match pill.
+ * This sits directly under the % header.
  */
-export function getPatternTagline(
-  pattern: ChinesePattern | "NO_PATTERN",
-  overlays?: ChineseOverlayPattern[]
-): string {
+export function getPatternTagline(pattern: ChinesePattern | "NO_PATTERN"): string {
   // Handle NO_PATTERN as alias for NEUTRAL (from matchEngine)
   if (pattern === "NO_PATTERN") {
     pattern = "NEUTRAL";
   }
   
-  const overlayArray = overlays || [];
-  const hasLiuChong = overlayArray.includes('LIU_CHONG');
-  const hasDamage = hasDamageOverlay(overlayArray);
-  const selfPunish = hasSelfPunishment(pattern, overlayArray);
-
-  // Magnetic Opposites / Six Conflicts
-  if (hasLiuChong) {
-    return 'Strong, opposite-style spark between very different types – exciting, vivid, and rarely boring.';
-  }
-
   switch (pattern) {
     case "SAN_HE":
-      // Soulmate / San He
-      return "Two souls moving in perfect rhythm – effortless harmony and shared purpose.";
+      return "High natural harmony and shared rhythm; when you're aligned, this connection moves fast and far.";
     case "LIU_HE":
-      // Secret Friends / Six Harmonies
-      return "Quiet, loyal connection that feels safe to lean on and good in everyday life.";
+      return "Quietly strong bond that feels safe, loyal, and steady when you choose each other.";
     case "SAME_SIGN":
-      // Same Sign (Chinese)
-      if (selfPunish) {
-        return 'Familiar mirror where the same scenes repeat until one of you finally changes the script.';
-      }
-      return 'Mirror-like connection where you recognise your own strengths and blind spots in each other.';
-    case "LIU_HAI":
-      // Challenging Match (Six Harms specifically)
-      return 'Lesson-heavy connection where attraction is mixed with extra tests and tension.';
-    case "XING":
-    case "PO":
-      // Other challenging patterns
-      return 'Lesson-heavy connection where attraction is mixed with extra tests and tension.';
+      return "Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.";
     case "NEUTRAL":
+      return "No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
+    case "LIU_CHONG":
+      return "Magnetic opposites with sharp edges; big lessons, not automatic comfort.";
+    case "LIU_HAI":
+      return "Sensitive pattern where small misreads can snowball; this match needs extra patience and very clear communication.";
+    case "XING":
+      return "Tension and sharp edges; situations can feel strict or demanding.";
+    case "PO":
+      return "This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.";
     default:
-      // Check if there's damage on a neutral base
-      if (hasDamage) {
-        return 'Lesson-heavy connection where attraction is mixed with extra tests and tension.';
-      }
-      // Pure neutral, no damage
-      return 'Open-ended, easygoing connection that mostly becomes what you make of it together.';
+      return "No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.";
   }
 }
 
@@ -219,8 +168,8 @@ export function getPatternHeaderText(pattern: ChinesePattern): string {
  *
  * Examples (after you append " · 87%"):
  *   "San He 三合 · Triple Harmony"
- *   "Liu He 六合 · Six Harmonies"
- *   "Liu Chong 六冲 · Six Conflicts"
+ *   "Liu He 六合 · Secret Friends"
+ *   "Liu Chong 六冲 · Clash & Confrontation"
  *   "Neutral · No Strong Pattern"
  */
 export function getPatternHeadingPrefix(pattern: ChinesePattern): string {
@@ -231,7 +180,7 @@ export function getPatternHeadingPrefix(pattern: ChinesePattern): string {
 
     case "LIU_HE":
       // softer, ally-style pattern
-      return "Liu He 六合 · Six Harmonies";
+      return "Liu He 六合 · Secret Friends";
 
     case "SAME_SIGN":
       // same Chinese animal – intense mirror vibe
@@ -243,7 +192,7 @@ export function getPatternHeadingPrefix(pattern: ChinesePattern): string {
 
     case "LIU_CHONG":
       // clash / conflict pattern
-      return "Liu Chong 六冲 · Six Conflicts";
+      return "Liu Chong 六冲 · Clash & Confrontation";
 
     case "LIU_HAI":
       // "six harms" – steady irritation

@@ -65,7 +65,7 @@ export function classify(input: ClassifyInput): { tier: Tier; badges: string[]; 
   if (sameTrine(eastA, eastB)) badges.push("Same Trine");
 
   if (EAST_OPPOSITE[eastA] === eastB) {
-    badges.push("Magnetic Opposites");
+    badges.push("Six Conflicts");
     return { tier: "challenging", badges, tooltip: TIER_TOOLTIP["challenging"] };
   }
   if (CN_WORST[eastA] === eastB || CN_WORST[eastB] === eastA) {

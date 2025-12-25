@@ -299,7 +299,7 @@ type Label =
   | 'Excellent Match'
   | 'Favourable Match'
   | 'Neutral Match'
-  | 'Magnetic Opposites'
+  | 'Six Conflicts'
   | 'Difficult Match';
 
 interface MatchResult {
@@ -349,7 +349,7 @@ export function baseLabelFromScore(score: number): Label {
   if (score >= 75) return 'Excellent Match';
   if (score >= 60) return 'Favourable Match';
   if (score >= 50) return 'Neutral Match';
-  if (score >= 35) return 'Magnetic Opposites';
+  if (score >= 35) return 'Six Conflicts';
   return 'Difficult Match';
 }
 
@@ -442,7 +442,7 @@ export function computeMatch(
       if (
         label === 'Favourable Match' ||
         label === 'Neutral Match' ||
-        label === 'Magnetic Opposites' ||
+        label === 'Six Conflicts' ||
         label === 'Difficult Match'
       ) {
         label = 'Excellent Match';
@@ -457,9 +457,9 @@ export function computeMatch(
   // C. Tension / damage patterns
 
   if (chinesePattern === 'liu_chong') {
-    // Always Magnetic Opposites
+    // Always Six Conflicts
     score = clamp(score, 35, 49);
-    label = 'Magnetic Opposites';
+    label = 'Six Conflicts';
   }
 
   if (chinesePattern === 'xing') {
@@ -486,7 +486,7 @@ export function computeMatch(
       if (score > 49) score = 49;
       if (label === 'Favourable Match' || label === 'Neutral Match') {
         label = chinesePattern === 'liu_chong'
-          ? 'Magnetic Opposites'
+          ? 'Six Conflicts'
           : 'Difficult Match';
       }
     } else if (isHarmony) {
@@ -942,8 +942,8 @@ function mapToLabel(labelString: string): Label {
     'Good Friends Match': 'Neutral Match',
     'Sparky Friends': 'Neutral Match',
     'Neutral Match': 'Neutral Match',
-    'Opposites Attract': 'Magnetic Opposites',
-    'Magnetic Opposites': 'Magnetic Opposites',
+    'Opposites Attract': 'Six Conflicts',
+    'Six Conflicts': 'Six Conflicts',
     'Difficult Match': 'Difficult Match',
     'Challenging Match': 'Difficult Match',
   };
@@ -974,7 +974,7 @@ export function computeMatchScore(
 
 /**
  * Generates a match label using the old classifier engine with pattern adjustments
- * Returns: Soulmate Match, Twin Flame Match, Excellent Match, Neutral Match, Magnetic Opposites, or Difficult Match
+ * Returns: Soulmate Match, Twin Flame Match, Excellent Match, Neutral Match, Six Conflicts, or Difficult Match
  * Note: Good Friends label has been removed and now maps to Neutral Match
  */
 export function labelFromScore(score: number, userA?: UserProfile, userB?: UserProfile, western?: WesternPairInfo, pattern?: PatternMeta): string {
@@ -1007,7 +1007,7 @@ export function labelFromScore(score: number, userA?: UserProfile, userB?: UserP
       "Excellent Match": "Excellent Match",
       "Favourable Match": "Favourable Match",
       "Neutral Match": "Neutral Match",
-      "Magnetic Opposites": "Magnetic Opposites",
+      "Six Conflicts": "Six Conflicts",
       "Difficult Match": "Difficult Match",
     };
     
@@ -2025,11 +2025,12 @@ export function buildSimpleConnectionBox(
     
     // Override with new values (use getConnectionBlurb descriptions for baseTagline)
     matchEngineResult.pillLabel = newPillLabel;
-    matchEngineResult.baseTagline = newBaseTagline;
+    matchEngineResult.baseTagline = newBaseTagline; // THIS IS THE KEY - SET IT HERE
     matchEngineResult.score = cappedScore; // Use capped score
     matchEngineResult.patternFullLabel = `${newPillLabel} · ${cappedScore}%`;
     
     console.log('[buildSimpleConnectionBox] Match engine result:', matchEngineResult);
+    console.log('[buildSimpleConnectionBox] ✅ baseTagline set to:', newBaseTagline);
   } catch (error) {
     console.error('[buildSimpleConnectionBox] Error calling match engine:', error);
     // Fallback values - use getConnectionBlurb for descriptions
@@ -2071,15 +2072,21 @@ export function buildSimpleConnectionBox(
   
   // CRITICAL: Always override baseTagline with getConnectionBlurb to ensure latest descriptions are used
   // This ensures we ALWAYS use the latest descriptions even if matchEngine returned old ones
+  // Recalculate outside try block to ensure variables are in scope
   try {
     const { getConnectionBlurb, deriveArchetype, deriveWesternEase } = require('@/lib/connectionUi');
-    const archetype = deriveArchetype(chineseBase, chineseOverlays);
-    const ease = deriveWesternEase(westernEase);
-    const finalBaseTagline = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
+    const { extractChineseBase, extractChineseOverlays, extractWesternRelation } = require('@/lib/connectionUiHelpers');
+    // Recalculate everything to ensure we have the right values
+    const finalChineseBase = extractChineseBase(chinesePattern) as ChineseBasePattern;
+    const finalChineseOverlays = extractChineseOverlays(chinesePattern, undefined, '') as ChineseOverlayPattern[];
+    const finalWesternRelation = extractWesternRelation(newMatchContext.westElementRelation);
+    const finalArchetype = deriveArchetype(finalChineseBase, finalChineseOverlays);
+    const finalEase = deriveWesternEase(finalWesternRelation);
+    const finalBaseTagline = getConnectionBlurb(finalArchetype, finalEase, finalChineseBase, finalChineseOverlays);
     matchEngineResult.baseTagline = finalBaseTagline;
-    console.log('[buildSimpleConnectionBox] ✅ Overrode baseTagline with getConnectionBlurb:', finalBaseTagline);
+    console.log('[buildSimpleConnectionBox] ✅ FINAL OVERRIDE - baseTagline set to:', finalBaseTagline);
   } catch (overrideError) {
-    console.error('[buildSimpleConnectionBox] Error overriding baseTagline:', overrideError);
+    console.error('[buildSimpleConnectionBox] ❌ Error in final override:', overrideError);
   }
 
   // ===== EXTRACT TAGLINES FROM DETAILED COMPATIBILITY DESCRIPTIONS =====
@@ -2265,14 +2272,14 @@ export function buildConnectionBoxTop(userA: UserProfile, userB: UserProfile): C
       chineseLine = `${animalALabel} × ${animalBLabel} — Same Trine (三会) "Shared Elemental Nature"`;
     }
   } else if ((pattern?.key === "liu_he" || chinesePattern === 'liu_he')) {
-    // Liu He: {A} × {B} — Liu He (六合) "Six Harmonies / Secret Friends" ({SameOrCrossTrine})
+    // Liu He: {A} × {B} — Liu He (六合) "Six Harmonies / Six Harmoniess" ({SameOrCrossTrine})
     const patternLabel = pattern?.label || 'Liu He (六合)';
     if (trineA && trineB && trineA !== trineB) {
-      chineseLine = `${animalALabel} × ${animalBLabel} — ${patternLabel} "Six Harmonies / Secret Friends" (Cross-Trine)`;
+      chineseLine = `${animalALabel} × ${animalBLabel} — ${patternLabel} "Six Harmonies / Six Harmoniess" (Cross-Trine)`;
     } else if (trineA && trineB && trineA === trineB) {
-      chineseLine = `${animalALabel} × ${animalBLabel} — ${patternLabel} "Six Harmonies / Secret Friends" (Same Trine)`;
+      chineseLine = `${animalALabel} × ${animalBLabel} — ${patternLabel} "Six Harmonies / Six Harmoniess" (Same Trine)`;
     } else {
-      chineseLine = `${animalALabel} × ${animalBLabel} — ${patternLabel} "Six Harmonies / Secret Friends"`;
+      chineseLine = `${animalALabel} × ${animalBLabel} — ${patternLabel} "Six Harmonies / Six Harmoniess"`;
     }
   } else if ((pattern?.key === "liu_chong" || chinesePattern === 'liu_chong')) {
     // Check if also has Xing pattern

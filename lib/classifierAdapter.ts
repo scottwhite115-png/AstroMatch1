@@ -172,9 +172,9 @@ function getChineseRelationDescription(eastA: EastAnimal, eastB: EastAnimal, cla
     };
   }
   
-  if (classification.badges.includes("Secret Friend")) {
+  if (classification.badges.includes("Six Harmonies")) {
     return {
-      title: "Secret Friend (Six Harmonies)",
+      title: "Six Harmonies (Six Harmonies)",
       tagline: "Hidden support and mutual understanding",
       summary: "You share a secret friendship bond. This connection offers hidden support, mutual understanding, and complementary strengths.",
     };
@@ -182,7 +182,7 @@ function getChineseRelationDescription(eastA: EastAnimal, eastB: EastAnimal, cla
   
   if (classification.badges.includes("Conflict")) {
     return {
-      title: "⚡ Magnetic Opposites (Six Conflicts)",
+      title: "⚡ Six Conflicts (Six Conflicts)",
       tagline: "Opposites attract with magnetic chemistry",
       summary: "Opposing instincts — sparks can fly, but friction grows easily. These pairs often teach each other powerful life lessons, not comfort.",
     };
@@ -313,9 +313,9 @@ function getWesternRelationDescription(westA: string, westB: string, classificat
   let elementRelation = "";
   let summary = "";
   
-  // Check for Magnetic Opposites (West) first - this takes priority
-  if (classification.badges.includes("Magnetic Opposites (West)")) {
-    elementRelation = `⚡ Magnetic Opposites`;
+  // Check for Six Conflicts (West) first - this takes priority
+  if (classification.badges.includes("Six Conflicts (West)")) {
+    elementRelation = `⚡ Six Conflicts`;
     summary = "You are magnetic opposites. This creates intense attraction and chemistry, but requires maturity, patience, and balance to thrive.";
   } else if (classification.badges.includes("Same Element (West)")) {
     const elem = elemA.charAt(0).toUpperCase() + elemA.slice(1);
@@ -392,7 +392,7 @@ function getWesternElement(sign: string): WesternElement {
 // Helper to map pattern from badges to pattern type
 function getChinesePatternFromBadges(badges: string[]): "SAN_HE" | "LIU_HE" | "LIU_CHONG" | "LIU_HAI" | "XING" | "PO" | "NONE" {
   if (badges.includes("Same Trine")) return "SAN_HE";
-  if (badges.includes("Secret Friend")) return "LIU_HE";
+  if (badges.includes("Six Harmonies")) return "LIU_HE";
   if (badges.includes("Conflict")) return "LIU_CHONG";
   if (badges.includes("Harm")) return "LIU_HAI";
   if (badges.includes("Punishment")) return "XING";
@@ -494,7 +494,7 @@ export function computeMatchWithClassifier(
   // Combine all badges and tags
   const tags = [...classification.badges];
   if (classification.tier === "opposites_attract") {
-    tags.push("⚡ Magnetic Opposites");
+    tags.push("⚡ Six Conflicts");
   }
   
   return {

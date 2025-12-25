@@ -178,7 +178,7 @@ export function BottomNavigation() {
       />
       
       {/* Navigation content */}
-      <div className="relative w-full h-20" style={{
+      <div className="relative w-full h-20 pointer-events-auto" style={{
         marginBottom: 'max(env(safe-area-inset-bottom), 20px)'
       }}>
         {/* Flat navigation bar */}
@@ -190,8 +190,8 @@ export function BottomNavigation() {
             const Icon = item.icon
             // Check if current path matches the nav item or if it's a profile sub-route or astrology sub-route
             const isActive = pathname === item.path || 
-              (item.path === "/profile/profile" && pathname.startsWith("/profile/")) ||
-              (item.path === "/astrology" && pathname.startsWith("/astrology"))
+              (item.path === "/profile/profile" && pathname?.startsWith("/profile/")) ||
+              (item.path === "/astrology" && pathname?.startsWith("/astrology"))
             
             // Use label directly
             const displayLabel = item.label
@@ -200,8 +200,12 @@ export function BottomNavigation() {
               <button
                 type="button"
                 key={item.path}
-                className="flex flex-col items-center justify-center relative transition-all duration-300 gap-1 z-10"
-                onClick={() => handleNavClick(item.path)}
+                className="flex flex-col items-center justify-center relative transition-all duration-300 gap-1 z-20 cursor-pointer"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  handleNavClick(item.path)
+                }}
               >
                 {/* Icon/Photo container */}
                 <div className="relative flex items-center justify-center w-12 h-12 transition-all duration-300">

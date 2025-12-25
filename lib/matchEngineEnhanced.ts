@@ -187,7 +187,7 @@ export function detectBasePattern(
     return { basePattern: "SAN_HE", sanHeTrineName: sanHeTrine };
   }
   
-  // 3. Liu He (Secret Friends)
+  // 3. Liu He (Six Harmoniess)
   if (isPairInList(a, b, LIU_HE_PAIRS)) {
     return { basePattern: "LIU_HE" };
   }

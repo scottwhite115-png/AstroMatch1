@@ -39,7 +39,7 @@ export default function ConnectionBoxUpdatedDemoPage() {
     sameWesternSign: false,
   });
 
-  // Example 3: Secret Friends (Liu He)
+  // Example 3: Six Harmoniess (Liu He)
   const example3 = calculateEnhancedMatch({
     pattern: "LIU_HE",
     chineseAnimalA: normalizeChineseAnimal("Rat"),
@@ -50,7 +50,7 @@ export default function ConnectionBoxUpdatedDemoPage() {
     sameWesternSign: false,
   });
 
-  // Example 4: Magnetic Opposites (Liu Chong)
+  // Example 4: Six Conflicts (Liu Chong)
   const example4 = calculateEnhancedMatch({
     pattern: "LIU_CHONG",
     chineseAnimalA: normalizeChineseAnimal("Rat"),
@@ -200,12 +200,12 @@ export default function ConnectionBoxUpdatedDemoPage() {
           />
         </div>
 
-        {/* Example 3: Secret Friends */}
+        {/* Example 3: Six Harmoniess */}
         <div className="space-y-3">
           <h2 className={`text-2xl font-semibold ${
             theme === "light" ? "text-slate-800" : "text-slate-200"
           }`}>
-            Example 3: Secret Friends Match
+            Example 3: Six Harmoniess Match
           </h2>
           <p className={`text-sm ${
             theme === "light" ? "text-slate-600" : "text-slate-400"
@@ -234,12 +234,12 @@ export default function ConnectionBoxUpdatedDemoPage() {
           />
         </div>
 
-        {/* Example 4: Magnetic Opposites */}
+        {/* Example 4: Six Conflicts */}
         <div className="space-y-3">
           <h2 className={`text-2xl font-semibold ${
             theme === "light" ? "text-slate-800" : "text-slate-200"
           }`}>
-            Example 4: Magnetic Opposites
+            Example 4: Six Conflicts
           </h2>
           <p className={`text-sm ${
             theme === "light" ? "text-slate-600" : "text-slate-400"

@@ -39,7 +39,7 @@ function eastRelation(a: East, b: East) {
 
   if (same) return "Same Animal — like meets like.";
   if (inTrine) return "Trine Allies — kindred spirits.";
-  if (secret) return "Secret Friends — quiet affinity.";
+  if (secret) return "Six Harmoniess — quiet affinity.";
   if (isClash) return "Classic Clash — strong pull, needs care.";
   return "Workable Mix — balance brings the best out.";
 }
