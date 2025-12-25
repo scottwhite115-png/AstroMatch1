@@ -169,7 +169,7 @@ function getPatternGradientColors(pattern?: string): { start: string; end: strin
     return { start: '#fbbf24', end: '#f59e0b' }; // amber-400 to amber-500
   }
   
-  // Liu He - Secret Friends (Purple)
+  // Liu He - Six Harmoniess (Purple)
   if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES')) {
     return { start: '#c084fc', end: '#e879f9' }; // purple-400 to fuchsia-400
   }
@@ -3353,37 +3353,10 @@ export default function AstrologyProfilePage({
                   
                   return (
                     <>
-                      {/* Outer border wrapper for entire profile card */}
+                      {/* Border removed from profile card */}
+                      {/* Photo Carousel - border removed */}
                       {photos.some(p => p.hasImage) && (
-                        <div
-                          style={{
-                            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                            padding: '4px',
-                            borderRadius: '1.5rem',
-                            boxSizing: 'border-box',
-                            width: '100%',
-                          }}
-                        >
-                          <div
-                            style={{
-                              borderRadius: '1.5rem',
-                              background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                              overflow: 'visible',
-                            }}
-                          >
-                      {/* Photo Carousel with Border - matches discover section */}
-                      {photos.some(p => p.hasImage) && (
-                        <div
-                          className="w-full rounded-3xl relative"
-                          style={{ 
-                            background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                            padding: '4px',
-                            borderRadius: '1.5rem',
-                            overflow: 'hidden',
-                            boxSizing: 'border-box',
-                          }}
-                        >
-                          <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
+                        <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
                             <ProfilePhotoCarouselWithRanking
                               images={photos.filter(p => p.hasImage).map(p => p.src || "/placeholder.svg")}
                               profileName={name || ""}
@@ -3436,7 +3409,6 @@ export default function AstrologyProfilePage({
                               patternColors={patternColors}
                             />
                           </div>
-                        </div>
                       )}
 
                       {/* Match Box - Always visible, matches discover section */}
@@ -3533,18 +3505,9 @@ export default function AstrologyProfilePage({
                                       marginTop: '-36px',
                                     }}
                                   >
-                                    <div
-                                      style={{
-                                        background: `linear-gradient(to right, ${patternColors.start}, ${patternColors.end})`,
-                                        padding: '0 4px 4px 4px',
-                                        borderRadius: '1.5rem',
-                                        boxSizing: 'border-box',
-                                        width: '100%',
-                                      }}
-                                    >
                                       <div
                                         style={{
-                                          borderRadius: 'calc(1.5rem - 3px)',
+                                          borderRadius: '1.5rem',
                                           backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
                                           overflow: 'hidden',
                                         }}
@@ -3692,7 +3655,6 @@ export default function AstrologyProfilePage({
                                 onMessage={undefined}
                                 onViewProfile={() => setShowConnectionProfile(!showConnectionProfile)}
                               />
-                            </div>
                           </div>
                         );
                           })()}
