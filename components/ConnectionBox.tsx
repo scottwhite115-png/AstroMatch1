@@ -7,6 +7,7 @@ const ChevronDown = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Updated imports for new matchLabelEngine
 import { 
   getMatchLabel,
   deriveArchetype,
@@ -204,11 +205,8 @@ function getMatchLabelAndTagline(
   // Get the match label using new API
   const primaryLabel = getMatchLabel(archetype, basePattern, overlays, finalScore);
   
-  // Get the blurb (tagline) using new API
-  const westernRelation = convertToWesternRelation(elementRelation);
-  const ease: WesternEase = westernRelation === 'SAME' || westernRelation === 'COMPATIBLE' ? 'EASY' :
-                            westernRelation === 'SEMI_COMPATIBLE' || westernRelation === 'NEUTRAL' ? 'MEDIUM' : 'HARD';
-  const tagline = getConnectionBlurb(archetype, ease, basePattern, overlays);
+  // Get the tagline using new API
+  const tagline = getConnectionTagline(archetype, basePattern, overlays);
 
   return {
     primaryLabel,
