@@ -45,12 +45,12 @@ import {
   hasDamageOverlay,
   applySameSignCap,
   deriveWesternEase,
+  getConnectionBlurb,
   type ChineseBasePattern,
   type ChineseOverlayPattern,
   type WesternEase,
   type WesternElementRelation
-} from "@/lib/matchLabelEngine"
-import { getConnectionBlurb } from "@/lib/connectionUi"
+} from "@/lib/connectionUi"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -93,7 +93,7 @@ const Settings = ({ className }: { className?: string }) => (
 // User profile: Leo-Rabbit (default, loaded from localStorage if available)
 // Each profile has westernSign and easternSign which are converted to UserProfile format
 // NEW RULES (70/30 system with computeMatch):
-// - Score ranges: 95-100 Soulmate Match, 85-94 Twin Flame Match, 75-84 Excellent Match, 60-74 Favourable Match, 50-59 Neutral Match, 35-49 Magnetic Opposites, 0-34 Difficult Match
+// - Score ranges: 95-100 Soulmate Match, 85-94 Twin Flame Match, 75-84 Excellent Match, 60-74 Favourable Match, 50-59 Neutral Match, 35-49 Six Conflicts, 0-34 Difficult Match
 // - Same West sign CANNOT be Soulmate/Twin Flame/Excellent (max is Favourable 60-74 or Neutral 50-59)
 // - San He + strong West (same_element/compatible_element, NOT same_sign) = Soulmate (95+) or Twin Flame (88-94)
 // - San He + semi/opposing West = Excellent (75+)
@@ -101,7 +101,7 @@ const Settings = ({ className }: { className?: string }) => (
 // - Liu He + semi/opposing = Favourable (60+)
 // - Same animal/same trine + strong West = Excellent (75+)
 // - Same animal/same trine + semi/opposing = Favourable (60+)
-// - Liu Chong = Magnetic Opposites (35-49)
+// - Liu Chong = Six Conflicts (35-49)
 // - Neutral East pattern = Neutral Match (50-59)
 // Profiles are enriched with tropical/sidereal signs calculated from birthdate
 // Test profiles cover diverse match scenarios across the full Chinese zodiac cycle
@@ -1078,11 +1078,32 @@ export default function MatchesPage() {
           // TODO: Uncomment above line when onboarding page is ready
         }
 
-        // 3. Update zodiac signs from profile if available
-        if (profile.western_sign && profile.chinese_sign) {
+        // 3. Update zodiac signs - recalculate from birthdate if available, otherwise use stored values
+        if (profile.birthdate) {
+          // Recalculate from birthdate to ensure we have the latest signs
+          const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
+          const userBirthDate = new Date(profile.birthdate)
+          const chineseZodiac = getChineseZodiacFromDate(userBirthDate)
+          
+          setUserZodiacSigns({
+            western: capitalizeSign(tropical), // Use tropical (most common)
+            chinese: capitalizeSign(chineseZodiac.animal)
+          })
+          
+          console.log('[Matches] ✅ Recalculated zodiac signs from birthdate:', {
+            birthdate: profile.birthdate,
+            western: tropical,
+            chinese: chineseZodiac.animal
+          })
+        } else if (profile.western_sign && profile.chinese_sign) {
+          // Fallback to stored values if birthdate not available
           setUserZodiacSigns({
             western: capitalizeSign(profile.western_sign),
             chinese: capitalizeSign(profile.chinese_sign)
+          })
+          console.log('[Matches] Using stored zodiac signs (no birthdate):', {
+            western: profile.western_sign,
+            chinese: profile.chinese_sign
           })
         }
 
@@ -1443,24 +1464,38 @@ export default function MatchesPage() {
     // Apply same-sign cap after blending Chinese + West
     // Use simpleBox.score as the blended score
     const blendedScore = simpleBox.score || 0;
-    const cappedScore = applySameSignCap(blendedScore, chineseBase);
+    
+    // Check if it's a same-sign match (same Chinese animal)
+    const isSameSign = userEast.toLowerCase() === profileEast.toLowerCase();
+    const chineseBaseForCap = isSameSign ? 'SAME_SIGN' : chineseBase;
+    let cappedScore = applySameSignCap(blendedScore, chineseBaseForCap);
+    
+    // If it's a same-sign match and score is below 68%, ensure it's at least 68% (matching profile view tab behavior)
+    if (isSameSign && cappedScore < 68) {
+      cappedScore = 68;
+    }
     
     // Get pill label using new match label engine
     const primaryLabel = getMatchLabel(archetype, chineseBase, chineseOverlays, cappedScore);
     
-    // Use baseTagline from simpleBox if available (from buildConnectionBox), otherwise calculate it
-    const connectionBlurb = simpleBox.baseTagline || getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
-    // Map match label to rank key (updated - Good Friends removed, now maps to Neutral Match)
+    // ALWAYS use the latest getConnectionBlurb to ensure new descriptions are displayed
+    const connectionBlurb = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
+    // Map match label to rank key (updated with new labels)
     const labelToRankKey: Record<string, RankKey> = {
       "Soulmate Match": "perfect",
       "Twin Flame Match": "excellent",
+      "Triple Harmony Match": "excellent",
       "Excellent Match": "excellent",
       "Favourable Match": "good",
-      "Good Friends": "good", // Now maps to good
-      "Good Friends Match": "good", // Now maps to good
+      "Six Harmoniess Match": "good", // NEW label
+      "Good Friends": "good",
+      "Good Friends Match": "good",
       "Opposites Attract": "fair",
-      "Magnetic Opposites": "fair",
+      "Six Conflicts": "fair",
+      "Six Conflicts Match": "fair", // NEW label
+      "Same Sign Match": "fair",
       "Neutral Match": "fair",
+      "Challenging Match": "challenging",
       "Difficult Match": "challenging",
     };
     
@@ -1468,14 +1503,19 @@ export default function MatchesPage() {
     
     // Map label to tier (updated to support new match engine labels)
     const labelToTier = (label: string): Tier => {
-      // New match engine labels (from matchLabels.ts)
+      // New match engine labels
       if (label === "SOULMATE" || label === "SOULMATE MATCH" || label === "Soulmate Match") return "Soulmate";
       if (label === "TWIN FLAME" || label === "TWIN FLAME MATCH" || label === "Twin Flame Match") return "Twin Flame";
+      if (label === "Triple Harmony Match") return "Excellent";
       if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
+      if (label === "Six Harmoniess Match") return "Favourable"; // NEW label
       if (label === "Favourable Match") return "Favourable";
-      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable"; // Maps to Favourable
-      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Magnetic Opposites") return "Magnetic Opposites";
+      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
+      if (label === "Six Conflicts Match") return "Six Conflicts"; // NEW label
+      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Six Conflicts") return "Six Conflicts";
+      if (label === "Same Sign Match") return "Neutral";
       if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
+      if (label === "Challenging Match") return "Difficult"; // NEW label
       if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
       return "Neutral";
     };
@@ -1488,19 +1528,24 @@ export default function MatchesPage() {
       "TWIN FLAME": "🔥",
       "TWIN FLAME MATCH": "🔥",
       "Twin Flame Match": "🔥",
+      "Triple Harmony Match": "✨", // NEW label
       "HARMONIOUS": "✨",
       "HARMONIOUS MATCH": "✨",
       "Excellent Match": "✨",
+      "Six Harmoniess Match": "✨", // NEW label
       "Favourable Match": "✨",
       "Good Friends": "✨",
       "Good Friends Match": "✨",
       "OPPOSITES_ATTRACT": "⚡",
       "OPPOSITES ATTRACT": "⚡",
       "Opposites Attract": "⚡",
-      "Magnetic Opposites": "⚡",
+      "Six Conflicts": "⚡",
+      "Six Conflicts Match": "⚡", // NEW label
+      "Same Sign Match": "✨", // NEW label
       "NEUTRAL": "✨",
       "NEUTRAL MATCH": "✨",
       "Neutral Match": "✨",
+      "Challenging Match": "💔", // NEW label
       "DIFFICULT": "💔",
       "DIFFICULT MATCH": "💔",
       "Difficult Match": "💔",
@@ -1513,19 +1558,24 @@ export default function MatchesPage() {
       "TWIN FLAME": "rgb(255, 140, 0)",               // Astromatch Orange
       "TWIN FLAME MATCH": "rgb(255, 140, 0)",         // Astromatch Orange
       "Twin Flame Match": "rgb(255, 140, 0)",         // Astromatch Orange
+      "Triple Harmony Match": "rgb(219, 39, 119)",    // NEW label - Hot Pink
       "HARMONIOUS": "rgb(219, 39, 119)",              // Hot Pink
       "HARMONIOUS MATCH": "rgb(219, 39, 119)",        // Hot Pink
       "Excellent Match": "rgb(219, 39, 119)",         // Hot Pink
+      "Six Harmoniess Match": "rgb(219, 39, 119)",    // NEW label - Hot Pink
       "Favourable Match": "rgb(219, 39, 119)",        // Hot Pink (same as Excellent)
       "Good Friends": "rgb(34, 139, 34)",             // Green
       "Good Friends Match": "rgb(34, 139, 34)",       // Green
       "OPPOSITES_ATTRACT": "rgb(239, 68, 68)",        // Red
       "OPPOSITES ATTRACT": "rgb(239, 68, 68)",        // Red
       "Opposites Attract": "rgb(239, 68, 68)",        // Red
-      "Magnetic Opposites": "rgb(239, 68, 68)",       // Red (same as Opposites Attract)
+      "Six Conflicts": "rgb(239, 68, 68)",       // Red (same as Opposites Attract)
+      "Six Conflicts Match": "rgb(239, 68, 68)", // NEW label - Red
+      "Same Sign Match": "rgb(34, 139, 34)",          // NEW label - Green
       "NEUTRAL": "rgb(34, 139, 34)",                  // Green
       "NEUTRAL MATCH": "rgb(34, 139, 34)",            // Green
       "Neutral Match": "rgb(34, 139, 34)",            // Green
+      "Challenging Match": "rgb(239, 68, 68)",        // NEW label - Red
       "DIFFICULT": "rgb(239, 68, 68)",                // Red
       "DIFFICULT MATCH": "rgb(239, 68, 68)",          // Red
       "Difficult Match": "rgb(239, 68, 68)",          // Red
@@ -1538,7 +1588,7 @@ export default function MatchesPage() {
     const parseChineseRelation = (line: string): string => {
       if (line.includes("Neutral Pattern")) return "Neutral alignment";
       if (line.includes("San He") || line.includes("三合")) return "San He (Triple Harmony)";
-      if (line.includes("Liu He") || line.includes("六合")) return "Liu He (Secret Friends)";
+      if (line.includes("Liu He") || line.includes("六合")) return "Liu He (Six Harmoniess)";
       if (line.includes("Liu Chong") || line.includes("六冲")) return "Six Conflicts";
       if (line.includes("Liu Hai") || line.includes("六害")) return "Six Harms";
       if (line.includes("Xing") || line.includes("刑")) return "Punishment";
@@ -1563,7 +1613,7 @@ export default function MatchesPage() {
     );
     
     return {
-      score: simpleBox.score,
+      score: cappedScore, // Use capped score (with same-sign 68% minimum) instead of raw score
       rank: simpleBox.matchLabel,
       rankLabel: simpleBox.matchLabel,
       rankKey: rankKey,
@@ -1630,7 +1680,7 @@ export default function MatchesPage() {
       // NEW: Match engine result fields from simpleBox
       pillLabel: primaryLabel, // Use new match label engine
       pattern: simpleBox.pattern,
-      patternFullLabel: simpleBox.patternFullLabel,
+      patternFullLabel: primaryLabel, // CRITICAL: Use new match label, not old simpleBox value
       baseTagline: connectionBlurb, // Use new match label engine connection blurb
       patternEmoji: simpleBox.patternEmoji,
       chemistryStars: simpleBox.chemistryStars,
@@ -1678,17 +1728,35 @@ export default function MatchesPage() {
       const userEast = capitalizeSign(userZodiacSigns.chinese) as East
       
       // Get user's Wu Xing year element from birthdate
+      // Use the profile we already fetched (userProfile state) or fetch fresh
       let userYearElement: any; // WuXing type
       try {
-        const userBirthInfo = localStorage.getItem("userBirthInfo");
-        if (userBirthInfo) {
-          const birthInfo = JSON.parse(userBirthInfo);
-          if (birthInfo.birthdate) {
-            const userBirthDate = new Date(birthInfo.birthdate);
-            const userYear = userBirthDate.getFullYear();
-            userYearElement = getWuXingYearElement(userYear);
-            console.log('[🚀 Match Engine] User Wu Xing year element:', userYearElement, 'from year', userYear);
+        // First try to get from the profile we already loaded (userProfile state)
+        // If not available, try localStorage
+        let userBirthdate: string | null = null;
+        
+        // Check if we have userProfile in state (from loadRealProfiles)
+        // userProfile is the database profile object, which has a birthdate field
+        if (userProfile && 'birthdate' in userProfile && userProfile.birthdate) {
+          userBirthdate = userProfile.birthdate as string;
+          console.log('[🚀 Match Engine] Using birthdate from userProfile state:', userBirthdate);
+        } else {
+          // Fallback to localStorage
+          const userBirthInfo = localStorage.getItem("userBirthInfo");
+          if (userBirthInfo) {
+            const birthInfo = JSON.parse(userBirthInfo);
+            if (birthInfo.birthdate) {
+              userBirthdate = birthInfo.birthdate;
+              console.log('[🚀 Match Engine] Using birthdate from localStorage:', userBirthdate);
+            }
           }
+        }
+        
+        if (userBirthdate) {
+          const userBirthDate = new Date(userBirthdate);
+          const userYear = userBirthDate.getFullYear();
+          userYearElement = getWuXingYearElement(userYear);
+          console.log('[🚀 Match Engine] User Wu Xing year element:', userYearElement, 'from year', userYear);
         } else {
           // Fallback: Use a default year for the Chinese animal to calculate Wu Xing
           // This is for design mode / testing purposes
@@ -3404,7 +3472,7 @@ export default function MatchesPage() {
                           }`}
                         />
                         <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                          💫 Liu He (Secret Friends)
+                          💫 Liu He (Six Harmoniess)
                         </span>
                       </label>
                       <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>

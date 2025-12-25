@@ -45,13 +45,16 @@ import {
 import { 
   getMatchLabel,
   deriveArchetype,
-  getConnectionBlurb,
   hasDamageOverlay,
   applySameSignCap,
+  getConnectionTagline,
   type ChineseBasePattern,
-  type ChineseOverlayPattern,
-  type WesternEase
+  type ChineseOverlayPattern
 } from "@/lib/matchLabelEngine"
+import {
+  type WesternEase,
+  getConnectionBlurb
+} from "@/lib/connectionUi"
 import {
   detectBasePattern,
   detectOverlayPatterns,
