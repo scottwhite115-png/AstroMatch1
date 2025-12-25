@@ -3562,7 +3562,6 @@ export default function AstrologyProfilePage({
                               </>
                             );
                           })()}
-                      }
 
                       {/* Connection Box - Always visible, matches discover section - Outside border (fallback) */}
                       {!photos.some(p => p.hasImage) && connectionBoxData && (() => {
