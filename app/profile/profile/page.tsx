@@ -3557,7 +3557,6 @@ export default function AstrologyProfilePage({
                                       onViewProfile={() => setShowConnectionProfile(false)}
                                     />
                                       </div>
-                                    </div>
                                   </div>
                                 )}
                               </>
