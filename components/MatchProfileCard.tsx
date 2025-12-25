@@ -328,7 +328,7 @@ export default function MatchProfileCard({
 
               {/* Match Box - Always visible, matches profile view tab exactly */}
               {connectionBoxData && profile.photos.length > 0 && (
-                <div className="relative w-full" style={{ marginTop: '-4px', marginBottom: '-34px', zIndex: 10 }}>
+                <div className="relative w-full" style={{ marginTop: '0', marginBottom: '-34px', zIndex: 10 }}>
                   <ConnectionBoxNew
                     tier={newTier}
                     score={connectionBoxData.score}
