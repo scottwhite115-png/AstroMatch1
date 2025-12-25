@@ -620,6 +620,146 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   </>
                 )}
               </div>
+
+          {/* Match Label Dropdown - Shows astrology details when pill is clicked */}
+          {showMatchLabelDropdown && (
+            <div 
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 0.5rem)',
+                left: 0,
+                right: 0,
+                width: '100%',
+                zIndex: 10002,
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+                    <div
+                      style={{
+                        borderRadius: '1.5rem',
+                        backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
+                        padding: '1.5rem',
+                        overflow: 'hidden',
+                      }}
+                    >
+                    {/* Chinese Zodiac Compatibility Section */}
+                    {connectionOverviewText && (
+                      <div className="mb-4 text-center">
+                        {/* Chinese Signs Display */}
+                        {chineseAnimalA && chineseAnimalB && (
+                          <div className="flex items-center justify-center gap-1.5 mb-2">
+                            {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
+                            <span className={`font-bold text-lg ${
+                              theme === "light" ? "text-slate-700" : "text-slate-200"
+                            }`}>
+                              {chineseAnimalA}
+                            </span>
+                            <span className={`text-lg ${
+                              theme === "light" ? "text-pink-500" : "text-pink-400"
+                            }`}>
+                              ♥
+                            </span>
+                            <span className={`font-bold text-lg ${
+                              theme === "light" ? "text-slate-700" : "text-slate-200"
+                            }`}>
+                              {chineseAnimalB}
+                            </span>
+                            {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
+                          </div>
+                        )}
+                        
+                        {chineseHeadingWithoutSignPair && (
+                          <div className="mb-1 text-center">
+                            {chineseHeadingWithoutSignPair
+                              .split(/,|;/)
+                              .map(part => part.trim())
+                              .filter(part => part.length > 0)
+                              .map((pattern, index) => (
+                                <h4 
+                                  key={index}
+                                  className={`text-lg font-bold ${
+                                    theme === "light" ? "text-slate-900" : "text-slate-100"
+                                  }`}
+                                >
+                                  {pattern}
+                                </h4>
+                              ))}
+                          </div>
+                        )}
+                        {/* TAGLINE - Display if available */}
+                        {connectionOverviewTagline && (
+                          <p className={`text-lg italic font-bold mb-0.5 text-center ${
+                            theme === "light" ? "text-black" : "text-white"
+                          }`}>
+                            {connectionOverviewTagline}
+                          </p>
+                        )}
+                        <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                          {connectionOverviewText}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Western Sun Sign Compatibility Section */}
+                    {westernCompatibilityDescription && (
+                      <div className={`${connectionOverviewText ? "pt-4 border-t" : ""} text-center ${
+                        theme === "light" ? "border-gray-200" : "border-indigo-400/20"
+                      }`}
+                      style={{ paddingBottom: '1rem' }}
+                      >
+                        {/* Western Signs Display */}
+                        {westernSignA && westernSignB && (
+                          <div className="flex items-center justify-center gap-1.5 mb-2">
+                            {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
+                            <span className={`font-bold text-lg ${
+                              theme === "light" ? "text-slate-700" : "text-slate-200"
+                            }`}>
+                              {westernSignA}
+                            </span>
+                            <span className={`text-lg ${
+                              theme === "light" ? "text-pink-500" : "text-pink-400"
+                            }`}>
+                              ♥
+                            </span>
+                            <span className={`font-bold text-lg ${
+                              theme === "light" ? "text-slate-700" : "text-slate-200"
+                            }`}>
+                              {westernSignB}
+                            </span>
+                            {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
+                          </div>
+                        )}
+                        
+                        {westernHeadingWithoutSignPair && (
+                          <h4 className={`text-lg mb-1 text-center font-bold ${
+                            theme === "light" ? "text-slate-900" : "text-slate-100"
+                          }`}>
+                            {westernHeadingWithoutSignPair}
+                          </h4>
+                        )}
+                        {/* TAGLINE - Display if available */}
+                        {westernCompatibilityTagline && (
+                          <p className={`text-lg italic font-bold mb-0.5 text-center ${
+                            theme === "light" ? "text-black" : "text-white"
+                          }`}>
+                            {westernCompatibilityTagline}
+                          </p>
+                        )}
+                        <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                          {westernCompatibilityDescription}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Fallback if no content */}
+                    {!connectionOverviewText && !westernCompatibilityDescription && (
+                      <div className={`text-center py-4 ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
+                        <p>No compatibility information available</p>
+                      </div>
+                    )}
+                      </div>
+                  </div>
+                )}
         </div>
 
         {/* Blurb - Mirror-style match text */}
@@ -781,146 +921,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           </div>
         )}
 
-        {/* Match Label Dropdown - Overlays profile box when open - border removed */}
-        {showMatchLabelDropdown && (
-          <div 
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: 0,
-              right: 0,
-              width: '100%',
-              zIndex: 10002,
-              marginTop: '0px',
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-                  <div
-                    style={{
-                      borderRadius: '1.5rem',
-                      backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
-                      padding: '1.5rem',
-                      overflow: 'hidden',
-                    }}
-                  >
-                  {/* Chinese Zodiac Compatibility Section */}
-                  {connectionOverviewText && (
-                    <div className="mb-4 text-center">
-                      {/* Chinese Signs Display */}
-                      {chineseAnimalA && chineseAnimalB && (
-                        <div className="flex items-center justify-center gap-1.5 mb-2">
-                          {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
-                          <span className={`font-bold text-lg ${
-                            theme === "light" ? "text-slate-700" : "text-slate-200"
-                          }`}>
-                            {chineseAnimalA}
-                          </span>
-                          <span className={`text-lg ${
-                            theme === "light" ? "text-pink-500" : "text-pink-400"
-                          }`}>
-                            ♥
-                          </span>
-                          <span className={`font-bold text-lg ${
-                            theme === "light" ? "text-slate-700" : "text-slate-200"
-                          }`}>
-                            {chineseAnimalB}
-                          </span>
-                          {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
-                        </div>
-                      )}
-                      
-                      {chineseHeadingWithoutSignPair && (
-                        <div className="mb-1 text-center">
-                          {chineseHeadingWithoutSignPair
-                            .split(/,|;/)
-                            .map(part => part.trim())
-                            .filter(part => part.length > 0)
-                            .map((pattern, index) => (
-                              <h4 
-                                key={index}
-                                className={`text-lg font-bold ${
-                                  theme === "light" ? "text-slate-900" : "text-slate-100"
-                                }`}
-                              >
-                                {pattern}
-                              </h4>
-                            ))}
-                        </div>
-                      )}
-                      {/* TAGLINE - Display if available */}
-                      {connectionOverviewTagline && (
-                        <p className={`text-lg italic font-bold mb-0.5 text-center ${
-                          theme === "light" ? "text-black" : "text-white"
-                        }`}>
-                          {connectionOverviewTagline}
-                        </p>
-                      )}
-                      <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
-                        {connectionOverviewText}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Western Sun Sign Compatibility Section */}
-                  {westernCompatibilityDescription && (
-                    <div className={`${connectionOverviewText ? "pt-4 border-t" : ""} text-center ${
-                      theme === "light" ? "border-gray-200" : "border-indigo-400/20"
-                    }`}
-                    style={{ paddingBottom: '1rem' }}
-                    >
-                      {/* Western Signs Display */}
-                      {westernSignA && westernSignB && (
-                        <div className="flex items-center justify-center gap-1.5 mb-2">
-                          {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
-                          <span className={`font-bold text-lg ${
-                            theme === "light" ? "text-slate-700" : "text-slate-200"
-                          }`}>
-                            {westernSignA}
-                          </span>
-                          <span className={`text-lg ${
-                            theme === "light" ? "text-pink-500" : "text-pink-400"
-                          }`}>
-                            ♥
-                          </span>
-                          <span className={`font-bold text-lg ${
-                            theme === "light" ? "text-slate-700" : "text-slate-200"
-                          }`}>
-                            {westernSignB}
-                          </span>
-                          {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
-                        </div>
-                      )}
-                      
-                      {westernHeadingWithoutSignPair && (
-                        <h4 className={`text-lg mb-1 text-center font-bold ${
-                          theme === "light" ? "text-slate-900" : "text-slate-100"
-                        }`}>
-                          {westernHeadingWithoutSignPair}
-                        </h4>
-                      )}
-                      {/* TAGLINE - Display if available */}
-                      {westernCompatibilityTagline && (
-                        <p className={`text-lg italic font-bold mb-0.5 text-center ${
-                          theme === "light" ? "text-black" : "text-white"
-                        }`}>
-                          {westernCompatibilityTagline}
-                        </p>
-                      )}
-                      <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
-                        {westernCompatibilityDescription}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Fallback if no content */}
-                  {!connectionOverviewText && !westernCompatibilityDescription && (
-                    <div className={`text-center py-4 ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
-                      <p>No compatibility information available</p>
-                    </div>
-                  )}
-                    </div>
-                </div>
-              )}
         </div>
       {/* Dropdowns - Match Overview */}
       {showOverview && (connectionOverviewText || westernCompatibilityDescription) && (
