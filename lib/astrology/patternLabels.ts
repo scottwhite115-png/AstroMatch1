@@ -19,17 +19,17 @@ export type ChinesePattern =
 export function getPatternPillLabel(pattern: ChinesePattern): string {
   switch (pattern) {
     case "SAN_HE":
-      return "Triple Harmony";
+      return "Soulmate Match";
     case "LIU_HE":
-      return "Secret Friends";
+      return "Secret Friends Match";
     case "SAME_SIGN":
       return "Same Sign";
     case "NEUTRAL":
       return "Neutral";
     case "LIU_CHONG":
-      return "Six Conflicts";
+      return "Magnetic Opposites";
     case "LIU_HAI":
-      return "Six Harms";
+      return "Challenging Match";
     case "XING":
       return "Punishment";
     case "PO":
@@ -77,7 +77,7 @@ export function getPatternHeaderLabel(pattern: ChinesePattern): string {
     case "SAN_HE":
       return "Triple Harmony 三合";
     case "LIU_HE":
-      return "Secret Friends 六合";
+      return "Six Harmonies 六合";
     case "SAME_SIGN":
       return "Same Sign";
     case "NEUTRAL":
@@ -168,8 +168,8 @@ export function getPatternHeaderText(pattern: ChinesePattern): string {
  *
  * Examples (after you append " · 87%"):
  *   "San He 三合 · Triple Harmony"
- *   "Liu He 六合 · Secret Friends"
- *   "Liu Chong 六冲 · Clash & Confrontation"
+ *   "Liu He 六合 · Six Harmonies"
+ *   "Liu Chong 六冲 · Six Conflicts"
  *   "Neutral · No Strong Pattern"
  */
 export function getPatternHeadingPrefix(pattern: ChinesePattern): string {
@@ -180,7 +180,7 @@ export function getPatternHeadingPrefix(pattern: ChinesePattern): string {
 
     case "LIU_HE":
       // softer, ally-style pattern
-      return "Liu He 六合 · Secret Friends";
+      return "Liu He 六合 · Six Harmonies";
 
     case "SAME_SIGN":
       // same Chinese animal – intense mirror vibe
@@ -192,7 +192,7 @@ export function getPatternHeadingPrefix(pattern: ChinesePattern): string {
 
     case "LIU_CHONG":
       // clash / conflict pattern
-      return "Liu Chong 六冲 · Clash & Confrontation";
+      return "Liu Chong 六冲 · Six Conflicts";
 
     case "LIU_HAI":
       // "six harms" – steady irritation
