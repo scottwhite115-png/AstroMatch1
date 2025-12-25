@@ -626,11 +626,12 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
             <div 
               style={{
                 position: 'absolute',
-                top: 'calc(100% + 0.5rem)',
+                top: '100%',
                 left: 0,
                 right: 0,
                 width: '100%',
                 zIndex: 10002,
+                marginTop: '0.5rem',
               }}
               onClick={(e) => e.stopPropagation()}
             >
