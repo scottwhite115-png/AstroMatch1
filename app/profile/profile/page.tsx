@@ -3562,7 +3562,6 @@ export default function AstrologyProfilePage({
                               </>
                             );
                           })()}
-                          </div>
                         </div>
                       )}
 
