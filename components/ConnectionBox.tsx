@@ -625,6 +625,162 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Blurb - Mirror-style match text */}
         {/* Blurb - REMOVED */}
 
+        {/* Profile Information - Combined into match box */}
+        {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
+          <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}` }}>
+            {/* About Me */}
+            {aboutPartnerText && (
+              <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
+                <h4 
+                  className="text-base font-semibold mb-0.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem'
+                  }}
+                >
+                  About me
+                </h4>
+                <p 
+                  className={`text-sm leading-relaxed whitespace-pre-wrap ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                  style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                >
+                  {aboutPartnerText}
+                </p>
+              </div>
+            )}
+
+            {/* Relationship Goals */}
+            {relationshipGoals && (
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 
+                  className="text-base font-semibold mb-0.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem'
+                  }}
+                >
+                  Relationship Goals
+                </h4>
+                <div 
+                  className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                  style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                >
+                  {typeof relationshipGoals === 'string' ? (
+                    relationshipGoals
+                  ) : Array.isArray(relationshipGoals) ? (
+                    relationshipGoals.join(', ')
+                  ) : null}
+                </div>
+              </div>
+            )}
+
+            {/* Interests */}
+            {interests && (
+              <div style={{ marginBottom: '1.5rem' }}>
+                <h4 
+                  className="text-base font-semibold mb-0.5"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    paddingLeft: '1rem',
+                    paddingRight: '1rem'
+                  }}
+                >
+                  Interests
+                </h4>
+                <div 
+                  className={`text-sm leading-relaxed ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                  style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                >
+                  {typeof interests === 'string' ? (
+                    interests
+                  ) : Array.isArray(interests) ? (
+                    interests.join(', ')
+                  ) : typeof interests === 'object' ? (
+                    Object.entries(interests)
+                      .flatMap(([category, interestList]) => 
+                        Array.isArray(interestList) ? interestList : []
+                      )
+                      .join(', ')
+                  ) : null}
+                </div>
+              </div>
+            )}
+
+            {/* Basic Info Grid */}
+            {(city || occupation || age || height || children) && (
+              <div className="grid grid-cols-2 gap-3" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                {/* Location */}
+                {city && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>{city}</span>
+                  </div>
+                )}
+                
+                {/* Occupation */}
+                {occupation && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    <span>{occupation}</span>
+                  </div>
+                )}
+
+                {/* Age */}
+                {age && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <span>{age} years old</span>
+                  </div>
+                )}
+
+                {/* Height */}
+                {height && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <line x1="12" y1="2" x2="12" y2="22"/>
+                      <polyline points="8 6 12 2 16 6"/>
+                      <polyline points="8 18 12 22 16 18"/>
+                    </svg>
+                    <span>{height}</span>
+                  </div>
+                )}
+
+                {/* Children */}
+                {children && (
+                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    <span>{children}</span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Match Label Dropdown - Overlays profile box when open - border removed */}
         {showMatchLabelDropdown && (
           <div 
@@ -786,221 +942,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
           }}>
           </div>
         )}
-      {/* Profile Box - Always visible under the match box - border removed */}
-      {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
-        <div 
-          className="w-full rounded-3xl"
-          style={{ 
-            margin: '0',
-            padding: '1.5rem 1.5rem 1.5rem 1.5rem',
-            borderRadius: '1.5rem',
-            backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
-            zIndex: 2,
-            marginTop: '-42px',
-          }}
-        >
-          {/* About Me */}
-          {aboutPartnerText && (
-            <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
-              <h4 
-                className="text-base font-semibold mb-0.5"
-                style={{ 
-                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem'
-                }}
-              >
-                About me
-              </h4>
-              <p className="leading-relaxed text-2xl font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{aboutPartnerText}</p>
-            </div>
-          )}
-
-          {/* Relationship Goals */}
-          {relationshipGoals && relationshipGoals.length > 0 && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h4 
-                className="text-base font-semibold"
-                style={{ 
-                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  marginBottom: '1rem',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem'
-                }}
-              >
-                Relationship Goals
-              </h4>
-              <div className="flex flex-wrap gap-1.5" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                {relationshipGoals.map((goal: string, index: number) => (
-                  <span
-                    key={index}
-                    className={`px-2 py-0.5 rounded-full text-xl font-medium ${
-                      theme === "light"
-                        ? "text-slate-800"
-                        : "text-slate-200"
-                    }`}
-                    style={{
-                      background: theme === "light"
-                        ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
-                        : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
-                      border: `1.5px solid ${gradientColors.start}`,
-                      boxShadow: `0 2px 4px ${gradientColors.start}20`
-                    }}
-                  >
-                    {goal}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Interests */}
-          {interests && (Array.isArray(interests) ? interests.length > 0 : Object.keys(interests).length > 0) && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h4 
-                className="text-base font-semibold"
-                style={{ 
-                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  marginBottom: '1rem',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem'
-                }}
-              >
-                Interests
-              </h4>
-              <div className="flex flex-wrap gap-1.5" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                {Array.isArray(interests) ? (
-                  // Handle flat array format
-                  interests.map((interest: string, index: number) => (
-                    <span
-                      key={`interest-${index}`}
-                      className={`px-2 py-0.5 rounded-full text-xl font-medium ${
-                        theme === "light"
-                          ? "text-slate-800"
-                          : "text-slate-200"
-                      }`}
-                      style={{
-                        background: theme === "light"
-                          ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
-                          : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
-                        border: `1.5px solid ${gradientColors.start}`,
-                        boxShadow: `0 2px 4px ${gradientColors.start}20`
-                      }}
-                    >
-                      {interest}
-                    </span>
-                  ))
-                ) : (
-                  // Handle organized object format
-                  Object.entries(interests).flatMap(([category, interestList]) => {
-                    if (!Array.isArray(interestList)) {
-                      return [];
-                    }
-                    return interestList.map((interest: string, index: number) => (
-                      <span
-                        key={`${category}-${index}`}
-                        className={`px-2 py-0.5 rounded-full text-xl font-medium ${
-                          theme === "light"
-                            ? "text-slate-800"
-                            : "text-slate-200"
-                        }`}
-                        style={{
-                          background: theme === "light"
-                            ? `linear-gradient(135deg, ${gradientColors.start}15, ${gradientColors.end}15)`
-                            : `linear-gradient(135deg, ${gradientColors.start}25, ${gradientColors.end}25)`,
-                          border: `1.5px solid ${gradientColors.start}`,
-                          boxShadow: `0 2px 4px ${gradientColors.start}20`
-                        }}
-                      >
-                        {interest}
-                      </span>
-                    ));
-                  })
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Essentials - Location, Occupation, Age, Height, Children */}
-          {(city || occupation || age || height || children) && (
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h4 
-                className="text-base font-semibold"
-                style={{ 
-                  background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  marginBottom: '1rem',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem'
-                }}
-              >
-                Essentials
-              </h4>
-              <div className="space-y-0.5 text-xl" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                {/* Location */}
-                {city && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-                    </svg>
-                    <span>{city}</span>
-                  </div>
-                )}
-                {/* Occupation */}
-                {occupation && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M20 6h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zM10 4h4v2h-4V4zm10 15H4V8h16v11z"/>
-                    </svg>
-                    <span>{occupation}</span>
-                  </div>
-                )}
-                {/* Age */}
-                {age && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                      <path d="M16 2v4M8 2v4M3 10h18"/>
-                    </svg>
-                    <span>{age} years old</span>
-                  </div>
-                )}
-                {/* Height */}
-                {height && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 5v14M5 12l7-7 7 7M5 19l7-7 7 7"/>
-                    </svg>
-                    <span>{height}</span>
-                  </div>
-                )}
-                {/* Children */}
-                {children && (
-                  <div className={`flex items-center gap-1.5 ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
-                    <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                    <span>{children}</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-          </div>
-      )}
     </div>
   );
 };
