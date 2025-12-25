@@ -132,6 +132,15 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
   // Use normalized/lowercased sign names to ensure proper lookup
   const chineseCompat = getChineseDetailedCompat(animalA.toLowerCase(), animalB.toLowerCase());
   const westernCompat = getWesternDetailedCompat(westA.toLowerCase(), westB.toLowerCase());
+  
+  console.log('[ConnectionBoxNew] Lookup params:', {
+    animalA: animalA.toLowerCase(),
+    animalB: animalB.toLowerCase(),
+    westA: westA.toLowerCase(),
+    westB: westB.toLowerCase(),
+    chineseCompat: chineseCompat ? 'FOUND' : 'NULL',
+    westernCompat: westernCompat ? 'FOUND' : 'NULL',
+  });
 
   // Chinese Zodiac Compatibility
   let connectionOverviewHeading = "";
@@ -149,6 +158,12 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
       animalA,
       animalB,
     });
+  } else {
+    // Fallback: Show at least the pattern information
+    connectionOverviewHeading = `${animalA} × ${animalB} — ${basePattern}`;
+    connectionOverviewTagline = "Click for details";
+    connectionOverviewText = `${animalA} and ${animalB} compatibility information. Base pattern: ${basePattern}${overlays.length > 0 ? `, overlays: ${overlays.join(', ')}` : ''}.`;
+    console.log('[ConnectionBoxNew] No detailed compat found, using fallback for:', animalA, animalB);
   }
   
   // REMOVED: Fallback to connectionBlurb - we don't want pattern one-liners displayed
