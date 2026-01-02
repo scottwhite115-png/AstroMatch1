@@ -15,45 +15,8 @@ export function createClient() {
     } as any
   }
   
-  return createBrowserClient(url, key, {
-    cookies: {
-      getAll() {
-        const cookies: { name: string; value: string }[] = []
-        if (typeof document !== 'undefined' && document.cookie) {
-          document.cookie.split(';').forEach((cookie) => {
-            const parts = cookie.trim().split('=')
-            if (parts.length >= 2) {
-              const name = parts[0].trim()
-              const value = parts.slice(1).join('=') // Handle values with '='
-              if (name) {
-                cookies.push({ name, value })
-              }
-            }
-          })
-        }
-        return cookies
-      },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          if (typeof document === 'undefined' || options?.httpOnly) return
-          
-          // Build cookie string with all necessary attributes
-          let cookie = `${name}=${value}`
-          cookie += `; path=${options?.path || '/'}`
-          
-          if (options?.maxAge !== undefined) {
-            cookie += `; max-age=${options.maxAge}`
-          }
-          if (options?.sameSite) {
-            cookie += `; samesite=${options.sameSite}`
-          }
-          if (options?.secure && window.location.protocol === 'https:') {
-            cookie += `; secure`
-          }
-          
-          document.cookie = cookie
-        })
-      },
-    },
-  })
+  // For browser clients, createBrowserClient automatically uses localStorage
+  // for PKCE code verifier storage. Don't override with custom cookie handling
+  // as it can cause PKCE issues, especially on mobile browsers.
+  return createBrowserClient(url, key)
 }
