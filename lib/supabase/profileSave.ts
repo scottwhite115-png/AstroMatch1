@@ -30,6 +30,8 @@ export interface ProfileData {
   lat?: number
   lon?: number
   profile_complete?: boolean
+  allow_instant_messages_connections?: boolean
+  allow_instant_messages_discover?: boolean
 }
 
 export interface SaveResult {
@@ -122,5 +124,47 @@ export async function updateProfileCompletion(
   isComplete: boolean
 ): Promise<SaveResult> {
   return saveProfile(userId, { profile_complete: isComplete })
+}
+
+/**
+ * Update instant messaging preferences
+ * @param userId - User's ID
+ * @param allowConnections - Allow instant messages from connections/matches page (default: true)
+ * @param allowDiscover - Allow instant messages from discover page (default: true)
+ */
+export async function updateInstantMessagingSettings(
+  userId: string,
+  allowConnections: boolean = true,
+  allowDiscover: boolean = true
+): Promise<SaveResult> {
+  const supabase = createClient()
+
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update({
+        allow_instant_messages_connections: allowConnections,
+        allow_instant_messages_discover: allowDiscover
+      })
+      .eq('id', userId)
+
+    if (error) {
+      console.error('[Profile Save] Error updating instant message settings:', error)
+      return {
+        success: false,
+        error: error.message
+      }
+    }
+
+    console.log('[Profile Save] ✅ Instant message settings updated!')
+    return { success: true }
+
+  } catch (error) {
+    console.error('[Profile Save] Unexpected error:', error)
+    return {
+      success: false,
+      error: 'Unexpected error updating instant message settings'
+    }
+  }
 }
 

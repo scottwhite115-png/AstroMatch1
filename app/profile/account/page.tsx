@@ -13,12 +13,9 @@ import {
   type SunSignSystem,
 } from "@/lib/sunSignCalculator"
 import { getBlockedUsers, unblockUser, type BlockedUser } from "@/lib/utils/blocked-users"
-import {
-  requestNotificationPermission,
-  saveNotificationPreferences,
-  loadNotificationPreferences,
-  sendTestNotification,
-} from "@/lib/utils/notifications"
+import { createClient } from "@/lib/supabase/client"
+import { fetchUserProfile } from "@/lib/supabase/profileQueries"
+import { updateInstantMessagingSettings } from "@/lib/supabase/profileSave"
 
 interface AccountPageProps {
   pageIndex?: number
@@ -129,9 +126,6 @@ export default function AccountPage({
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false)
   const [termsOfServiceOpen, setTermsOfServiceOpen] = useState(false)
   const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
-  const [pushNotifications, setPushNotifications] = useState({
-    messages: true,
-  })
 
   useEffect(() => {
     const savedName = localStorage.getItem("userFullName")
@@ -165,10 +159,26 @@ export default function AccountPage({
     const deactivated = localStorage.getItem("accountDeactivated") === "true"
     setIsAccountDeactivated(deactivated)
 
-    const savedInstantMessage = localStorage.getItem("instantMessageEnabled")
-    if (savedInstantMessage !== null) {
-      setInstantMessageEnabled(JSON.parse(savedInstantMessage))
+    // Load instant message settings from DATABASE
+    async function loadInstantMessageSettings() {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (user) {
+          const profile = await fetchUserProfile(user.id)
+          if (profile) {
+            // Use database value, default to TRUE if not set
+            setInstantMessageEnabled(profile.allow_instant_messages_connections ?? true)
+          }
+        }
+      } catch (error) {
+        console.error('[Account] Error loading instant message settings:', error)
+        // Default to true on error
+        setInstantMessageEnabled(true)
+      }
     }
+    loadInstantMessageSettings()
 
     const savedFriendFinder = localStorage.getItem("friendFinderEnabled")
     if (savedFriendFinder !== null) {
@@ -194,10 +204,8 @@ export default function AccountPage({
       saveSunSigns(tropical, sidereal)
     }
 
-    // Load blocked users and notification preferences
+    // Load blocked users
     setBlockedUsers(getBlockedUsers())
-    const savedPreferences = loadNotificationPreferences()
-    setPushNotifications(savedPreferences)
 
     // Check if user is staff (ADMIN or OWNER) to show Backoffice tab
     async function checkStaffStatus() {
@@ -287,10 +295,26 @@ export default function AccountPage({
     }
   }
 
-  const toggleInstantMessage = () => {
+  const toggleInstantMessage = async () => {
     const newValue = !instantMessageEnabled
     setInstantMessageEnabled(newValue)
-    localStorage.setItem("instantMessageEnabled", JSON.stringify(newValue))
+    
+    // Save to DATABASE
+    try {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      if (user) {
+        const result = await updateInstantMessagingSettings(user.id, newValue, newValue)
+        if (result.success) {
+          console.log('[Account] ✅ Instant message settings saved to database')
+        } else {
+          console.error('[Account] ❌ Failed to save instant message settings:', result.error)
+        }
+      }
+    } catch (error) {
+      console.error('[Account] Error saving instant message settings:', error)
+    }
   }
 
   const toggleFriendFinder = () => {
@@ -312,35 +336,6 @@ export default function AccountPage({
     unblockUser(userId)
     setBlockedUsers(getBlockedUsers())
   }
-
-  const togglePushNotification = async (setting: keyof typeof pushNotifications) => {
-    const newValue = !pushNotifications[setting]
-
-    // If turning ON, request permission first
-    if (newValue) {
-      const permissionGranted = await requestNotificationPermission()
-      if (!permissionGranted) {
-        alert("Please enable notifications in your browser settings to receive message alerts")
-        return
-      }
-
-      // Send a test notification to confirm it's working
-      sendTestNotification("Notifications Enabled", "You'll now receive notifications for new messages")
-    }
-
-    // Update state
-    const newPreferences = {
-      ...pushNotifications,
-      [setting]: newValue,
-    }
-    setPushNotifications(newPreferences)
-
-    // Save to localStorage
-    saveNotificationPreferences(newPreferences)
-
-    console.log("[v0] Notification preferences updated:", newPreferences)
-  }
-
 
   const handleDeleteAccount = () => {
     const firstConfirm = confirm(
@@ -382,7 +377,6 @@ export default function AccountPage({
         "matchFilter",
         "useGPS",
         "manualCity",
-        "pushNotifications",
         "blockedUsers",
         "visibilitySettings",
       ]
@@ -519,42 +513,6 @@ export default function AccountPage({
         <div className="px-5 pt-4 pb-24">
           <div className="max-w-md mx-auto space-y-8">
 
-            {/* Notifications Section */}
-            <div className="mb-8">
-              <h2
-                className={`font-semibold text-base mb-4 flex items-center gap-2 ${
-                  theme === "light"
-                    ? "text-purple-600"
-                    : "text-purple-400"
-                }`}
-              >
-                Notifications
-              </h2>
-              <div className="space-y-3">
-                <div className={`flex items-center justify-between p-4 ${theme === "light" ? "bg-gray-100" : "bg-slate-800/40 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"} backdrop-blur-sm rounded-lg`}>
-                  <div>
-                    <div className={`${theme === "light" ? "!text-black/95" : "!text-white/95"} font-medium`}>Messages</div>
-                    <div className={`${theme === "light" ? "!text-black/60" : "!text-white/60"} text-sm`}>Get notified when you receive a message</div>
-                  </div>
-                  <button
-                    onClick={() => togglePushNotification("messages")}
-                    className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors ${
-                      pushNotifications.messages
-                        ? "bg-gray-300"
-                        : "bg-transparent border border-gray-300"
-                    }`}
-                  >
-                    <span
-                      className={`inline-block w-5 h-5 bg-white rounded-full shadow-md transition-all ${
-                        pushNotifications.messages ? "translate-x-[26px]" : "translate-x-0.5 border border-gray-300"
-                      }`}
-                      style={!pushNotifications.messages ? { position: 'absolute', top: '50%', transform: 'translateY(-50%) translateX(2px)' } : {}}
-                    />
-                  </button>
-                </div>
-              </div>
-            </div>
-
             {/* Instant Message Section */}
             <div>
               <h2
@@ -581,7 +539,7 @@ export default function AccountPage({
                     onClick={toggleInstantMessage}
                     className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors ${
                       instantMessageEnabled
-                        ? "bg-gray-300"
+                        ? "bg-purple-600"
                         : "bg-transparent border border-gray-300"
                     }`}
                   >
@@ -620,7 +578,7 @@ export default function AccountPage({
                     onClick={toggleFriendFinder}
                     className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors ${
                       friendFinderEnabled
-                        ? "bg-gray-300"
+                        ? "bg-purple-600"
                         : "bg-transparent border border-gray-300"
                     }`}
                   >
@@ -668,7 +626,7 @@ export default function AccountPage({
                     onClick={toggleSunSignSystem}
                     className={`relative inline-flex items-center w-12 h-6 rounded-full transition-colors ${
                       sunSignSystem === "sidereal"
-                        ? "bg-gray-300"
+                        ? "bg-purple-600"
                         : "bg-transparent border border-gray-300"
                     }`}
                   >

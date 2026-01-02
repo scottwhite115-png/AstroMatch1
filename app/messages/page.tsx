@@ -10,6 +10,7 @@ import { getConversations, clearUnreadCount, deleteConversation, type Conversati
 import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
 import { fetchUserMatches, fetchUserProfile } from "@/lib/supabase/profileQueries"
 import { getMessages, subscribeToMessages } from "@/lib/supabase/messageActions"
+import { updateInstantMessagingSettings } from "@/lib/supabase/profileSave"
 
 const MessageCircle = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -44,13 +45,29 @@ export default function MessagesPage() {
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
   const [instantMessageEnabled, setInstantMessageEnabled] = useState(true)
   const [activeTab, setActiveTab] = useState<'connections'>('connections')
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
 
-  // Load instant message setting from localStorage
+  // Load instant message setting from DATABASE
   useEffect(() => {
-    const savedInstantMessage = localStorage.getItem("instantMessageEnabled")
-    if (savedInstantMessage !== null) {
-      setInstantMessageEnabled(JSON.parse(savedInstantMessage))
+    async function loadInstantMessageSettings() {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (user) {
+          setCurrentUserId(user.id)
+          const profile = await fetchUserProfile(user.id)
+          if (profile) {
+            // Use database value, default to TRUE if not set
+            setInstantMessageEnabled(profile.allow_instant_messages_connections ?? true)
+          }
+        }
+      } catch (error) {
+        console.error('[Messages] Error loading instant message settings:', error)
+        // Default to true on error
+        setInstantMessageEnabled(true)
+      }
     }
+    loadInstantMessageSettings()
   }, [])
 
   // Close dropdown when clicking outside
@@ -384,9 +401,22 @@ export default function MessagesPage() {
     router.push(`/messages/${userId}`)
   }
 
-  const handleInstantMessageToggle = (enabled: boolean) => {
+  const handleInstantMessageToggle = async (enabled: boolean) => {
     setInstantMessageEnabled(enabled)
-    localStorage.setItem("instantMessageEnabled", JSON.stringify(enabled))
+    
+    // Save to DATABASE
+    if (currentUserId) {
+      try {
+        const result = await updateInstantMessagingSettings(currentUserId, enabled, enabled)
+        if (result.success) {
+          console.log('[Messages] ✅ Instant message settings saved to database')
+        } else {
+          console.error('[Messages] ❌ Failed to save instant message settings:', result.error)
+        }
+      } catch (error) {
+        console.error('[Messages] Error saving instant message settings:', error)
+      }
+    }
   }
 
   return (
@@ -444,7 +474,7 @@ export default function MessagesPage() {
                             onClick={() => handleInstantMessageToggle(!instantMessageEnabled)}
                             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                               instantMessageEnabled
-                                ? "bg-gradient-to-r from-orange-600 via-orange-500 to-red-500"
+                                ? "bg-purple-600"
                                 : theme === "light"
                                 ? "bg-gray-300"
                                 : "bg-zinc-600"

@@ -873,7 +873,6 @@ export default function MatchesPage() {
     LiuHe: false
   })
   const [friendFinderEnabled, setFriendFinderEnabled] = useState(false)
-  const [allowInstantMessages, setAllowInstantMessages] = useState(true) // Default ON
   const [onlySanHeLiuHeMessages, setOnlySanHeLiuHeMessages] = useState(false)
   const [filteredProfiles, setFilteredProfiles] = useState(enrichedProfiles)
   const [activeTab, setActiveTab] = useState<'matches'>('matches')
@@ -2609,7 +2608,7 @@ export default function MatchesPage() {
         const result = await passProfile(currentUserId, String(currentProfile.id))
         
         if (result.success) {
-          console.log('✓ Pass saved (hidden for 28 days)')
+          console.log('✓ Pass saved (hidden for 7 days)')
         } else {
           console.error('❌ Error recording pass:', result.error)
         }
@@ -2688,24 +2687,10 @@ export default function MatchesPage() {
             return
           }
           
-          // Instant messaging enabled - try to like the profile to create a match
-          console.log('[Matches] No match found, attempting to like profile to create match...')
-          const likeResult = await likeProfile(currentUserId, String(currentProfile.id))
-          
-          if (likeResult.success && likeResult.isMatch) {
-            // Match created! Navigate to chat
-            console.log('[Matches] ✅ Match created! Navigating to chat...')
-            router.push(`/messages/${currentProfile.id}`)
-          } else if (likeResult.success) {
-            // Like saved but no match yet - still navigate (match might be created)
-            console.log('[Matches] Like saved, navigating to chat...')
-            router.push(`/messages/${currentProfile.id}`)
-          } else {
-            // Error liking - show message but still try to navigate
-            console.error('[Matches] Error liking profile:', likeResult.error)
-            alert('Unable to start conversation. Please try liking this profile first.')
-            return
-          }
+          // Instant messaging enabled - navigate to chat WITHOUT automatically liking
+          // Profile will remain in stack until user explicitly swipes left or right
+          console.log('[Matches] Opening chat without auto-liking. Profile stays in stack.')
+          router.push(`/messages/${currentProfile.id}`)
         } else {
           // Match exists - navigate directly (matched users can always message)
           console.log('[Matches] Match found, navigating to chat...')
@@ -3434,7 +3419,6 @@ export default function MatchesPage() {
                     
                     {/* Chinese Pattern Filters */}
                     <div className="mb-4">
-                    <p className={`text-sm mb-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>Chinese Patterns:</p>
                     
                     {/* San He Filter */}
                     <div className="mb-3">
@@ -3450,11 +3434,11 @@ export default function MatchesPage() {
                           }`}
                         />
                         <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                          🌟 San He (Triple Harmony)
+                          💕 Soulmate
                         </span>
                       </label>
                       <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Highly compatible trine patterns
+                        Highly compatible triple harmony patterns
                       </p>
                     </div>
                     
@@ -3472,11 +3456,11 @@ export default function MatchesPage() {
                           }`}
                         />
                         <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                          💫 Liu He (Six Harmoniess)
+                          🤝 Secret Friends
                         </span>
                       </label>
                       <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Hidden harmony and support
+                        Hidden harmony and supportive connection
                       </p>
                     </div>
                     </div>
@@ -3509,40 +3493,12 @@ export default function MatchesPage() {
                       </p>
                     </div>
                     
-                    {/* Allow Instant Messages Toggle */}
+                    {/* Only Soulmate & Secret Friends Messages Toggle */}
                     <div className="mb-4">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                            💬 Allow Instant Messages
-                          </span>
-                        </div>
-                        <button
-                          onClick={() => setAllowInstantMessages(!allowInstantMessages)}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
-                            allowInstantMessages 
-                              ? 'bg-purple-600' 
-                              : theme === "light" ? 'bg-gray-300' : 'bg-slate-700'
-                          }`}
-                        >
-                          <span
-                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                              allowInstantMessages ? 'translate-x-6' : 'translate-x-1'
-                            }`}
-                          />
-                        </button>
-                      </div>
-                      <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Others can message you directly without matching first
-                      </p>
-                    </div>
-                    
-                    {/* Only San He & Liu He Messages Toggle */}
-                    <div className="mb-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                            ⭐ Only San He & Liu He
+                            ⭐ Only Soulmate & Secret Friends
                           </span>
                         </div>
                         <button
@@ -3564,7 +3520,7 @@ export default function MatchesPage() {
                         </button>
                       </div>
                       <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Only San He (Triple Harmony) and Liu He (Six Harmonies) profiles can message you
+                        Only Soulmate and Secret Friends profiles can message you
                       </p>
                     </div>
                     
@@ -3575,7 +3531,6 @@ export default function MatchesPage() {
                           setSearchFilters({ westernSign: '', easternSign: '' })
                           setChinesePatternFilters({ SanHe: false, LiuHe: false })
                           setFriendFinderEnabled(false)
-                          setAllowInstantMessages(false)
                           setOnlySanHeLiuHeMessages(false)
                           saveOnlySanHeLiuHePreference(false)
                           setShowSettingsDropdown(false)

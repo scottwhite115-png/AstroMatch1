@@ -70,7 +70,7 @@ export async function sendMessage(
         }
       }
 
-      // Check if receiver only accepts San He & Liu He messages
+      // Check if receiver only accepts Soulmate & Secret Friends messages
       if (receiverProfile.only_sanhe_liuhe_messages) {
         // Fetch sender's profile to get Chinese sign
         const senderProfile = await fetchUserProfile(senderId)
@@ -79,11 +79,11 @@ export async function sendMessage(
           // Calculate Chinese pattern between sender and receiver
           const pattern = getChinesePatternCode(senderProfile.chinese_sign, receiverProfile.chinese_sign)
           
-          // Only allow San He or Liu He patterns
+          // Only allow San He (Soulmate) or Liu He (Secret Friends) patterns
           if (pattern !== 'SAN_HE' && pattern !== 'LIU_HE') {
             return {
               success: false,
-              error: 'This user only accepts messages from San He (Triple Harmony) or Liu He (Six Harmonies) matches.'
+              error: 'This user only accepts messages from Soulmate or Secret Friends profiles.'
             }
           }
         }

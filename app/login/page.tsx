@@ -191,7 +191,7 @@ export default function LoginPage() {
 
   return (
     <div className="bg-white min-h-screen w-full overflow-y-auto">
-      <div className="flex flex-col items-center justify-start min-h-screen px-6 py-8 pb-20 relative z-10">
+      <div className="flex flex-col items-center justify-start min-h-screen px-6 pb-20 relative z-10" style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
         <div className="mb-8 text-center">
           <div className="flex items-center justify-center gap-0.5 mb-2">
             <FourPointedStar className="w-9 h-9 text-orange-500" />

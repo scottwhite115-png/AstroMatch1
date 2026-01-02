@@ -84,6 +84,7 @@ export async function likeProfile(userId: string, profileId: string): Promise<Li
 
 /**
  * Pass on a profile (swipe left)
+ * Profile will be hidden for 7 days, then reappear in the stack
  */
 export async function passProfile(userId: string, profileId: string): Promise<PassResult> {
   const supabase = createClient()

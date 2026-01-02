@@ -230,6 +230,7 @@ export default function AstrologyProfilePage({
   const [activeTab, setActiveTab] = useState<"edit" | "view">("edit")
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [isStaff, setIsStaff] = useState(false)
+  const [userRole, setUserRole] = useState<"USER" | "ADMIN" | "OWNER">("USER")
   const [isSaving, setIsSaving] = useState(false)
   const [savedSuccessfully, setSavedSuccessfully] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(true)
@@ -435,9 +436,14 @@ export default function AstrologyProfilePage({
       try {
         const res = await fetch('/api/admin/check-access')
         const data = await res.json()
-        setIsStaff(data.hasAccess && (data.role === 'ADMIN' || data.role === 'OWNER'))
+        const hasAccess = data.hasAccess && (data.role === 'ADMIN' || data.role === 'OWNER')
+        setIsStaff(hasAccess)
+        if (data.role) {
+          setUserRole(data.role)
+        }
       } catch (error) {
         setIsStaff(false)
+        setUserRole("USER")
       }
     }
     checkStaffStatus()
@@ -3263,9 +3269,9 @@ export default function AstrologyProfilePage({
               >
                 Account
               </button>
-              {isStaff && (
+              {isStaff && userRole === 'OWNER' && (
                 <button
-                  onClick={() => router.push("/admin")}
+                  onClick={() => router.push("/profile/backoffice")}
                   className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
                     theme === "light"
                       ? "text-gray-600 hover:text-gray-900"

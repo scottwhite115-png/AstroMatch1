@@ -18,7 +18,7 @@ import {
   applySameSignCap,
   type ChineseBasePattern
 } from "@/lib/matchLabelEngine"
-import { fetchUserProfile, fetchUserMatches, findMatchBetweenUsers } from "@/lib/supabase/profileQueries"
+import { fetchUserProfile, fetchUserMatches, findMatchBetweenUsers, getOrCreateMatch } from "@/lib/supabase/profileQueries"
 import { createClient } from "@/lib/supabase/client"
 import { sendMessage, getMessages, subscribeToMessages } from "@/lib/supabase/messageActions"
 import { unmatchUser, reportUser, blockUser, checkReportViolation, checkBlockViolation } from "@/lib/supabase/userActions"
@@ -564,50 +564,10 @@ export default function ChatPage() {
         
         setOtherUserProfile(otherProfile)
         
-        // Find the match between current user and other user
-        // Try direct lookup first (more reliable)
-        let match = await findMatchBetweenUsers(user.id, userId)
-        console.log('[Chat] Direct match lookup result:', match)
-        
-        let matches: any[] = []
-        
-        // If direct lookup fails, try fetching all matches and finding it
-        if (!match) {
-          matches = await fetchUserMatches(user.id)
-          console.log('[Chat] All matches:', matches)
-          console.log('[Chat] Looking for match with userId:', userId, 'type:', typeof userId)
-          console.log('[Chat] Current user id:', user.id, 'type:', typeof user.id)
-          
-          // Normalize IDs to strings for comparison
-          const normalizedUserId = String(userId).trim()
-          const normalizedCurrentUserId = String(user.id).trim()
-          
-          match = matches.find((m: any) => {
-            // Normalize match IDs
-            const user1Id = String(m.user1_id || '').trim()
-            const user2Id = String(m.user2_id || '').trim()
-            
-            // Check if the other user's ID matches userId
-            const otherUserId = user1Id === normalizedCurrentUserId ? user2Id : user1Id
-            const otherUserProfile = user1Id === normalizedCurrentUserId ? m.user2 : m.user1
-            const otherUserProfileId = otherUserProfile?.id ? String(otherUserProfile.id).trim() : null
-            
-            console.log('[Chat] Checking match:', { 
-              matchId: m.id, 
-              user1_id: user1Id, 
-              user2_id: user2Id,
-              otherUserId,
-              otherUserProfileId,
-              userId: normalizedUserId,
-              currentUserId: normalizedCurrentUserId,
-              matchesUserId: otherUserId === normalizedUserId,
-              matchesProfileId: otherUserProfileId === normalizedUserId
-            })
-            
-            // Match if userId matches either the user ID or profile ID
-            return otherUserId === normalizedUserId || otherUserProfileId === normalizedUserId
-          })
-        }
+        // Get or create a match/conversation between users
+        // This ensures both users see each other in their messages list
+        let match = await getOrCreateMatch(user.id, userId)
+        console.log('[Chat] Match result:', match)
         
         if (match) {
           console.log('[Chat] ✅ Match found:', match.id)
@@ -656,19 +616,8 @@ export default function ChatPage() {
             })
           })
         } else {
-          console.error('[Chat] ❌ No match found between users')
-          console.error('[Chat] Debug info:', {
-            currentUserId: user.id,
-            otherUserId: userId,
-            totalMatches: matches.length,
-            matchUserIds: matches.map((m: any) => ({
-              user1_id: m.user1_id,
-              user2_id: m.user2_id,
-              matchId: m.id
-            }))
-          })
-          // Don't redirect here - let the user see the error when they try to send
-          // But still set conversation so the page can render
+          console.error('[Chat] ❌ Failed to create or find match')
+          setLoadError('Unable to create conversation. Please try again.')
         }
         
         // Update conversation with actual name (for UI) - always set this so page can render

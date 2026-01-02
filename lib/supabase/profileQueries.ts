@@ -329,6 +329,47 @@ export async function findMatchBetweenUsers(userId1: string, userId2: string): P
 }
 
 /**
+ * Get or create a match/conversation between two users
+ * This ensures a conversation appears in both users' messages list when messaging starts
+ */
+export async function getOrCreateMatch(userId1: string, userId2: string): Promise<any | null> {
+  const supabase = createClient()
+  
+  // First try to find existing match
+  let match = await findMatchBetweenUsers(userId1, userId2)
+  
+  if (match) {
+    console.log('[Profile Queries] ✅ Existing match found:', match.id)
+    return match
+  }
+  
+  // No match exists - create one
+  // Ensure user1_id < user2_id for consistency (database constraint)
+  const [smallerId, largerId] = [userId1, userId2].sort()
+  
+  console.log('[Profile Queries] 📝 Creating new conversation match between users')
+  
+  const { data, error } = await supabase
+    .from('matches')
+    .insert({
+      user1_id: smallerId,
+      user2_id: largerId,
+      matched_at: new Date().toISOString(),
+      is_active: true
+    })
+    .select()
+    .single()
+  
+  if (error) {
+    console.error('[Profile Queries] ❌ Error creating match:', error)
+    return null
+  }
+  
+  console.log('[Profile Queries] ✅ Match created:', data.id)
+  return data
+}
+
+/**
  * Get profiles that liked the current user (incoming likes)
  */
 export async function fetchIncomingLikes(userId: string): Promise<any[]> {
