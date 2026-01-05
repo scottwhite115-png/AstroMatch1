@@ -4,4 +4,7 @@
     <string name="title_activity_main">AstroMatch</string>
     <string name="package_name">com.astromatch.ios</string>
     <string name="custom_url_scheme">com.astromatch.ios</string>
+    <string name="onboarding_title">Welcome to AstroMatch</string>
+    <string name="onboarding_description">Find your perfect cosmic connection through astrology compatibility. Match with people based on your zodiac signs and discover meaningful relationships.</string>
+    <string name="onboarding_start_button">Get Started</string>
 </resources>
