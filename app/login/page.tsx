@@ -9,6 +9,7 @@ import Link from "next/link"
 import { useTheme } from "@/contexts/ThemeContext"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { isCapacitor, getOAuthRedirectUrl } from "@/lib/utils/capacitor"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -115,13 +116,12 @@ export default function LoginPage() {
       setIsLoading(true)
       setError(null)
       
-      // Use production URL from env or fallback to current origin
-      // Trim any whitespace to prevent Supabase errors
-      const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || window.location.origin).trim()
-      const redirectUrl = `${baseUrl}/auth/callback`
+      // Get the appropriate redirect URL based on platform
+      const redirectUrl = getOAuthRedirectUrl()
 
       console.log("OAuth login - Provider:", provider)
       console.log("OAuth login - Redirect URL:", redirectUrl)
+      console.log("OAuth login - Is Capacitor:", isCapacitor())
       
       const { data, error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,
@@ -141,10 +141,65 @@ export default function LoginPage() {
         return
       }
 
-      // If successful, redirect to Google's OAuth page
+      // If successful, redirect to OAuth provider's page
       if (data?.url) {
         console.log("OAuth redirect URL:", data.url)
-        window.location.href = data.url
+        
+        const inNativeApp = isCapacitor()
+        
+        if (inNativeApp) {
+          // Use Capacitor Browser plugin for in-app OAuth (Chrome Custom Tabs on Android)
+          try {
+            const { Browser } = await import('@capacitor/browser')
+            const { App } = await import('@capacitor/app')
+            
+            // Set up listener for deep links BEFORE opening browser
+            let urlListener: any = null
+            
+            urlListener = await App.addListener('appUrlOpen', async (event: any) => {
+              const url = event.url
+              console.log('App opened with URL:', url)
+              
+              // Handle both astromatch:// and https:// deep links
+              if (url.includes('/auth/callback')) {
+                try {
+                  // Close the browser
+                  await Browser.close()
+                } catch (closeErr) {
+                  console.log('Could not close browser:', closeErr)
+                }
+                
+                // Remove the listener
+                if (urlListener) {
+                  await urlListener.remove()
+                }
+                
+                // Convert deep link to app URL
+                let appUrl = url
+                if (url.startsWith('astromatch://')) {
+                  appUrl = url.replace(/^astromatch:\/\//, 'https://astro-match1.vercel.app/')
+                }
+                
+                // Navigate to the callback URL in the app
+                window.location.href = appUrl
+              }
+            })
+            
+            // Open OAuth in in-app browser (Chrome Custom Tabs on Android, SFSafariViewController on iOS)
+            await Browser.open({
+              url: data.url,
+              windowName: '_self',
+              presentationStyle: 'popover', // iOS only
+            })
+          } catch (browserErr) {
+            console.error("Browser plugin error:", browserErr)
+            // Fallback to standard redirect if Browser plugin fails
+            window.location.href = data.url
+          }
+        } else {
+          // Web browser - use standard redirect
+          window.location.href = data.url
+        }
       } else {
         console.error("No redirect URL returned from OAuth")
         setError(`Failed to start ${provider} sign in. Please try again.`)
@@ -153,7 +208,6 @@ export default function LoginPage() {
     } catch (err: any) {
       console.error("OAuth exception:", err)
       setError(err.message || `Failed to sign in with ${provider}. Please check your browser console for details.`)
-    } finally {
       setIsLoading(false)
     }
   }

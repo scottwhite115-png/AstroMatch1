@@ -9,9 +9,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Onboarding Activity - Native screen shown first -->
+        <!-- Splash Activity - Native splash screen shown first -->
         <activity
-            android:name=".OnboardingActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
@@ -21,7 +21,21 @@
             </intent-filter>
         </activity>
 
-        <!-- Main Activity - Capacitor WebView (launched after onboarding) -->
+        <!-- Onboarding Activity - Walkthrough screens -->
+        <activity
+            android:name=".OnboardingActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
+        <!-- Start Activity - Start button screen -->
+        <activity
+            android:name=".StartActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:exported="false" />
+
+        <!-- Main Activity - Capacitor WebView (launched after start button) -->
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:name=".MainActivity"
@@ -44,6 +58,14 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="astro-match1.vercel.app" android:pathPrefix="/auth/callback" />
+            </intent-filter>
+
+            <!-- HTTPS deep link intent filter for mobile OAuth callbacks -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="astro-match1.vercel.app" android:pathPrefix="/auth/callback-mobile" />
             </intent-filter>
 
         </activity>

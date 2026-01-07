@@ -7,8 +7,8 @@ const config: CapacitorConfig = {
   server: {
     url: 'https://astro-match1.vercel.app',
     cleartext: true,
-    androidScheme: 'https',
-    iosScheme: 'https',
+    androidScheme: 'astromatch',
+    iosScheme: 'astromatch',
   },
   plugins: {
     SplashScreen: {
