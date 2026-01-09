@@ -767,7 +767,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
 
         {/* Profile Information - Combined into match box */}
         {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: showMatchLabelDropdown ? 'none' : `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}` }}>
+          <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem' }}>
             {/* About Me */}
             {aboutPartnerText && (
               <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
