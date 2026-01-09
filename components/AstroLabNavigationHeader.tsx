@@ -57,12 +57,6 @@ const ASTROLAB_SECTIONS = [
     path: '/astrology/match-generator', // This is a page, not a section
   },
   {
-    id: 'what-shapes-score',
-    label: 'Match Engine',
-    icon: '⚙️',
-    description: 'How compatibility scores work',
-  },
-  {
     id: 'five-elements',
     label: 'Five Elements',
     icon: '🌳',

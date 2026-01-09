@@ -1085,55 +1085,6 @@ export default function AstrologySection() {
             </div>
           </div>
 
-          {/* What Shapes Your Match Score Section */}
-          <div id="what-shapes-score" className="mb-6">
-            <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-4" style={{ fontSize: '1.5rem', fontWeight: '600' }}>What Shapes Your Match Score</h2>
-              
-              <div className="space-y-3">
-                {/* Spark & Harmony */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-purple-100" : "bg-white/5 border-purple-500/20"}`}>
-                  <h4 className={`text-sm font-semibold mb-2 ${theme === "light" ? "text-purple-700" : ""}`} style={theme === "light" ? {} : { background: "linear-gradient(to right, #a855f7, #ec4899)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                    Spark & Harmony
-                  </h4>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>
-                    Your match is evaluated on two dimensions: <span className="font-medium">Spark</span> (excitement, chemistry, dynamic energy) and <span className="font-medium">Harmony</span> (stability, compatibility, ease). Final score = 60% Harmony + 40% Spark.
-                  </p>
-                </div>
-
-                {/* Chinese Patterns */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-emerald-100" : "bg-white/5 border-emerald-500/20"}`}>
-                  <h4 className={`text-sm font-semibold mb-2 ${theme === "light" ? "text-emerald-700" : ""}`} style={theme === "light" ? {} : { background: "linear-gradient(to right, #6ee7b7, #2dd4bf)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                    Chinese patterns
-                  </h4>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>
-                    Trines and relationship lines like; <span className="font-medium">Three Harmonies 三合</span>, <span className="font-medium">Secret friends 六合</span>, <span className="font-medium">Conflicts 六冲</span>, <span className="font-medium">Harms 六害</span>, <span className="font-medium">Punishment 刑</span>.
-                  </p>
-                </div>
-
-                {/* Western Zodiac */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-blue-100" : "bg-white/5 border-blue-500/20"}`}>
-                  <h4 className={`text-sm font-semibold mb-2 ${theme === "light" ? "text-blue-700" : ""}`} style={theme === "light" ? {} : { background: "linear-gradient(to right, #60a5fa, #818cf8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                    Western zodiac
-                  </h4>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>
-                    Element harmony (Fire, Earth, Air, Water) and sign relationships (oppositions, squares, trines, sextiles).
-                  </p>
-                </div>
-
-                {/* Chinese Year Elements */}
-                <div className={`p-3 rounded-lg border ${theme === "light" ? "bg-white border-amber-100" : "bg-white/5 border-amber-500/20"}`}>
-                  <h4 className={`text-sm font-semibold mb-2 ${theme === "light" ? "text-amber-700" : ""}`} style={theme === "light" ? {} : { background: "linear-gradient(to right, #fbbf24, #fb923c)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                    Wu Xing (Five Elements)
-                  </h4>
-                  <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>
-                    How your year elements (Wood, Fire, Earth, Metal, Water) interact through the generating and controlling cycles. Directly affects the Harmony score.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Five Elements Reference Section */}
           <div id="five-elements" className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
             <div className="zodiac-sign-card">
