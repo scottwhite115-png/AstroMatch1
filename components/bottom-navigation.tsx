@@ -141,7 +141,7 @@ export function BottomNavigation() {
     },
     {
       icon: Heart,
-      label: "Matches",
+      label: "Connections",
       path: "/matches",
     },
     {
