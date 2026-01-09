@@ -11,15 +11,9 @@ export default function CallbackMobilePage() {
 
   useEffect(() => {
     const handleCallback = async () => {
-      // If in Capacitor, try to close the browser
-      if (isCapacitor()) {
-        try {
-          const { Browser } = await import('@capacitor/browser')
-          await Browser.close()
-        } catch (err) {
-          console.log('Could not close browser:', err)
-        }
-      }
+      // No need to close browser anymore since we're not using Browser.open()
+      // OAuth happens entirely in the app's WebView
+      console.log('Processing OAuth callback in app WebView')
 
       const code = searchParams.get('code')
       const error = searchParams.get('error')

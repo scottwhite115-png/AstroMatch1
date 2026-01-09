@@ -108,10 +108,11 @@ export default function SignupPage() {
         provider,
         options: {
           redirectTo: redirectUrl,
-          queryParams: {
+          skipBrowserRedirect: false,
+          queryParams: provider === 'google' ? {
             access_type: 'offline',
             prompt: 'consent',
-          },
+          } : {},
         },
       })
       
@@ -119,8 +120,8 @@ export default function SignupPage() {
       console.log("OAuth signup - Response error:", oauthError)
       
       if (oauthError) {
-        console.error("OAuth error:", oauthError)
-        setError(`Failed to sign up with ${provider}: ${oauthError.message}`)
+        console.error(`${provider} OAuth error:`, oauthError)
+        setError(`Failed to sign up with ${provider === 'apple' ? 'Apple' : 'Google'}. ${oauthError.message}`)
         setIsLoading(false)
         return
       }
@@ -132,53 +133,46 @@ export default function SignupPage() {
         const inNativeApp = isCapacitor()
         
         if (inNativeApp) {
-          // Use Capacitor Browser plugin for in-app OAuth (Chrome Custom Tabs on Android)
+          // For native app: Handle OAuth in the app's WebView without opening any browser
+          // This prevents Chrome Custom Tabs from appearing, keeping everything truly in-app
           try {
-            const { Browser } = await import('@capacitor/browser')
             const { App } = await import('@capacitor/app')
             
-            // Set up listener for deep links BEFORE opening browser
+            // Set up listener for deep links to handle OAuth callback
             let urlListener: any = null
             
             urlListener = await App.addListener('appUrlOpen', async (event: any) => {
               const url = event.url
               console.log('App opened with URL:', url)
               
-              // Handle both astromatch:// and https:// deep links
-              if (url.includes('/auth/callback')) {
-                try {
-                  // Close the browser
-                  await Browser.close()
-                } catch (closeErr) {
-                  console.log('Could not close browser:', closeErr)
-                }
-                
+              // Handle OAuth callback deep links
+              if (url.includes('/auth/callback') || url.includes('callback-mobile')) {
                 // Remove the listener
                 if (urlListener) {
                   await urlListener.remove()
                 }
                 
-                // Convert deep link to app URL
+                // Convert deep link to app URL if needed
                 let appUrl = url
                 if (url.startsWith('astromatch://')) {
                   appUrl = url.replace(/^astromatch:\/\//, 'https://astro-match1.vercel.app/')
                 }
                 
-                // Navigate to the callback URL in the app
+                // Navigate to the callback URL in the app's WebView
                 window.location.href = appUrl
               }
             })
             
-            // Open OAuth in in-app browser (Chrome Custom Tabs on Android, SFSafariViewController on iOS)
-            await Browser.open({
-              url: data.url,
-              windowName: '_self',
-              presentationStyle: 'popover', // iOS only
-            })
-          } catch (browserErr) {
-            console.error("Browser plugin error:", browserErr)
-            // Fallback to standard redirect if Browser plugin fails
+            // Small delay to ensure listener is set up before navigation
+            await new Promise(resolve => setTimeout(resolve, 100))
+            
+            // Navigate to OAuth URL in the app's WebView (no external browser/Chrome Custom Tabs)
+            // This keeps everything truly in-app without any Chrome UI
             window.location.href = data.url
+          } catch (err) {
+            console.error("OAuth setup error:", err)
+            setError(`Failed to start ${provider === 'apple' ? 'Apple' : 'Google'} sign up. Please try again.`)
+            setIsLoading(false)
           }
         } else {
           // Web browser - use standard redirect
@@ -188,12 +182,12 @@ export default function SignupPage() {
         }
       } else {
         console.error("No redirect URL returned from OAuth")
-        setError(`Failed to start ${provider} sign up. Please try again.`)
+        setError(`Failed to start ${provider === 'apple' ? 'Apple' : 'Google'} sign up. Please try again.`)
         setIsLoading(false)
       }
     } catch (err: any) {
       console.error("OAuth exception:", err)
-      setError(err.message || `Failed to sign up with ${provider}. Please check your browser console for details.`)
+      setError(err.message || `Failed to sign up with ${provider === 'apple' ? 'Apple' : 'Google'}. Please try again.`)
       setIsLoading(false)
     }
   }
@@ -261,7 +255,7 @@ export default function SignupPage() {
               AstroMatch
             </h1>
           </div>
-          <p className="text-gray-700 text-sm">Find your perfect match</p>
+          <p className="text-gray-700 text-sm">Discover your cosmic compatibility</p>
         </div>
 
         <h2 className="text-gray-900 text-base font-semibold mb-4 text-center">Sign up</h2>

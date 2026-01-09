@@ -83,10 +83,13 @@ export function getOAuthRedirectUrl(): string {
     (typeof window !== 'undefined' ? window.location.origin : '')).trim()
 
   if (isCapacitor()) {
-    // For mobile apps, use the deep link scheme
+    // For mobile apps, use HTTPS URL that matches AndroidManifest.xml deep link configuration
+    // The AndroidManifest has intent filters for both astromatch:// and https:// schemes
+    // When Google redirects to this HTTPS URL, Android will open it in the app via deep link
     const platform = getPlatform()
     if (platform === 'android' || platform === 'ios') {
-      // Use the deep link URL that matches AndroidManifest.xml configuration
+      // Use HTTPS URL - AndroidManifest.xml is configured to handle this as a deep link
+      // This ensures OAuth callback returns to app, not Chrome
       return `${baseUrl}/auth/callback-mobile`
     }
   }

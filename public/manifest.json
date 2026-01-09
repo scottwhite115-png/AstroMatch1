@@ -1,7 +1,7 @@
 {
-  "name": "AstroMatch - Dating App",
+  "name": "AstroMatch - Astrology Matchmaking",
   "short_name": "AstroMatch",
-  "description": "Find your perfect match through astrology and compatibility",
+  "description": "Discover cosmic compatibility through Western and Chinese astrology",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

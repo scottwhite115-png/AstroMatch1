@@ -4,7 +4,29 @@
     <string name="title_activity_main">AstroMatch</string>
     <string name="package_name">com.astromatch.ios</string>
     <string name="custom_url_scheme">com.astromatch.ios</string>
+    
+    <!-- Onboarding strings -->
     <string name="onboarding_title">Welcome to AstroMatch</string>
     <string name="onboarding_description">Find your perfect cosmic connection through astrology compatibility. Match with people based on your zodiac signs and discover meaningful relationships.</string>
     <string name="onboarding_start_button">Get Started</string>
+    <string name="onboarding_next">Next</string>
+    <string name="onboarding_skip">Skip</string>
+    <string name="onboarding_get_started">Get Started</string>
+    
+    <!-- Onboarding page 1 -->
+    <string name="onboarding_page1_title">Discover Your Match</string>
+    <string name="onboarding_page1_description">Find meaningful connections based on astrology compatibility. Discover how your zodiac signs align with potential matches.</string>
+    
+    <!-- Onboarding page 2 -->
+    <string name="onboarding_page2_title">Astrological Insights</string>
+    <string name="onboarding_page2_description">Get detailed compatibility reports and learn about your cosmic connection with others through comprehensive astrological analysis.</string>
+    
+    <!-- Onboarding page 3 -->
+    <string name="onboarding_page3_title">Start Your Journey</string>
+    <string name="onboarding_page3_description">Create your profile, set your preferences, and begin exploring matches that align with your astrological compatibility.</string>
+    
+    <!-- Start Activity strings -->
+    <string name="start_title">Ready to Begin?</string>
+    <string name="start_description">Your cosmic journey starts here. Click the button below to open AstroMatch and find your perfect match.</string>
+    <string name="start_button">Start</string>
 </resources>

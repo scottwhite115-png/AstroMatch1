@@ -17,8 +17,8 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "AstroMatch - Dating App",
-  description: "Find your perfect match through astrology compatibility",
+  title: "AstroMatch - Astrology Matchmaking",
+  description: "Discover cosmic compatibility through Western and Chinese astrology. Connect with astrologically compatible profiles.",
   generator: "v0.app",
 }
 

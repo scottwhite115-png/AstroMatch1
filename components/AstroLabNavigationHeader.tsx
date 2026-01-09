@@ -27,25 +27,25 @@ const ASTROLAB_SECTIONS = [
   },
   {
     id: 'six-conflicts',
-    label: '🧲 Magnetic Opposites',
+    label: '⚡ Conflict',
     icon: '',
     description: 'Six Conflicts (Liu Chong) pairs table',
   },
   {
     id: 'six-harms',
-    label: '⚠️ Challenging',
+    label: '⚠️ Harm',
     icon: '',
     description: 'Six Harms (Liu Hai) pairs table',
   },
   {
     id: 'punishment',
-    label: '⚠️ Challenging',
+    label: '⚠️ Punishment',
     icon: '',
     description: 'Punishment (Xing) groups table',
   },
   {
     id: 'break-pattern',
-    label: '⚠️ Challenging',
+    label: '⚠️ Breakpoint',
     icon: '',
     description: 'Breakpoints (Po) pairs table',
   },
@@ -254,13 +254,11 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                 href={page.path}
                 className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors ${
                   theme === "light"
-                    ? "border-amber-200 text-gray-700 hover:opacity-90"
-                    : "border-amber-800/50 text-slate-200 hover:opacity-90"
+                    ? "border-amber-600 text-gray-700 hover:opacity-90"
+                    : "border-amber-500 text-slate-200 hover:opacity-90"
                 }`}
                 style={{
-                  background: theme === "light"
-                    ? "linear-gradient(to right, rgba(254, 240, 138, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))"
-                    : "linear-gradient(to right, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.15))"
+                  background: "transparent"
                 }}
                 title={page.description}
               >
@@ -274,7 +272,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
         {/* Pill Navigation - Sections */}
         <div>
           <p className={`text-xs font-medium mb-2 ${theme === "light" ? "text-gray-600" : "text-slate-400"}`}>
-            Patterns
+            Relationship Patterns
           </p>
           <nav className="flex gap-2 overflow-x-auto pb-1">
             {ASTROLAB_SECTIONS.map((section) => {
@@ -287,13 +285,11 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                     href={sectionPath}
                     className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
                       theme === "light"
-                        ? "border-amber-200 text-gray-700 hover:opacity-90"
-                        : "border-amber-800/50 text-slate-200 hover:opacity-90"
+                        ? "border-amber-600 text-gray-700 hover:opacity-90"
+                        : "border-amber-500 text-slate-200 hover:opacity-90"
                     }`}
                     style={{
-                      background: theme === "light"
-                        ? "linear-gradient(to right, rgba(254, 240, 138, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))"
-                        : "linear-gradient(to right, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.15))"
+                      background: "transparent"
                     }}
                     title={section.description}
                   >
@@ -309,13 +305,11 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   onClick={(e) => handleSectionClick(section.id, e)}
                   className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
                     theme === "light"
-                      ? "border-amber-200 text-gray-700 hover:opacity-90"
-                      : "border-amber-800/50 text-slate-200 hover:opacity-90"
+                      ? "border-amber-600 text-gray-700 hover:opacity-90"
+                      : "border-amber-500 text-slate-200 hover:opacity-90"
                   }`}
                   style={{
-                    background: theme === "light"
-                      ? "linear-gradient(to right, rgba(254, 240, 138, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))"
-                      : "linear-gradient(to right, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.15))"
+                    background: "transparent"
                   }}
                   title={section.description}
                 >
@@ -393,7 +387,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
 
               {/* Section heading for Patterns */}
               <div className={`px-3 py-2 text-xs font-semibold uppercase tracking-wide ${theme === "light" ? "text-gray-500" : "text-slate-500"}`}>
-                Patterns
+                Relationship Patterns
               </div>
 
               {ASTROLAB_SECTIONS.map((section) => {

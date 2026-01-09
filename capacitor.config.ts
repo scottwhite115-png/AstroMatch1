@@ -24,6 +24,10 @@ const config: CapacitorConfig = {
       splashFullScreen: true,
       splashImmersive: true,
     },
+    Browser: {
+      // Ensure Browser plugin uses Chrome Custom Tabs on Android
+      // This keeps OAuth within the app context
+    },
   },
 };
 

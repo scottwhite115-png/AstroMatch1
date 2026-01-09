@@ -115,7 +115,7 @@ export default function AstrologySection() {
           {/* Combined Chinese Pattern Ranking & Relationship Patterns */}
           <div id="chinese-patterns" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Chinese Zodiac Patterns</h2>
+              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Chinese Relationship Patterns</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -151,7 +151,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      High natural harmony and shared rhythm; when you're aligned, this connection moves fast and far.
+                      High natural harmony and shared rhythm
                     </div>
                   </div>
                 </div>
@@ -182,7 +182,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      "Six Harmoniess" Quietly strong bond that feels safe, loyal, and steady when you choose each other.
+                      Quietly strong bond that feels safe, loyal, and steady
                     </div>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Mirror-match energy with strong familiarity and shared habits; comforting, but not automatically harmonious.
+                      Mirror-match energy, comforting, but not automatically harmonious
                     </div>
                   </div>
                 </div>
@@ -234,7 +234,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      No classical pattern; the vibe depends more on personal charts, timing, and your Western signs.
+                      No classical pattern
                     </div>
                   </div>
                 </div>
@@ -265,7 +265,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Magnetic opposites with sharp edges; big lessons, not automatic comfort.
+                      Magnetic opposites—high pull, high friction
                     </div>
                   </div>
                 </div>
@@ -296,7 +296,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Sensitive pattern where small misreads can snowball; this match needs extra patience and very clear communication.
+                      Subtle friction—misreads build fast without clarity
                     </div>
                   </div>
                 </div>
@@ -327,7 +327,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Tension and sharp edges; situations can feel strict or demanding.
+                      Tension and sharp edges; situations can feel strict or demanding
                     </div>
                   </div>
                 </div>
@@ -358,7 +358,7 @@ export default function AstrologySection() {
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      This bond tends to disrupt old patterns; growth is possible but rarely feels easy or predictable.
+                      Pattern-breaker pairing—change is likely, comfort isn't
                     </div>
                   </div>
                 </div>

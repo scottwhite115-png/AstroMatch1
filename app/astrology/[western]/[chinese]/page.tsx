@@ -1888,53 +1888,6 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
 
           <div className="space-y-6">
 
-            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
-              <h2 className="astrology-heading-secondary mb-3">Spirit Animal Sign</h2>
-              {spiritAnimal ? (
-            <div className="space-y-3">
-                  <div className="text-center">
-                    <h3 className="astrology-heading-tertiary mb-1">Your Primal Zodiac Sign</h3>
-                    <p className={`text-2xl font-bold ${theme === "starlight" ? "text-white" : "text-white/95"} mb-2`}>
-                      {spiritAnimal}
-                    </p>
-                  </div>
-                  <p className={`text-base leading-relaxed ${theme === "starlight" ? "text-white/80" : "text-white/80"}`}>
-                    According to Primal Astrology, the combination of {westernSign.name} and {chineseSign.name} creates
-                    the {spiritAnimal} spirit animal sign. This unique fusion represents your core personality traits
-                    and spiritual essence.
-                  </p>
-                  {spiritAnimalUrl && (
-                    <a
-                      href={spiritAnimalUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center gap-2 text-base ${theme === "starlight" ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} transition-colors`}
-                    >
-                      Learn more about the {spiritAnimal} on Primal Astrology
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                      </svg>
-                    </a>
-                  )}
-                </div>
-              ) : (
-                <p className={`text-base leading-relaxed ${theme === "starlight" ? "text-white/80" : "text-white/80"}`}>
-                  Spirit animal information not available for this combination.
-                </p>
-              )}
-            </div>
-
             {/* Chinese Zodiac Trine Compatibility Table */}
 
           </div>

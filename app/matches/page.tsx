@@ -864,10 +864,7 @@ export default function MatchesPage() {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
-  const [searchFilters, setSearchFilters] = useState({
-    westernSign: '',
-    easternSign: ''
-  })
+  const [searchFilters, setSearchFilters] = useState({})
   const [chinesePatternFilters, setChinesePatternFilters] = useState({
     SanHe: false,
     LiuHe: false
@@ -1256,13 +1253,6 @@ export default function MatchesPage() {
     }
     
     // Apply zodiac filters
-    if (searchFilters.westernSign) {
-      filtered = filtered.filter((p) => getProfileWesternForSystem(p) === searchFilters.westernSign)
-    }
-    if (searchFilters.easternSign) {
-      filtered = filtered.filter(p => p.easternSign === searchFilters.easternSign)
-    }
-    
     // Apply Chinese pattern filters
     const hasActivePatternFilters = chinesePatternFilters.SanHe || chinesePatternFilters.LiuHe
     if (hasActivePatternFilters && Object.keys(compatBoxes).length > 0) {
@@ -3347,124 +3337,6 @@ export default function MatchesPage() {
                     <div className={`absolute right-0 top-10 w-80 rounded-lg shadow-xl p-4 z-50 ${theme === "light" ? "bg-white border border-gray-200 backdrop-blur-sm" : "bg-slate-800 border border-indigo-500/20 shadow-lg shadow-indigo-950/30"}`}>
                     <h3 className={`text-lg font-bold mb-4 ${theme === "light" ? "text-black" : "text-white"}`}>Search Settings</h3>
                     
-                    {/* Western Sign Filter */}
-                    <div className="mb-4">
-                      <label className={`block text-sm font-medium mb-2 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>Western Zodiac Sign</label>
-                      <select
-                        value={searchFilters.westernSign}
-                        onChange={(e) => setSearchFilters(prev => ({ ...prev, westernSign: e.target.value }))}
-                        className={`w-full px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-purple-500 ${
-                          theme === "light" 
-                            ? "bg-white border border-gray-300 text-black" 
-                            : "bg-slate-900/50 border border-indigo-400/20 text-white"
-                        }`}
-                        style={{ 
-                          colorScheme: theme === 'light' ? 'light' : 'dark',
-                          WebkitTextFillColor: theme === 'light' ? '#000000' : 'white',
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none'
-                        } as React.CSSProperties}
-                      >
-                        <option value="" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>Any Western Sign</option>
-                        <option value="Aries" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♈ Aries</option>
-                        <option value="Taurus" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♉ Taurus</option>
-                        <option value="Gemini" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♊ Gemini</option>
-                        <option value="Cancer" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♋ Cancer</option>
-                        <option value="Leo" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♌ Leo</option>
-                        <option value="Virgo" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♍ Virgo</option>
-                        <option value="Libra" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♎ Libra</option>
-                        <option value="Scorpio" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♏ Scorpio</option>
-                        <option value="Sagittarius" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♐ Sagittarius</option>
-                        <option value="Capricorn" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♑ Capricorn</option>
-                        <option value="Aquarius" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♒ Aquarius</option>
-                        <option value="Pisces" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♓ Pisces</option>
-                      </select>
-                    </div>
-                    
-                    {/* Eastern Sign Filter */}
-                    <div className="mb-4">
-                      <label className={`block text-sm font-medium mb-2 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>Chinese Zodiac Sign</label>
-                      <select
-                        value={searchFilters.easternSign}
-                        onChange={(e) => setSearchFilters(prev => ({ ...prev, easternSign: e.target.value }))}
-                        className={`w-full px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-purple-500 ${
-                          theme === "light" 
-                            ? "bg-white border border-gray-300 text-black" 
-                            : "bg-slate-900/50 border border-indigo-400/20 text-white"
-                        }`}
-                        style={{ 
-                          colorScheme: theme === 'light' ? 'light' : 'dark',
-                          WebkitTextFillColor: theme === 'light' ? '#000000' : 'white',
-                          appearance: 'none',
-                          WebkitAppearance: 'none',
-                          MozAppearance: 'none'
-                        } as React.CSSProperties}
-                      >
-                        <option value="" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>Any Chinese Sign</option>
-                        <option value="Rat" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐭 Rat</option>
-                        <option value="Ox" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐂 Ox</option>
-                        <option value="Tiger" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐅 Tiger</option>
-                        <option value="Rabbit" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐰 Rabbit</option>
-                        <option value="Dragon" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐉 Dragon</option>
-                        <option value="Snake" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐍 Snake</option>
-                        <option value="Horse" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐎 Horse</option>
-                        <option value="Goat" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐐 Goat</option>
-                        <option value="Monkey" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐒 Monkey</option>
-                        <option value="Rooster" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐓 Rooster</option>
-                        <option value="Dog" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐕 Dog</option>
-                        <option value="Pig" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐷 Pig</option>
-                      </select>
-                    </div>
-                    
-                    {/* Chinese Pattern Filters */}
-                    <div className="mb-4">
-                    
-                    {/* San He Filter */}
-                    <div className="mb-3">
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={chinesePatternFilters.SanHe}
-                          onChange={(e) => setChinesePatternFilters(prev => ({ ...prev, SanHe: e.target.checked }))}
-                          className={`w-4 h-4 text-purple-600 rounded focus:ring-purple-500 focus:ring-2 ${
-                            theme === "light" 
-                              ? "bg-white border-gray-300" 
-                              : "bg-slate-900/50 border-indigo-400/20"
-                          }`}
-                        />
-                        <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                          💕 Soulmate
-                        </span>
-                      </label>
-                      <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Highly compatible triple harmony patterns
-                      </p>
-                    </div>
-                    
-                    {/* Liu He Filter */}
-                    <div className="mb-4">
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={chinesePatternFilters.LiuHe}
-                          onChange={(e) => setChinesePatternFilters(prev => ({ ...prev, LiuHe: e.target.checked }))}
-                          className={`w-4 h-4 text-purple-600 rounded focus:ring-purple-500 focus:ring-2 ${
-                            theme === "light" 
-                              ? "bg-white border-gray-300" 
-                              : "bg-slate-900/50 border-indigo-400/20"
-                          }`}
-                        />
-                        <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                          🤝 Secret Friends
-                        </span>
-                      </label>
-                      <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Hidden harmony and supportive connection
-                      </p>
-                    </div>
-                    </div>
-                    
                     {/* Friend Finder Toggle */}
                     <div className="mb-4">
                       <div className="flex items-center justify-between mb-2">
@@ -3489,8 +3361,68 @@ export default function MatchesPage() {
                         </button>
                       </div>
                       <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
-                        Shows same sex profiles in your matches page.
+                        Finds highly compatible friends of the same sex.
                       </p>
+                    </div>
+                    
+                    {/* Chinese Pattern Filters */}
+                    <div className="mb-4">
+                    
+                    {/* San He Filter */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                            💕 Soulmate
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => setChinesePatternFilters(prev => ({ ...prev, SanHe: !prev.SanHe }))}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                            chinesePatternFilters.SanHe 
+                              ? 'bg-purple-600' 
+                              : theme === "light" ? 'bg-gray-300' : 'bg-slate-700'
+                          }`}
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              chinesePatternFilters.SanHe ? 'translate-x-6' : 'translate-x-1'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
+                        Highly compatible triple harmony patterns
+                      </p>
+                    </div>
+                    
+                    {/* Liu He Filter */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                            🤝 Secret Friends
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => setChinesePatternFilters(prev => ({ ...prev, LiuHe: !prev.LiuHe }))}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 ${
+                            chinesePatternFilters.LiuHe 
+                              ? 'bg-purple-600' 
+                              : theme === "light" ? 'bg-gray-300' : 'bg-slate-700'
+                          }`}
+                        >
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              chinesePatternFilters.LiuHe ? 'translate-x-6' : 'translate-x-1'
+                            }`}
+                          />
+                        </button>
+                      </div>
+                      <p className={`text-xs ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
+                        Hidden harmony and supportive connection
+                      </p>
+                    </div>
                     </div>
                     
                     {/* Only Soulmate & Secret Friends Messages Toggle */}
@@ -3528,7 +3460,7 @@ export default function MatchesPage() {
                     <div className="flex gap-2">
                       <button
                         onClick={() => {
-                          setSearchFilters({ westernSign: '', easternSign: '' })
+                          setSearchFilters({})
                           setChinesePatternFilters({ SanHe: false, LiuHe: false })
                           setFriendFinderEnabled(false)
                           setOnlySanHeLiuHeMessages(false)
@@ -3901,7 +3833,7 @@ export default function MatchesPage() {
             </p>
             <button
               onClick={() => {
-                setSearchFilters({ westernSign: '', easternSign: '' })
+                setSearchFilters({})
                           setMatchTierFilters({ Soulmate: false, "Twin Flame": false, Excellent: false, Favourable: false })
               }}
               className="mt-4 px-6 py-2 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 hover:from-orange-500 hover:via-orange-400 hover:to-red-400 text-white rounded-lg transition-colors"

@@ -16,6 +16,7 @@ import { getBlockedUsers, unblockUser, type BlockedUser } from "@/lib/utils/bloc
 import { createClient } from "@/lib/supabase/client"
 import { fetchUserProfile } from "@/lib/supabase/profileQueries"
 import { updateInstantMessagingSettings } from "@/lib/supabase/profileSave"
+import { isCapacitor } from "@/lib/utils/capacitor"
 
 interface AccountPageProps {
   pageIndex?: number
@@ -409,8 +410,17 @@ export default function AccountPage({
     "Be honest in your profile and interactions",
   ]
 
-  const handleContactSupport = () => {
-    window.location.href = "mailto:astromatchchat@gmail.com?subject=Support Request"
+  const handleContactSupport = async () => {
+    const mailtoUrl = "mailto:astromatchchat@gmail.com?subject=Support Request"
+    
+    if (isCapacitor()) {
+      // On mobile, open mailto in Capacitor's in-app browser
+      const { Browser } = await import('@capacitor/browser')
+      await Browser.open({ url: mailtoUrl })
+    } else {
+      // On web, use standard mailto
+      window.location.href = mailtoUrl
+    }
   }
 
   return (
@@ -1017,7 +1027,7 @@ export default function AccountPage({
               </div>
 
               <p className="text-gray-900">
-                AstroMatch is a dating and astrology-based application (the "App"). This Privacy Policy explains how AstroMatch ("AstroMatch," "we," "us," "our") collects, uses, shares, and protects information about you, and the choices you have.
+                AstroMatch is an astrology matchmaking and compatibility application (the "App"). This Privacy Policy explains how AstroMatch ("AstroMatch," "we," "us," "our") collects, uses, shares, and protects information about you, and the choices you have.
               </p>
               <p className="text-gray-900">
                 This policy applies when you use our App, websites, and related services (collectively, the "Services").
@@ -1077,7 +1087,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">3) Sensitive Information</h3>
                 <p className="text-gray-900">
-                  Some information used in a dating app context may be considered sensitive in certain countries (for example: date of birth, precise location, messages, and content that may reveal sexual life/sexual orientation if you choose to share it).
+                  Some information used in an astrology matchmaking app context may be considered sensitive in certain countries (for example: date of birth, precise location, messages, and astrological profile content you choose to share).
                 </p>
                 <p className="text-gray-900 mt-2">
                   Where required, we process sensitive information only with your consent or another lawful basis permitted by law, and we provide controls to limit what you share publicly.
@@ -1336,9 +1346,12 @@ export default function AccountPage({
                   <p className="text-gray-900 font-semibold">AstroMatch Privacy Team</p>
                   <p className="text-gray-900">
                     📧{" "}
-                    <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">
+                    <button 
+                      onClick={handleContactSupport}
+                      className="text-blue-600 hover:underline bg-transparent border-none p-0 cursor-pointer"
+                    >
                       astromatchchat@gmail.com
-                    </a>
+                    </button>
                   </p>
                   <p className="text-gray-900 mt-2">
                     <strong>Controller details:</strong> Harry Bundock Lawyer and Solicitor
@@ -1476,7 +1489,7 @@ export default function AccountPage({
 
               {/* Section 6 */}
               <div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">6) Dating Safety and User Responsibility</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">6) User Safety and Responsibility</h3>
                 <p className="text-gray-900 mb-2">
                   AstroMatch is a platform that helps users meet and communicate. You are responsible for your interactions with others.
                 </p>
@@ -1683,9 +1696,12 @@ export default function AccountPage({
                   <p className="text-gray-900 font-semibold">Contact Information</p>
                   <p className="text-gray-900">
                     📧{" "}
-                    <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">
+                    <button 
+                      onClick={handleContactSupport}
+                      className="text-blue-600 hover:underline bg-transparent border-none p-0 cursor-pointer"
+                    >
                       astromatchchat@gmail.com
-                    </a>
+                    </button>
                   </p>
                 </div>
               </div>
