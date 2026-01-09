@@ -140,7 +140,7 @@ export function BottomNavigation() {
       path: "/astrology",
     },
     {
-      icon: Heart,
+      icon: Users,
       label: "Connections",
       path: "/matches",
     },
