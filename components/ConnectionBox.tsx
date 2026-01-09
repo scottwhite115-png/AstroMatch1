@@ -621,15 +621,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
               </div>
 
-          {/* Tagline under the pill */}
-          {tagline && (
-            <div className={`text-center px-4 mt-3 text-base font-bold ${
-              theme === "light" ? "text-slate-700" : "text-slate-300"
-            }`}>
-              {tagline}
-            </div>
-          )}
-
           {/* Match Label Dropdown - Shows astrology details when pill is clicked */}
           {showMatchLabelDropdown && (
             <div 
