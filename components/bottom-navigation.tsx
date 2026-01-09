@@ -88,6 +88,37 @@ const Flame = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Connection-related icons
+const Network = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="3" />
+    <circle cx="5" cy="5" r="2" />
+    <circle cx="19" cy="5" r="2" />
+    <circle cx="5" cy="19" r="2" />
+    <circle cx="19" cy="19" r="2" />
+    <line x1="8.59" y1="8.59" x2="10.41" y2="10.41" />
+    <line x1="13.59" y1="10.41" x2="15.41" y2="8.59" />
+    <line x1="8.59" y1="15.41" x2="10.41" y2="13.59" />
+    <line x1="13.59" y1="13.59" x2="15.41" y2="15.41" />
+  </svg>
+)
+
+const Handshake = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M11 12h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 14" />
+    <path d="M7 18h1a2 2 0 0 0 0-4H5c-.6 0-1.1.2-1.4.6L3 18" />
+    <path d="M13 12h3c.6 0 1.1.2 1.4.6L21 14" />
+    <path d="M17 18h-1a2 2 0 0 0 0-4h3c.6 0 1.1.2 1.4.6L21 18" />
+  </svg>
+)
+
+const Link = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+  </svg>
+)
+
 export function BottomNavigation() {
   const router = useRouter()
   const pathname = usePathname()
