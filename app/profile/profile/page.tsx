@@ -3176,6 +3176,9 @@ export default function AstrologyProfilePage({
         console.error('[Save Changes] Error reloading profile:', error)
       }
 
+      // Dispatch profile updated event for bottom navigation
+      window.dispatchEvent(new Event('profileUpdated'))
+
       // Set saved state
       setSavedSuccessfully(true)
 

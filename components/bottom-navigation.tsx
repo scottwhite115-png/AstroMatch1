@@ -2,6 +2,7 @@
 
 import { useRouter, usePathname } from "next/navigation"
 import { useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 const Heart = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -123,28 +124,75 @@ export function BottomNavigation() {
   const router = useRouter()
   const pathname = usePathname()
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
+  const [displayName, setDisplayName] = useState<string | null>(null)
   const [isHidden, setIsHidden] = useState(false)
 
-  // Check for profile photo on mount and when page changes
+  // Fetch user profile data (photo and display name)
   useEffect(() => {
-    const checkProfilePhoto = () => {
-      if (typeof window !== 'undefined') {
+    const fetchUserProfile = async () => {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        
+        if (user) {
+          // Fetch profile from database
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('display_name, photos')
+            .eq('id', user.id)
+            .single()
+
+          if (!error && profile) {
+            // Set display name if available
+            if (profile.display_name) {
+              setDisplayName(profile.display_name)
+            } else {
+              setDisplayName(null)
+            }
+            
+            // Set profile photo if available
+            if (profile.photos && Array.isArray(profile.photos) && profile.photos.length > 0) {
+              setProfilePhoto(profile.photos[0])
+            } else {
+              // Fallback to localStorage
+              const savedPhoto = localStorage.getItem('profilePhoto1')
+              setProfilePhoto(savedPhoto)
+            }
+          } else {
+            // Fallback to localStorage for photo
+            const savedPhoto = localStorage.getItem('profilePhoto1')
+            setProfilePhoto(savedPhoto)
+          }
+        } else {
+          // Not logged in, check localStorage
+          const savedPhoto = localStorage.getItem('profilePhoto1')
+          setProfilePhoto(savedPhoto)
+        }
+      } catch (error) {
+        console.error('[BottomNavigation] Error fetching profile:', error)
+        // Fallback to localStorage
         const savedPhoto = localStorage.getItem('profilePhoto1')
         setProfilePhoto(savedPhoto)
       }
     }
 
-    checkProfilePhoto()
+    fetchUserProfile()
 
-    // Listen for photo updates
-    const handlePhotoUpdate = () => {
-      checkProfilePhoto()
+    // Listen for profile updates
+    const handleProfileUpdate = () => {
+      fetchUserProfile()
     }
 
+    const handlePhotoUpdate = () => {
+      fetchUserProfile()
+    }
+
+    window.addEventListener('profileUpdated', handleProfileUpdate)
     window.addEventListener('profilePhotoUpdated', handlePhotoUpdate)
     window.addEventListener('storage', handlePhotoUpdate)
 
     return () => {
+      window.removeEventListener('profileUpdated', handleProfileUpdate)
       window.removeEventListener('profilePhotoUpdated', handlePhotoUpdate)
       window.removeEventListener('storage', handlePhotoUpdate)
     }
@@ -164,6 +212,9 @@ export function BottomNavigation() {
     }
   }, [])
 
+  // Use display name if available, otherwise fall back to "Profile"
+  const profileLabel = displayName || "Profile"
+
   const navItems = [
     {
       icon: FourPointedStar,
@@ -182,7 +233,7 @@ export function BottomNavigation() {
     },
     {
       icon: Settings,
-      label: "Profile",
+      label: profileLabel,
       path: "/profile/profile",
     },
   ]
