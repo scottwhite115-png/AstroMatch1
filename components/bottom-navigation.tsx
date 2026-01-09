@@ -223,7 +223,7 @@ export function BottomNavigation() {
     },
     {
       icon: Users,
-      label: "Connections",
+      label: "Matches",
       path: "/matches",
     },
     {
