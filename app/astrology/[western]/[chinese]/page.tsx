@@ -1711,7 +1711,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
         className={`${theme === "starlight" ? "astrology-cosmic-bg" : theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} combination-page min-h-screen pb-20`}
       >
 
-        <div className="relative z-10 px-4 pt-2 pb-8">
+        <div className="relative z-10 px-4 pb-8" style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
           <div className="flex items-center justify-between mb-10">
             <button
               onClick={() => router.back()}
@@ -1738,7 +1738,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
               <svg viewBox="0 0 24 24" className="w-4 h-4">
                 <path
                   d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"
-                  style={{ fill: "#fbbf24" }}
+                  style={{ fill: "#fbbf24", stroke: "none" }}
                 />
               </svg>
               <span className="font-bold text-base bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
@@ -1751,7 +1751,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
 
           {/* Match Engine Connection Box */}
           {compatBox && userSigns ? (
-            <div className="mb-6">
+            <div className="mb-3">
               {(() => {
                 // Map rankLabel to ConnectionBoxNew tier format
                 const mapTier = (label?: string): "Soulmate Match" | "Twin Flame Match" | "Excellent Match" | "Favourable Match" | "Neutral Match" | "Opposites Attract" | "Difficult Match" => {
@@ -1800,7 +1800,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
               })()}
             </div>
           ) : userSigns && !compatBox ? (
-            <div className="rounded-2xl border border-gray-200 dark:border-gray-700 mb-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-700 mb-3">
               <div className="text-center py-4">
                 <p className="text-sm text-red-400 mb-2">Unable to load connection data</p>
                 <p className="text-xs text-gray-600 dark:text-white/60">User Signs: {userSigns.western}/{userSigns.chinese}</p>
@@ -1809,7 +1809,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
               </div>
             </div>
           ) : (
-            <div className="rounded-2xl border border-gray-200 dark:border-gray-700 mb-6">
+            <div className="rounded-2xl border border-gray-200 dark:border-gray-700 mb-3">
               <div className="text-center py-4">
                 <p className="text-sm text-gray-600 dark:text-white/60 italic">Loading your connection...</p>
                 {!userSigns && <p className="text-xs text-gray-500 dark:text-white/50 mt-1">Loading user signs...</p>}
@@ -1887,6 +1887,53 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
           </div>
 
           <div className="space-y-6">
+
+            <div className="zodiac-sign-card" style={{ border: "1px solid #d1d5db" }}>
+              <h2 className="astrology-heading-secondary mb-3">Spirit Animal Sign</h2>
+              {spiritAnimal ? (
+            <div className="space-y-3">
+                  <div className="text-center">
+                    <h3 className="astrology-heading-tertiary mb-1">Your Primal Zodiac Sign</h3>
+                    <p className={`text-2xl font-bold ${theme === "starlight" ? "text-white" : "text-white/95"} mb-2`}>
+                      {spiritAnimal}
+                    </p>
+                  </div>
+                  <p className={`text-base leading-relaxed ${theme === "starlight" ? "text-white/80" : "text-white/80"}`}>
+                    According to Primal Astrology, the combination of {westernSign.name} and {chineseSign.name} creates
+                    the {spiritAnimal} spirit animal sign. This unique fusion represents your core personality traits
+                    and spiritual essence.
+                  </p>
+                  {spiritAnimalUrl && (
+                    <a
+                      href={spiritAnimalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center gap-2 text-base ${theme === "starlight" ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} transition-colors`}
+                    >
+                      Learn more about the {spiritAnimal} on Primal Astrology
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  )}
+                </div>
+              ) : (
+                <p className={`text-base leading-relaxed ${theme === "starlight" ? "text-white/80" : "text-white/80"}`}>
+                  Spirit animal information not available for this combination.
+                </p>
+              )}
+            </div>
 
             {/* Chinese Zodiac Trine Compatibility Table */}
 

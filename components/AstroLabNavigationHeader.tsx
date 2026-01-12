@@ -27,7 +27,7 @@ const ASTROLAB_SECTIONS = [
   },
   {
     id: 'six-conflicts',
-    label: '⚡ Conflict',
+    label: '⚠️ Conflict',
     icon: '',
     description: 'Six Conflicts (Liu Chong) pairs table',
   },

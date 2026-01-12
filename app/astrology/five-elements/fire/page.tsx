@@ -18,12 +18,12 @@ export default function FireElementPage() {
       className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} astrology-page min-h-screen w-full relative pb-24`}
     >
       <div className="relative z-10">
-        <div className="px-3 pt-2 pb-2">
+        <div className="px-3 pb-2" style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-0.5">
               <FourPointedStar className="w-4 h-4 text-orange-500" />
               <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                AstroLibrary
+                AstroMatch
               </span>
             </div>
             

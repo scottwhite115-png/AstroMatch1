@@ -127,7 +127,7 @@ export default function LoginPage() {
         provider,
         options: {
           redirectTo: redirectUrl,
-          skipBrowserRedirect: false,
+          skipBrowserRedirect: true,
           queryParams: provider === 'google' ? {
             access_type: 'offline',
             prompt: 'consent',
@@ -149,42 +149,36 @@ export default function LoginPage() {
         const inNativeApp = isCapacitor()
         
         if (inNativeApp) {
-          // For native app: Handle OAuth in the app's WebView without opening any browser
-          // This prevents Chrome Custom Tabs from appearing, keeping everything truly in-app
+          // Use Capacitor Browser plugin to open OAuth in an in-app browser
+          // This uses Chrome Custom Tabs which keeps users within the app context
           try {
+            const { Browser } = await import('@capacitor/browser')
             const { App } = await import('@capacitor/app')
             
             // Set up listener for deep links to handle OAuth callback
-            let urlListener: any = null
-            
-            urlListener = await App.addListener('appUrlOpen', async (event: any) => {
+            const urlListener = await App.addListener('appUrlOpen', async (event: any) => {
               const url = event.url
               console.log('App opened with URL:', url)
               
               // Handle OAuth callback deep links
               if (url.includes('/auth/callback') || url.includes('callback-mobile')) {
+                // Close the in-app browser
+                await Browser.close()
+                
                 // Remove the listener
-                if (urlListener) {
-                  await urlListener.remove()
-                }
+                await urlListener.remove()
                 
-                // Convert deep link to app URL if needed
-                let appUrl = url
-                if (url.startsWith('astromatch://')) {
-                  appUrl = url.replace(/^astromatch:\/\//, 'https://astro-match1.vercel.app/')
-                }
-                
-                // Navigate to the callback URL in the app's WebView
-                window.location.href = appUrl
+                // Navigate to the callback URL in the app
+                window.location.href = url
               }
             })
             
-            // Small delay to ensure listener is set up before navigation
-            await new Promise(resolve => setTimeout(resolve, 100))
-            
-            // Navigate to OAuth URL in the app's WebView (no external browser/Chrome Custom Tabs)
-            // This keeps everything truly in-app without any Chrome UI
-            window.location.href = data.url
+            // Open OAuth URL in in-app browser (Chrome Custom Tabs)
+            await Browser.open({ 
+              url: data.url,
+              presentationStyle: 'popover',
+              toolbarColor: '#000000'
+            })
           } catch (err) {
             console.error("OAuth setup error:", err)
             setError(`Failed to start ${provider === 'apple' ? 'Apple' : 'Google'} sign in. Please try again.`)
@@ -239,8 +233,8 @@ export default function LoginPage() {
 
   return (
     <div className="bg-white min-h-screen w-full overflow-y-auto">
-      <div className="flex flex-col items-center justify-start min-h-screen px-6 pb-20 relative z-10" style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
-        <div className="mb-8 text-center">
+      <div className="flex flex-col items-center justify-start min-h-screen px-6 pb-20 relative z-10" style={{ paddingTop: 'max(env(safe-area-inset-top), 100px)' }}>
+        <div className="mb-8 text-center mt-8">
           <div className="flex items-center justify-center gap-0.5 mb-2">
             <FourPointedStar className="w-9 h-9 text-orange-500" />
             <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
@@ -252,7 +246,7 @@ export default function LoginPage() {
 
         {/* Login Form */}
         <div className="w-full max-w-sm">
-          <h2 className="text-gray-900 text-base font-semibold text-center mb-4">Sign in</h2>
+          <h2 className="text-gray-900 text-lg font-semibold text-center mb-4">Sign in</h2>
 
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">

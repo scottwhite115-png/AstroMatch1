@@ -5,10 +5,11 @@ const config: CapacitorConfig = {
   appName: 'AstroMatch',
   webDir: 'public',
   server: {
-    url: 'https://astro-match1.vercel.app',
-    cleartext: true,
-    androidScheme: 'astromatch',
-    iosScheme: 'astromatch',
+    // NOTE: Remove localhost URL before production builds
+    // url: 'http://localhost:3000',
+    // cleartext: true,
+    androidScheme: 'https',
+    iosScheme: 'https',
   },
   plugins: {
     SplashScreen: {

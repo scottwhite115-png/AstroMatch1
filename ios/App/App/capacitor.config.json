@@ -3,7 +3,7 @@
 	"appName": "AstroMatch",
 	"webDir": "public",
 	"server": {
-		"url": "https://astro-match1.vercel.app",
+		"url": "http://localhost:3000",
 		"cleartext": true,
 		"androidScheme": "astromatch",
 		"iosScheme": "astromatch"
