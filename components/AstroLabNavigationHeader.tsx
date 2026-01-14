@@ -200,7 +200,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                 <div className="flex items-center gap-0.5">
                   <FourPointedStar className="w-5 h-5 text-orange-500" />
                   <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                    Astrology
+                    AstroLab
                   </span>
                 </div>
               </div>

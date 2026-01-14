@@ -241,7 +241,7 @@ export default function LoginPage() {
               AstroMatch
             </h1>
           </div>
-          <p className="text-gray-700 text-sm">Discover your cosmic compatibility</p>
+          <p className="text-gray-700 text-sm">Western + Chinese compatibility, simplified</p>
         </div>
 
         {/* Login Form */}

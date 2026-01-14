@@ -249,7 +249,7 @@ export default function SignupPage() {
               AstroMatch
             </h1>
           </div>
-          <p className="text-gray-700 text-sm">Discover your cosmic compatibility</p>
+          <p className="text-gray-700 text-sm">Western + Chinese compatibility, simplified</p>
         </div>
 
         <h2 className="text-gray-900 text-lg font-semibold mb-4 text-center">Sign up</h2>
