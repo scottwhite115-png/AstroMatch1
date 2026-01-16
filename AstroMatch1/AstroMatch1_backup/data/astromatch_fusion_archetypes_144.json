@@ -1,0 +1,2594 @@
+[
+  {
+    "key": "aries_rat",
+    "archetype_name": "Blazing Strategist",
+    "essence": "Aries Rat fuses bold, initiating aries vibes with strategic, social rat spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_ox",
+    "archetype_name": "Solar Builder",
+    "essence": "Aries Ox fuses bold, initiating aries vibes with reliable, patient ox spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_tiger",
+    "archetype_name": "Flare Champion",
+    "essence": "Aries Tiger fuses bold, initiating aries vibes with brave, restless tiger spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_rabbit",
+    "archetype_name": "Torch Peacemaker",
+    "essence": "Aries Rabbit fuses bold, initiating aries vibes with kind, graceful rabbit spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_dragon",
+    "archetype_name": "Ember Powerhouse",
+    "essence": "Aries Dragon fuses bold, initiating aries vibes with charismatic, visionary dragon spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_snake",
+    "archetype_name": "Vanguard Seer",
+    "essence": "Aries Snake fuses bold, initiating aries vibes with discerning, mysterious snake spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_horse",
+    "archetype_name": "Blazing Wildheart",
+    "essence": "Aries Horse fuses bold, initiating aries vibes with free-spirited, energetic horse spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_goat",
+    "archetype_name": "Solar Hearthkeeper",
+    "essence": "Aries Goat fuses bold, initiating aries vibes with gentle, artistic goat spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_monkey",
+    "archetype_name": "Flare Spark",
+    "essence": "Aries Monkey fuses bold, initiating aries vibes with clever, mischievous monkey spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_rooster",
+    "archetype_name": "Torch Artisan",
+    "essence": "Aries Rooster fuses bold, initiating aries vibes with meticulous, stylish rooster spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_dog",
+    "archetype_name": "Ember Guardian",
+    "essence": "Aries Dog fuses bold, initiating aries vibes with loyal, honest dog spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "aries_pig",
+    "archetype_name": "Vanguard Giver",
+    "essence": "Aries Pig fuses bold, initiating aries vibes with warm, generous pig spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Bold initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "taurus_rat",
+    "archetype_name": "Granite Connector",
+    "essence": "Taurus Rat fuses steady, sensual taurus vibes with strategic, social rat spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_ox",
+    "archetype_name": "Verdant Keeper",
+    "essence": "Taurus Ox fuses steady, sensual taurus vibes with reliable, patient ox spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_tiger",
+    "archetype_name": "Hearth Catalyst",
+    "essence": "Taurus Tiger fuses steady, sensual taurus vibes with brave, restless tiger spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_rabbit",
+    "archetype_name": "Anchor Caretaker",
+    "essence": "Taurus Rabbit fuses steady, sensual taurus vibes with kind, graceful rabbit spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_dragon",
+    "archetype_name": "Terrace Luminary",
+    "essence": "Taurus Dragon fuses steady, sensual taurus vibes with charismatic, visionary dragon spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_snake",
+    "archetype_name": "Keystone Alchemist",
+    "essence": "Taurus Snake fuses steady, sensual taurus vibes with discerning, mysterious snake spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_horse",
+    "archetype_name": "Granite Explorer",
+    "essence": "Taurus Horse fuses steady, sensual taurus vibes with free-spirited, energetic horse spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_goat",
+    "archetype_name": "Verdant Artist",
+    "essence": "Taurus Goat fuses steady, sensual taurus vibes with gentle, artistic goat spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_monkey",
+    "archetype_name": "Hearth Trickster",
+    "essence": "Taurus Monkey fuses steady, sensual taurus vibes with clever, mischievous monkey spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_rooster",
+    "archetype_name": "Anchor Perfectionist",
+    "essence": "Taurus Rooster fuses steady, sensual taurus vibes with meticulous, stylish rooster spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_dog",
+    "archetype_name": "Terrace Ally",
+    "essence": "Taurus Dog fuses steady, sensual taurus vibes with loyal, honest dog spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "taurus_pig",
+    "archetype_name": "Keystone Companion",
+    "essence": "Taurus Pig fuses steady, sensual taurus vibes with warm, generous pig spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Steady initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "gemini_rat",
+    "archetype_name": "Aerial Navigator",
+    "essence": "Gemini Rat fuses curious, witty gemini vibes with strategic, social rat spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_ox",
+    "archetype_name": "Zephyr Steward",
+    "essence": "Gemini Ox fuses curious, witty gemini vibes with reliable, patient ox spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_tiger",
+    "archetype_name": "Aurora Trailblazer",
+    "essence": "Gemini Tiger fuses curious, witty gemini vibes with brave, restless tiger spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_rabbit",
+    "archetype_name": "Skyline Muse",
+    "essence": "Gemini Rabbit fuses curious, witty gemini vibes with kind, graceful rabbit spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_dragon",
+    "archetype_name": "Signal Visionary",
+    "essence": "Gemini Dragon fuses curious, witty gemini vibes with charismatic, visionary dragon spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_snake",
+    "archetype_name": "Circuit Sage",
+    "essence": "Gemini Snake fuses curious, witty gemini vibes with discerning, mysterious snake spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_horse",
+    "archetype_name": "Aerial Pathfinder",
+    "essence": "Gemini Horse fuses curious, witty gemini vibes with free-spirited, energetic horse spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_goat",
+    "archetype_name": "Zephyr Comforter",
+    "essence": "Gemini Goat fuses curious, witty gemini vibes with gentle, artistic goat spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_monkey",
+    "archetype_name": "Aurora Inventor",
+    "essence": "Gemini Monkey fuses curious, witty gemini vibes with clever, mischievous monkey spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_rooster",
+    "archetype_name": "Skyline Timekeeper",
+    "essence": "Gemini Rooster fuses curious, witty gemini vibes with meticulous, stylish rooster spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_dog",
+    "archetype_name": "Signal Trueheart",
+    "essence": "Gemini Dog fuses curious, witty gemini vibes with loyal, honest dog spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "gemini_pig",
+    "archetype_name": "Circuit Harbor",
+    "essence": "Gemini Pig fuses curious, witty gemini vibes with warm, generous pig spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Curious initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "cancer_rat",
+    "archetype_name": "Tidal Strategist",
+    "essence": "Cancer Rat fuses caring, protective cancer vibes with strategic, social rat spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_ox",
+    "archetype_name": "Lunar Builder",
+    "essence": "Cancer Ox fuses caring, protective cancer vibes with reliable, patient ox spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_tiger",
+    "archetype_name": "Mist Champion",
+    "essence": "Cancer Tiger fuses caring, protective cancer vibes with brave, restless tiger spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_rabbit",
+    "archetype_name": "Coral Peacemaker",
+    "essence": "Cancer Rabbit fuses caring, protective cancer vibes with kind, graceful rabbit spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_dragon",
+    "archetype_name": "Torrent Powerhouse",
+    "essence": "Cancer Dragon fuses caring, protective cancer vibes with charismatic, visionary dragon spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_snake",
+    "archetype_name": "Pearl Seer",
+    "essence": "Cancer Snake fuses caring, protective cancer vibes with discerning, mysterious snake spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_horse",
+    "archetype_name": "Tidal Wildheart",
+    "essence": "Cancer Horse fuses caring, protective cancer vibes with free-spirited, energetic horse spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_goat",
+    "archetype_name": "Lunar Hearthkeeper",
+    "essence": "Cancer Goat fuses caring, protective cancer vibes with gentle, artistic goat spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_monkey",
+    "archetype_name": "Mist Spark",
+    "essence": "Cancer Monkey fuses caring, protective cancer vibes with clever, mischievous monkey spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_rooster",
+    "archetype_name": "Coral Artisan",
+    "essence": "Cancer Rooster fuses caring, protective cancer vibes with meticulous, stylish rooster spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_dog",
+    "archetype_name": "Torrent Guardian",
+    "essence": "Cancer Dog fuses caring, protective cancer vibes with loyal, honest dog spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "cancer_pig",
+    "archetype_name": "Pearl Giver",
+    "essence": "Cancer Pig fuses caring, protective cancer vibes with warm, generous pig spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Caring initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "leo_rat",
+    "archetype_name": "Blazing Connector",
+    "essence": "Leo Rat fuses radiant, proud leo vibes with strategic, social rat spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_ox",
+    "archetype_name": "Solar Keeper",
+    "essence": "Leo Ox fuses radiant, proud leo vibes with reliable, patient ox spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_tiger",
+    "archetype_name": "Flare Catalyst",
+    "essence": "Leo Tiger fuses radiant, proud leo vibes with brave, restless tiger spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_rabbit",
+    "archetype_name": "Torch Caretaker",
+    "essence": "Leo Rabbit fuses radiant, proud leo vibes with kind, graceful rabbit spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_dragon",
+    "archetype_name": "Ember Luminary",
+    "essence": "Leo Dragon fuses radiant, proud leo vibes with charismatic, visionary dragon spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_snake",
+    "archetype_name": "Vanguard Alchemist",
+    "essence": "Leo Snake fuses radiant, proud leo vibes with discerning, mysterious snake spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_horse",
+    "archetype_name": "Blazing Explorer",
+    "essence": "Leo Horse fuses radiant, proud leo vibes with free-spirited, energetic horse spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_goat",
+    "archetype_name": "Solar Artist",
+    "essence": "Leo Goat fuses radiant, proud leo vibes with gentle, artistic goat spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_monkey",
+    "archetype_name": "Flare Trickster",
+    "essence": "Leo Monkey fuses radiant, proud leo vibes with clever, mischievous monkey spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_rooster",
+    "archetype_name": "Torch Perfectionist",
+    "essence": "Leo Rooster fuses radiant, proud leo vibes with meticulous, stylish rooster spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_dog",
+    "archetype_name": "Ember Ally",
+    "essence": "Leo Dog fuses radiant, proud leo vibes with loyal, honest dog spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "leo_pig",
+    "archetype_name": "Vanguard Companion",
+    "essence": "Leo Pig fuses radiant, proud leo vibes with warm, generous pig spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Radiant initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "virgo_rat",
+    "archetype_name": "Granite Navigator",
+    "essence": "Virgo Rat fuses precise, service-minded virgo vibes with strategic, social rat spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_ox",
+    "archetype_name": "Verdant Steward",
+    "essence": "Virgo Ox fuses precise, service-minded virgo vibes with reliable, patient ox spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_tiger",
+    "archetype_name": "Hearth Trailblazer",
+    "essence": "Virgo Tiger fuses precise, service-minded virgo vibes with brave, restless tiger spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_rabbit",
+    "archetype_name": "Anchor Muse",
+    "essence": "Virgo Rabbit fuses precise, service-minded virgo vibes with kind, graceful rabbit spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_dragon",
+    "archetype_name": "Terrace Visionary",
+    "essence": "Virgo Dragon fuses precise, service-minded virgo vibes with charismatic, visionary dragon spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_snake",
+    "archetype_name": "Keystone Sage",
+    "essence": "Virgo Snake fuses precise, service-minded virgo vibes with discerning, mysterious snake spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_horse",
+    "archetype_name": "Granite Pathfinder",
+    "essence": "Virgo Horse fuses precise, service-minded virgo vibes with free-spirited, energetic horse spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_goat",
+    "archetype_name": "Verdant Comforter",
+    "essence": "Virgo Goat fuses precise, service-minded virgo vibes with gentle, artistic goat spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_monkey",
+    "archetype_name": "Hearth Inventor",
+    "essence": "Virgo Monkey fuses precise, service-minded virgo vibes with clever, mischievous monkey spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_rooster",
+    "archetype_name": "Anchor Timekeeper",
+    "essence": "Virgo Rooster fuses precise, service-minded virgo vibes with meticulous, stylish rooster spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_dog",
+    "archetype_name": "Terrace Trueheart",
+    "essence": "Virgo Dog fuses precise, service-minded virgo vibes with loyal, honest dog spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "virgo_pig",
+    "archetype_name": "Keystone Harbor",
+    "essence": "Virgo Pig fuses precise, service-minded virgo vibes with warm, generous pig spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Precise initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "libra_rat",
+    "archetype_name": "Aerial Strategist",
+    "essence": "Libra Rat fuses charming, balancing libra vibes with strategic, social rat spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_ox",
+    "archetype_name": "Zephyr Builder",
+    "essence": "Libra Ox fuses charming, balancing libra vibes with reliable, patient ox spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_tiger",
+    "archetype_name": "Aurora Champion",
+    "essence": "Libra Tiger fuses charming, balancing libra vibes with brave, restless tiger spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_rabbit",
+    "archetype_name": "Skyline Peacemaker",
+    "essence": "Libra Rabbit fuses charming, balancing libra vibes with kind, graceful rabbit spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_dragon",
+    "archetype_name": "Signal Powerhouse",
+    "essence": "Libra Dragon fuses charming, balancing libra vibes with charismatic, visionary dragon spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_snake",
+    "archetype_name": "Circuit Seer",
+    "essence": "Libra Snake fuses charming, balancing libra vibes with discerning, mysterious snake spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_horse",
+    "archetype_name": "Aerial Wildheart",
+    "essence": "Libra Horse fuses charming, balancing libra vibes with free-spirited, energetic horse spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_goat",
+    "archetype_name": "Zephyr Hearthkeeper",
+    "essence": "Libra Goat fuses charming, balancing libra vibes with gentle, artistic goat spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_monkey",
+    "archetype_name": "Aurora Spark",
+    "essence": "Libra Monkey fuses charming, balancing libra vibes with clever, mischievous monkey spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_rooster",
+    "archetype_name": "Skyline Artisan",
+    "essence": "Libra Rooster fuses charming, balancing libra vibes with meticulous, stylish rooster spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_dog",
+    "archetype_name": "Signal Guardian",
+    "essence": "Libra Dog fuses charming, balancing libra vibes with loyal, honest dog spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "libra_pig",
+    "archetype_name": "Circuit Giver",
+    "essence": "Libra Pig fuses charming, balancing libra vibes with warm, generous pig spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Charming initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "scorpio_rat",
+    "archetype_name": "Tidal Connector",
+    "essence": "Scorpio Rat fuses intense, magnetic scorpio vibes with strategic, social rat spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_ox",
+    "archetype_name": "Lunar Keeper",
+    "essence": "Scorpio Ox fuses intense, magnetic scorpio vibes with reliable, patient ox spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_tiger",
+    "archetype_name": "Mist Catalyst",
+    "essence": "Scorpio Tiger fuses intense, magnetic scorpio vibes with brave, restless tiger spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_rabbit",
+    "archetype_name": "Coral Caretaker",
+    "essence": "Scorpio Rabbit fuses intense, magnetic scorpio vibes with kind, graceful rabbit spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_dragon",
+    "archetype_name": "Torrent Luminary",
+    "essence": "Scorpio Dragon fuses intense, magnetic scorpio vibes with charismatic, visionary dragon spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_snake",
+    "archetype_name": "Pearl Alchemist",
+    "essence": "Scorpio Snake fuses intense, magnetic scorpio vibes with discerning, mysterious snake spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_horse",
+    "archetype_name": "Tidal Explorer",
+    "essence": "Scorpio Horse fuses intense, magnetic scorpio vibes with free-spirited, energetic horse spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_goat",
+    "archetype_name": "Lunar Artist",
+    "essence": "Scorpio Goat fuses intense, magnetic scorpio vibes with gentle, artistic goat spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_monkey",
+    "archetype_name": "Mist Trickster",
+    "essence": "Scorpio Monkey fuses intense, magnetic scorpio vibes with clever, mischievous monkey spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_rooster",
+    "archetype_name": "Coral Perfectionist",
+    "essence": "Scorpio Rooster fuses intense, magnetic scorpio vibes with meticulous, stylish rooster spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_dog",
+    "archetype_name": "Torrent Ally",
+    "essence": "Scorpio Dog fuses intense, magnetic scorpio vibes with loyal, honest dog spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "scorpio_pig",
+    "archetype_name": "Pearl Companion",
+    "essence": "Scorpio Pig fuses intense, magnetic scorpio vibes with warm, generous pig spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Intense initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "sagittarius_rat",
+    "archetype_name": "Blazing Navigator",
+    "essence": "Sagittarius Rat fuses adventurous, optimistic sagittarius vibes with strategic, social rat spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_ox",
+    "archetype_name": "Solar Steward",
+    "essence": "Sagittarius Ox fuses adventurous, optimistic sagittarius vibes with reliable, patient ox spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_tiger",
+    "archetype_name": "Flare Trailblazer",
+    "essence": "Sagittarius Tiger fuses adventurous, optimistic sagittarius vibes with brave, restless tiger spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_rabbit",
+    "archetype_name": "Torch Muse",
+    "essence": "Sagittarius Rabbit fuses adventurous, optimistic sagittarius vibes with kind, graceful rabbit spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_dragon",
+    "archetype_name": "Ember Visionary",
+    "essence": "Sagittarius Dragon fuses adventurous, optimistic sagittarius vibes with charismatic, visionary dragon spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_snake",
+    "archetype_name": "Vanguard Sage",
+    "essence": "Sagittarius Snake fuses adventurous, optimistic sagittarius vibes with discerning, mysterious snake spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_horse",
+    "archetype_name": "Blazing Pathfinder",
+    "essence": "Sagittarius Horse fuses adventurous, optimistic sagittarius vibes with free-spirited, energetic horse spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_goat",
+    "archetype_name": "Solar Comforter",
+    "essence": "Sagittarius Goat fuses adventurous, optimistic sagittarius vibes with gentle, artistic goat spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_monkey",
+    "archetype_name": "Flare Inventor",
+    "essence": "Sagittarius Monkey fuses adventurous, optimistic sagittarius vibes with clever, mischievous monkey spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_rooster",
+    "archetype_name": "Torch Timekeeper",
+    "essence": "Sagittarius Rooster fuses adventurous, optimistic sagittarius vibes with meticulous, stylish rooster spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_dog",
+    "archetype_name": "Ember Trueheart",
+    "essence": "Sagittarius Dog fuses adventurous, optimistic sagittarius vibes with loyal, honest dog spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "fire"
+  },
+  {
+    "key": "sagittarius_pig",
+    "archetype_name": "Vanguard Harbor",
+    "essence": "Sagittarius Pig fuses adventurous, optimistic sagittarius vibes with warm, generous pig spirit — a fire-lit blend that feels natural and memorable.",
+    "strengths": [
+      "Adventurous initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Cool tempers before deciding"
+    ],
+    "elemental_trine_note": "Elemental note: Fire sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "fire"
+  },
+  {
+    "key": "capricorn_rat",
+    "archetype_name": "Granite Strategist",
+    "essence": "Capricorn Rat fuses disciplined, ambitious capricorn vibes with strategic, social rat spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_ox",
+    "archetype_name": "Verdant Builder",
+    "essence": "Capricorn Ox fuses disciplined, ambitious capricorn vibes with reliable, patient ox spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_tiger",
+    "archetype_name": "Hearth Champion",
+    "essence": "Capricorn Tiger fuses disciplined, ambitious capricorn vibes with brave, restless tiger spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_rabbit",
+    "archetype_name": "Anchor Peacemaker",
+    "essence": "Capricorn Rabbit fuses disciplined, ambitious capricorn vibes with kind, graceful rabbit spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_dragon",
+    "archetype_name": "Terrace Powerhouse",
+    "essence": "Capricorn Dragon fuses disciplined, ambitious capricorn vibes with charismatic, visionary dragon spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_snake",
+    "archetype_name": "Keystone Seer",
+    "essence": "Capricorn Snake fuses disciplined, ambitious capricorn vibes with discerning, mysterious snake spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_horse",
+    "archetype_name": "Granite Wildheart",
+    "essence": "Capricorn Horse fuses disciplined, ambitious capricorn vibes with free-spirited, energetic horse spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_goat",
+    "archetype_name": "Verdant Hearthkeeper",
+    "essence": "Capricorn Goat fuses disciplined, ambitious capricorn vibes with gentle, artistic goat spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_monkey",
+    "archetype_name": "Hearth Spark",
+    "essence": "Capricorn Monkey fuses disciplined, ambitious capricorn vibes with clever, mischievous monkey spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_rooster",
+    "archetype_name": "Anchor Artisan",
+    "essence": "Capricorn Rooster fuses disciplined, ambitious capricorn vibes with meticulous, stylish rooster spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_dog",
+    "archetype_name": "Terrace Guardian",
+    "essence": "Capricorn Dog fuses disciplined, ambitious capricorn vibes with loyal, honest dog spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "earth"
+  },
+  {
+    "key": "capricorn_pig",
+    "archetype_name": "Keystone Giver",
+    "essence": "Capricorn Pig fuses disciplined, ambitious capricorn vibes with warm, generous pig spirit — a earth-steady blend that feels natural and memorable.",
+    "strengths": [
+      "Disciplined initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Loosen routine to allow play"
+    ],
+    "elemental_trine_note": "Elemental note: Earth sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "earth"
+  },
+  {
+    "key": "aquarius_rat",
+    "archetype_name": "Aerial Connector",
+    "essence": "Aquarius Rat fuses original, visionary aquarius vibes with strategic, social rat spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_ox",
+    "archetype_name": "Zephyr Keeper",
+    "essence": "Aquarius Ox fuses original, visionary aquarius vibes with reliable, patient ox spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_tiger",
+    "archetype_name": "Aurora Catalyst",
+    "essence": "Aquarius Tiger fuses original, visionary aquarius vibes with brave, restless tiger spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_rabbit",
+    "archetype_name": "Skyline Caretaker",
+    "essence": "Aquarius Rabbit fuses original, visionary aquarius vibes with kind, graceful rabbit spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_dragon",
+    "archetype_name": "Signal Luminary",
+    "essence": "Aquarius Dragon fuses original, visionary aquarius vibes with charismatic, visionary dragon spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_snake",
+    "archetype_name": "Circuit Alchemist",
+    "essence": "Aquarius Snake fuses original, visionary aquarius vibes with discerning, mysterious snake spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_horse",
+    "archetype_name": "Aerial Explorer",
+    "essence": "Aquarius Horse fuses original, visionary aquarius vibes with free-spirited, energetic horse spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_goat",
+    "archetype_name": "Zephyr Artist",
+    "essence": "Aquarius Goat fuses original, visionary aquarius vibes with gentle, artistic goat spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_monkey",
+    "archetype_name": "Aurora Trickster",
+    "essence": "Aquarius Monkey fuses original, visionary aquarius vibes with clever, mischievous monkey spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_rooster",
+    "archetype_name": "Skyline Perfectionist",
+    "essence": "Aquarius Rooster fuses original, visionary aquarius vibes with meticulous, stylish rooster spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_dog",
+    "archetype_name": "Signal Ally",
+    "essence": "Aquarius Dog fuses original, visionary aquarius vibes with loyal, honest dog spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "air"
+  },
+  {
+    "key": "aquarius_pig",
+    "archetype_name": "Circuit Companion",
+    "essence": "Aquarius Pig fuses original, visionary aquarius vibes with warm, generous pig spirit — a air-clear blend that feels natural and memorable.",
+    "strengths": [
+      "Original initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Balance talk with action"
+    ],
+    "elemental_trine_note": "Elemental note: Air sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "air"
+  },
+  {
+    "key": "pisces_rat",
+    "archetype_name": "Tidal Navigator",
+    "essence": "Pisces Rat fuses empathic, dreamy pisces vibes with strategic, social rat spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Strategic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rat of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_ox",
+    "archetype_name": "Lunar Steward",
+    "essence": "Pisces Ox fuses empathic, dreamy pisces vibes with reliable, patient ox spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Reliable problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Ox of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_tiger",
+    "archetype_name": "Mist Trailblazer",
+    "essence": "Pisces Tiger fuses empathic, dreamy pisces vibes with brave, restless tiger spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Brave problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Tiger of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_rabbit",
+    "archetype_name": "Coral Muse",
+    "essence": "Pisces Rabbit fuses empathic, dreamy pisces vibes with kind, graceful rabbit spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Kind problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rabbit of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_dragon",
+    "archetype_name": "Torrent Visionary",
+    "essence": "Pisces Dragon fuses empathic, dreamy pisces vibes with charismatic, visionary dragon spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Charismatic problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Dragon of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_snake",
+    "archetype_name": "Pearl Sage",
+    "essence": "Pisces Snake fuses empathic, dreamy pisces vibes with discerning, mysterious snake spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Discerning problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Snake of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_horse",
+    "archetype_name": "Tidal Pathfinder",
+    "essence": "Pisces Horse fuses empathic, dreamy pisces vibes with free-spirited, energetic horse spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Free-spirited problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Horse of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_goat",
+    "archetype_name": "Lunar Comforter",
+    "essence": "Pisces Goat fuses empathic, dreamy pisces vibes with gentle, artistic goat spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Gentle problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Goat of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_monkey",
+    "archetype_name": "Mist Inventor",
+    "essence": "Pisces Monkey fuses empathic, dreamy pisces vibes with clever, mischievous monkey spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Clever problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Monkey of the 1ᵗʰ trine (ambitious, clever, success-driven).",
+    "trine": 1,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_rooster",
+    "archetype_name": "Coral Timekeeper",
+    "essence": "Pisces Rooster fuses empathic, dreamy pisces vibes with meticulous, stylish rooster spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Meticulous problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Rooster of the 2ᵗʰ trine (disciplined, elegant, precise).",
+    "trine": 2,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_dog",
+    "archetype_name": "Torrent Trueheart",
+    "essence": "Pisces Dog fuses empathic, dreamy pisces vibes with loyal, honest dog spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Loyal problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Dog of the 3ᵗʰ trine (courageous, idealistic, active).",
+    "trine": 3,
+    "western_element": "water"
+  },
+  {
+    "key": "pisces_pig",
+    "archetype_name": "Pearl Harbor",
+    "essence": "Pisces Pig fuses empathic, dreamy pisces vibes with warm, generous pig spirit — a water-wise blend that feels natural and memorable.",
+    "strengths": [
+      "Empathic initiative",
+      "Warm problem-solving",
+      "Creates momentum in social or work settings"
+    ],
+    "growth_edges": [
+      "Pace can run hot-and-cold; align expectations",
+      "Avoid overplaying strengths until they become blind spots",
+      "Name needs rather than hinting"
+    ],
+    "elemental_trine_note": "Elemental note: Water sign shaped by Pig of the 4ᵗʰ trine (gentle, artistic, empathetic).",
+    "trine": 4,
+    "western_element": "water"
+  }
+]

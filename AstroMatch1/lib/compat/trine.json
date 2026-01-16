@@ -1,0 +1,44 @@
+{
+  "1": {
+    "theme": "Visionaries",
+    "summary_line": "Natural understanding and shared rhythm; clever, ambitious, magnetic.",
+    "expanded": "Both of you belong to the Trine of Visionaries — inventive, expressive, and future-focused. You move quickly through ideas and opportunities, energizing each other with optimism and charisma. Where one imagines, the other improves; where one leads, the other amplifies.",
+    "love": "Bold, expressive, future-oriented.",
+    "watch": "Keep ambition collaborative — not competitive."
+  },
+  "2": {
+    "theme": "Strategists",
+    "summary_line": "Steady, intelligent, quietly strong together.",
+    "expanded": "As members of the Strategists trine, you value loyalty, logic, and refinement. You build carefully and lastingly, preferring depth over drama. Your shared discipline becomes a calm harbor for big goals and long horizons.",
+    "love": "Loyal, refined, dependable.",
+    "watch": "Soften perfectionism; cherish warmth as much as success."
+  },
+  "3": {
+    "theme": "Adventurers",
+    "summary_line": "Passionate, principled, and naturally loyal team-energy.",
+    "expanded": "Adventurers are courageous and idealistic, driven by heart and truth. You thrive on purpose, defend each other fiercely, and move with a bold tempo. Freedom matters — as does honesty — and you respect both.",
+    "love": "Ride-or-die courage and candor.",
+    "watch": "Give each other breathing room; impatience frays trust."
+  },
+  "4": {
+    "theme": "Artists",
+    "summary_line": "Gentle, romantic, harmony-seeking connection.",
+    "expanded": "Artists sense nuance and feeling. You communicate with empathy, create beauty from everyday life, and value peace over power. Tenderness here is a superpower — used well, it becomes unshakeable devotion.",
+    "love": "Tender, creative, emotionally safe.",
+    "watch": "Speak needs clearly; avoid people-pleasing."
+  },
+
+  "cross": {
+    "summary_line": "Different instincts and life rhythms.",
+    "expanded": "You come from different trine families, so your timing, priorities, and style can diverge. The intrigue is real — attraction through contrast — and success grows when you learn each other's pace and keep curiosity alive.",
+    "love": "Attraction through difference; admire the contrast.",
+    "watch": "Mixed signals fade with clear expectations."
+  },
+
+  "enemies": {
+    "summary_line": "Opposing instincts — exciting at first, exhausting over time.",
+    "expanded": "This pairing sits across a natural fault line in the zodiac. Chemistry can spike early, but friction builds unless boundaries and respect are strong. Treat it as a teacher: learn quickly, love gently.",
+    "love": "Strong spark, powerful lessons.",
+    "watch": "Avoid score-keeping; create cool-off rituals."
+  }
+}

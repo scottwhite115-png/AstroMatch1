@@ -1,0 +1,5 @@
+:HL["/_next/static/chunks/3d667a8f002e52c1.css","style"]
+:HL["/_next/static/chunks/9b5dd95b3fa96e70.css","style"]
+:HL["/_next/static/media/2a65768255d6b625-s.p.d19752fb.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/_next/static/media/83afe278b6a6bb3c-s.p.3a6ba036.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+0:{"buildId":"wgt-CJ2KcAYmpiCt0Gypq","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"astrology","paramType":null,"paramKey":"astrology","hasRuntimePrefetch":false,"slots":{"children":{"name":"chinese-zodiac","paramType":null,"paramKey":"chinese-zodiac","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}
