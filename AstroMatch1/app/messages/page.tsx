@@ -497,9 +497,9 @@ export default function MessagesPage() {
           style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 44px) + 3rem)' }}
         >
           {chats.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full py-20">
+            <div className="flex flex-col items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)', paddingTop: '20px' }}>
               <MessageCircle className="w-16 h-16 mb-4 text-gray-300" />
-              <p className="text-lg text-gray-500">No conversations yet</p>
+              <p className="text-lg text-gray-500">No conversations available</p>
               <p className="text-sm text-gray-400">Start chatting with your matches!</p>
             </div>
           ) : (
