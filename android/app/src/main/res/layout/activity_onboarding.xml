@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000">
+
+    <!-- ViewPager for onboarding pages -->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Bottom buttons container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="24dp"
+        android:gravity="center_vertical">
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/onboarding_skip"
+            android:textColor="#CCCCCC"
+            android:background="@android:color/transparent"
+            android:textSize="16sp"
+            android:layout_marginEnd="8dp" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="@string/onboarding_next"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_start_background"
+            android:padding="16dp"
+            android:elevation="4dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

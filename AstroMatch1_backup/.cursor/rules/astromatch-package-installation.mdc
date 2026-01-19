@@ -1,0 +1,94 @@
+---
+description: How to install packages
+globs: 
+alwaysApply: false
+---
+# Package Installation Guidelines
+
+## Package Manager
+- Use `pnpm` for all package management
+- Don't install packages in the root directory
+- Always install packages in the `apps/web` directory
+
+## Installation Commands
+
+### Installing Dependencies
+```sh
+cd apps/web
+pnpm add package-name
+```
+
+### Installing Dev Dependencies
+```sh
+cd apps/web
+pnpm add -D package-name
+```
+
+### Installing Global Packages
+```sh
+pnpm add -g package-name
+```
+
+## AstroMatch Specific Examples
+
+### Installing React Dependencies
+```sh
+cd apps/web
+pnpm add react react-dom
+```
+
+### Installing UI Libraries
+```sh
+cd apps/web
+pnpm add @radix-ui/react-dialog @radix-ui/react-dropdown-menu
+```
+
+### Installing Development Tools
+```sh
+cd apps/web
+pnpm add -D @types/node @types/react @types/react-dom
+```
+
+### Installing Supabase
+```sh
+cd apps/web
+pnpm add @supabase/supabase-js
+```
+
+### Installing SWR for Data Fetching
+```sh
+cd apps/web
+pnpm add swr
+```
+
+### Installing Form Libraries
+```sh
+cd apps/web
+pnpm add react-hook-form @hookform/resolvers zod
+```
+
+## Why Use pnpm?
+- **Faster**: pnpm is significantly faster than npm
+- **Disk Efficient**: Uses hard links to avoid duplicating packages
+- **Strict**: Prevents phantom dependencies
+- **Monorepo Friendly**: Better support for monorepo structures
+
+## Directory Structure
+```
+AstroMatch1/
+├── apps/
+│   └── web/           # Install packages here
+│       ├── package.json
+│       ├── node_modules/
+│       └── ...
+├── package.json       # Root package.json (don't install here)
+└── ...
+```
+
+## Best Practices
+- Always run `cd apps/web` before installing packages
+- Use `pnpm` instead of `npm` or `yarn`
+- Keep root `package.json` minimal
+- Install all project dependencies in `apps/web`
+- Use `pnpm add -D` for development dependencies
+- Use `pnpm add` for production dependencies

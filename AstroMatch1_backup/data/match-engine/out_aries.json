@@ -1,0 +1,232 @@
+{
+  "Aries-Rat": {
+    "Aries-Rat": {
+      "overall": 88,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Fire kinship → instant energy and drive.",
+        "Rat–Rat kinship sharpens ambition; they understand each other's hustle.",
+        "Both Cardinal → bold initiators, may clash but respect each other's strength.",
+        "West/East balance → 90/85 split."
+      ],
+      "scores": {
+        "core_vibe": 95,
+        "chemistry": 90,
+        "communication": 84,
+        "lifestyle": 78,
+        "long_term": 82,
+        "growth": 76
+      },
+      "color": "green"
+    },
+    "Aries-Ox": {
+      "overall": 65,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Fire–Earth tension needs patience.",
+        "Rat–Ox neighbor energy; Ox steadiness balances Aries rush.",
+        "Cardinal meets Fixed → different pace, mutual respect grows with time.",
+        "West/East balance → 70/60 split."
+      ],
+      "scores": {
+        "core_vibe": 70,
+        "chemistry": 68,
+        "communication": 66,
+        "lifestyle": 65,
+        "long_term": 60,
+        "growth": 64
+      },
+      "color": "yellow"
+    },
+    "Aries-Tiger": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Fire kinship keeps passion high.",
+        "Rat–Tiger are strong individualists but admire bold spirits.",
+        "Both love challenge → sparks that motivate rather than burn.",
+        "West/East balance → 90/94 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 94,
+        "communication": 86,
+        "lifestyle": 84,
+        "long_term": 89,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Aries-Rabbit": {
+      "overall": 58,
+      "summary": "Challenging",
+      "insight": [
+        "Fire–Water clash: one pushes, one retreats.",
+        "Rat–Rabbit dissonance; Rabbit avoids Rat's intensity.",
+        "Different rhythm → learning empathy builds balance.",
+        "West/East balance → 55/60 split."
+      ],
+      "scores": {
+        "core_vibe": 60,
+        "chemistry": 57,
+        "communication": 59,
+        "lifestyle": 58,
+        "long_term": 52,
+        "growth": 61
+      },
+      "color": "red"
+    },
+    "Aries-Dragon": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Fire = dynamic duo; unstoppable when aligned.",
+        "Rat–Dragon share same trine → instant rapport.",
+        "Two leaders → need shared vision to avoid rivalry.",
+        "West/East balance → 92/96 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 93,
+        "communication": 91,
+        "lifestyle": 86,
+        "long_term": 90,
+        "growth": 85
+      },
+      "color": "green"
+    },
+    "Aries-Snake": {
+      "overall": 73,
+      "summary": "Good Potential",
+      "insight": [
+        "Fire–Earth neutrality → balance of action and patience.",
+        "Rat–Snake secret friends → unexpected support.",
+        "Different tempo yet strong admiration forms.",
+        "West/East balance → 75/70 split."
+      ],
+      "scores": {
+        "core_vibe": 80,
+        "chemistry": 76,
+        "communication": 70,
+        "lifestyle": 72,
+        "long_term": 74,
+        "growth": 71
+      },
+      "color": "yellow"
+    },
+    "Aries-Horse": {
+      "overall": 85,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Fire synergy → mutual enthusiasm.",
+        "Rat–Horse clash yet sparks keep it lively.",
+        "If ego managed, adventure never stops.",
+        "West/East balance → 90/80 split."
+      ],
+      "scores": {
+        "core_vibe": 92,
+        "chemistry": 87,
+        "communication": 84,
+        "lifestyle": 80,
+        "long_term": 76,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Aries-Goat": {
+      "overall": 60,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Fire–Earth → different values, spark vs. comfort.",
+        "Rat–Goat are opposite in pace.",
+        "Needs compromise and patience to last.",
+        "West/East balance → 65/55 split."
+      ],
+      "scores": {
+        "core_vibe": 66,
+        "chemistry": 60,
+        "communication": 64,
+        "lifestyle": 58,
+        "long_term": 59,
+        "growth": 62
+      },
+      "color": "yellow"
+    },
+    "Aries-Monkey": {
+      "overall": 90,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Fire–Air complement each other → exciting pair.",
+        "Rat–Monkey same trine → quick thinkers, fun duo.",
+        "Both playful and ambitious; great creative power.",
+        "West/East balance → 88/92 split."
+      ],
+      "scores": {
+        "core_vibe": 94,
+        "chemistry": 91,
+        "communication": 89,
+        "lifestyle": 83,
+        "long_term": 86,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Aries-Rooster": {
+      "overall": 78,
+      "summary": "Good Potential",
+      "insight": [
+        "Fire–Air → stimulating but opinionated.",
+        "Rat–Rooster same trine → mutual understanding.",
+        "Both enjoy attention; respect is key.",
+        "West/East balance → 82/75 split."
+      ],
+      "scores": {
+        "core_vibe": 84,
+        "chemistry": 80,
+        "communication": 78,
+        "lifestyle": 75,
+        "long_term": 74,
+        "growth": 76
+      },
+      "color": "yellow"
+    },
+    "Aries-Dog": {
+      "overall": 66,
+      "summary": "Mixed / Workable",
+      "insight": [
+        "Fire–Air blend is social yet unstable long term.",
+        "Rat–Dog clash across trines; values differ.",
+        "Works if shared purpose unites them.",
+        "West/East balance → 75/57 split."
+      ],
+      "scores": {
+        "core_vibe": 72,
+        "chemistry": 70,
+        "communication": 67,
+        "lifestyle": 64,
+        "long_term": 63,
+        "growth": 68
+      },
+      "color": "yellow"
+    },
+    "Aries-Pig": {
+      "overall": 82,
+      "summary": "Great Match",
+      "insight": [
+        "Fire–Water can complement via empathy.",
+        "Rat–Pig are secret friends → loyal pair.",
+        "Aries inspires Pig's dreams; Pig softens Aries' edges.",
+        "West/East balance → 78/86 split."
+      ],
+      "scores": {
+        "core_vibe": 87,
+        "chemistry": 84,
+        "communication": 80,
+        "lifestyle": 76,
+        "long_term": 82,
+        "growth": 80
+      },
+      "color": "green"
+    }
+  }
+}

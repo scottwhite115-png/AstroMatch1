@@ -1,0 +1,1117 @@
+"use client"
+
+import type React from "react"
+import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
+import { useTheme } from "@/contexts/ThemeContext"
+import { createConversation } from "@/lib/utils/conversations"
+// import { pairScore, type HybridSignature } from "@/lib/match-engine"
+
+const FourPointedStar = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" className={className} style={{ fill: "#fbbf24" }}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+)
+
+const Heart = ({ className, fill }: { className?: string; fill?: string }) => (
+  <svg viewBox="0 0 24 24" fill={fill || "currentColor"} className={className}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+)
+
+const X = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m18 6-12 12" />
+    <path d="m6 6 12 12" />
+  </svg>
+)
+
+const MessageCircle = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+  </svg>
+)
+
+const ChevronDown = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m6 9 6 6 6-6" />
+  </svg>
+)
+
+const getWesternSignEmoji = (sign: string): string => {
+  const emojiMap: { [key: string]: string } = {
+    Aries: "♈",
+    Taurus: "♉",
+    Gemini: "♊",
+    Cancer: "♋",
+    Leo: "♌",
+    Virgo: "♍",
+    Libra: "♎",
+    Scorpio: "♏",
+    Sagittarius: "♐",
+    Capricorn: "♑",
+    Aquarius: "♒",
+    Pisces: "♓",
+  }
+  return emojiMap[sign] || ""
+}
+
+const getChineseSignEmoji = (sign: string): string => {
+  const emojiMap: { [key: string]: string } = {
+    Rat: "🐀",
+    Ox: "🐂",
+    Tiger: "🐅",
+    Rabbit: "🐇",
+    Dragon: "🐉",
+    Snake: "🐍",
+    Horse: "🐎",
+    Goat: "🐐",
+    Monkey: "🐒",
+    Rooster: "🐓",
+    Dog: "🐕",
+    Pig: "🐖",
+  }
+  return emojiMap[sign] || ""
+}
+
+export default function MatchesPage() {
+  const router = useRouter()
+  const [currentProfileIndex, setCurrentProfileIndex] = useState(0)
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const { theme } = useTheme()
+
+  const [swipeOffset, setSwipeOffset] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [touchStartX, setTouchStartX] = useState(0)
+  const [touchStartY, setTouchStartY] = useState(0)
+
+  // Full-screen zoom state
+  const [isZoomModalOpen, setIsZoomModalOpen] = useState(false)
+  const [zoomScale, setZoomScale] = useState(1)
+  const [zoomPosX, setZoomPosX] = useState(0)
+  const [zoomPosY, setZoomPosY] = useState(0)
+  const lastZoomDistanceRef = useRef(0)
+  const lastTouchPosRef = useRef({ x: 0, y: 0 })
+  const lastTwoFingerMidpointRef = useRef({ x: 0, y: 0 })
+
+  const [userGender, setUserGender] = useState<string>("Man")
+  const [friendFinderEnabled, setFriendFinderEnabled] = useState(false)
+  const [filteredProfiles, setFilteredProfiles] = useState<any[]>([])
+
+  const [userLocation, setUserLocation] = useState({ latitude: -33.8688, longitude: 151.2093 }) // Default: Sydney
+  const [locationLoading, setLocationLoading] = useState(true)
+  const [locationError, setLocationError] = useState<string | null>(null)
+  const [distanceRadius, setDistanceRadius] = useState(50)
+  const [ageRange, setAgeRange] = useState<[number, number]>([25, 40])
+  const [matchFilter, setMatchFilter] = useState<"all" | "highly" | "very">("all")
+  const [useGPS, setUseGPS] = useState(true)
+  const [userCity, setUserCity] = useState("")
+  const [profilesLoading, setProfilesLoading] = useState(false)
+  const [showMatchDropdown, setShowMatchDropdown] = useState<{[key: string]: boolean}>({})
+  const [isCardLeaving, setIsCardLeaving] = useState(false)
+
+  // Prevent browser back navigation
+  useEffect(() => {
+    const preventBack = (e: PopStateEvent) => {
+      window.history.pushState(null, "", window.location.pathname)
+    }
+    
+    window.history.pushState(null, "", window.location.pathname)
+    window.addEventListener("popstate", preventBack)
+    
+    return () => {
+      window.removeEventListener("popstate", preventBack)
+    }
+  }, [])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const hasOpenDropdown = Object.values(showMatchDropdown).some(Boolean)
+      if (hasOpenDropdown && !(event.target as Element).closest('.match-dropdown-container')) {
+        setShowMatchDropdown({})
+      }
+    }
+
+    const hasOpenDropdown = Object.values(showMatchDropdown).some(Boolean)
+    if (hasOpenDropdown) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showMatchDropdown])
+
+  useEffect(() => {
+    const savedUseGPS = localStorage.getItem("useGPS")
+    const shouldUseGPS = savedUseGPS !== null ? JSON.parse(savedUseGPS) : true
+
+    if (shouldUseGPS && navigator.geolocation) {
+      console.log("[v0] Requesting GPS location...")
+      setLocationLoading(true)
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords
+          console.log("[v0] GPS location obtained:", { latitude, longitude })
+
+          setUserLocation({ latitude, longitude })
+
+          // Save to localStorage for persistence
+          localStorage.setItem("userLocation", JSON.stringify({ latitude, longitude }))
+
+          setLocationLoading(false)
+          setLocationError(null)
+        },
+        (error) => {
+          console.log("[v0] GPS error:", error.message)
+          setLocationError(error.message)
+          setLocationLoading(false)
+
+          // Try to load saved location from localStorage
+          const savedLocation = localStorage.getItem("userLocation")
+          if (savedLocation) {
+            const parsedLocation = JSON.parse(savedLocation)
+            setUserLocation(parsedLocation)
+            console.log("[v0] Using saved location:", parsedLocation)
+          } else {
+            console.log("[v0] Using default location (Sydney)")
+          }
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 300000, // Cache location for 5 minutes
+        },
+      )
+    } else {
+      console.log("[v0] GPS disabled or not available")
+      setLocationLoading(false)
+
+      // Load saved location from localStorage
+      const savedLocation = localStorage.getItem("userLocation")
+      if (savedLocation) {
+        const parsedLocation = JSON.parse(savedLocation)
+        setUserLocation(parsedLocation)
+        console.log("[v0] Using saved location:", parsedLocation)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    const savedGenderOrientation = localStorage.getItem("genderOrientation")
+    const savedRadius = localStorage.getItem("distanceRadius")
+    const savedAgeRange = localStorage.getItem("ageRange")
+    const savedMatchFilter = localStorage.getItem("matchFilter")
+    const savedUseGPS = localStorage.getItem("useGPS")
+    const savedUserCity = localStorage.getItem("userCity")
+    const savedFriendFinder = localStorage.getItem("friendFinderEnabled")
+    const isDeactivated = localStorage.getItem("accountDeactivated") === "true"
+
+    if (savedGenderOrientation) {
+      try {
+        const parsedGenderOrientation = JSON.parse(savedGenderOrientation)
+        setUserGender(parsedGenderOrientation.gender || "Man")
+        console.log("[v0] User gender loaded:", parsedGenderOrientation.gender)
+      } catch (error) {
+        console.log("[v0] Error parsing gender orientation:", error)
+      }
+    }
+
+    if (savedFriendFinder !== null) {
+      const isFriendFinderOn = JSON.parse(savedFriendFinder)
+      setFriendFinderEnabled(isFriendFinderOn)
+      console.log("[v0] Friend Finder mode:", isFriendFinderOn ? "ENABLED" : "DISABLED")
+    }
+
+    if (savedRadius) {
+      setDistanceRadius(Number(savedRadius))
+    }
+
+    if (savedAgeRange) {
+      setAgeRange(JSON.parse(savedAgeRange))
+    }
+
+    if (savedMatchFilter) {
+      setMatchFilter(savedMatchFilter as "all" | "highly" | "very")
+    }
+
+    if (savedUseGPS !== null) {
+      setUseGPS(JSON.parse(savedUseGPS))
+    }
+
+    if (savedUserCity) {
+      setUserCity(savedUserCity)
+    }
+
+    if (isDeactivated) {
+      setFilteredProfiles([])
+      console.log("[v0] Account is deactivated - no profiles shown")
+      return
+    }
+
+    if (savedFriendFinder !== null && JSON.parse(savedFriendFinder)) {
+      console.log("[v0] Friend Finder MODE ACTIVE - Showing all opposite sex + same sex with Friend Finder enabled")
+    } else {
+      console.log("[v0] Standard gender filtering - Men see Women, Women see Men")
+    }
+
+    console.log("[v0] User preferences loaded - ready to fetch real profiles")
+    console.log("[v0] GPS enabled:", savedUseGPS !== null ? JSON.parse(savedUseGPS) : true)
+    console.log("[v0] User location:", userLocation)
+    console.log("[v0] User city:", savedUserCity || "Not set")
+    console.log("[v0] Distance radius:", savedRadius || 50, "km")
+    console.log("[v0] Age range:", savedAgeRange ? JSON.parse(savedAgeRange) : [25, 40])
+    console.log("[v0] Match filter:", savedMatchFilter || "all")
+
+    // Fetch profiles with compatibility scores
+    const fetchMatches = async () => {
+      if (isDeactivated) {
+        setFilteredProfiles([])
+        return
+      }
+
+      setProfilesLoading(true)
+      
+      // Get user's zodiac signs from localStorage
+      const savedBirthInfo = localStorage.getItem("birthInfo")
+      let userZodiac: HybridSignature | null = null
+      
+      if (savedBirthInfo) {
+        try {
+          const birthInfo = JSON.parse(savedBirthInfo)
+          const birthDate = birthInfo.birthdate ? new Date(birthInfo.birthdate) : null
+          
+          if (birthDate) {
+            // Get calculated signs from localStorage (these are already calculated)
+            const savedCalculatedSigns = localStorage.getItem("calculatedSigns")
+            if (savedCalculatedSigns) {
+              const signs = JSON.parse(savedCalculatedSigns)
+              userZodiac = {
+                western: signs.westernSign,
+                animal: signs.chineseSign,
+              }
+              console.log("[v0] User zodiac:", userZodiac)
+            }
+          }
+        } catch (error) {
+          console.error("[v0] Error parsing birth info:", error)
+        }
+      }
+      
+      // Test profiles with various zodiac combinations - 10 profiles with 6 photos each
+      const testProfilesBase = [
+        {
+          id: 1,
+          name: "Emma",
+          age: 28,
+          birthdate: "1996-06-15", // Gemini, Rat
+          westernSign: "Gemini",
+          easternSign: "Rat",
+          compatibility: 96,
+          photos: [
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+          ],
+          aboutMe: "Love exploring new cafes and practicing yoga. Looking for someone who appreciates deep conversations and spontaneous adventures.",
+          occupation: "Marketing Manager",
+          city: "Sydney, NSW",
+          height: "5'6\"",
+          children: "Don't have, want someday",
+          religion: "Spiritual"
+        },
+        {
+          id: 2,
+          name: "Sophia",
+          age: 26,
+          birthdate: "1998-10-08", // Libra, Tiger
+          westernSign: "Libra",
+          easternSign: "Tiger",
+          compatibility: 88,
+          photos: [
+            "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+            "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+            "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+            "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+            "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+            "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+          ],
+          aboutMe: "Creative soul with a passion for art and music. Seeking someone who values authenticity and emotional connection.",
+          occupation: "Graphic Designer",
+          city: "Melbourne, VIC",
+          height: "5'7\"",
+          children: "Don't have, want someday",
+          religion: "Agnostic"
+        },
+        {
+          id: 3,
+          name: "Olivia",
+          age: 30,
+          birthdate: "1994-02-12", // Aquarius, Dog
+          westernSign: "Aquarius",
+          easternSign: "Dog",
+          compatibility: 98,
+          photos: [
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+            "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+            "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+            "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+            "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+          ],
+          aboutMe: "Tech enthusiast who loves innovation and meaningful conversations. Looking for an intellectual and adventurous partner.",
+          occupation: "Software Engineer",
+          city: "Brisbane, QLD",
+          height: "5'8\"",
+          children: "Don't have, undecided",
+          religion: "Atheist"
+        },
+        {
+          id: 4,
+          name: "Isabella",
+          age: 27,
+          birthdate: "1997-03-25", // Aries, Ox
+          westernSign: "Aries",
+          easternSign: "Ox",
+          compatibility: 85,
+          photos: [
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+          ],
+          aboutMe: "Fitness enthusiast and wellness coach. Looking for someone who values health, growth, and adventure.",
+          occupation: "Wellness Coach",
+          city: "Perth, WA",
+          height: "5'5\"",
+          children: "Don't have, want someday",
+          religion: "Buddhist"
+        },
+        {
+          id: 5,
+          name: "Mia",
+          age: 29,
+          birthdate: "1995-08-18", // Leo, Pig
+          westernSign: "Leo",
+          easternSign: "Pig",
+          compatibility: 92,
+          photos: [
+            "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+            "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+            "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+            "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+          ],
+          aboutMe: "Fashion designer with a love for travel and culture. Seeking someone creative and passionate about life.",
+          occupation: "Fashion Designer",
+          city: "Sydney, NSW",
+          height: "5'9\"",
+          children: "Don't have, don't want",
+          religion: "Christian"
+        },
+        {
+          id: 6,
+          name: "Charlotte",
+          age: 25,
+          birthdate: "1999-12-03", // Sagittarius, Rabbit
+          westernSign: "Sagittarius",
+          easternSign: "Rabbit",
+          compatibility: 78,
+          photos: [
+            "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+            "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+            "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+            "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+            "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+            "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+          ],
+          aboutMe: "Adventure seeker and travel blogger. Looking for someone who loves exploring the world as much as I do.",
+          occupation: "Travel Blogger",
+          city: "Gold Coast, QLD",
+          height: "5'4\"",
+          children: "Don't have, undecided",
+          religion: "None"
+        },
+        {
+          id: 7,
+          name: "Ava",
+          age: 31,
+          birthdate: "1993-05-22", // Gemini, Rooster
+          westernSign: "Gemini",
+          easternSign: "Rooster",
+          compatibility: 89,
+          photos: [
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+          ],
+          aboutMe: "Entrepreneur and book lover. Seeking someone intelligent, ambitious, and ready for a meaningful connection.",
+          occupation: "Entrepreneur",
+          city: "Adelaide, SA",
+          height: "5'7\"",
+          children: "Don't have, want someday",
+          religion: "Jewish"
+        },
+        {
+          id: 8,
+          name: "Amelia",
+          age: 24,
+          birthdate: "2000-04-14", // Aries, Dragon
+          westernSign: "Aries",
+          easternSign: "Dragon",
+          compatibility: 94,
+          photos: [
+            "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+            "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+            "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+            "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+            "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+            "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+          ],
+          aboutMe: "Photographer and nature lover. Looking for someone who appreciates beauty in the simple things.",
+          occupation: "Photographer",
+          city: "Hobart, TAS",
+          height: "5'6\"",
+          children: "Don't have, want someday",
+          religion: "Spiritual"
+        },
+        {
+          id: 9,
+          name: "Luna",
+          age: 28,
+          birthdate: "1996-11-29", // Sagittarius, Rat
+          westernSign: "Sagittarius",
+          easternSign: "Rat",
+          compatibility: 81,
+          photos: [
+            "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+            "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+            "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+            "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+            "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+          ],
+          aboutMe: "Musician and coffee enthusiast. Seeking someone who loves music, creativity, and good conversations.",
+          occupation: "Musician",
+          city: "Melbourne, VIC",
+          height: "5'5\"",
+          children: "Don't have, don't want",
+          religion: "Hindu"
+        },
+        {
+          id: 10,
+          name: "Harper",
+          age: 26,
+          birthdate: "1998-07-07", // Cancer, Tiger
+          westernSign: "Cancer",
+          easternSign: "Tiger",
+          compatibility: 87,
+          photos: [
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+            "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+          ],
+          aboutMe: "Teacher and volunteer. Looking for someone kind, compassionate, and ready to build something meaningful.",
+          occupation: "Teacher",
+          city: "Canberra, ACT",
+          height: "5'8\"",
+          children: "Don't have, want someday",
+          religion: "Muslim"
+        },
+      ]
+      
+      // Calculate real compatibility scores using the matching engine
+      const profilesWithRealScores = testProfilesBase.map(profile => {
+        let compatibility = 50 // Default
+        
+        if (userZodiac) {
+          const profileZodiac: HybridSignature = {
+            western: profile.westernSign as any,
+            animal: profile.easternSign as any,
+          }
+          
+          compatibility = Math.round(pairScore(userZodiac, profileZodiac))
+          console.log(`[v0] ${profile.name} (${profile.westernSign}-${profile.easternSign}) vs You (${userZodiac.western}-${userZodiac.animal}): ${compatibility}%`)
+        }
+        
+        return {
+          ...profile,
+          compatibility
+        }
+      })
+      
+      // Sort by compatibility (highest first)
+      profilesWithRealScores.sort((a, b) => b.compatibility - a.compatibility)
+      
+      setTimeout(() => {
+        setFilteredProfiles(profilesWithRealScores)
+        setProfilesLoading(false)
+        console.log("[v0] Loaded test profiles with REAL compatibility scores from matching engine")
+      }, 1000)
+    }
+
+    fetchMatches()
+  }, [userLocation])
+
+  const currentProfile = filteredProfiles[currentProfileIndex]
+
+  const nextPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev + 1) % currentProfile.photos.length)
+  }
+
+  const prevPhoto = () => {
+    setCurrentPhotoIndex((prev) => (prev - 1 + currentProfile.photos.length) % currentProfile.photos.length)
+  }
+
+  // Full-screen zoom handlers
+  const getDistance = (touches: TouchList) => {
+    const touch1 = touches[0]
+    const touch2 = touches[1]
+    return Math.sqrt(
+      Math.pow(touch2.clientX - touch1.clientX, 2) + 
+      Math.pow(touch2.clientY - touch1.clientY, 2)
+    )
+  }
+
+  const getTwoFingerMidpoint = (touches: TouchList) => {
+    const touch1 = touches[0]
+    const touch2 = touches[1]
+    return {
+      x: (touch1.clientX + touch2.clientX) / 2,
+      y: (touch1.clientY + touch2.clientY) / 2
+    }
+  }
+
+  const handleImageTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Open full-screen zoom modal and start tracking
+      e.preventDefault()
+      e.stopPropagation()
+      setIsZoomModalOpen(true)
+      lastZoomDistanceRef.current = getDistance(e.touches)
+      lastTwoFingerMidpointRef.current = getTwoFingerMidpoint(e.touches)
+    } else if (e.touches.length === 1) {
+      // Allow normal scrolling for single finger
+      lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+  }
+
+  const handleImageTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault()
+      e.stopPropagation()
+      
+      // Open modal if not already open
+      if (!isZoomModalOpen) {
+        setIsZoomModalOpen(true)
+        lastZoomDistanceRef.current = getDistance(e.touches)
+        lastTwoFingerMidpointRef.current = getTwoFingerMidpoint(e.touches)
+        return
+      }
+      
+      // Handle zoom - Absolute minimum zoom, silky smooth
+      const distance = getDistance(e.touches)
+      if (lastZoomDistanceRef.current > 0) {
+        const scaleFactor = distance / lastZoomDistanceRef.current
+        setZoomScale(prevScale => {
+          // Reduced zoom sensitivity for smoother control
+          const newScale = prevScale * Math.pow(scaleFactor, 0.8)
+          return Math.min(Math.max(1, newScale), 15) // Min 1x, Max 15x
+        })
+      }
+      lastZoomDistanceRef.current = distance
+
+      // Handle two-finger pan - ultra smooth
+      const currentMidpoint = getTwoFingerMidpoint(e.touches)
+      const deltaX = currentMidpoint.x - lastTwoFingerMidpointRef.current.x
+      const deltaY = currentMidpoint.y - lastTwoFingerMidpointRef.current.y
+      // Smooth, controlled sensitivity
+      setZoomPosX(prev => prev + deltaX * 0.7)
+      setZoomPosY(prev => prev + deltaY * 0.7)
+      lastTwoFingerMidpointRef.current = currentMidpoint
+    } else if (e.touches.length === 1 && isZoomModalOpen && zoomScale > 1) {
+      // Pan when zoomed in
+      e.preventDefault()
+      e.stopPropagation()
+      const touch = e.touches[0]
+      const deltaX = touch.clientX - lastTouchPosRef.current.x
+      const deltaY = touch.clientY - lastTouchPosRef.current.y
+      // Ultra smooth panning
+      setZoomPosX(prev => prev + deltaX * 0.8)
+      setZoomPosY(prev => prev + deltaY * 0.8)
+      lastTouchPosRef.current = { x: touch.clientX, y: touch.clientY }
+    }
+    // For single finger without zoom modal open, allow normal scrolling (don't prevent default)
+  }
+
+  const handleZoomTouchMove = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      e.preventDefault()
+      const distance = getDistance(e.touches)
+      if (lastZoomDistanceRef.current > 0) {
+        const scaleFactor = distance / lastZoomDistanceRef.current
+        setZoomScale(prevScale => {
+          // Reduced zoom sensitivity for smoother control
+          const newScale = prevScale * Math.pow(scaleFactor, 0.8)
+          return Math.min(Math.max(1, newScale), 15) // Min 1x, Max 15x
+        })
+      }
+      lastZoomDistanceRef.current = distance
+
+      // Handle two-finger pan - ultra smooth
+      const currentMidpoint = getTwoFingerMidpoint(e.touches)
+      const deltaX = currentMidpoint.x - lastTwoFingerMidpointRef.current.x
+      const deltaY = currentMidpoint.y - lastTwoFingerMidpointRef.current.y
+      // Smooth, controlled sensitivity
+      setZoomPosX(prev => prev + deltaX * 0.7)
+      setZoomPosY(prev => prev + deltaY * 0.7)
+      lastTwoFingerMidpointRef.current = currentMidpoint
+    } else if (e.touches.length === 1 && zoomScale > 1) {
+      // Pan when zoomed in
+      const touch = e.touches[0]
+      const deltaX = touch.clientX - lastTouchPosRef.current.x
+      const deltaY = touch.clientY - lastTouchPosRef.current.y
+      // Ultra smooth panning
+      setZoomPosX(prev => prev + deltaX * 0.8)
+      setZoomPosY(prev => prev + deltaY * 0.8)
+      lastTouchPosRef.current = { x: touch.clientX, y: touch.clientY }
+    }
+  }
+
+  const handleZoomTouchEnd = (e: React.TouchEvent) => {
+    // Close modal only when all fingers are lifted
+    if (isZoomModalOpen && e.touches.length === 0) {
+      setIsZoomModalOpen(false)
+      setZoomScale(1)
+      setZoomPosX(0)
+      setZoomPosY(0)
+      lastZoomDistanceRef.current = 0
+    } else if (e.touches.length === 1) {
+      // Transitioning from two fingers to one - update last touch position
+      lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+  }
+
+  const nextProfile = () => {
+    if (currentProfileIndex < filteredProfiles.length - 1) {
+      setCurrentProfileIndex((prev) => prev + 1)
+      setCurrentPhotoIndex(0)
+    } else {
+      alert("No more matches available!")
+    }
+  }
+
+  const prevProfile = () => {
+    if (currentProfileIndex > 0) {
+      setCurrentProfileIndex((prev) => prev - 1)
+      setCurrentPhotoIndex(0)
+    }
+  }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStartX(e.touches[0].clientX)
+    setTouchStartY(e.touches[0].clientY)
+    setIsDragging(true)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging) return
+    const currentX = e.touches[0].clientX
+    const diff = currentX - touchStartX
+    setSwipeOffset(diff)
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    setIsDragging(false)
+    const touchEndX = e.changedTouches[0].clientX
+    const touchEndY = e.changedTouches[0].clientY
+    const diffX = touchEndX - touchStartX
+    const diffY = touchEndY - touchStartY
+
+    const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY)
+    const swipeThreshold = 100
+
+    if (isHorizontalSwipe && Math.abs(diffX) > swipeThreshold) {
+      setIsCardLeaving(true)
+      if (diffX < 0) {
+        // Swipe left = Pass - animate card off screen to the left
+        console.log("[v0] Swiped left - PASSING profile")
+        setSwipeOffset(-window.innerWidth * 2)
+        // Wait for animation to complete, then remove card and show next
+        setTimeout(() => {
+          setIsCardLeaving(false)
+          setSwipeOffset(0)
+          nextProfile()
+        }, 400)
+      } else {
+        // Swipe right = Like - animate card off screen to the right
+        console.log("[v0] Swiped right - LIKING profile")
+        setSwipeOffset(window.innerWidth * 2)
+        // Wait for animation to complete, then remove card and show next
+        setTimeout(() => {
+          console.log('Liked profile:', currentProfile?.name)
+          setIsCardLeaving(false)
+          setSwipeOffset(0)
+          nextProfile()
+        }, 400)
+      }
+    } else {
+      // Reset to original position if swipe wasn't strong enough
+      setSwipeOffset(0)
+    }
+  }
+
+  const handleChat = () => {
+    if (currentProfile) {
+      const photoUrl = currentProfile.photos[0] || "/placeholder.svg"
+      console.log("[v0] Creating conversation with:", {
+        id: currentProfile.id,
+        name: currentProfile.name,
+        photo: photoUrl
+      })
+      createConversation(
+        currentProfile.id.toString(),
+        currentProfile.name,
+        photoUrl,
+      )
+      router.push(`/messages/${currentProfile.id}`)
+    }
+  }
+
+  return (
+    <div className="bg-zinc-900 min-h-screen relative overflow-x-hidden touch-pan-y" style={{ overscrollBehavior: 'contain' }}>
+      <div className="relative z-10">
+        <div className="px-3 pt-2 pb-2">
+          <div className="flex items-center gap-0.5">
+            <FourPointedStar className="w-4 h-4" />
+            <span className="font-bold text-base bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
+              AstroMatch
+            </span>
+          </div>
+        </div>
+
+        {(locationLoading || profilesLoading) && (
+          <div className="flex items-center justify-center min-h-screen px-5">
+            <div className="text-center space-y-4">
+              <div className="text-white/80 text-xl font-semibold">
+                {locationLoading ? "Getting your location..." : "Finding your perfect matches..."}
+              </div>
+              <p className="text-white/60 text-base">
+                {locationLoading ? "Finding matches near you" : "Calculating compatibility scores"}
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!locationLoading && filteredProfiles.length === 0 && localStorage.getItem("accountDeactivated") === "true" ? (
+          <div className="flex items-center justify-center min-h-screen px-5">
+            <div className="text-center space-y-4">
+              <div className="text-white/80 text-xl font-semibold">Your account is deactivated</div>
+              <p className="text-white/60 text-base">
+                Your profile is hidden from matches. Go to Account settings to reactivate your account.
+              </p>
+              <button
+                onClick={() => router.push("/profile/account")}
+                className="px-6 py-3 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+                style={{ background: "var(--brand-gradient-secondary)" }}
+              >
+                Go to Account Settings
+              </button>
+            </div>
+          </div>
+        ) : !locationLoading && filteredProfiles.length === 0 ? (
+          <div className="flex items-center justify-center min-h-screen px-5">
+            <div className="text-center space-y-4">
+              <div className="text-white/80 text-xl font-semibold">No matches available</div>
+              <p className="text-white/60 text-base">Check back later or adjust your preferences in settings.</p>
+              {locationError && <p className="text-white/50 text-sm">Location error: {locationError}</p>}
+            </div>
+          </div>
+        ) : !locationLoading && currentProfile ? (
+          <div 
+            className="pb-32"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <div className="mb-0 relative" style={{ minHeight: '600px' }}>
+              {/* Background card (next profile) - Always show the NEXT profile */}
+              {filteredProfiles[currentProfileIndex + 1] && (
+                <div 
+                  key={`background-${filteredProfiles[currentProfileIndex + 1].id}`}
+                  className="absolute inset-0 w-full aspect-[4/5.5] rounded-lg overflow-hidden"
+                  style={{
+                    transform: 'scale(1) translateY(0px)',
+                    zIndex: 1,
+                    opacity: 1,
+                    transition: 'all 0.3s ease-out',
+                    backgroundColor: '#18181b'
+                  }}
+                >
+                  {/* Chat Button */}
+                  <button
+                    className="absolute top-4 right-4 z-20 w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)'
+                    }}
+                    aria-label="Chat"
+                  >
+                    <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                  </button>
+
+                  {/* Like Button */}
+                  <button
+                    className="absolute top-[96px] right-4 z-20 w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)'
+                    }}
+                    aria-label="Like"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                  </button>
+
+                  <img
+                    src={
+                      filteredProfiles[currentProfileIndex + 1].photos && 
+                      filteredProfiles[currentProfileIndex + 1].photos[0] && 
+                      (filteredProfiles[currentProfileIndex + 1].photos[0].src || 
+                       filteredProfiles[currentProfileIndex + 1].photos[0]) 
+                      ? (filteredProfiles[currentProfileIndex + 1].photos[0].src || filteredProfiles[currentProfileIndex + 1].photos[0])
+                      : "/placeholder.svg"
+                    }
+                    alt={filteredProfiles[currentProfileIndex + 1].name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.log("[v0] Image failed to load for next profile")
+                      e.currentTarget.src = "/placeholder.svg"
+                    }}
+                    onLoad={() => {
+                      console.log("[v0] Background card image loaded:", filteredProfiles[currentProfileIndex + 1].name)
+                    }}
+                  />
+                  
+                  {/* Background card overlay with name and info */}
+                  <div className="absolute bottom-0 left-0 right-0 px-5 pt-6 pb-2 bg-gradient-to-t from-black/70 via-black/50 to-transparent">
+                    <div className="text-white/95 font-semibold text-3xl mb-1">
+                      {filteredProfiles[currentProfileIndex + 1].name}, {filteredProfiles[currentProfileIndex + 1].age}
+                    </div>
+                    <div className="text-white/95 text-lg font-semibold mb-1">
+                      {getWesternSignEmoji(filteredProfiles[currentProfileIndex + 1].westernSign)} {filteredProfiles[currentProfileIndex + 1].westernSign} •{" "}
+                      {getChineseSignEmoji(filteredProfiles[currentProfileIndex + 1].easternSign)} {filteredProfiles[currentProfileIndex + 1].easternSign}
+                    </div>
+                    {/* First photo info - distance */}
+                    <div className="text-white/95 text-lg font-semibold flex items-center gap-1">
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                      </svg>
+                      {filteredProfiles[currentProfileIndex + 1].distance ? `${filteredProfiles[currentProfileIndex + 1].distance} km away` : 'Distance not available'}
+                    </div>
+                  </div>
+
+                </div>
+              )}
+
+              {/* Main card (current profile) - Always show CURRENT profile */}
+              <div
+                key={`main-${currentProfile.id}`} 
+                className="relative w-full aspect-[4/5.5] bg-gray-100 rounded-lg overflow-hidden"
+                style={{
+                  transform: `translateX(${swipeOffset}px) rotate(${swipeOffset * 0.03}deg)`,
+                  transition: isDragging ? 'none' : 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  opacity: isCardLeaving ? 0 : 1,
+                  zIndex: 2,
+                  pointerEvents: isCardLeaving ? 'none' : 'auto',
+                  visibility: isCardLeaving && Math.abs(swipeOffset) > window.innerWidth * 1.5 ? 'hidden' : 'visible'
+                }}
+              >
+                  <button
+                    onClick={handleChat}
+                    className="absolute top-4 right-4 z-20 w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)'
+                    }}
+                    aria-label="Chat"
+                  >
+                    <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                    </svg>
+                  </button>
+
+                  {/* Like Button */}
+                  <button
+                    onClick={() => {
+                      console.log('Liked profile:', currentProfile?.name)
+                    }}
+                    className="absolute top-[96px] right-4 z-20 w-14 h-14 rounded-full flex items-center justify-center transition-all shadow-lg"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%)'
+                    }}
+                    aria-label="Like"
+                  >
+                    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="#ffffff">
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                    </svg>
+                  </button>
+
+                  <div
+                    className="w-full h-full relative cursor-pointer"
+                    onTouchStart={handleImageTouchStart}
+                    onTouchMove={handleImageTouchMove}
+                    onTouchEnd={handleZoomTouchEnd}
+                    onClick={(e) => {
+                      if (!isZoomModalOpen) {
+                        const rect = e.currentTarget.getBoundingClientRect()
+                        const clickX = e.clientX - rect.left
+                        const halfWidth = rect.width / 2
+
+                        if (clickX < halfWidth) {
+                          prevPhoto()
+                        } else {
+                          nextPhoto()
+                        }
+                      }
+                    }}
+                  >
+                    <img
+                      src={currentProfile.photos[currentPhotoIndex] || "/placeholder.svg"}
+                      alt={`${currentProfile.name} photo ${currentPhotoIndex + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                    
+                    {/* Name, Age, Zodiac Signs, and Info Overlay - Shows on every photo */}
+                    <div className="absolute bottom-0 left-0 right-0 px-5 pt-6 pb-2">
+                      <div className="!text-white/95 font-semibold text-3xl mb-1">
+                        {currentProfile.name}, {currentProfile.age}
+                      </div>
+                      <div className="!text-white/95 text-lg font-semibold mb-1">
+                        {getWesternSignEmoji(currentProfile.westernSign)} {currentProfile.westernSign} •{" "}
+                        {getChineseSignEmoji(currentProfile.easternSign)} {currentProfile.easternSign}
+                      </div>
+                      {/* Photo 1: GPS Location */}
+                      {currentPhotoIndex === 0 && (
+                        <div className="!text-white/95 text-lg font-semibold flex items-center gap-1">
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                          </svg>
+                          {currentProfile.distance ? `${currentProfile.distance} km away` : 'Distance not available'}
+                        </div>
+                      )}
+                      {/* Photo 2: Occupation and Location */}
+                      {currentPhotoIndex === 1 && (
+                        <div className="space-y-2">
+                          <div className="!text-white/95 text-lg font-semibold flex items-center gap-1">
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                            </svg>
+                            {currentProfile.occupation || 'Occupation not available'}
+                          </div>
+                          <div className="!text-white/95 text-lg font-semibold flex items-center gap-1">
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            {currentProfile.city || 'Location not available'}
+                          </div>
+                        </div>
+                      )}
+                      {/* Photo 3: Height and Children */}
+                      {currentPhotoIndex === 2 && (
+                        <div className="space-y-2">
+                          <div className="!text-white/95 text-lg font-semibold flex items-center gap-1">
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 2L10 14H14L12 22L17 10H13L15 2H12Z"/>
+                            </svg>
+                            {currentProfile.height ? (() => {
+                              // Convert feet and inches to centimeters
+                              const heightMatch = currentProfile.height.match(/(\d+)'(\d+)"/);
+                              if (heightMatch) {
+                                const feet = parseInt(heightMatch[1]);
+                                const inches = parseInt(heightMatch[2]);
+                                const totalInches = feet * 12 + inches;
+                                const centimeters = Math.round(totalInches * 2.54);
+                                return `${centimeters} cm`;
+                              }
+                              return currentProfile.height; // Fallback if format doesn't match
+                            })() : 'Height not available'}
+                          </div>
+                          <div className="!text-white/95 text-lg font-semibold flex items-center gap-1">
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            {currentProfile.children || 'Children info not available'}
+                          </div>
+                        </div>
+                      )}
+                      {/* Photo 4: Religion */}
+                      {currentPhotoIndex === 3 && (
+                        <div className="!text-white/95 text-lg font-semibold flex items-center gap-1">
+                          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                          </svg>
+                          {currentProfile.religion || 'Religion not available'}
+                        </div>
+                      )}
+                    </div>
+
+                  </div>
+              </div>
+
+
+
+
+
+          </div>
+        ) : null}
+
+      </div>
+
+      {/* Full-Screen Zoom Modal */}
+      {isZoomModalOpen && currentProfile && (
+        <div 
+          className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
+          onTouchStart={(e) => {
+            if (e.touches.length === 2) {
+              lastZoomDistanceRef.current = getDistance(e.touches)
+            } else if (e.touches.length === 1) {
+              lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+            }
+          }}
+          onTouchMove={handleZoomTouchMove}
+          onTouchEnd={handleZoomTouchEnd}
+          style={{ touchAction: 'none' }}
+        >
+          <img
+            src={currentProfile.photos[currentPhotoIndex] || "/placeholder.svg"}
+            alt=""
+            className="max-w-full max-h-full object-contain"
+            style={{
+              transform: `scale(${zoomScale}) translate(${zoomPosX}px, ${zoomPosY}px)`,
+              transformOrigin: 'center center',
+              transition: 'none',
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+              pointerEvents: 'none'
+            }}
+          />
+        </div>
+      )}
+    </div>
+  )
+}

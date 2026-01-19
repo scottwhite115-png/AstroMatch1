@@ -1,0 +1,104 @@
+-- COPY EVERYTHING BELOW THIS LINE AND PASTE INTO SUPABASE SQL EDITOR
+-- ================================================================
+
+-- CreateEnum
+CREATE TYPE "PostType" AS ENUM ('STORY', 'QUESTION');
+
+-- CreateEnum
+CREATE TYPE "NotificationType" AS ENUM ('POST_REPLY', 'COMMENT_REPLY');
+
+-- CreateEnum
+CREATE TYPE "SanHeHouse" AS ENUM ('VISIONARIES', 'STRATEGISTS', 'ADVENTURERS', 'ARTISTS');
+
+-- CreateEnum
+CREATE TYPE "ChatRegionScope" AS ENUM ('NEAR_ME', 'COUNTRY', 'GLOBAL');
+
+-- AlterTable: Add new fields to Post
+ALTER TABLE "Post" 
+ADD COLUMN "type" "PostType" NOT NULL DEFAULT 'STORY',
+ADD COLUMN "language" TEXT,
+ADD COLUMN "countryCode" TEXT;
+
+-- AlterTable: Change Notification.type to enum
+ALTER TABLE "Notification" 
+ALTER COLUMN "type" TYPE "NotificationType" USING ("type"::"NotificationType");
+
+-- AlterTable: Add author relation to Comment (add onDelete cascade)
+-- Note: This may already exist, migration will handle if it does
+ALTER TABLE "Comment" 
+DROP CONSTRAINT IF EXISTS "Comment_authorId_fkey",
+ADD CONSTRAINT "Comment_authorId_fkey" 
+  FOREIGN KEY ("authorId") REFERENCES "profiles"("id") ON DELETE CASCADE;
+
+-- AlterTable: Add onDelete cascade to Post author relation
+ALTER TABLE "Post"
+DROP CONSTRAINT IF EXISTS "Post_authorId_fkey",
+ADD CONSTRAINT "Post_authorId_fkey" 
+  FOREIGN KEY ("authorId") REFERENCES "profiles"("id") ON DELETE CASCADE;
+
+-- CreateTable: SanHeRoom
+CREATE TABLE "SanHeRoom" (
+    "id" TEXT NOT NULL,
+    "house" "SanHeHouse" NOT NULL,
+    "regionScope" "ChatRegionScope" NOT NULL,
+    "countryCode" TEXT,
+    "maxUsers" INTEGER NOT NULL DEFAULT 40,
+    "currentUsers" INTEGER NOT NULL DEFAULT 0,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SanHeRoom_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable: SanHeMessage
+CREATE TABLE "SanHeMessage" (
+    "id" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
+    "authorId" UUID NOT NULL,
+    "content" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SanHeMessage_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable: SanHePresence
+CREATE TABLE "SanHePresence" (
+    "id" TEXT NOT NULL,
+    "roomId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
+    "lastSeenAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SanHePresence_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex: Post indexes
+DROP INDEX IF EXISTS "Post_topic_createdAt_idx";
+CREATE INDEX "Post_topic_createdAt_idx" ON "Post"("topic", "createdAt" DESC);
+
+DROP INDEX IF EXISTS "Post_createdAt_idx";
+CREATE INDEX "Post_createdAt_idx" ON "Post"("createdAt" DESC);
+
+-- CreateIndex: Notification indexes
+DROP INDEX IF EXISTS "Notification_userId_createdAt_idx";
+CREATE INDEX "Notification_userId_createdAt_idx" ON "Notification"("userId", "createdAt" DESC);
+
+-- CreateIndex: SanHeRoom indexes
+CREATE INDEX "SanHeRoom_house_regionScope_countryCode_idx" ON "SanHeRoom"("house", "regionScope", "countryCode");
+CREATE INDEX "SanHeRoom_isActive_idx" ON "SanHeRoom"("isActive");
+
+-- CreateIndex: SanHeMessage indexes
+CREATE INDEX "SanHeMessage_roomId_createdAt_idx" ON "SanHeMessage"("roomId", "createdAt");
+
+-- CreateIndex: SanHePresence indexes
+CREATE UNIQUE INDEX "SanHePresence_roomId_userId_key" ON "SanHePresence"("roomId", "userId");
+CREATE INDEX "SanHePresence_roomId_idx" ON "SanHePresence"("roomId");
+CREATE INDEX "SanHePresence_userId_idx" ON "SanHePresence"("userId");
+
+-- AddForeignKey: SanHeMessage relations
+ALTER TABLE "SanHeMessage" ADD CONSTRAINT "SanHeMessage_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "SanHeRoom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SanHeMessage" ADD CONSTRAINT "SanHeMessage_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey: SanHePresence relations
+ALTER TABLE "SanHePresence" ADD CONSTRAINT "SanHePresence_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "SanHeRoom"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SanHePresence" ADD CONSTRAINT "SanHePresence_userId_fkey" FOREIGN KEY ("userId") REFERENCES "profiles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
