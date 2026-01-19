@@ -3691,7 +3691,7 @@ export default function AstrologyProfilePage({
             {/* Location Section */}
             <div className="mb-8">
               <SectionHeader
-                label="Location"
+                label="Area / City"
               />
               <div className="space-y-4">
                 <div className="relative" ref={cityInputRef}>

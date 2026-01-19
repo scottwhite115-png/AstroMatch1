@@ -401,13 +401,22 @@ export default function MessagesPage() {
           <div className="flex items-center justify-between mb-1.5">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-                <div className="flex gap-0.5 min-w-max ml-8">
+                <div className="flex gap-4 min-w-max ml-8">
                   <div className="flex items-center gap-0.5">
                     <FourPointedStar className="w-5 h-5 text-orange-500" />
                     <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
                       Messages
                     </span>
                   </div>
+                  <button
+                    onClick={() => router.push("/astrology")}
+                    className="flex items-center gap-0.5 hover:opacity-80 transition-opacity"
+                  >
+                    <FourPointedStar className="w-5 h-5 text-orange-500" />
+                    <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                      AstroLab
+                    </span>
+                  </button>
                 </div>
               </div>
             </div>

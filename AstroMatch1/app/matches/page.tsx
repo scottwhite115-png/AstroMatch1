@@ -819,6 +819,103 @@ const TEST_PROFILES = [
     ],
     distance: 19,
   },
+  // Additional test profiles for 1974, 1976, 1983
+  // 1974 - Tiger (Wood)
+  {
+    id: 33,
+    name: "Sophia",
+    age: 50,
+    birthdate: "1974-03-15",
+    westernSign: "Pisces",
+    easternSign: "Tiger",
+    photos: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80"],
+    aboutMe: "Yoga instructor and wellness coach. Teaching mindfulness and helping others find balance in life.",
+    aboutMeText: "Yoga instructor and wellness coach. Teaching mindfulness and helping others find balance in life.",
+    occupation: "Yoga Instructor",
+    city: "Byron Bay, NSW",
+    height: "5'6\"",
+    children: "Have, teenagers",
+    religion: "Spiritual",
+    prompts: [
+      { question: "What I teach", answer: "The importance of connecting mind, body, and spirit through practice." },
+      { question: "Looking for", answer: "Someone who values personal growth and living authentically." }
+    ],
+    relationshipGoals: ["Life partner", "Deep connection"],
+    selectedRelationshipGoals: ["Life partner", "Deep connection"],
+    interests: {
+      "Health & Wellness": ["Yoga", "Meditation", "Natural Healing"],
+      "Lifestyle": ["Mindfulness", "Organic Living"]
+    },
+    selectedOrganizedInterests: {
+      "Health & Wellness": ["Yoga", "Meditation", "Natural Healing"],
+      "Lifestyle": ["Mindfulness", "Organic Living"]
+    },
+    distance: 12,
+  },
+  // 1976 - Dragon (Fire)
+  {
+    id: 34,
+    name: "Isabella",
+    age: 48,
+    birthdate: "1976-07-22",
+    westernSign: "Cancer",
+    easternSign: "Dragon",
+    photos: ["https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80", "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80"],
+    aboutMe: "Real estate developer creating sustainable communities. Passionate about architecture and green living.",
+    aboutMeText: "Real estate developer creating sustainable communities. Passionate about architecture and green living.",
+    occupation: "Real Estate Developer",
+    city: "Brisbane, QLD",
+    height: "5'9\"",
+    children: "Have, grown",
+    religion: "Agnostic",
+    prompts: [
+      { question: "Current project", answer: "Building an eco-friendly residential community with solar panels and community gardens." },
+      { question: "I value", answer: "Sustainability, innovation, and creating spaces where people thrive." }
+    ],
+    relationshipGoals: ["Long-term partner", "Building a life together"],
+    selectedRelationshipGoals: ["Long-term partner", "Building a life together"],
+    interests: {
+      "Business": ["Real Estate", "Architecture"],
+      "Lifestyle": ["Sustainability", "Green Living"]
+    },
+    selectedOrganizedInterests: {
+      "Business": ["Real Estate", "Architecture"],
+      "Lifestyle": ["Sustainability", "Green Living"]
+    },
+    distance: 8,
+  },
+  // 1983 - Pig (Water)
+  {
+    id: 35,
+    name: "Charlotte",
+    age: 41,
+    birthdate: "1983-04-03",
+    westernSign: "Aries",
+    easternSign: "Pig",
+    photos: ["https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80", "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80"],
+    aboutMe: "Social worker supporting families in need. Dedicated to making a positive impact in my community.",
+    aboutMeText: "Social worker supporting families in need. Dedicated to making a positive impact in my community.",
+    occupation: "Social Worker",
+    city: "Adelaide, SA",
+    height: "5'5\"",
+    children: "Have, young",
+    religion: "Christian",
+    prompts: [
+      { question: "Why I do this", answer: "Every family deserves support and resources to thrive." },
+      { question: "Looking for", answer: "Someone compassionate, family-oriented, and values-driven." }
+    ],
+    relationshipGoals: ["Life partner", "Family connection"],
+    selectedRelationshipGoals: ["Life partner", "Family connection"],
+    interests: {
+      "Social Causes": ["Community Service", "Family Support"],
+      "Lifestyle": ["Family Time", "Volunteering"]
+    },
+    selectedOrganizedInterests: {
+      "Social Causes": ["Community Service", "Family Support"],
+      "Lifestyle": ["Family Time", "Volunteering"]
+    },
+    distance: 5,
+  },
 ]
 
 // Shuffle the profiles randomly
@@ -1044,10 +1141,121 @@ export default function MatchesPage() {
   }
 
   // REAL DATABASE: Fetch user profile and matchable profiles
+  // Also load test profiles if no user is logged in (for mobile/demo access)
   useEffect(() => {
-    if (!currentUserId) return
-
     const loadRealProfiles = async () => {
+      // If no user is logged in, show test profiles
+      if (!currentUserId) {
+        console.log('[Matches] ℹ️  No user logged in - loading test profiles')
+        setIsLoadingProfiles(true)
+        try {
+          // Convert test profiles to match the expected format
+          const testProfilesFormatted = SHUFFLED_PROFILES.map(p => ({
+            id: `test-${p.id}`,
+            name: p.name,
+            age: p.age,
+            birthdate: p.birthdate,
+            westernSign: p.westernSign,
+            easternSign: p.easternSign,
+            tropicalWesternSign: p.westernSign,
+            siderealWesternSign: p.westernSign,
+            photos: p.photos,
+            bio: p.aboutMe || p.aboutMeText || '',
+            occupation: p.occupation || 'Not specified',
+            city: p.city || 'Unknown',
+            height: p.height || 'Not specified',
+            children_preference: p.children || 'Not specified',
+            religion: p.religion || 'Not specified',
+            relationship_goals: p.relationshipGoals || p.selectedRelationshipGoals || [],
+            interests: p.interests ? Object.values(p.interests || p.selectedOrganizedInterests || {}).flat() : [],
+            distance: p.distance || 0,
+            lat: 0,
+            lon: 0
+          }))
+
+          const formattedProfiles = testProfilesFormatted.map((p: EnrichedProfile) => ({
+            id: p.id,
+            name: p.name,
+            age: p.age,
+            birthdate: p.birthdate,
+            westernSign: p.westernSign,
+            easternSign: p.easternSign,
+            tropicalWesternSign: p.tropicalWesternSign || p.westernSign,
+            siderealWesternSign: p.siderealWesternSign || p.westernSign,
+            photos: p.photos,
+            aboutMe: p.bio || 'No bio yet',
+            aboutMeText: p.bio || 'No bio yet',
+            occupation: p.occupation || 'Not specified',
+            city: p.city || 'Unknown',
+            height: p.height || 'Not specified',
+            children: p.children_preference || 'Not specified',
+            religion: p.religion || 'Not specified',
+            relationshipGoals: p.relationship_goals || [],
+            selectedRelationshipGoals: p.relationship_goals || [],
+            interests: (() => {
+              if (!p.interests || !Array.isArray(p.interests) || p.interests.length === 0) {
+                return {}
+              }
+              const interestCategories = {
+                "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
+                "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
+                "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
+                "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
+                "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
+              }
+              const organized: {[category: string]: string[]} = {}
+              p.interests.forEach((interest: string) => {
+                for (const [category, items] of Object.entries(interestCategories)) {
+                  if (items.includes(interest)) {
+                    if (!organized[category]) {
+                      organized[category] = []
+                    }
+                    organized[category].push(interest)
+                    break
+                  }
+                }
+              })
+              return organized
+            })(),
+            selectedOrganizedInterests: (() => {
+              if (!p.interests || !Array.isArray(p.interests) || p.interests.length === 0) {
+                return {}
+              }
+              const interestCategories = {
+                "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
+                "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
+                "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
+                "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
+                "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
+              }
+              const organized: {[category: string]: string[]} = {}
+              p.interests.forEach((interest: string) => {
+                for (const [category, items] of Object.entries(interestCategories)) {
+                  if (items.includes(interest)) {
+                    if (!organized[category]) {
+                      organized[category] = []
+                    }
+                    organized[category].push(interest)
+                    break
+                  }
+                }
+              })
+              return organized
+            })(),
+            distance: p.distance || 0,
+          }))
+
+          setEnrichedProfiles(formattedProfiles)
+          setFilteredProfiles(formattedProfiles)
+          console.log('[Matches] ✅ Test profiles loaded (no user logged in)')
+        } catch (error) {
+          console.error('[Matches] ❌ Error loading test profiles:', error)
+          setHasError(true)
+        } finally {
+          setIsLoadingProfiles(false)
+        }
+        return
+      }
       setIsLoadingProfiles(true)
       console.log('[Matches] 🔄 Loading real profiles from database...')
 
@@ -1123,14 +1331,6 @@ export default function MatchesPage() {
         const candidates = await fetchMatchableProfiles(filters)
         console.log(`[Matches] 📋 Found ${candidates.length} potential matches`)
 
-        if (candidates.length === 0) {
-          console.log('[Matches] ℹ️  No profiles found - check location or preferences')
-          setEnrichedProfiles([])
-          setFilteredProfiles([])
-          setIsLoadingProfiles(false)
-          return
-        }
-
         // 5. Filter out already liked/passed profiles
         const likedIds = await fetchLikedProfileIds(currentUserId)
         const passedIds = await fetchPassedProfileIds(currentUserId)
@@ -1139,11 +1339,42 @@ export default function MatchesPage() {
         const unseenProfiles = filterSeenProfiles(candidates, likedIds, passedIds)
         console.log(`[Matches] ✨ ${unseenProfiles.length} new profiles to show`)
 
-        // 6. Update last active timestamp
-        updateLastActive(currentUserId)
+        // Use test profiles as fallback if no database profiles found
+        let profilesToProcess = unseenProfiles
+        if (profilesToProcess.length === 0) {
+          console.log('[Matches] ℹ️  No database profiles found - using test profiles as fallback')
+          // Convert test profiles to match the expected format
+          profilesToProcess = SHUFFLED_PROFILES.map(p => ({
+            id: `test-${p.id}`,
+            name: p.name,
+            age: p.age,
+            birthdate: p.birthdate,
+            westernSign: p.westernSign,
+            easternSign: p.easternSign,
+            tropicalWesternSign: p.westernSign,
+            siderealWesternSign: p.westernSign,
+            photos: p.photos,
+            bio: p.aboutMe || p.aboutMeText || '',
+            occupation: p.occupation || 'Not specified',
+            city: p.city || 'Unknown',
+            height: p.height || 'Not specified',
+            children_preference: p.children || 'Not specified',
+            religion: p.religion || 'Not specified',
+            relationship_goals: p.relationshipGoals || p.selectedRelationshipGoals || [],
+            interests: p.interests ? Object.values(p.interests || p.selectedOrganizedInterests || {}).flat() : [],
+            distance: p.distance || 0,
+            lat: 0,
+            lon: 0
+          }))
+        }
+
+        // 6. Update last active timestamp (only if we have real profiles)
+        if (candidates.length > 0) {
+          updateLastActive(currentUserId)
+        }
 
         // 7. Convert to component format and enrich with zodiac signs
-        const formattedProfiles = unseenProfiles.map((p: EnrichedProfile) => ({
+        const formattedProfiles = profilesToProcess.map((p: EnrichedProfile) => ({
           id: p.id,
           name: p.name,
           age: p.age,
@@ -3315,13 +3546,22 @@ export default function MatchesPage() {
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex-1 -ml-8">
                 <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-                  <div className="flex gap-0.5 min-w-max ml-8">
+                  <div className="flex gap-4 min-w-max ml-8">
                     <div className="flex items-center gap-0.5">
                       <FourPointedStar className="w-5 h-5 text-orange-500" />
                       <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
                         Matches
                       </span>
                     </div>
+                    <button
+                      onClick={() => router.push("/astrology")}
+                      className="flex items-center gap-0.5 hover:opacity-80 transition-opacity"
+                    >
+                      <FourPointedStar className="w-5 h-5 text-orange-500" />
+                      <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                        AstroLab
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>

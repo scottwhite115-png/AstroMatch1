@@ -621,15 +621,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 )}
               </div>
 
-          {/* Tagline under the pill */}
-          {tagline && (
-            <div className={`text-center px-4 mt-3 text-base font-bold ${
-              theme === "light" ? "text-slate-700" : "text-slate-300"
-            }`}>
-              {tagline}
-            </div>
-          )}
-
           {/* Match Label Dropdown - Shows astrology details when pill is clicked */}
           {showMatchLabelDropdown && (
             <div 
@@ -651,119 +642,196 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                         overflow: 'hidden',
                       }}
                     >
-                    {/* Chinese Zodiac Compatibility Section */}
-                    {connectionOverviewText && (
-                      <div className="mb-4 text-center">
-                        {/* Chinese Signs Display */}
-                        {chineseAnimalA && chineseAnimalB && (
-                          <div className="flex items-center justify-center gap-1.5 mb-2">
-                            {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
-                            <span className={`font-bold text-lg ${
-                              theme === "light" ? "text-slate-700" : "text-slate-200"
-                            }`}>
-                              {chineseAnimalA}
+                    {/* About Me - Inside dropdown */}
+                    {aboutPartnerText && (
+                      <div>
+                        <h4 
+                          className="text-lg font-semibold mb-0.5"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          About me
+                        </h4>
+                        <p 
+                          className={`text-xl font-bold leading-relaxed whitespace-pre-wrap ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+                        >
+                          {aboutPartnerText}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Relationship Goals - Inside dropdown */}
+                    {relationshipGoals && (
+                      <div className={`${aboutPartnerText ? "pt-4 border-t mt-4" : ""} ${
+                        theme === "light" ? "border-gray-200" : "border-indigo-400/20"
+                      }`}>
+                        <h4 
+                          className="text-lg font-semibold mb-0.5"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          Relationship Goals
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {typeof relationshipGoals === 'string' ? (
+                            <span 
+                              className="px-3 py-1.5 rounded-full text-base font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                            >
+                              {relationshipGoals}
                             </span>
-                            <span className={`text-lg ${
-                              theme === "light" ? "text-pink-500" : "text-pink-400"
-                            }`}>
-                              ♥
-                            </span>
-                            <span className={`font-bold text-lg ${
-                              theme === "light" ? "text-slate-700" : "text-slate-200"
-                            }`}>
-                              {chineseAnimalB}
-                            </span>
-                            {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
-                          </div>
-                        )}
-                        
-                        {chineseHeadingWithoutSignPair && (
-                          <div className="mb-1 text-center">
-                            {chineseHeadingWithoutSignPair
-                              .split(/,|;/)
-                              .map(part => part.trim())
-                              .filter(part => part.length > 0)
-                              .map((pattern, index) => (
-                                <h4 
-                                  key={index}
-                                  className={`text-lg font-bold ${
-                                    theme === "light" ? "text-slate-900" : "text-slate-100"
-                                  }`}
-                                >
-                                  {pattern}
-                                </h4>
-                              ))}
-                          </div>
-                        )}
-                        {/* TAGLINE - Display if available */}
-                        {connectionOverviewTagline && (
-                          <p className={`text-lg italic font-bold mb-0.5 text-center ${
-                            theme === "light" ? "text-black" : "text-white"
-                          }`}>
-                            {connectionOverviewTagline}
-                          </p>
-                        )}
-                        <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
-                          {connectionOverviewText}
+                          ) : Array.isArray(relationshipGoals) ? (
+                            relationshipGoals.map((goal, index) => (
+                              <span 
+                                key={index}
+                                className="px-3 py-1.5 rounded-full text-base font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                              >
+                                {goal}
+                              </span>
+                            ))
+                          ) : null}
                         </div>
                       </div>
                     )}
-                    
-                    {/* Western Sun Sign Compatibility Section */}
-                    {westernCompatibilityDescription && (
-                      <div className={`${connectionOverviewText ? "pt-4 border-t" : ""} text-center ${
+
+                    {/* Interests - Inside dropdown */}
+                    {interests && (
+                      <div className={`${(aboutPartnerText || relationshipGoals) ? "pt-4 border-t mt-4" : ""} ${
                         theme === "light" ? "border-gray-200" : "border-indigo-400/20"
-                      }`}
-                      style={{ paddingBottom: '1rem' }}
-                      >
-                        {/* Western Signs Display */}
-                        {westernSignA && westernSignB && (
-                          <div className="flex items-center justify-center gap-1.5 mb-2">
-                            {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
-                            <span className={`font-bold text-lg ${
-                              theme === "light" ? "text-slate-700" : "text-slate-200"
-                            }`}>
-                              {westernSignA}
+                      }`}>
+                        <h4 
+                          className="text-lg font-semibold mb-0.5"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          Interests
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {typeof interests === 'string' ? (
+                            <span 
+                              className="px-3 py-1.5 rounded-full text-base font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                            >
+                              {interests}
                             </span>
-                            <span className={`text-lg ${
-                              theme === "light" ? "text-pink-500" : "text-pink-400"
-                            }`}>
-                              ♥
-                            </span>
-                            <span className={`font-bold text-lg ${
-                              theme === "light" ? "text-slate-700" : "text-slate-200"
-                            }`}>
-                              {westernSignB}
-                            </span>
-                            {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
-                          </div>
-                        )}
-                        
-                        {westernHeadingWithoutSignPair && (
-                          <h4 className={`text-lg mb-1 text-center font-bold ${
-                            theme === "light" ? "text-slate-900" : "text-slate-100"
-                          }`}>
-                            {westernHeadingWithoutSignPair}
-                          </h4>
-                        )}
-                        {/* TAGLINE - Display if available */}
-                        {westernCompatibilityTagline && (
-                          <p className={`text-lg italic font-bold mb-0.5 text-center ${
-                            theme === "light" ? "text-black" : "text-white"
-                          }`}>
-                            {westernCompatibilityTagline}
-                          </p>
-                        )}
-                        <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
-                          {westernCompatibilityDescription}
+                          ) : Array.isArray(interests) ? (
+                            interests.map((interest, index) => (
+                              <span 
+                                key={index}
+                                className="px-3 py-1.5 rounded-full text-base font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                              >
+                                {interest}
+                              </span>
+                            ))
+                          ) : typeof interests === 'object' ? (
+                            Object.entries(interests)
+                              .flatMap(([category, interestList]) => 
+                                Array.isArray(interestList) ? interestList : []
+                              )
+                              .map((interest, index) => (
+                                <span 
+                                  key={index}
+                                  className="px-3 py-1.5 rounded-full text-base font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
+                                >
+                                  {interest}
+                                </span>
+                              ))
+                          ) : null}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Essentials - Inside dropdown */}
+                    {(city || occupation || age || height || children) && (
+                      <div className={`${(aboutPartnerText || relationshipGoals || interests) ? "pt-4 border-t mt-4" : ""} ${
+                        theme === "light" ? "border-gray-200" : "border-indigo-400/20"
+                      }`}>
+                        <h4 
+                          className="text-lg font-semibold mb-0.5"
+                          style={{ 
+                            background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          Essentials
+                        </h4>
+                        <div className="grid grid-cols-1 gap-3">
+                          {/* Location */}
+                          {city && (
+                            <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                              <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                              </svg>
+                              <span>{city}</span>
+                            </div>
+                          )}
+                          
+                          {/* Occupation */}
+                          {occupation && (
+                            <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                              <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                              </svg>
+                              <span>{occupation}</span>
+                            </div>
+                          )}
+
+                          {/* Age */}
+                          {age && (
+                            <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                              <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                              </svg>
+                              <span>{age} years old</span>
+                            </div>
+                          )}
+
+                          {/* Height */}
+                          {height && (
+                            <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                              <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <line x1="12" y1="2" x2="12" y2="22"/>
+                                <polyline points="8 6 12 2 16 6"/>
+                                <polyline points="8 18 12 22 16 18"/>
+                              </svg>
+                              <span>{height}</span>
+                            </div>
+                          )}
+
+                          {/* Children */}
+                          {children && (
+                            <div className={`flex items-center gap-1.5 text-xl ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}>
+                              <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+                              </svg>
+                              <span>{children}</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     )}
 
                     {/* Fallback if no content */}
-                    {!connectionOverviewText && !westernCompatibilityDescription && (
+                    {!aboutPartnerText && !relationshipGoals && !interests && !city && !occupation && !age && !height && !children && (
                       <div className={`text-center py-4 ${theme === "light" ? "text-slate-600" : "text-slate-400"}`}>
-                        <p>No compatibility information available</p>
+                        <p>No information available</p>
                       </div>
                     )}
                       </div>
@@ -775,35 +843,123 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Blurb - REMOVED */}
 
         {/* Profile Information - Combined into match box */}
-        {(aboutPartnerText || relationshipGoals || interests || city || occupation || age || height || children) && (
-          <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: showMatchLabelDropdown ? 'none' : `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}` }}>
-            {/* About Me */}
-            {aboutPartnerText && (
-              <div style={{ marginBottom: '1.5rem', marginTop: '0' }}>
-                <h4 
-                  className="text-lg font-semibold mb-0.5"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${gradientColors.start}, ${gradientColors.end})`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    paddingLeft: '1rem',
-                    paddingRight: '1rem'
-                  }}
+        {/* About Me moved to dropdown - Removed from here */}
+        
+        {/* Chinese Zodiac Compatibility Section - Displayed outside dropdown in profile view */}
+            {externalShowProfile !== undefined && connectionOverviewText && (
+              <div style={{ marginBottom: '1.5rem', marginTop: '1.5rem', paddingTop: '1.5rem' }}>
+                <div className="mb-4 text-center">
+                  {/* Chinese Signs Display */}
+                  {chineseAnimalA && chineseAnimalB && (
+                    <div className="flex items-center justify-center gap-1.5 mb-2">
+                      {userAChineseIcon && <span className="text-2xl">{userAChineseIcon}</span>}
+                      <span className={`font-bold text-lg ${
+                        theme === "light" ? "text-slate-700" : "text-slate-200"
+                      }`}>
+                        {chineseAnimalA}
+                      </span>
+                      <span className={`text-lg ${
+                        theme === "light" ? "text-pink-500" : "text-pink-400"
+                      }`}>
+                        ♥
+                      </span>
+                      <span className={`font-bold text-lg ${
+                        theme === "light" ? "text-slate-700" : "text-slate-200"
+                      }`}>
+                        {chineseAnimalB}
+                      </span>
+                      {userBChineseIcon && <span className="text-2xl">{userBChineseIcon}</span>}
+                    </div>
+                  )}
+                  
+                  {chineseHeadingWithoutSignPair && (
+                    <div className="mb-1 text-center">
+                      {chineseHeadingWithoutSignPair
+                        .split(/,|;/)
+                        .map(part => part.trim())
+                        .filter(part => part.length > 0)
+                        .map((pattern, index) => (
+                          <h4 
+                            key={index}
+                            className={`text-lg font-bold ${
+                              theme === "light" ? "text-slate-900" : "text-slate-100"
+                            }`}
+                          >
+                            {pattern}
+                          </h4>
+                        ))}
+                    </div>
+                  )}
+                  {/* TAGLINE - Display if available */}
+                  {connectionOverviewTagline && (
+                    <p className={`text-lg italic font-bold mb-0.5 text-center ${
+                      theme === "light" ? "text-black" : "text-white"
+                    }`}>
+                      {connectionOverviewTagline}
+                    </p>
+                  )}
+                  <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                    {connectionOverviewText}
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Western Sun Sign Compatibility Section - Displayed outside dropdown in profile view */}
+            {externalShowProfile !== undefined && westernCompatibilityDescription && (
+              <div style={{ marginBottom: '1.5rem', marginTop: connectionOverviewText ? '0' : '1.5rem', paddingTop: connectionOverviewText ? '0' : '1.5rem', borderTop: connectionOverviewText ? `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}` : 'none' }}>
+                <div className={`${connectionOverviewText ? "pt-4 border-t" : ""} text-center ${
+                  theme === "light" ? "border-gray-200" : "border-indigo-400/20"
+                }`}
+                style={{ paddingBottom: '1rem' }}
                 >
-                  About me
-                </h4>
-                <p 
-                  className={`text-2xl font-bold leading-relaxed whitespace-pre-wrap ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
-                  style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
-                >
-                  {aboutPartnerText}
-                </p>
+                  {/* Western Signs Display */}
+                  {westernSignA && westernSignB && (
+                    <div className="flex items-center justify-center gap-1.5 mb-2">
+                      {userAWestIcon && <span className="text-2xl">{userAWestIcon}</span>}
+                      <span className={`font-bold text-lg ${
+                        theme === "light" ? "text-slate-700" : "text-slate-200"
+                      }`}>
+                        {westernSignA}
+                      </span>
+                      <span className={`text-lg ${
+                        theme === "light" ? "text-pink-500" : "text-pink-400"
+                      }`}>
+                        ♥
+                      </span>
+                      <span className={`font-bold text-lg ${
+                        theme === "light" ? "text-slate-700" : "text-slate-200"
+                      }`}>
+                        {westernSignB}
+                      </span>
+                      {userBWestIcon && <span className="text-2xl">{userBWestIcon}</span>}
+                    </div>
+                  )}
+                  
+                  {westernHeadingWithoutSignPair && (
+                    <h4 className={`text-lg mb-1 text-center font-bold ${
+                      theme === "light" ? "text-slate-900" : "text-slate-100"
+                    }`}>
+                      {westernHeadingWithoutSignPair}
+                    </h4>
+                  )}
+                  {/* TAGLINE - Display if available */}
+                  {westernCompatibilityTagline && (
+                    <p className={`text-lg italic font-bold mb-0.5 text-center ${
+                      theme === "light" ? "text-black" : "text-white"
+                    }`}>
+                      {westernCompatibilityTagline}
+                    </p>
+                  )}
+                  <div className="leading-relaxed whitespace-pre-line text-center" style={{ marginBottom: '0', paddingBottom: '0', lineHeight: '1.5' }}>
+                    {westernCompatibilityDescription}
+                  </div>
+                </div>
               </div>
             )}
 
-            {/* Relationship Goals */}
-            {relationshipGoals && (
+            {/* Relationship Goals - REMOVED */}
+            {false && relationshipGoals && (
               <div style={{ marginBottom: '1.5rem' }}>
                 <h4 
                   className="text-lg font-semibold mb-0.5"
@@ -850,8 +1006,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               </div>
             )}
 
-            {/* Interests */}
-            {interests && (
+            {/* Interests - REMOVED */}
+            {false && interests && (
               <div style={{ marginBottom: '1.5rem' }}>
                 <h4 
                   className="text-lg font-semibold mb-0.5"
@@ -915,8 +1071,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               </div>
             )}
 
-            {/* Essentials */}
-            {(city || occupation || age || height || children) && (
+            {/* Essentials - REMOVED */}
+            {false && (city || occupation || age || height || children) && (
               <div style={{ marginBottom: '1.5rem' }}>
                 <h4 
                   className="text-lg font-semibold mb-0.5"
@@ -991,8 +1147,6 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                 </div>
               </div>
             )}
-          </div>
-        )}
 
         </div>
       {/* Dropdowns - Match Overview */}
