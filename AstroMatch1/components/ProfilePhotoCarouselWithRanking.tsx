@@ -7,6 +7,7 @@ import PhotoCarouselWithGestures from "@/components/PhotoCarouselWithGestures";
 import { LabelPill } from "@/ui/LabelPill";
 import { getWesternSignGlyph, getChineseSignGlyph } from "@/lib/zodiacHelpers";
 import { MatchLabelPill } from "@/components/MatchLabelPill";
+import { CardOverlay } from "@/components/CardOverlay";
 
 const X = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
@@ -606,6 +607,15 @@ export default function ProfilePhotoCarouselWithRanking({
               </span>
             </div>
           </div>
+        )}
+
+        {/* Card Overlay - Top Right (playing card display) */}
+        {connectionBoxData?.card && (
+          <CardOverlay 
+            card={connectionBoxData.card}
+            size="md"
+            position="top-right"
+          />
         )}
 
         {/* Ranking Badge - Top Right (if badgePosition is "top-right") */}

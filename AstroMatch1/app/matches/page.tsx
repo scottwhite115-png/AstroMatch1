@@ -959,7 +959,7 @@ export default function MatchesPage() {
     }
   }, [])
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
+  const [compatBoxes, setCompatBoxes] = useState<{[key: string | number]: ConnectionBoxData}>({})
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
   const [searchFilters, setSearchFilters] = useState({
     westernSign: '',
@@ -1940,7 +1940,7 @@ export default function MatchesPage() {
       }
       
       console.log('[Match Engine] Building compatibility boxes for', enrichedProfiles.length, 'profiles')
-      const boxes: {[key: number]: ConnectionBoxData} = {}
+      const boxes: {[key: string | number]: ConnectionBoxData} = {}
       
       // Get user's display signs based on sun sign system
       const savedSunSigns = getSavedSunSigns()
@@ -2710,8 +2710,9 @@ export default function MatchesPage() {
     }
     
     // After processing all profiles, set the boxes
-    const processedIds = Object.keys(boxes).map(id => parseInt(id)).sort((a, b) => a - b)
-    const allProfileIds = enrichedProfiles.map(p => p.id).sort((a, b) => a - b)
+    // Note: profile IDs can be either strings ("test-34") or numbers
+    const processedIds = Object.keys(boxes) // Keep as strings
+    const allProfileIds = enrichedProfiles.map(p => String(p.id)) // Convert all to strings for comparison
     const missingIds = allProfileIds.filter(id => !processedIds.includes(id))
     
     console.log('[Match Engine] Finished. Total boxes:', Object.keys(boxes).length)

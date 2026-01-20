@@ -1,0 +1,156 @@
+'use client';
+
+import React from 'react';
+import type { CardOverlay as CardOverlayType } from '@/lib/cardOverlay';
+
+interface CardOverlayProps {
+  card: CardOverlayType;
+  size?: 'sm' | 'md' | 'lg';
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+}
+
+export function CardOverlay({ 
+  card, 
+  size = 'md',
+  position = 'top-right' 
+}: CardOverlayProps) {
+  // Get suit symbol
+  const getSuitSymbol = (suit: string): string => {
+    switch (suit) {
+      case 'hearts': return '♥';
+      case 'diamonds': return '♦';
+      case 'spades': return '♠';
+      case 'clubs': return '♣';
+      default: return '';
+    }
+  };
+
+  // Get suit color
+  const getSuitColor = (suit: string): string => {
+    return suit === 'hearts' || suit === 'diamonds' ? 'text-red-600' : 'text-gray-900';
+  };
+
+  // Size classes
+  const sizeClasses = {
+    sm: 'text-2xl',
+    md: 'text-3xl',
+    lg: 'text-4xl',
+  };
+
+  const pipSizeClasses = {
+    sm: 'text-xs',
+    md: 'text-sm',
+    lg: 'text-base',
+  };
+
+  // Position classes
+  const positionClasses = {
+    'top-left': 'top-2 left-2',
+    'top-right': 'top-2 right-2',
+    'bottom-left': 'bottom-2 left-2',
+    'bottom-right': 'bottom-2 right-2',
+  };
+
+  // Edge style
+  const edgeClass = 
+    card.edgeStyle === 'danger' ? 'ring-2 ring-red-500' :
+    card.edgeStyle === 'warning' ? 'ring-2 ring-amber-500' :
+    '';
+
+  return (
+    <div 
+      className={`
+        absolute ${positionClasses[position]} z-30
+        bg-white/95 backdrop-blur-sm
+        rounded-lg shadow-lg
+        px-2 py-1.5
+        ${edgeClass}
+      `}
+    >
+      {/* Top-left rank and suit */}
+      <div className="flex flex-col items-center leading-none">
+        <div className={`${sizeClasses[size]} font-bold ${getSuitColor(card.suit)}`}>
+          {card.rank}
+        </div>
+        <div className={`${sizeClasses[size]} ${getSuitColor(card.suit)} -mt-1`}>
+          {getSuitSymbol(card.suit)}
+        </div>
+        
+        {/* Trine pip below */}
+        <div className={`${pipSizeClasses[size]} text-gray-600 font-semibold mt-0.5`}>
+          {card.pip}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Trine name helper
+export function getTrineName(pip: string): string {
+  switch (pip) {
+    case 'A': return 'Visionaries';
+    case 'B': return 'Strategists';
+    case 'C': return 'Adventurers';
+    case 'D': return 'Artists';
+    default: return '';
+  }
+}
+
+// Full card info tooltip/popup component
+interface CardInfoProps {
+  card: CardOverlayType;
+}
+
+export function CardInfo({ card }: CardInfoProps) {
+  const getSuitSymbol = (suit: string): string => {
+    switch (suit) {
+      case 'hearts': return '♥';
+      case 'diamonds': return '♦';
+      case 'spades': return '♠';
+      case 'clubs': return '♣';
+      default: return '';
+    }
+  };
+
+  const getSuitName = (suit: string): string => {
+    switch (suit) {
+      case 'hearts': return 'Hearts (San He)';
+      case 'diamonds': return 'Diamonds (Liu He)';
+      case 'spades': return 'Spades (Liu Chong)';
+      case 'clubs': return 'Clubs (Same Sign / Neutral)';
+      default: return '';
+    }
+  };
+
+  const getSuitColor = (suit: string): string => {
+    return suit === 'hearts' || suit === 'diamonds' ? 'text-red-600' : 'text-gray-900';
+  };
+
+  return (
+    <div className="p-4 bg-white rounded-lg shadow-xl border border-gray-200 min-w-[250px]">
+      {/* Card display */}
+      <div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-200">
+        <div className={`text-5xl font-bold ${getSuitColor(card.suit)}`}>
+          {card.rank}
+          <span className="ml-1">{getSuitSymbol(card.suit)}</span>
+        </div>
+        <div className="text-sm text-gray-600">
+          <div className="font-semibold">{getSuitName(card.suit)}</div>
+          <div>Trine: {getTrineName(card.pip)}</div>
+        </div>
+      </div>
+
+      {/* Pills */}
+      <div className="flex flex-wrap gap-2">
+        {card.pills.map((pill, index) => (
+          <span
+            key={index}
+            className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-700"
+          >
+            {pill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}

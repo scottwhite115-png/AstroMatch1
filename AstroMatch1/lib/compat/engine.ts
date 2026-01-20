@@ -57,6 +57,14 @@ import {
   type WesternElementRelation,
   type ConnectionArchetype,
 } from "@/lib/connectionUi";
+import { 
+  buildCardOverlay, 
+  attachCardOverlay,
+  type CardOverlay,
+  type ChineseAnimal as CardChineseAnimal,
+  type WesternElementRelation as CardWesternElementRelation,
+  type WestOpposition as CardWestOpposition
+} from "@/lib/cardOverlay";
 
 // Chinese animal type used in AstroMatch
 export type ChineseAnimal =
@@ -1839,6 +1847,12 @@ export function buildSimpleConnectionBox(
 
   // Call new match engine to get pill label, pattern emoji, and star ratings
   let matchEngineResult;
+  
+  // ===== DECLARE VARIABLES FOR CARD OVERLAY AT HIGHER SCOPE =====
+  // These need to be accessible throughout the function for the card overlay
+  let westernElementRelation: WesternElementRelation = 'NEUTRAL';
+  let chineseBase: ChineseBasePattern = 'NO_PATTERN';
+  let chineseOverlays: ChineseOverlayPattern[] = [];
   try {
     const { buildMatchResult } = require('@/lib/matchEngine');
     
@@ -1992,10 +2006,10 @@ export function buildSimpleConnectionBox(
       return 'NO_PATTERN';
     };
     
-    const chineseBase: ChineseBasePattern = mapToChineseBasePattern(chinesePattern);
+    chineseBase = mapToChineseBasePattern(chinesePattern);
     
     // Map overlay patterns to ChineseOverlayPattern[]
-    const chineseOverlays: ChineseOverlayPattern[] = overlayPatterns
+    chineseOverlays = overlayPatterns
       .filter((p): p is ChineseOverlayPattern => 
         p === 'LIU_CHONG' || p === 'LIU_HAI' || p === 'XING' || p === 'PO'
       );
@@ -2013,7 +2027,7 @@ export function buildSimpleConnectionBox(
       return 'NEUTRAL';
     };
     
-    const westernElementRelation = mapToWesternElementRelation(westElemRelation);
+    westernElementRelation = mapToWesternElementRelation(westElemRelation);
     const westernEase: WesternEase = deriveWesternEase(westernElementRelation);
     
     // Apply same sign cap to score
@@ -2037,12 +2051,12 @@ export function buildSimpleConnectionBox(
     try {
       const { getConnectionBlurb, deriveArchetype, deriveWesternEase } = require('@/lib/connectionUi');
       const { extractChineseBase, extractChineseOverlays, extractWesternRelation } = require('@/lib/connectionUiHelpers');
-      const fallbackChineseBase = extractChineseBase(chinesePattern) as ChineseBasePattern;
-      const fallbackChineseOverlays = extractChineseOverlays(chinesePattern, undefined, '') as ChineseOverlayPattern[];
-      const fallbackWesternRelation = extractWesternRelation(newMatchContext.westElementRelation);
-      const fallbackArchetype = deriveArchetype(fallbackChineseBase, fallbackChineseOverlays);
-      const fallbackEase = deriveWesternEase(fallbackWesternRelation);
-      const fallbackBaseTagline = getConnectionBlurb(fallbackArchetype, fallbackEase, fallbackChineseBase, fallbackChineseOverlays);
+      chineseBase = extractChineseBase(chinesePattern) as ChineseBasePattern;
+      chineseOverlays = extractChineseOverlays(chinesePattern, undefined, '') as ChineseOverlayPattern[];
+      westernElementRelation = extractWesternRelation(newMatchContext.westElementRelation);
+      const fallbackArchetype = deriveArchetype(chineseBase, chineseOverlays);
+      const fallbackEase = deriveWesternEase(westernElementRelation);
+      const fallbackBaseTagline = getConnectionBlurb(fallbackArchetype, fallbackEase, chineseBase, chineseOverlays);
       
       matchEngineResult = {
         score,
@@ -2076,10 +2090,10 @@ export function buildSimpleConnectionBox(
   try {
     const { getConnectionBlurb, deriveArchetype, deriveWesternEase } = require('@/lib/connectionUi');
     const { extractChineseBase, extractChineseOverlays, extractWesternRelation } = require('@/lib/connectionUiHelpers');
-    // Recalculate everything to ensure we have the right values
-    const finalChineseBase = extractChineseBase(chinesePattern) as ChineseBasePattern;
-    const finalChineseOverlays = extractChineseOverlays(chinesePattern, undefined, '') as ChineseOverlayPattern[];
-    const finalWesternRelation = extractWesternRelation(newMatchContext.westElementRelation);
+    // Use already-extracted values if available, otherwise recalculate
+    const finalChineseBase = chineseBase !== 'NO_PATTERN' ? chineseBase : extractChineseBase(chinesePattern) as ChineseBasePattern;
+    const finalChineseOverlays = chineseOverlays.length > 0 ? chineseOverlays : extractChineseOverlays(chinesePattern, undefined, '') as ChineseOverlayPattern[];
+    const finalWesternRelation = westernElementRelation !== 'NEUTRAL' ? westernElementRelation : extractWesternRelation(newMatchContext.westElementRelation);
     const finalArchetype = deriveArchetype(finalChineseBase, finalChineseOverlays);
     const finalEase = deriveWesternEase(finalWesternRelation);
     const finalBaseTagline = getConnectionBlurb(finalArchetype, finalEase, finalChineseBase, finalChineseOverlays);
@@ -2109,7 +2123,22 @@ export function buildSimpleConnectionBox(
     console.log(`[buildSimpleConnectionBox] ✅ Western tagline found: "${westernTagline}" for ${signALabel} × ${signBLabel}`);
   }
 
-  return {
+  // ===== BUILD CARD OVERLAY FOR PHOTO CAROUSEL =====
+  // Map Western element relation to card overlay format (using already defined westernElementRelation from line 2016)
+  const cardWestElemRel: CardWesternElementRelation = 
+    westernElementRelation === 'SAME' ? 'SAME' :
+    westernElementRelation === 'COMPATIBLE' ? 'COMPATIBLE' :
+    westernElementRelation === 'SEMI_COMPATIBLE' ? 'SEMI_COMPATIBLE' :
+    westernElementRelation === 'CLASH' ? 'CLASH' : 'NEUTRAL';
+  
+  // Map Western aspect to card overlay format
+  const cardWestOpposition: CardWestOpposition =
+    newMatchContext.westAspect === 'opposition' ? 'OPPOSITION' :
+    newMatchContext.westAspect === 'square_like' ? 'HARD' :
+    newMatchContext.westAspect === 'trine_like' ? 'SOFT' : 'NEUTRAL';
+  
+  // Build the connection box first
+  const simpleBox = {
     matchLabel,
     score: matchEngineResult.score, // Use match engine score (already capped if applicable)
     headingLine,
@@ -2141,6 +2170,23 @@ export function buildSimpleConnectionBox(
     chemistryStars: matchEngineResult.chemistryStars,
     stabilityStars: matchEngineResult.stabilityStars,
   };
+
+  // Build and attach card overlay
+  const cardOverlay = buildCardOverlay({
+    box: simpleBox,
+    chineseBase: chineseBase,
+    overlays: chineseOverlays,
+    westElemRel: cardWestElemRel,
+    sameWestSign: sameWesternSign,
+    westOpposition: cardWestOpposition,
+    trinePipFromAnimal: animalB.toLowerCase() as CardChineseAnimal, // Use User B's animal for the pip
+  });
+  console.log(`[🃏 Card Overlay] Built card for ${animalALabel} × ${animalBLabel}:`, cardOverlay);
+
+  // Attach card overlay to the box and return
+  const finalBox = attachCardOverlay(simpleBox, cardOverlay);
+  console.log(`[🃏 Card Overlay] Final box has card:`, !!finalBox.card, finalBox.card);
+  return finalBox;
 }
 
 /**
