@@ -604,7 +604,7 @@ export default function ProfilePhotoCarouselWithRanking({
           className="absolute inset-0 z-40"
           style={{ 
             pointerEvents: 'none',
-            border: '20px solid white',
+            border: '40px solid white',
             borderRadius: 'calc(1rem - 3px)',
             boxShadow: 'inset 0 0 0 2px rgba(0, 0, 0, 0.1)'
           }}

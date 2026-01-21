@@ -3384,8 +3384,6 @@ export default function MatchesPage() {
         paddingTop: '0px',
       }
     : {
-        WebkitOverflowScrolling: 'auto',
-        overflowY: 'auto',
         overflowX: 'hidden',
         minHeight: '100vh',
         position: 'relative',
@@ -3400,7 +3398,7 @@ export default function MatchesPage() {
 
   return (
     <div
-      className={`overscroll-y-contain min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
+      className={`${isTouchDevice ? 'overscroll-y-contain' : ''} min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
       style={{
         ...containerStyle,
         ...(theme !== "light" ? {
