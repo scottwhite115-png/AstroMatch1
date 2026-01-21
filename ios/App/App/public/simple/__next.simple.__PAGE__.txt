@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[45762,["/_next/static/chunks/d8730aeac90eb02e.js","/_next/static/chunks/9c8473990bc33a9d.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"83zv1wrGTWwdgSdMuCiJi","rsc":["$","$1","c",{"children":[["$","html",null,{"children":[["$","head",null,{"children":[["$","title",null,{"children":"Simple Test"}],["$","meta",null,{"name":"viewport","content":"width=device-width, initial-scale=1"}]]}],["$","body",null,{"style":{"margin":0,"padding":"20px","background":"white","color":"black","fontFamily":"Arial"},"children":[["$","h1",null,{"children":"Simple Test Page"}],["$","p",null,{"children":"If you see this, the server is working!"}],["$","p",null,{"children":["Time: ","1/16/2026, 8:09:49 PM"]}],["$","a",null,{"href":"/matches","style":{"color":"blue","textDecoration":"underline"},"children":"Go to Matches"}]]}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null

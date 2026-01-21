@@ -1,0 +1,5 @@
+1:"$Sreact.fragment"
+2:I[45762,["/_next/static/chunks/d8730aeac90eb02e.js","/_next/static/chunks/9c8473990bc33a9d.js"],"OutletBoundary"]
+3:"$Sreact.suspense"
+0:{"buildId":"83zv1wrGTWwdgSdMuCiJi","rsc":["$","$1","c",{"children":[["$","div",null,{"style":{"padding":"20px","background":"white","color":"black"},"children":[["$","h1",null,{"children":"Test Page Works!"}],["$","p",null,{"children":"If you see this, Next.js is compiling correctly."}]]}],null,["$","$L2",null,{"children":["$","$3",null,{"name":"Next.MetadataOutlet","children":"$@4"}]}]]}],"loading":null,"isPartial":false}
+4:null
