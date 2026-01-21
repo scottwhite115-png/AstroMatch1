@@ -1447,7 +1447,7 @@ div[class*="overflow-scroll"]::-webkit-scrollbar {
     [class*="text-orange"]
   ):not([class*="text-red"]):not([class*="text-blue"]):not([class*="text-green"]):not([class*="text-purple"]):not(
     [class*="text-pink"]
-  ):not([class*="match-percentage-text"]):not([class*="photo-overlay"]):not([class*="text-white"]):not([class*="photo-overlay-text"]) {
+  ):not([class*="match-percentage-text"]):not([class*="photo-overlay"]):not([class*="text-white"]):not([class*="photo-overlay-text"]):not([style*="color: #ef4444"]):not([style*="color:#ef4444"]):not([class*="card-suit-red"]):not([class*="card-suit-overlay"]) {
   color: #1a1a1a !important;
 }
 
@@ -1870,6 +1870,44 @@ main,
 .dark .match-ranking-colored {
   color: var(--ranking-color) !important;
   -webkit-text-fill-color: var(--ranking-color) !important;
+}
+
+/* Force red color for hearts and diamonds in playing cards - override light mode black text */
+.light div[style*="color: #ef4444"],
+.light div[style*="color:#ef4444"],
+.light [style*="color: #ef4444"],
+.light [style*="color:#ef4444"],
+.light .absolute.top-2.left-2 div,
+.light .absolute.bottom-2.right-2 div,
+.light .absolute.top-2.left-2 .text-3xl,
+.light .absolute.bottom-2.right-2 .text-3xl {
+  color: #ef4444 !important;
+  -webkit-text-fill-color: #ef4444 !important;
+}
+
+/* More specific override for card suit symbols - highest priority */
+.light .photo-carousel-container .absolute div[style*="color"],
+.light .photo-carousel-container .absolute .text-3xl[style*="color: #ef4444"],
+.light .photo-carousel-container .absolute .text-3xl[style*="color:#ef4444"] {
+  color: #ef4444 !important;
+  -webkit-text-fill-color: #ef4444 !important;
+}
+
+/* Force red color for card suit elements with class - highest specificity */
+.light .card-suit-red,
+.light .card-suit-overlay .card-suit-red,
+.light .photo-carousel-container .card-suit-red,
+.light .photo-carousel-container .card-suit-overlay .card-suit-red {
+  color: #ef4444 !important;
+  -webkit-text-fill-color: #ef4444 !important;
+}
+
+.light .card-suit-black,
+.light .card-suit-overlay .card-suit-black,
+.light .photo-carousel-container .card-suit-black,
+.light .photo-carousel-container .card-suit-overlay .card-suit-black {
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
 }
 
 /* Force match label colors in light mode */

@@ -27,9 +27,12 @@ export function CardOverlay({
     }
   };
 
-  // Get suit color
-  const getSuitColor = (suit: string): string => {
-    return suit === 'hearts' || suit === 'diamonds' ? 'text-red-600' : 'text-gray-900';
+  // Get suit color - use inline style for red to ensure visibility in both light and dark modes
+  const getSuitColor = (suit: string): { className?: string; style?: React.CSSProperties } => {
+    if (suit === 'hearts' || suit === 'diamonds') {
+      return { style: { color: '#ef4444' } }; // Bright red, visible in both modes
+    }
+    return { className: 'text-gray-900 dark:text-gray-100' };
   };
 
   // Size classes
@@ -76,20 +79,32 @@ export function CardOverlay({
     >
       {/* Top-left rank and suit */}
       <div className="absolute top-1 left-1.5 flex flex-col items-center leading-none">
-        <div className={`text-lg font-bold ${getSuitColor(card.suit)}`}>
+        <div 
+          className={`text-lg font-bold ${getSuitColor(card.suit).className || ''}`}
+          style={getSuitColor(card.suit).style}
+        >
           {card.rank}
         </div>
-        <div className={`text-lg ${getSuitColor(card.suit)} -mt-0.5`}>
+        <div 
+          className={`text-lg -mt-0.5 ${getSuitColor(card.suit).className || ''}`}
+          style={getSuitColor(card.suit).style}
+        >
           {getSuitSymbol(card.suit)}
         </div>
       </div>
       
       {/* Bottom-right rank and suit (rotated 180deg) */}
       <div className="absolute bottom-1 right-1.5 flex flex-col items-center leading-none rotate-180">
-        <div className={`text-lg font-bold ${getSuitColor(card.suit)}`}>
+        <div 
+          className={`text-lg font-bold ${getSuitColor(card.suit).className || ''}`}
+          style={getSuitColor(card.suit).style}
+        >
           {card.rank}
         </div>
-        <div className={`text-lg ${getSuitColor(card.suit)} -mt-0.5`}>
+        <div 
+          className={`text-lg -mt-0.5 ${getSuitColor(card.suit).className || ''}`}
+          style={getSuitColor(card.suit).style}
+        >
           {getSuitSymbol(card.suit)}
         </div>
       </div>
@@ -141,15 +156,24 @@ export function CardInfo({ card }: CardInfoProps) {
     }
   };
 
-  const getSuitColor = (suit: string): string => {
-    return suit === 'hearts' || suit === 'diamonds' ? 'text-red-600' : 'text-gray-900';
+  // Get suit color - use inline style for red to ensure visibility in both light and dark modes
+  const getSuitColor = (suit: string): { className?: string; style?: React.CSSProperties } => {
+    if (suit === 'hearts' || suit === 'diamonds') {
+      return { style: { color: '#ef4444' } }; // Bright red, visible in both modes
+    }
+    return { className: 'text-gray-900 dark:text-gray-100' };
   };
+
+  const suitColorStyle = getSuitColor(card.suit);
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-xl border border-gray-200 min-w-[250px]">
       {/* Card display */}
       <div className="flex items-center gap-3 mb-3 pb-3 border-b border-gray-200">
-        <div className={`text-5xl font-bold ${getSuitColor(card.suit)}`}>
+        <div 
+          className={`text-5xl font-bold ${suitColorStyle.className || ''}`}
+          style={suitColorStyle.style}
+        >
           {card.rank}
           <span className="ml-1">{getSuitSymbol(card.suit)}</span>
         </div>

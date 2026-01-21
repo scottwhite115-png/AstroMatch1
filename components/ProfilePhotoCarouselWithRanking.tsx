@@ -423,9 +423,11 @@ export default function ProfilePhotoCarouselWithRanking({
     }
   };
 
-  // Get suit color for card display
+  // Get suit color for card display - red for hearts/diamonds, black for spades/clubs
   const getSuitColor = (suit: string): string => {
-    return suit === 'hearts' || suit === 'diamonds' ? '#dc2626' : '#1f2937';
+    // Use a vibrant red that's clearly visible in both light and dark modes
+    // #ef4444 = red-500 (bright, visible in both themes)
+    return suit === 'hearts' || suit === 'diamonds' ? '#ef4444' : '#1f2937';
   };
 
   return (
@@ -437,17 +439,24 @@ export default function ProfilePhotoCarouselWithRanking({
           borderRadius: '1rem',
           margin: '0', 
           padding: '0',
+          border: '3px solid #000000',
+          overflow: 'hidden',
+          boxSizing: 'border-box',
+          position: 'relative',
         }}
       >
-        {/* Outer border layer - ensures border wraps around corners */}
+        {/* Additional border layer for consistent corner rendering - positioned outside to be visible */}
         <div
           style={{
             position: 'absolute',
-            inset: 0,
-            border: '1px solid #000000',
+            top: '-3px',
+            left: '-3px',
+            right: '-3px',
+            bottom: '-3px',
             borderRadius: '1rem',
+            border: '3px solid #000000',
             pointerEvents: 'none',
-            zIndex: 1000
+            zIndex: 50,
           }}
         />
         <PhotoCarouselWithGestures
@@ -459,7 +468,7 @@ export default function ProfilePhotoCarouselWithRanking({
           }}
           className="w-full h-full bg-black"
           style={{ 
-            borderRadius: '1rem',
+            borderRadius: 'calc(1rem - 3px)',
             overflow: 'hidden',
             boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
           }}
@@ -595,8 +604,8 @@ export default function ProfilePhotoCarouselWithRanking({
           className="absolute inset-0 z-40"
           style={{ 
             pointerEvents: 'none',
-            border: '16px solid white',
-            borderRadius: 'calc(1rem - 1px)',
+            border: '20px solid white',
+            borderRadius: 'calc(1rem - 3px)',
             boxShadow: 'inset 0 0 0 2px rgba(0, 0, 0, 0.1)'
           }}
         />
@@ -607,24 +616,30 @@ export default function ProfilePhotoCarouselWithRanking({
           const suitSymbol = getSuitSymbol(card.suit);
           const suitColor = getSuitColor(card.suit);
           
-          console.log(`[Card Symbols] Rendering for ${profileName}:`, card);
+          console.log(`[Card Symbols] Rendering for ${profileName}:`, card, 'suit:', card.suit, 'color:', suitColor);
           
           return (
             <>
               {/* Top-left rank and suit */}
               <div 
-                className="absolute top-2 left-2 flex flex-col items-center leading-none z-50"
+                className="absolute top-2 left-2 flex flex-col items-center leading-none z-50 card-suit-overlay"
                 style={{ pointerEvents: 'none' }}
               >
                 <div 
-                  className="text-3xl font-bold"
-                  style={{ color: suitColor }}
+                  className={`text-3xl font-bold ${suitColor === '#ef4444' ? 'card-suit-red' : 'card-suit-black'}`}
+                  style={{ 
+                    color: suitColor,
+                    fill: suitColor,
+                  }}
                 >
                   {card.rank}
                 </div>
                 <div 
-                  className="text-3xl -mt-1"
-                  style={{ color: suitColor }}
+                  className={`text-3xl -mt-1 ${suitColor === '#ef4444' ? 'card-suit-red' : 'card-suit-black'}`}
+                  style={{ 
+                    color: suitColor,
+                    fill: suitColor,
+                  }}
                 >
                   {suitSymbol}
                 </div>
@@ -632,18 +647,24 @@ export default function ProfilePhotoCarouselWithRanking({
               
               {/* Bottom-right rank and suit (rotated 180deg) */}
               <div 
-                className="absolute bottom-2 right-2 flex flex-col items-center leading-none rotate-180 z-50"
+                className="absolute bottom-2 right-2 flex flex-col items-center leading-none rotate-180 z-50 card-suit-overlay"
                 style={{ pointerEvents: 'none' }}
               >
                 <div 
-                  className="text-3xl font-bold"
-                  style={{ color: suitColor }}
+                  className={`text-3xl font-bold ${suitColor === '#ef4444' ? 'card-suit-red' : 'card-suit-black'}`}
+                  style={{ 
+                    color: suitColor,
+                    fill: suitColor,
+                  }}
                 >
                   {card.rank}
                 </div>
                 <div 
-                  className="text-3xl -mt-1"
-                  style={{ color: suitColor }}
+                  className={`text-3xl -mt-1 ${suitColor === '#ef4444' ? 'card-suit-red' : 'card-suit-black'}`}
+                  style={{ 
+                    color: suitColor,
+                    fill: suitColor,
+                  }}
                 >
                   {suitSymbol}
                 </div>
