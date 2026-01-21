@@ -1,0 +1,289 @@
+---
+description: UI component and styling guidelines using Shadcn UI, Radix UI, and Tailwind
+globs: 
+alwaysApply: false
+---
+# UI Components and Styling
+
+## UI Framework
+- Use Shadcn UI and Tailwind for components and styling
+- Implement responsive design with Tailwind CSS using a mobile-first approach
+- Use `next/image` package for images
+
+## Install new Shadcn components
+
+```sh
+pnpm dlx shadcn@latest add COMPONENT
+```
+
+Example:
+
+```sh
+pnpm dlx shadcn@latest add progress
+```
+
+## Data Fetching with SWR
+For API get requests to server use the `swr` package:
+
+```typescript
+const searchParams = useSearchParams();
+const page = searchParams.get("page") || "1";
+const { data, isLoading, error } = useSWR<PlanHistoryResponse>(
+  `/api/user/planned/history?page=${page}`
+);
+```
+
+## Loading Components
+Use the `LoadingContent` component to handle loading states:
+
+```tsx
+<Card>
+  <LoadingContent loading={isLoading} error={error}>
+    {data && <MyComponent data={data} />}
+  </LoadingContent>
+</Card>
+```
+
+## Form Components
+### Text Inputs
+```tsx
+<Input
+  type="email"
+  name="email"
+  label="Email"
+  registerProps={register("email", { required: true })}
+  error={errors.email}
+/>
+```
+
+### Text Area
+```tsx
+<Input
+  type="text"
+  autosizeTextarea
+  rows={3}
+  name="message"
+  placeholder="Paste in email content"
+  registerProps={register("message", { required: true })}
+  error={errors.message}
+/>
+```
+
+## AstroMatch Specific Components
+
+### Profile Form Components
+```tsx
+// Birthdate picker for astrological sign assignment
+<Input
+  type="date"
+  name="birthdate"
+  label="Birth Date"
+  registerProps={register("birthdate", { required: true })}
+  error={errors.birthdate}
+/>
+
+// Photo upload component
+<div className="grid grid-cols-2 gap-4">
+  {Array.from({ length: 6 }).map((_, index) => (
+    <div key={index} className="aspect-square border-2 border-dashed border-gray-300 rounded-lg">
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(e) => handlePhotoUpload(e, index)}
+        className="hidden"
+        id={`photo-${index}`}
+      />
+      <label htmlFor={`photo-${index}`} className="cursor-pointer">
+        {photos[index] ? (
+          <img src={photos[index]} alt={`Photo ${index + 1}`} className="w-full h-full object-cover rounded-lg" />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <PlusIcon className="w-8 h-8 text-gray-400" />
+          </div>
+        )}
+      </label>
+    </div>
+  ))}
+</div>
+```
+
+### Discovery Card Components
+```tsx
+// Swipeable card for discovery
+<div className="relative w-full h-[600px] bg-white rounded-xl shadow-lg overflow-hidden">
+  <div className="absolute inset-0">
+    <Image
+      src={user.photos[currentPhotoIndex]}
+      alt={`${user.name} photo ${currentPhotoIndex + 1}`}
+      fill
+      className="object-cover"
+    />
+  </div>
+  
+  {/* Overlay content based on photo index */}
+  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+    <h3 className="text-white text-2xl font-bold">{user.name}</h3>
+    <p className="text-white/90">{user.sunSign} • {user.chineseAnimal}</p>
+    <p className="text-white/90">Compatibility: {compatibility}%</p>
+  </div>
+</div>
+```
+
+### Compatibility Display Components
+```tsx
+// Compatibility score display
+<div className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg p-6 text-white">
+  <div className="flex items-center justify-between mb-4">
+    <h3 className="text-xl font-semibold">Compatibility</h3>
+    <span className="text-3xl font-bold">{score}%</span>
+  </div>
+  
+  <div className="space-y-2">
+    <div className="flex justify-between">
+      <span>Sun Signs</span>
+      <span>{sunCompatibility}%</span>
+    </div>
+    <div className="flex justify-between">
+      <span>Moon Signs</span>
+      <span>{moonCompatibility}%</span>
+    </div>
+    <div className="flex justify-between">
+      <span>Rising Signs</span>
+      <span>{risingCompatibility}%</span>
+    </div>
+  </div>
+</div>
+```
+
+### Chat Components
+```tsx
+// Chat message component
+<div className="flex items-start space-x-3">
+  <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center">
+    <span className="text-white text-sm font-semibold">
+      {message.sender.name.charAt(0)}
+    </span>
+  </div>
+  <div className="flex-1">
+    <div className="bg-gray-100 rounded-lg px-4 py-2 max-w-xs">
+      <p className="text-gray-900">{message.content}</p>
+    </div>
+    <p className="text-xs text-gray-500 mt-1">
+      {new Date(message.createdAt).toLocaleTimeString()}
+    </p>
+  </div>
+</div>
+```
+
+## Responsive Design Patterns
+
+### Mobile-First Approach
+```tsx
+// Use Tailwind responsive prefixes
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  <Card className="p-4">
+    <h3 className="text-lg font-semibold mb-2">Mobile First</h3>
+    <p className="text-gray-600">Content that adapts to screen size</p>
+  </Card>
+</div>
+```
+
+### Touch-Friendly Components
+```tsx
+// Ensure minimum 44px touch targets
+<button className="w-11 h-11 rounded-full bg-purple-500 text-white flex items-center justify-center hover:bg-purple-600 transition-colors">
+  <HeartIcon className="w-6 h-6" />
+</button>
+```
+
+## Dark Mode Support
+```tsx
+// Use Tailwind dark mode classes
+<div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+  <h1 className="text-2xl font-bold">AstroMatch</h1>
+  <p className="text-gray-600 dark:text-gray-400">Find your perfect match</p>
+</div>
+```
+
+## Animation and Transitions
+```tsx
+// Smooth transitions for interactive elements
+<button className="transform transition-transform hover:scale-105 active:scale-95">
+  <span className="transition-colors">Swipe Right</span>
+</button>
+
+// Card animations
+<div className="transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+  <Card>Content</Card>
+</div>
+```
+
+## Accessibility Guidelines
+```tsx
+// Proper ARIA labels and keyboard navigation
+<button
+  aria-label="Like user"
+  className="w-11 h-11 rounded-full bg-green-500 text-white flex items-center justify-center"
+  onKeyDown={(e) => e.key === 'Enter' && handleLike()}
+>
+  <HeartIcon className="w-6 h-6" />
+</button>
+
+// Screen reader friendly content
+<div role="region" aria-label="User compatibility information">
+  <h2>Compatibility Details</h2>
+  <p>Your compatibility with {user.name} is {score}%</p>
+</div>
+```
+
+## Component Organization
+```
+src/components/
+├── ui/                 # Shadcn UI components
+├── forms/             # Form-specific components
+├── discovery/         # Discovery feature components
+├── chat/              # Chat feature components
+├── profile/           # Profile feature components
+└── shared/            # Shared components across features
+```
+
+## Best Practices
+
+### Component Props
+```tsx
+// Use TypeScript interfaces for props
+interface UserCardProps {
+  user: User;
+  compatibility: number;
+  onLike: () => void;
+  onPass: () => void;
+}
+
+export function UserCard({ user, compatibility, onLike, onPass }: UserCardProps) {
+  // Component implementation
+}
+```
+
+### State Management
+```tsx
+// Use local state for component-specific data
+const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+const [isLiked, setIsLiked] = useState(false);
+
+// Use SWR for server data
+const { data: matches, mutate } = useSWR<Match[]>('/api/matches');
+```
+
+### Error Handling
+```tsx
+// Handle loading and error states
+<LoadingContent loading={isLoading} error={error}>
+  {data && (
+    <div className="space-y-4">
+      {data.map((item) => (
+        <Card key={item.id}>{item.name}</Card>
+      ))}
+    </div>
+  )}
+</LoadingContent>
+```

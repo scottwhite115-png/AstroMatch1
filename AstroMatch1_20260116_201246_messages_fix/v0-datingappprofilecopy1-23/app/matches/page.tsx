@@ -1,0 +1,3025 @@
+"use client"
+
+import { useState, useEffect, useRef, useMemo } from "react"
+import { useRouter } from "next/navigation"
+import { useTheme } from "@/contexts/ThemeContext"
+import { explainMatchAndScore } from "@/lib/matchExplainAndScore"
+import { computeMatchWithNewEngine } from "@/lib/matchEngineAdapter"
+import { computeMatchWithClassifier } from "@/lib/classifierAdapter"
+import { type West, type East } from "@/lib/matchEngine"
+import { autoInsight } from "@/lib/insight"
+import { INSIGHT_OVERRIDES, type OverrideKey } from "@/data/insight_overrides"
+import { getCompleteLongformBlurb, getTierKeyFromScore, createPairId } from "@/data/longformBlurbsComplete"
+import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/zodiacHelpers"
+import MatchProfileCard from "@/components/MatchProfileCard"
+import type { ConnectionBoxData } from "@/components/ConnectionBoxSimple"
+import { getBothSunSignsFromBirthdate, getSavedSunSigns } from "@/lib/sunSignCalculator"
+import { useSunSignSystem } from "@/lib/hooks/useSunSign"
+import { evaluateMatch } from "@/engine/astromatch-engine"
+
+const FourPointedStar = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  </svg>
+)
+
+const Heart = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+)
+
+const MessageCircle = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+  </svg>
+)
+
+const ChevronLeft = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+)
+
+const ChevronRight = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+)
+
+const Settings = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}>
+    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+  </svg>
+)
+
+// Test profiles with varied zodiac signs to show ALL match engine rankings
+// Leo-Rabbit user will have diverse matches covering all tiers: perfect, excellent, good, fair, challenging
+const TEST_PROFILES = [
+  {
+    id: 1,
+    name: "Emma",
+    age: 28,
+    birthdate: "1996-11-30", // Sagittarius-Rabbit (SOULMATE match! - Same trine Artists +15, compatible Fire+Air)
+    westernSign: "Sagittarius",
+    easternSign: "Rabbit",
+    photos: [
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Love exploring new cafes and practicing yoga. Looking for someone who appreciates deep conversations and spontaneous adventures.",
+    aboutMeText: "Love exploring new cafes and practicing yoga. Looking for someone who appreciates deep conversations and spontaneous adventures.",
+    occupation: "Marketing Manager",
+    city: "Sydney, NSW",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "My ideal Sunday", answer: "Brunch with friends, followed by a long walk on the beach and ending with a good movie." },
+      { question: "I'm looking for", answer: "Someone who can make me laugh, values honesty, and loves to explore new places." }
+    ],
+    distance: 2,
+  },
+  {
+    id: 2,
+    name: "Sophia",
+    age: 27,
+    birthdate: "1997-08-02", // Leo-Tiger (SAME WESTERN SIGN - Leo×Leo with different Chinese, -3 penalty, quality gate may apply)
+    westernSign: "Leo",
+    easternSign: "Tiger",
+    photos: [
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+      "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+      "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+    ],
+    aboutMe: "Creative soul with a passion for art and music. Seeking someone who values authenticity and emotional connection.",
+    aboutMeText: "Creative soul with a passion for art and music. Seeking someone who values authenticity and emotional connection.",
+    occupation: "Graphic Designer",
+    city: "Melbourne, VIC",
+    height: "5'7\"",
+    children: "Don't have, want someday",
+    religion: "Agnostic",
+    prompts: [
+      { question: "My simple pleasures", answer: "Good coffee, live music, and long conversations under the stars." },
+      { question: "What makes me unique", answer: "I can paint with my eyes closed and I speak three languages fluently." }
+    ],
+    distance: 5,
+  },
+  {
+    id: 3,
+    name: "Olivia",
+    age: 30,
+    birthdate: "1994-03-25", // Aries-Tiger (SAME TRINE - Rabbit×Tiger = Same Trine Adventurers, +15 bonus, compatible Fire)
+    westernSign: "Aries",
+    easternSign: "Tiger",
+    photos: [
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+    ],
+    aboutMe: "Tech enthusiast who loves innovation and meaningful conversations. Looking for an intellectual and adventurous partner.",
+    aboutMeText: "Tech enthusiast who loves innovation and meaningful conversations. Looking for an intellectual and adventurous partner.",
+    occupation: "Software Engineer",
+    city: "Brisbane, QLD",
+    height: "5'8\"",
+    children: "Don't have, undecided",
+    religion: "Atheist",
+    prompts: [
+      { question: "I geek out on", answer: "New tech innovations, coding challenges, and science fiction novels." },
+      { question: "My love language", answer: "Quality time and deep conversations about everything and nothing." }
+    ],
+    distance: 8,
+  },
+  {
+    id: 4,
+    name: "Isabella",
+    age: 26,
+    birthdate: "1998-08-15", // Leo-Goat (SAME WESTERN SIGN -3 + SAME CHINESE TRINE +15 - Leo×Leo with same Artists trine)
+    westernSign: "Leo",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+    ],
+    aboutMe: "Fitness enthusiast and wellness coach. Looking for someone who values health, growth, and adventure.",
+    aboutMeText: "Fitness enthusiast and wellness coach. Looking for someone who values health, growth, and adventure.",
+    occupation: "Wellness Coach",
+    city: "Perth, WA",
+    height: "5'5\"",
+    children: "Don't have, want someday",
+    religion: "Buddhist",
+    prompts: [
+      { question: "My morning routine", answer: "Meditation, green smoothie, and a 5km run to start the day right." },
+      { question: "Best way to spend a weekend", answer: "Hiking in nature, trying new healthy recipes, and relaxing with a good book." }
+    ],
+    distance: 15,
+  },
+  {
+    id: 5,
+    name: "Mia",
+    age: 29,
+    birthdate: "1995-01-27", // Aquarius-Rat (SAME TRINE - Rabbit×Rat = Same Trine Visionaries, +15 bonus, WEST OPPOSITE Leo×Aquarius +8)
+    westernSign: "Aquarius",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+    ],
+    aboutMe: "Fashion designer with a love for travel and culture. Seeking someone creative and passionate about life.",
+    aboutMeText: "Fashion designer with a love for travel and culture. Seeking someone creative and passionate about life.",
+    occupation: "Fashion Designer",
+    city: "Sydney, NSW",
+    height: "5'9\"",
+    children: "Don't have, don't want",
+    religion: "Christian",
+    prompts: [
+      { question: "My dream vacation", answer: "Two weeks in Italy, exploring vintage markets and tasting authentic gelato in every city." },
+      { question: "I value most", answer: "Creativity, authenticity, and people who aren't afraid to be themselves." }
+    ],
+    distance: 3,
+  },
+  {
+    id: 6,
+    name: "Charlotte",
+    age: 25,
+    birthdate: "1999-10-15", // Libra-Rabbit (EXCELLENT match - Air + same trine Artists +15, WEST OPPOSITE Leo×Aquarius +8)
+    westernSign: "Libra",
+    easternSign: "Rabbit",
+    photos: [
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    ],
+    aboutMe: "Adventure seeker and travel blogger. Looking for someone who loves exploring the world as much as I do.",
+    aboutMeText: "Adventure seeker and travel blogger. Looking for someone who loves exploring the world as much as I do.",
+    occupation: "Travel Blogger",
+    city: "Gold Coast, QLD",
+    height: "5'4\"",
+    children: "Don't have, undecided",
+    religion: "None",
+    prompts: [
+      { question: "Most spontaneous thing I've done", answer: "Booked a one-way ticket to Bali with just a backpack and stayed for 6 months." },
+      { question: "Perfect date idea", answer: "Sunrise hike followed by breakfast at a local hidden gem, then exploring somewhere new." }
+    ],
+    distance: 10,
+  },
+  {
+    id: 7,
+    name: "Aria",
+    age: 25,
+    birthdate: "1999-09-23", // Libra-Rooster (OPPOSITE CHINESE SIGNS - Rabbit×Rooster = Magnetic Opposites, +6 bonus, WEST OPPOSITE Leo×Libra +8)
+    westernSign: "Libra",
+    easternSign: "Rooster",
+    photos: [
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+      "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+      "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+    ],
+    aboutMe: "Environmental scientist passionate about sustainability. Looking for someone who cares about making a difference in the world.",
+    aboutMeText: "Environmental scientist passionate about sustainability. Looking for someone who cares about making a difference in the world.",
+    occupation: "Environmental Scientist",
+    city: "Canberra, ACT",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "I'm passionate about", answer: "Saving the planet, reducing plastic waste, and inspiring others to live sustainably." },
+      { question: "My superpower", answer: "I can identify any bird by its call and I never forget a face." }
+    ],
+    distance: 18,
+  },
+  {
+    id: 8,
+    name: "Luna",
+    age: 26,
+    birthdate: "1998-12-10", // Sagittarius-Rat (EXCELLENT match - Same trine Visionaries +15, compatible Fire+Air)
+    westernSign: "Sagittarius",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+    ],
+    aboutMe: "Psychologist with a love for deep conversations and personal growth. Seeking someone emotionally intelligent and curious.",
+    aboutMeText: "Psychologist with a love for deep conversations and personal growth. Seeking someone emotionally intelligent and curious.",
+    occupation: "Psychologist",
+    city: "Melbourne, VIC",
+    height: "5'7\"",
+    children: "Don't have, want someday",
+    religion: "Agnostic",
+    prompts: [
+      { question: "What I'm reading", answer: "Currently diving into Carl Jung's work on the collective unconscious - fascinating stuff!" },
+      { question: "My philosophy", answer: "Growth happens outside your comfort zone, and vulnerability is strength, not weakness." }
+    ],
+    distance: 6,
+  },
+  {
+    id: 9,
+    name: "Zara",
+    age: 27,
+    birthdate: "1997-01-12", // Capricorn-Rat (SAME TRINE - Rabbit×Rat = Same Trine Visionaries, +15 bonus, compatible Earth+Air)
+    westernSign: "Capricorn",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+      "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+      "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+    ],
+    aboutMe: "Entrepreneur building a sustainable fashion brand. Looking for an ambitious partner who shares my vision for positive change.",
+    aboutMeText: "Entrepreneur building a sustainable fashion brand. Looking for an ambitious partner who shares my vision for positive change.",
+    occupation: "Entrepreneur",
+    city: "Sydney, NSW",
+    height: "5'8\"",
+    children: "Don't have, undecided",
+    religion: "Hindu",
+    prompts: [
+      { question: "My biggest achievement", answer: "Building my fashion brand from scratch and employing 20 people who share my values." },
+      { question: "I'm inspired by", answer: "People who challenge the status quo and create meaningful change in the world." }
+    ],
+    distance: 4,
+  },
+  {
+    id: 10,
+    name: "Nova",
+    age: 26,
+    birthdate: "1998-07-20", // Cancer-Goat (SAME TRINE - Rabbit×Goat = Same Trine Artists, +15 bonus, compatible Water+Earth)
+    westernSign: "Cancer",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    ],
+    aboutMe: "Photographer capturing life's beautiful moments. Seeking someone creative, spontaneous, and ready for adventure.",
+    aboutMeText: "Photographer capturing life's beautiful moments. Seeking someone creative, spontaneous, and ready for adventure.",
+    occupation: "Photographer",
+    city: "Brisbane, QLD",
+    height: "5'5\"",
+    children: "Don't have, don't want",
+    religion: "Buddhist",
+    prompts: [
+      { question: "My happy place", answer: "Behind my camera at golden hour, capturing raw emotions and authentic moments." },
+      { question: "Life goal", answer: "To travel to all 7 continents and create a photo book that tells humanity's story." }
+    ],
+    distance: 9,
+  },
+  {
+    id: 11,
+    name: "Ava",
+    age: 25,
+    birthdate: "1999-08-10", // Leo-Rabbit (SAME WESTERN SIGN -3 + SAME CHINESE ANIMAL - Leo×Leo with Rabbit×Rabbit, same trine Artists +15)
+    westernSign: "Leo",
+    easternSign: "Rabbit",
+    photos: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Innovation consultant helping startups scale. Looking for someone who shares my passion for technology and social impact.",
+    aboutMeText: "Innovation consultant helping startups scale. Looking for someone who shares my passion for technology and social impact.",
+    occupation: "Innovation Consultant",
+    city: "Adelaide, SA",
+    height: "5'7\"",
+    children: "Don't have, undecided",
+    religion: "Agnostic",
+    prompts: [
+      { question: "My biggest goal", answer: "To launch a social enterprise that helps bridge the digital divide in underserved communities." },
+      { question: "What I'm looking for", answer: "A partner who challenges me intellectually and supports my ambitious dreams." }
+    ],
+    distance: 20,
+  },
+  {
+    id: 12,
+    name: "Harper",
+    age: 29,
+    birthdate: "1990-06-15", // Gemini-Monkey (OPPOSITE CHINESE SIGNS - Rabbit×Monkey = Magnetic Opposites, +6 bonus)
+    westernSign: "Gemini",
+    easternSign: "Monkey",
+    photos: [
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Chef and food blogger sharing authentic recipes from around the world. Seeking someone who appreciates good food and great conversation.",
+    aboutMeText: "Chef and food blogger sharing authentic recipes from around the world. Seeking someone who appreciates good food and great conversation.",
+    occupation: "Chef",
+    city: "Sydney, NSW",
+    height: "5'10\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "My perfect date", answer: "Cooking a meal together from scratch, then enjoying it with wine and deep conversation." },
+      { question: "I'm most passionate about", answer: "Exploring different cuisines and learning the stories behind traditional dishes." }
+    ],
+    distance: 3,
+  },
+  {
+    id: 13,
+    name: "Evelyn",
+    age: 31,
+    birthdate: "1994-02-15", // Aquarius-Dog (OPPOSITE CHINESE SIGNS - Rabbit×Dog = Magnetic Opposites, +6 bonus, WEST OPPOSITE Leo×Aquarius +8)
+    westernSign: "Aquarius",
+    easternSign: "Dog",
+    photos: [
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Adventure photographer and documentary filmmaker. Looking for someone who's ready to explore the world and capture life's moments together.",
+    aboutMeText: "Adventure photographer and documentary filmmaker. Looking for someone who's ready to explore the world and capture life's moments together.",
+    occupation: "Documentary Filmmaker",
+    city: "Darwin, NT",
+    height: "5'6\"",
+    children: "Don't have, don't want",
+    religion: "None",
+    prompts: [
+      { question: "Most adventurous thing I've done", answer: "Spent 6 months living with a remote tribe in the Amazon, documenting their way of life." },
+      { question: "What drives me", answer: "The desire to tell stories that matter and connect people across cultures." }
+    ],
+    distance: 25,
+  },
+  {
+    id: 14,
+    name: "Scarlett",
+    age: 28,
+    birthdate: "1992-04-20", // Taurus-Dragon (SAME TRINE - Rabbit×Dragon = Same Trine Visionaries, +15 bonus)
+    westernSign: "Taurus",
+    easternSign: "Dragon",
+    photos: [
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Therapist specializing in relationship counseling. Seeking a deep, emotionally intelligent connection with someone who values growth.",
+    aboutMeText: "Therapist specializing in relationship counseling. Seeking a deep, emotionally intelligent connection with someone who values growth.",
+    occupation: "Relationship Therapist",
+    city: "Melbourne, VIC",
+    height: "5'4\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "What I value most", answer: "Emotional intelligence, honest communication, and the courage to be vulnerable." },
+      { question: "My ideal relationship", answer: "One where we both grow as individuals while supporting each other's dreams." }
+    ],
+    distance: 6,
+  },
+  {
+    id: 15,
+    name: "Grace",
+    age: 27,
+    birthdate: "1991-03-10", // Pisces-Goat (SAME TRINE - Rabbit×Goat = Same Trine Artists, +15 bonus)
+    westernSign: "Pisces",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Architect designing sustainable buildings. Looking for someone who appreciates beauty, functionality, and environmental consciousness.",
+    aboutMeText: "Architect designing sustainable buildings. Looking for someone who appreciates beauty, functionality, and environmental consciousness.",
+    occupation: "Architect",
+    city: "Perth, WA",
+    height: "5'9\"",
+    children: "Don't have, undecided",
+    religion: "Atheist",
+    prompts: [
+      { question: "What inspires me", answer: "The intersection of art and science, where design meets sustainability and form follows function." },
+      { question: "My perfect weekend", answer: "Exploring new architecture, visiting art galleries, and ending with a quiet dinner at home." }
+    ],
+    distance: 16,
+  },
+  {
+    id: 16,
+    name: "Amelia",
+    age: 30,
+    birthdate: "1990-07-05", // Cancer-Horse (OPPOSITE CHINESE SIGNS - Rabbit×Horse = Magnetic Opposites, +6 bonus)
+    westernSign: "Cancer",
+    easternSign: "Horse",
+    photos: [
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Marine biologist studying coral reef ecosystems. Seeking someone who shares my passion for ocean conservation and adventure.",
+    aboutMeText: "Marine biologist studying coral reef ecosystems. Seeking someone who shares my passion for ocean conservation and adventure.",
+    occupation: "Marine Biologist",
+    city: "Cairns, QLD",
+    height: "5'5\"",
+    children: "Don't have, want someday",
+    religion: "Agnostic",
+    prompts: [
+      { question: "My passion project", answer: "Leading a research team studying the recovery of coral reefs after bleaching events." },
+      { question: "What makes me happy", answer: "Diving into crystal clear waters, discovering new marine species, and sharing those moments with someone special." }
+    ],
+    distance: 11,
+  },
+  {
+    id: 17,
+    name: "Chloe",
+    age: 26,
+    birthdate: "1998-04-12", // Aries-Tiger (SAME TRINE - Rabbit×Tiger = Same Trine Adventurers, +15 bonus, compatible Fire)
+    westernSign: "Aries",
+    easternSign: "Tiger",
+    photos: [
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Fitness trainer and yoga instructor. Looking for someone active, health-conscious, and ready to take on life's challenges together.",
+    aboutMeText: "Fitness trainer and yoga instructor. Looking for someone active, health-conscious, and ready to take on life's challenges together.",
+    occupation: "Fitness Trainer",
+    city: "Brisbane, QLD",
+    height: "5'6\"",
+    children: "Don't have, don't want",
+    religion: "Buddhist",
+    prompts: [
+      { question: "My morning routine", answer: "Sunrise yoga session, green smoothie, and a 10km run to energize my day." },
+      { question: "What I'm looking for", answer: "A partner who values wellness, enjoys outdoor adventures, and isn't afraid to push their limits." }
+    ],
+    distance: 8,
+  },
+  {
+    id: 18,
+    name: "Lily",
+    age: 29,
+    birthdate: "1995-08-28", // Virgo-Monkey (OPPOSITE CHINESE SIGNS - Rabbit×Monkey = Magnetic Opposites, +6 bonus, cross-trine -8 penalty)
+    westernSign: "Virgo",
+    easternSign: "Monkey",
+    photos: [
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Data scientist analyzing social trends. Seeking someone intellectually curious who loves diving deep into conversations about the world.",
+    aboutMeText: "Data scientist analyzing social trends. Seeking someone intellectually curious who loves diving deep into conversations about the world.",
+    occupation: "Data Scientist",
+    city: "Canberra, ACT",
+    height: "5'7\"",
+    children: "Don't have, undecided",
+    religion: "Atheist",
+    prompts: [
+      { question: "What I geek out on", answer: "Machine learning algorithms, data visualization, and finding patterns in human behavior." },
+      { question: "Perfect date idea", answer: "Visiting a science museum, then discussing what we learned over coffee and pastries." }
+    ],
+    distance: 19,
+  },
+  {
+    id: 19,
+    name: "Ruby",
+    age: 28,
+    birthdate: "1996-01-20", // Aquarius-Rat (SAME TRINE - Rabbit×Rat = Same Trine Visionaries, +15 bonus, WEST OPPOSITE Leo×Aquarius +8)
+    westernSign: "Aquarius",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Social worker helping families in crisis. Looking for someone compassionate, patient, and committed to making a positive impact.",
+    aboutMeText: "Social worker helping families in crisis. Looking for someone compassionate, patient, and committed to making a positive impact.",
+    occupation: "Social Worker",
+    city: "Hobart, TAS",
+    height: "5'3\"",
+    children: "Don't have, want someday",
+    religion: "Christian",
+    prompts: [
+      { question: "What motivates me", answer: "Seeing families overcome challenges and build stronger, healthier relationships together." },
+      { question: "My ideal partner", answer: "Someone who understands the importance of empathy, communication, and supporting each other through life's ups and downs." }
+    ],
+    distance: 22,
+  },
+  {
+    id: 20,
+    name: "Violet",
+    age: 31,
+    birthdate: "1993-03-18", // Pisces-Rooster (OPPOSITE CHINESE SIGNS - Rabbit×Rooster = Magnetic Opposites, +6 bonus, cross-trine -8 penalty)
+    westernSign: "Pisces",
+    easternSign: "Rooster",
+    photos: [
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Artist and gallery owner showcasing contemporary works. Seeking someone creative, open-minded, and passionate about the arts.",
+    aboutMeText: "Artist and gallery owner showcasing contemporary works. Seeking someone creative, open-minded, and passionate about the arts.",
+    occupation: "Gallery Owner",
+    city: "Melbourne, VIC",
+    height: "5'8\"",
+    children: "Don't have, don't want",
+    religion: "Spiritual",
+    prompts: [
+      { question: "My creative process", answer: "I find inspiration in the spaces between dreams and reality, where emotion meets expression." },
+      { question: "What I love most", answer: "Discovering new artists, curating meaningful exhibitions, and creating spaces where art can transform lives." }
+    ],
+    distance: 7,
+  },
+  {
+    id: 21,
+    name: "Jasmine",
+    age: 26,
+    birthdate: "1999-04-08", // Aries-Rabbit (SAME TRINE - Rabbit×Rabbit = Same Trine Artists, +15 bonus, compatible Fire)
+    westernSign: "Aries",
+    easternSign: "Rabbit",
+    photos: [
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+    ],
+    aboutMe: "Adventure-loving interior stylist who adores bold colors and cozy spaces. Always down for sunrise hikes and late-night ramen.",
+    aboutMeText: "Adventure-loving interior stylist who adores bold colors and cozy spaces. Always down for sunrise hikes and late-night ramen.",
+    occupation: "Interior Stylist",
+    city: "Sydney, NSW",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Most spontaneous thing I've done", answer: "Booked a red-eye to Tokyo after spotting a flash sale and spent 36 hours exploring street markets." },
+      { question: "Perfect Sunday", answer: "Morning pilates, rearranging my plant corner, and discovering a new hidden-speakeasy with friends." }
+    ],
+    distance: 6,
+  },
+  {
+    id: 22,
+    name: "Sienna",
+    age: 32,
+    birthdate: "1993-11-17", // Scorpio-Rooster (OPPOSITE CHINESE SIGNS - Rabbit×Rooster = Magnetic Opposites, +6 bonus, Water×Fire tension)
+    westernSign: "Scorpio",
+    easternSign: "Rooster",
+    photos: [
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+      "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+      "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+    ],
+    aboutMe: "Somm and jazz aficionado who moonlights as a vinyl DJ. Searching for someone who embraces depth and a little mystery.",
+    aboutMeText: "Somm and jazz aficionado who moonlights as a vinyl DJ. Searching for someone who embraces depth and a little mystery.",
+    occupation: "Sommelier",
+    city: "Melbourne, VIC",
+    height: "5'7\"",
+    children: "Don't have, undecided",
+    religion: "Agnostic",
+    prompts: [
+      { question: "My love language", answer: "Curated playlists, hand-written notes, and tasting menus that tell a story." },
+      { question: "Most likely to", answer: "Turn a rainy night into a candlelit listening session with rare pressings and a bottle of Barolo." }
+    ],
+    distance: 4,
+  },
+  {
+    id: 23,
+    name: "Autumn",
+    age: 35,
+    birthdate: "1990-01-29", // Aquarius-Horse (OPPOSITE CHINESE SIGNS - Rabbit×Horse = Magnetic Opposites, +6 bonus, West polarity +8)
+    westernSign: "Aquarius",
+    easternSign: "Horse",
+    photos: [
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+    ],
+    aboutMe: "Urban planner reimagining greener cities. Advocate for cycling, rooftop gardens, and equitable public spaces.",
+    aboutMeText: "Urban planner reimagining greener cities. Advocate for cycling, rooftop gardens, and equitable public spaces.",
+    occupation: "Urban Planner",
+    city: "Canberra, ACT",
+    height: "5'8\"",
+    children: "Don't have, want someday",
+    religion: "None",
+    prompts: [
+      { question: "What I'm building", answer: "A community park that doubles as a stormwater filter and outdoor classroom." },
+      { question: "We'd get along if", answer: "You believe cities should feel like home, not just a place to commute through." }
+    ],
+    distance: 14,
+  },
+  {
+    id: 24,
+    name: "Willow",
+    age: 30,
+    birthdate: "1995-05-18", // Taurus-Pig (SAME TRINE - Rabbit×Pig = Same Trine Visionaries, +15 bonus, Earth harmony)
+    westernSign: "Taurus",
+    easternSign: "Pig",
+    photos: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Ceramic artist with a farm-to-table heart. I host monthly supper clubs featuring handmade tableware and seasonal produce.",
+    aboutMeText: "Ceramic artist with a farm-to-table heart. I host monthly supper clubs featuring handmade tableware and seasonal produce.",
+    occupation: "Ceramic Artist",
+    city: "Byron Bay, NSW",
+    height: "5'5\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Signature dish", answer: "Lemon myrtle gnocchi served on plates I threw that morning." },
+      { question: "Non-negotiable", answer: "Sunday mornings at the growers' market followed by a swim in the ocean." }
+    ],
+    distance: 5,
+  },
+  {
+    id: 25,
+    name: "Aurora",
+    age: 23,
+    birthdate: "2001-12-02", // Sagittarius-Snake (CROSS TRINE - Rabbit×Snake = Challenging mix, Fire + Water tension)
+    westernSign: "Sagittarius",
+    easternSign: "Snake",
+    photos: [
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+    ],
+    aboutMe: "Travel documentary host chasing auroras and hidden cultures. Eternal optimist with a camera in hand.",
+    aboutMeText: "Travel documentary host chasing auroras and hidden cultures. Eternal optimist with a camera in hand.",
+    occupation: "Documentary Host",
+    city: "Hobart, TAS",
+    height: "5'9\"",
+    children: "Don't have, undecided",
+    religion: "None",
+    prompts: [
+      { question: "Bucket list", answer: "Documenting the reindeer migration in Norway and learning joik songs from Sami elders." },
+      { question: "Best compliment", answer: "That my curiosity makes people feel seen and celebrated." }
+    ],
+    distance: 18,
+  },
+  {
+    id: 26,
+    name: "Freya",
+    age: 27,
+    birthdate: "1998-06-21", // Cancer-Tiger (SAME TRINE - Rabbit×Tiger = Same Trine Adventurers, +15 bonus, Water + Fire blend)
+    westernSign: "Cancer",
+    easternSign: "Tiger",
+    photos: [
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    ],
+    aboutMe: "Cold-water surfer and marine conservationist. Building coral nurseries by day, chasing reef breaks by dusk.",
+    aboutMeText: "Cold-water surfer and marine conservationist. Building coral nurseries by day, chasing reef breaks by dusk.",
+    occupation: "Marine Conservationist",
+    city: "Fremantle, WA",
+    height: "5'7\"",
+    children: "Don't have, want someday",
+    religion: "Agnostic",
+    prompts: [
+      { question: "Perfect date", answer: "Sunrise surf, sea turtle monitoring, and fish tacos on the jetty." },
+      { question: "My superpower", answer: "I can identify coral species from a single polyp." }
+    ],
+    distance: 12,
+  },
+  {
+    id: 27,
+    name: "Hazel",
+    age: 21,
+    birthdate: "2003-09-07", // Virgo-Goat (SAME TRINE - Rabbit×Goat = Same Trine Artists, +15 bonus, Earth harmony)
+    westernSign: "Virgo",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+    ],
+    aboutMe: "Perfumer crafting scents inspired by native botanicals. Obsessed with storytelling through fragrance.",
+    aboutMeText: "Perfumer crafting scents inspired by native botanicals. Obsessed with storytelling through fragrance.",
+    occupation: "Perfumer",
+    city: "Adelaide, SA",
+    height: "5'4\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Guilty pleasure", answer: "Collecting rare essential oils and blending them at 3am when inspiration hits." },
+      { question: "Describe me in a scent", answer: "Wattle blossom, Tasmanian pepperberry, and a hint of cedar." }
+    ],
+    distance: 9,
+  },
+  {
+    id: 28,
+    name: "Naomi",
+    age: 28,
+    birthdate: "1997-02-14", // Aquarius-Ox (SAME TRINE - Rabbit×Ox = Same Trine Peacekeepers, +15 bonus, West polarity +8)
+    westernSign: "Aquarius",
+    easternSign: "Ox",
+    photos: [
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80",
+      "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80",
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+      "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80",
+    ],
+    aboutMe: "Behavioural economist modeling prosocial tech. I thrive in whiteboard sessions and messy brainstorms.",
+    aboutMeText: "Behavioural economist modeling prosocial tech. I thrive in whiteboard sessions and messy brainstorms.",
+    occupation: "Behavioural Economist",
+    city: "Sydney, NSW",
+    height: "5'8\"",
+    children: "Don't have, don't want",
+    religion: "Atheist",
+    prompts: [
+      { question: "Hot take", answer: "Design ethics should be taught in every computer science curriculum." },
+      { question: "On Friday night", answer: "Hosting debate salons with friends over Ethiopian pour-over and playlists named by constellations." }
+    ],
+    distance: 2,
+  },
+  {
+    id: 29,
+    name: "Penelope",
+    age: 33,
+    birthdate: "1992-10-03", // Libra-Monkey (OPPOSITE CHINESE SIGNS - Rabbit×Monkey = Magnetic Opposites, +6 bonus)
+    westernSign: "Libra",
+    easternSign: "Monkey",
+    photos: [
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+    ],
+    aboutMe: "Creative director for an eco-friendly fashion house. Balancing aesthetics with accountability is my happy place.",
+    aboutMeText: "Creative director for an eco-friendly fashion house. Balancing aesthetics with accountability is my happy place.",
+    occupation: "Creative Director",
+    city: "Melbourne, VIC",
+    height: "5'9\"",
+    children: "Don't have, want someday",
+    religion: "Christian",
+    prompts: [
+      { question: "Currently designing", answer: "A capsule collection dyed with algae pigments and stitched from recycled silk." },
+      { question: "Ideal collaborator", answer: "Someone who thinks kindness and bravery never go out of style." }
+    ],
+    distance: 7,
+  },
+  {
+    id: 30,
+    name: "Quinn",
+    age: 25,
+    birthdate: "2000-07-26", // Leo-Dragon (SAME TRINE - Rabbit×Dragon = Same Trine Visionaries, +15 bonus)
+    westernSign: "Leo",
+    easternSign: "Dragon",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    ],
+    aboutMe: "Augmented reality producer crafting immersive theatre. I love blending myth with cutting-edge tech.",
+    aboutMeText: "Augmented reality producer crafting immersive theatre. I love blending myth with cutting-edge tech.",
+    occupation: "AR Producer",
+    city: "Brisbane, QLD",
+    height: "5'6\"",
+    children: "Don't have, undecided",
+    religion: "Buddhist",
+    prompts: [
+      { question: "My latest project", answer: "A rooftop experience where constellations guide you through a love story." },
+      { question: "In spare time", answer: "Playtesting indie games and learning aerial silks." }
+    ],
+    distance: 11,
+  },
+  {
+    id: 31,
+    name: "Serena",
+    age: 36,
+    birthdate: "1989-02-11", // Aquarius-Snake (CROSS TRINE - Rabbit×Snake = Challenging mix, Air + Water tension)
+    westernSign: "Aquarius",
+    easternSign: "Snake",
+    photos: [
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Futurist author and keynote speaker. Exploring how emerging tech affects intimacy, culture, and identity.",
+    aboutMeText: "Futurist author and keynote speaker. Exploring how emerging tech affects intimacy, culture, and identity.",
+    occupation: "Futurist Author",
+    city: "Sydney, NSW",
+    height: "5'8\"",
+    children: "Don't have, don't want",
+    religion: "None",
+    prompts: [
+      { question: "Talk to me about", answer: "Neurotechnology, speculative fiction, and the ethics of AI companions." },
+      { question: "My secret talent", answer: "Predicting cultural shifts before they trend on TikTok." }
+    ],
+    distance: 1,
+  },
+  {
+    id: 32,
+    name: "Tessa",
+    age: 31,
+    birthdate: "1994-09-19", // Virgo-Dog (SAME TRINE - Rabbit×Dog = Same Trine Peacekeepers, +15 bonus)
+    westernSign: "Virgo",
+    easternSign: "Dog",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+    ],
+    aboutMe: "Crisis response nurse who decompresses through pottery and mindful breathwork classes.",
+    aboutMeText: "Crisis response nurse who decompresses through pottery and mindful breathwork classes.",
+    occupation: "Emergency Nurse",
+    city: "Perth, WA",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Christian",
+    prompts: [
+      { question: "Typical weeknight", answer: "Yoga, glazing ceramics, and checking in on friends who need a listening ear." },
+      { question: "What I'm proud of", answer: "Leading a volunteer team that set up mobile clinics after floods." }
+    ],
+    distance: 16,
+  },
+  {
+    id: 33,
+    name: "Ivy",
+    age: 34,
+    birthdate: "1991-05-05", // Taurus-Goat (SAME TRINE - Rabbit×Goat = Same Trine Artists, +15 bonus)
+    westernSign: "Taurus",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Landscape architect weaving Indigenous land practices into urban design. Slow mornings, big visions.",
+    aboutMeText: "Landscape architect weaving Indigenous land practices into urban design. Slow mornings, big visions.",
+    occupation: "Landscape Architect",
+    city: "Darwin, NT",
+    height: "5'7\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Currently reading", answer: "Songlines by Margo Neale and Lynne Kelly to inform my next project." },
+      { question: "Simple joy", answer: "Hands in soil, cicada chorus, and the smell of rain on dry ground." }
+    ],
+    distance: 24,
+  },
+  {
+    id: 34,
+    name: "Morgan",
+    age: 29,
+    birthdate: "1996-08-30", // Virgo-Rat (SAME TRINE - Rabbit×Rat = Same Trine Visionaries, +15 bonus)
+    westernSign: "Virgo",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    ],
+    aboutMe: "Product manager building inclusive fintech tools. Spreadsheet wizard with a soft spot for poetry slams.",
+    aboutMeText: "Product manager building inclusive fintech tools. Spreadsheet wizard with a soft spot for poetry slams.",
+    occupation: "Product Manager",
+    city: "Sydney, NSW",
+    height: "5'5\"",
+    children: "Don't have, don't want",
+    religion: "None",
+    prompts: [
+      { question: "What lights me up", answer: "Solving hard problems with empathetic teams and surprising myself on open mic nights." },
+      { question: "Weekend vibe", answer: "Cycling to farmers' markets, jazz brunch, and annotating my favorite verses." }
+    ],
+    distance: 3,
+  },
+  {
+    id: 35,
+    name: "Riley",
+    age: 23,
+    birthdate: "2002-03-27", // Aries-Horse (OPPOSITE CHINESE SIGNS - Rabbit×Horse = Magnetic Opposites, +6 bonus)
+    westernSign: "Aries",
+    easternSign: "Horse",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=800&q=80",
+    ],
+    aboutMe: "Paramedic student and volunteer firefighter. Adrenaline junkie with a gentle core.",
+    aboutMeText: "Paramedic student and volunteer firefighter. Adrenaline junkie with a gentle core.",
+    occupation: "Paramedic Student",
+    city: "Newcastle, NSW",
+    height: "5'4\"",
+    children: "Don't have, undecided",
+    religion: "Christian",
+    prompts: [
+      { question: "On my bucket list", answer: "Run an ultramarathon through the Blue Mountains for charity." },
+      { question: "My motto", answer: "Stay calm, stay kind, stay ready." }
+    ],
+    distance: 5,
+  },
+  {
+    id: 36,
+    name: "Skye",
+    age: 37,
+    birthdate: "1988-07-14", // Cancer-Dragon (SAME TRINE - Rabbit×Dragon = Same Trine Visionaries, +15 bonus)
+    westernSign: "Cancer",
+    easternSign: "Dragon",
+    photos: [
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+    ],
+    aboutMe: "Sound healer and retreat facilitator. Helping people slow down, breathe, and reconnect.",
+    aboutMeText: "Sound healer and retreat facilitator. Helping people slow down, breathe, and reconnect.",
+    occupation: "Retreat Facilitator",
+    city: "Sunshine Coast, QLD",
+    height: "5'10\"",
+    children: "Don't have, want someday",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Daily ritual", answer: "Crystal singing bowls at dawn followed by journaling in the rainforest." },
+      { question: "What I offer", answer: "A grounding presence, deep listening, and spontaneous road trips." }
+    ],
+    distance: 13,
+  },
+  {
+    id: 37,
+    name: "Dahlia",
+    age: 20,
+    birthdate: "2004-11-09", // Scorpio-Monkey (OPPOSITE CHINESE SIGNS - Rabbit×Monkey = Magnetic Opposites, +6 bonus)
+    westernSign: "Scorpio",
+    easternSign: "Monkey",
+    photos: [
+      "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80",
+      "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    ],
+    aboutMe: "Indie game developer building narrative-rich mystery worlds. Coffee-fueled and cat-approved.",
+    aboutMeText: "Indie game developer building narrative-rich mystery worlds. Coffee-fueled and cat-approved.",
+    occupation: "Game Developer",
+    city: "Geelong, VIC",
+    height: "5'3\"",
+    children: "Don't have, don't want",
+    religion: "None",
+    prompts: [
+      { question: "My favorite bug fix", answer: "When a ghost NPC accidentally became a comedic relief and I kept it." },
+      { question: "Currently obsessed with", answer: "Cosy horror aesthetics and procedurally generated plot twists." }
+    ],
+    distance: 15,
+  },
+  {
+    id: 38,
+    name: "Elsa",
+    age: 35,
+    birthdate: "1990-10-22", // Libra-Horse (OPPOSITE CHINESE SIGNS - Rabbit×Horse = Magnetic Opposites, +6 bonus)
+    westernSign: "Libra",
+    easternSign: "Horse",
+    photos: [
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    ],
+    aboutMe: "Human rights lawyer focused on climate refugees. Calm in crisis, fiery in court.",
+    aboutMeText: "Human rights lawyer focused on climate refugees. Calm in crisis, fiery in court.",
+    occupation: "Human Rights Lawyer",
+    city: "Sydney, NSW",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Jewish",
+    prompts: [
+      { question: "Most meaningful case", answer: "Helping a Pacific Island family secure residency as their homeland disappears." },
+      { question: "Secret talent", answer: "I can recite entire passages of poetry from memory before a big hearing." }
+    ],
+    distance: 2,
+  },
+  {
+    id: 39,
+    name: "Juniper",
+    age: 30,
+    birthdate: "1995-02-02", // Aquarius-Pig (SAME TRINE - Rabbit×Pig = Same Trine Visionaries, +15 bonus, West polarity +8)
+    westernSign: "Aquarius",
+    easternSign: "Pig",
+    photos: [
+      "https://images.unsplash.com/photo-1529911194209-c1b1b0c1e2c1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+      "https://images.unsplash.com/photo-1513956589380-bad6acb9b9d4?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+      "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+    ],
+    aboutMe: "Botanist mapping plant resilience in urban heat islands. Dreams smell like eucalyptus and petrichor.",
+    aboutMeText: "Botanist mapping plant resilience in urban heat islands. Dreams smell like eucalyptus and petrichor.",
+    occupation: "Botanist",
+    city: "Canberra, ACT",
+    height: "5'8\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "What I'm studying", answer: "How rooftop meadows can reduce city temps by 4 degrees." },
+      { question: "Describe my ideal day", answer: "Field research at dawn, sketching specimens at lunch, and jazz by candlelight." }
+    ],
+    distance: 10,
+  },
+  {
+    id: 40,
+    name: "Maya",
+    age: 20,
+    birthdate: "2005-04-30", // Taurus-Rooster (CROSS TRINE - Rabbit×Rooster = Magnetic Opposites, +6 bonus, Earth vs Metal tension)
+    westernSign: "Taurus",
+    easternSign: "Rooster",
+    photos: [
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Industrial design student prototyping assistive tech. Maker labs, matcha lattes, and midnight design sprints.",
+    aboutMeText: "Industrial design student prototyping assistive tech. Maker labs, matcha lattes, and midnight design sprints.",
+    occupation: "Industrial Design Student",
+    city: "Melbourne, VIC",
+    height: "5'6\"",
+    children: "Don't have, undecided",
+    religion: "Hindu",
+    prompts: [
+      { question: "What I'm building", answer: "A modular mobility aid inspired by origami folds for easy travel." },
+      { question: "My hype song", answer: "Anything with a synthwave drop to keep me iterating." }
+    ],
+    distance: 6,
+  },
+  {
+    id: 41,
+    name: "Harper",
+    age: 29,
+    birthdate: "1995-09-18", // Virgo-Pig
+    westernSign: "Virgo",
+    easternSign: "Pig",
+    photos: [
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
+      "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?w=800&q=80",
+    ],
+    aboutMe: "Strategic planner who loves puzzles, Pilates, and Sunday farmers markets.",
+    aboutMeText: "Strategic planner who loves puzzles, Pilates, and Sunday farmers markets.",
+    occupation: "Urban Strategist",
+    city: "Sydney, NSW",
+    height: "5'7\"",
+    children: "Don't have, want someday",
+    religion: "Agnostic",
+    prompts: [
+      { question: "Perfect Saturday", answer: "Cycle to the markets, cook something new, finish with a rooftop movie." },
+      { question: "Green flag", answer: "You remember the small details people tell you." }
+    ],
+    distance: 4,
+  },
+  {
+    id: 42,
+    name: "Lena",
+    age: 31,
+    birthdate: "1993-12-05", // Sagittarius-Rooster
+    westernSign: "Sagittarius",
+    easternSign: "Rooster",
+    photos: [
+      "https://images.unsplash.com/photo-1500043206138-6ca1a5a0c3d1?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+    ],
+    aboutMe: "Travel writer mapping coastal trains. Big on spontaneity, microadventures, and antique bookstores.",
+    aboutMeText: "Travel writer mapping coastal trains. Big on spontaneity, microadventures, and antique bookstores.",
+    occupation: "Travel Writer",
+    city: "Newcastle, NSW",
+    height: "5'6\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Next trip", answer: "Sleeper train from Lisbon to Porto with espresso at each stop." },
+      { question: "Underrated joy", answer: "Folding maps the old-school way." }
+    ],
+    distance: 12,
+  },
+  {
+    id: 43,
+    name: "Noor",
+    age: 26,
+    birthdate: "1998-02-11", // Aquarius-Tiger
+    westernSign: "Aquarius",
+    easternSign: "Tiger",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=800&q=80",
+    ],
+    aboutMe: "Climate data analyst chasing midnight jazz sets. Loyal friend, optimistic realist.",
+    aboutMeText: "Climate data analyst chasing midnight jazz sets. Loyal friend, optimistic realist.",
+    occupation: "Climate Analyst",
+    city: "Brisbane, QLD",
+    height: "5'5\"",
+    children: "Don't have, want someday",
+    religion: "Muslim",
+    prompts: [
+      { question: "My current obsession", answer: "Using satellite imagery to predict coral bleaching." },
+      { question: "Ideal first date", answer: "Street food tasting then vinyl browsing." }
+    ],
+    distance: 9,
+  },
+  {
+    id: 44,
+    name: "Zara",
+    age: 33,
+    birthdate: "1991-04-14", // Aries-Goat
+    westernSign: "Aries",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+    ],
+    aboutMe: "Boutique florist blending native blooms with sculpture. Morning swims, evening gallery hops.",
+    aboutMeText: "Boutique florist blending native blooms with sculpture. Morning swims, evening gallery hops.",
+    occupation: "Florist",
+    city: "Gold Coast, QLD",
+    height: "5'4\"",
+    children: "Don't have, undecided",
+    religion: "Hindu",
+    prompts: [
+      { question: "Signature scent", answer: "Banksia with a hint of pink pepper." },
+      { question: "Biggest inspiration", answer: "Architects who treat light like a material." }
+    ],
+    distance: 7,
+  },
+  {
+    id: 45,
+    name: "Imani",
+    age: 28,
+    birthdate: "1996-06-09", // Gemini-Rat
+    westernSign: "Gemini",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+    ],
+    aboutMe: "Podcast producer finding stories that matter. Coffee snob, improv curious, kitchen dancer.",
+    aboutMeText: "Podcast producer finding stories that matter. Coffee snob, improv curious, kitchen dancer.",
+    occupation: "Podcast Producer",
+    city: "Adelaide, SA",
+    height: "5'8\"",
+    children: "Don't have, want someday",
+    religion: "Christian",
+    prompts: [
+      { question: "Latest episode", answer: "A series on immigrant-owned corner stores and their communities." },
+      { question: "Dream guest", answer: "My grandmother—her laugh deserves its own soundtrack." }
+    ],
+    distance: 14,
+  },
+  {
+    id: 46,
+    name: "Bianca",
+    age: 24,
+    birthdate: "2000-10-03", // Libra-Dragon
+    westernSign: "Libra",
+    easternSign: "Dragon",
+    photos: [
+      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80",
+      "https://images.unsplash.com/photo-1509967419530-da38b4704bc6?w=800&q=80",
+    ],
+    aboutMe: "Architecture student sketching riverfront housing. Loves matcha, night markets, and aerial yoga.",
+    aboutMeText: "Architecture student sketching riverfront housing. Loves matcha, night markets, and aerial yoga.",
+    occupation: "Architecture Student",
+    city: "Perth, WA",
+    height: "5'5\"",
+    children: "Don't have, undecided",
+    religion: "Buddhist",
+    prompts: [
+      { question: "Studio soundtrack", answer: "Lo-fi beats with surprise sax solos." },
+      { question: "Weekend ritual", answer: "Sunrise sketching then dumplings with the studio crew." }
+    ],
+    distance: 11,
+  },
+  {
+    id: 47,
+    name: "Greta",
+    age: 32,
+    birthdate: "1992-01-06", // Capricorn-Goat
+    westernSign: "Capricorn",
+    easternSign: "Goat",
+    photos: [
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=800&q=80",
+      "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80",
+    ],
+    aboutMe: "Biotech COO scaling plant-based vaccines. Calm strategist, unexpected karaoke champ.",
+    aboutMeText: "Biotech COO scaling plant-based vaccines. Calm strategist, unexpected karaoke champ.",
+    occupation: "Biotech COO",
+    city: "Melbourne, VIC",
+    height: "5'9\"",
+    children: "Don't have, want someday",
+    religion: "Jewish",
+    prompts: [
+      { question: "Leadership hack", answer: "End every meeting with one wild idea, no judgment." },
+      { question: "Hidden talent", answer: "Syncing backing vocals on the fly." }
+    ],
+    distance: 5,
+  },
+  {
+    id: 48,
+    name: "Yara",
+    age: 27,
+    birthdate: "1997-07-29", // Leo-Ox
+    westernSign: "Leo",
+    easternSign: "Ox",
+    photos: [
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+    ],
+    aboutMe: "Documentary filmmaker spotlighting community leaders. Thrives on late-night edits and early-morning hikes.",
+    aboutMeText: "Documentary filmmaker spotlighting community leaders. Thrives on late-night edits and early-morning hikes.",
+    occupation: "Documentary Filmmaker",
+    city: "Sydney, NSW",
+    height: "5'6\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Story I'm chasing", answer: "Women rebuilding towns after bushfires." },
+      { question: "Guilty pleasure", answer: "Popcorn for dinner when I'm on a deadline." }
+    ],
+    distance: 3,
+  },
+  {
+    id: 49,
+    name: "Siena",
+    age: 30,
+    birthdate: "1994-05-12", // Taurus-Dog
+    westernSign: "Taurus",
+    easternSign: "Dog",
+    photos: [
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+    ],
+    aboutMe: "Slow fashion founder weaving local wool. Loves stormy beach walks and evidence-based arguments.",
+    aboutMeText: "Slow fashion founder weaving local wool. Loves stormy beach walks and evidence-based arguments.",
+    occupation: "Sustainable Fashion Founder",
+    city: "Hobart, TAS",
+    height: "5'7\"",
+    children: "Don't have, want someday",
+    religion: "Catholic",
+    prompts: [
+      { question: "Newest fabric", answer: "Eucalyptus fibre dyed with native flowers." },
+      { question: "Best debate topic", answer: "Repair incentives versus recycling incentives." }
+    ],
+    distance: 21,
+  },
+  {
+    id: 50,
+    name: "Aiko",
+    age: 25,
+    birthdate: "1999-11-02", // Scorpio-Rabbit
+    westernSign: "Scorpio",
+    easternSign: "Rabbit",
+    photos: [
+      "https://images.unsplash.com/photo-1500036466846-2534e766a381?w=800&q=80",
+      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+    ],
+    aboutMe: "UX researcher translating human stories into gentle tech. Foodie who chronicles ramen spots.",
+    aboutMeText: "UX researcher translating human stories into gentle tech. Foodie who chronicles ramen spots.",
+    occupation: "UX Researcher",
+    city: "Canberra, ACT",
+    height: "5'3\"",
+    children: "Don't have, undecided",
+    religion: "Shinto",
+    prompts: [
+      { question: "User insight", answer: "Accessibility is empathy turned tangible." },
+      { question: "Current craving", answer: "Sapporo-style miso ramen with extra scallions." }
+    ],
+    distance: 8,
+  },
+  {
+    id: 51,
+    name: "Priya",
+    age: 34,
+    birthdate: "1990-03-02", // Pisces-Horse
+    westernSign: "Pisces",
+    easternSign: "Horse",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+    ],
+    aboutMe: "Hospital art therapist guiding patients through colour and music. Empath with a love for board games.",
+    aboutMeText: "Hospital art therapist guiding patients through colour and music. Empath with a love for board games.",
+    occupation: "Art Therapist",
+    city: "Sydney, NSW",
+    height: "5'5\"",
+    children: "Have, open to more",
+    religion: "Hindu",
+    prompts: [
+      { question: "Favourite medium", answer: "Watercolour on rice paper—it responds to every emotion." },
+      { question: "Cozy night in", answer: "Settlers of Catan with homemade chai." }
+    ],
+    distance: 6,
+  },
+  {
+    id: 52,
+    name: "Quinn",
+    age: 27,
+    birthdate: "1997-01-18", // Capricorn-Ox
+    westernSign: "Capricorn",
+    easternSign: "Ox",
+    photos: [
+      "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&q=80",
+      "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?w=800&q=80",
+    ],
+    aboutMe: "Cybersecurity analyst defending non-profits. Runs on peppermint tea, sunrise runs, and sci-fi novels.",
+    aboutMeText: "Cybersecurity analyst defending non-profits. Runs on peppermint tea, sunrise runs, and sci-fi novels.",
+    occupation: "Cybersecurity Analyst",
+    city: "Wollongong, NSW",
+    height: "5'8\"",
+    children: "Don't have, don't want",
+    religion: "Atheist",
+    prompts: [
+      { question: "What I'm proud of", answer: "Helping a shelter recover after a ransomware attack." },
+      { question: "Favourite escape", answer: "Night trail runs with audiobooks." }
+    ],
+    distance: 5,
+  },
+  {
+    id: 53,
+    name: "Sasha",
+    age: 23,
+    birthdate: "2001-08-25", // Virgo-Snake
+    westernSign: "Virgo",
+    easternSign: "Snake",
+    photos: [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+    ],
+    aboutMe: "Classical guitarist finishing conservatory. Nerd for music theory, dumplings, and retro cameras.",
+    aboutMeText: "Classical guitarist finishing conservatory. Nerd for music theory, dumplings, and retro cameras.",
+    occupation: "Music Student",
+    city: "Melbourne, VIC",
+    height: "5'6\"",
+    children: "Don't have, undecided",
+    religion: "Catholic",
+    prompts: [
+      { question: "Practice piece", answer: "Rodrigo's Concierto de Aranjuez—third movement on repeat." },
+      { question: "Perfect snack", answer: "Steamed prawn dumplings between rehearsals." }
+    ],
+    distance: 3,
+  },
+  {
+    id: 54,
+    name: "Lauren",
+    age: 35,
+    birthdate: "1989-05-27", // Gemini-Snake
+    westernSign: "Gemini",
+    easternSign: "Snake",
+    photos: [
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80",
+    ],
+    aboutMe: "Emergency doctor who paints abstracts after night shifts. Thrives on honesty and quick wit.",
+    aboutMeText: "Emergency doctor who paints abstracts after night shifts. Thrives on honesty and quick wit.",
+    occupation: "Emergency Physician",
+    city: "Adelaide, SA",
+    height: "5'7\"",
+    children: "Have, done",
+    religion: "Agnostic",
+    prompts: [
+      { question: "Creative outlet", answer: "Throwing paint at a canvas until it looks like hope." },
+      { question: "Most used emoji", answer: "🚨 when I'm on-call, 🎨 when I'm off." }
+    ],
+    distance: 9,
+  },
+  {
+    id: 55,
+    name: "Nia",
+    age: 29,
+    birthdate: "1995-10-21", // Libra-Pig
+    westernSign: "Libra",
+    easternSign: "Pig",
+    photos: [
+      "https://images.unsplash.com/photo-1544723795-4325371b3a01?w=800&q=80",
+      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80",
+    ],
+    aboutMe: "Interior stylist chasing warm minimalism. Obsessed with ceramics, sunbeams, and good dialogue.",
+    aboutMeText: "Interior stylist chasing warm minimalism. Obsessed with ceramics, sunbeams, and good dialogue.",
+    occupation: "Interior Stylist",
+    city: "Byron Bay, NSW",
+    height: "5'5\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Current project", answer: "Transforming an old post office into an artist co-op." },
+      { question: "Best compliment", answer: "'You made this space feel like a sunrise.'" }
+    ],
+    distance: 18,
+  },
+  {
+    id: 56,
+    name: "Tessa",
+    age: 22,
+    birthdate: "2002-07-04", // Cancer-Horse
+    westernSign: "Cancer",
+    easternSign: "Horse",
+    photos: [
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+      "https://images.unsplash.com/photo-1500036466846-2534e766a381?w=800&q=80",
+    ],
+    aboutMe: "Marine biology intern tagging sea turtles. Sunrise surfer, sunset sketcher.",
+    aboutMeText: "Marine biology intern tagging sea turtles. Sunrise surfer, sunset sketcher.",
+    occupation: "Marine Biology Student",
+    city: "Cairns, QLD",
+    height: "5'4\"",
+    children: "Don't have, undecided",
+    religion: "Christian",
+    prompts: [
+      { question: "Field highlight", answer: "Watching hatchlings find the moonlight last season." },
+      { question: "Go-to wind-down", answer: "Sketching reef fish while my wetsuit dries." }
+    ],
+    distance: 25,
+  },
+  {
+    id: 57,
+    name: "Delilah",
+    age: 28,
+    birthdate: "1996-08-30", // Virgo-Rat
+    westernSign: "Virgo",
+    easternSign: "Rat",
+    photos: [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+      "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?w=800&q=80",
+    ],
+    aboutMe: "Food scientist crafting plant-based cheeses. Spreadsheet lover, salsa learner.",
+    aboutMeText: "Food scientist crafting plant-based cheeses. Spreadsheet lover, salsa learner.",
+    occupation: "Food Scientist",
+    city: "Geelong, VIC",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Jewish",
+    prompts: [
+      { question: "New flavour", answer: "Triple-cream cashew brie with lemon myrtle." },
+      { question: "Learning now", answer: "Intermediate salsa spins—send tips!" }
+    ],
+    distance: 13,
+  },
+  {
+    id: 58,
+    name: "Isolde",
+    age: 36,
+    birthdate: "1988-02-27", // Pisces-Dragon
+    westernSign: "Pisces",
+    easternSign: "Dragon",
+    photos: [
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+      "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?w=800&q=80",
+    ],
+    aboutMe: "Conductor leading a community orchestra. Fluent in five languages, fluent in empathy.",
+    aboutMeText: "Conductor leading a community orchestra. Fluent in five languages, fluent in empathy.",
+    occupation: "Orchestra Conductor",
+    city: "Canberra, ACT",
+    height: "5'9\"",
+    children: "Have, open to more",
+    religion: "Catholic",
+    prompts: [
+      { question: "Favourite movement", answer: "Mahler's adagietto—pure cinematic emotion." },
+      { question: "Secret power", answer: "Keeping 60 musicians breathing together." }
+    ],
+    distance: 6,
+  },
+  {
+    id: 59,
+    name: "Mireille",
+    age: 27,
+    birthdate: "1997-11-16", // Scorpio-Ox
+    westernSign: "Scorpio",
+    easternSign: "Ox",
+    photos: [
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80",
+      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=800&q=80",
+    ],
+    aboutMe: "Perfumer blending scents from native botanicals. Loves tarot nights and spicy noodle runs.",
+    aboutMeText: "Perfumer blending scents from native botanicals. Loves tarot nights and spicy noodle runs.",
+    occupation: "Perfumer",
+    city: "Darwin, NT",
+    height: "5'4\"",
+    children: "Don't have, undecided",
+    religion: "Spiritual",
+    prompts: [
+      { question: "Signature note", answer: "Wattle seed with smoked sandalwood." },
+      { question: "Favourite ritual", answer: "Tarot spreads before dawn distillations." }
+    ],
+    distance: 32,
+  },
+  {
+    id: 60,
+    name: "Rhea",
+    age: 30,
+    birthdate: "1994-01-14", // Capricorn-Dog
+    westernSign: "Capricorn",
+    easternSign: "Dog",
+    photos: [
+      "https://images.unsplash.com/photo-1500036466846-2534e766a381?w=800&q=80",
+      "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80",
+    ],
+    aboutMe: "Gymnast turned physiotherapist helping dancers stay injury-free. Equal parts discipline and dad jokes.",
+    aboutMeText: "Gymnast turned physiotherapist helping dancers stay injury-free. Equal parts discipline and dad jokes.",
+    occupation: "Physiotherapist",
+    city: "Sydney, NSW",
+    height: "5'6\"",
+    children: "Don't have, want someday",
+    religion: "Christian",
+    prompts: [
+      { question: "Best stretch", answer: "The one you actually hold for 30 seconds." },
+      { question: "Unexpected hobby", answer: "Competitive yo-yo tricks with my nephews." }
+    ],
+    distance: 4,
+  },
+]
+
+export default function MatchesPage() {
+  const router = useRouter()
+  const { theme, setTheme } = useTheme()
+  const sunSignSystem = useSunSignSystem()
+  const enrichedProfiles = useMemo(() => {
+    return TEST_PROFILES.map((profile) => {
+      const { tropical, sidereal } = getBothSunSignsFromBirthdate(profile.birthdate)
+      return {
+        ...profile,
+        tropicalWesternSign: tropical ?? profile.westernSign,
+        siderealWesternSign: sidereal ?? profile.westernSign,
+      }
+    })
+  }, [])
+  const [currentProfileIndex, setCurrentProfileIndex] = useState(0)
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
+  const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
+  const [profilesLoading, setProfilesLoading] = useState(true)
+  const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
+  const [searchFilters, setSearchFilters] = useState({
+    westernSign: '',
+    easternSign: ''
+  })
+  const [matchTierFilters, setMatchTierFilters] = useState({
+    perfect: false,
+    excellent: false,
+    good: false
+  })
+  const [filteredProfiles, setFilteredProfiles] = useState(enrichedProfiles)
+  const [isUserInteracting, setIsUserInteracting] = useState(false)
+  const [isTouchDevice, setIsTouchDevice] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+  })
+  
+  // Detect touch device on mount
+  useEffect(() => {
+    const checkTouchDevice = () => {
+      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0)
+    }
+    checkTouchDevice()
+    window.addEventListener('resize', checkTouchDevice)
+    return () => window.removeEventListener('resize', checkTouchDevice)
+  }, [])
+  
+  // Swipe state
+  const [touchStart, setTouchStart] = useState<number | null>(null)
+  const [touchStartY, setTouchStartY] = useState<number | null>(null)
+  const [touchEnd, setTouchEnd] = useState<number | null>(null)
+  const [swipeOffset, setSwipeOffset] = useState(0)
+  const [isAnimating, setIsAnimating] = useState(false)
+  const cardRef = useRef<HTMLDivElement>(null)
+  
+  // Button swipe state
+  const [buttonTouchStart, setButtonTouchStart] = useState<{ x: number, y: number } | null>(null)
+  
+  // Touch position for swipe indicator
+  const [touchY, setTouchY] = useState<number>(0)
+  
+  // Window width for Bumble-style flash animations
+  const [windowWidth, setWindowWidth] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 375)
+  
+  // Flash animation state
+  const [showLikeFlash, setShowLikeFlash] = useState(false)
+  const [showPassFlash, setShowPassFlash] = useState(false)
+  
+  // Button flash state
+  const [likeButtonFlash, setLikeButtonFlash] = useState(false)
+  const [passButtonFlash, setPassButtonFlash] = useState(false)
+  const [backButtonFlash, setBackButtonFlash] = useState(false)
+  const [messageButtonFlash, setMessageButtonFlash] = useState(false)
+  
+  // Active button state for Tinder-style animations
+  const [activeButton, setActiveButton] = useState<'like' | 'pass' | null>(null)
+  
+  // Minimum swipe distance (in px) to trigger an action
+  const minSwipeDistance = 100
+  
+  // User's zodiac signs for matching
+  const [userZodiacSigns, setUserZodiacSigns] = useState<{western: string, chinese: string}>({
+    western: 'Leo',
+    chinese: 'Rabbit'
+  })
+
+  // Track window width for Bumble-style animations
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    
+    const updateWindowWidth = () => {
+      setWindowWidth(window.innerWidth)
+    }
+    
+    updateWindowWidth()
+    window.addEventListener('resize', updateWindowWidth)
+    
+    return () => {
+      window.removeEventListener('resize', updateWindowWidth)
+    }
+  }, [])
+
+  // Load user's zodiac signs from localStorage
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const loadUserSigns = () => {
+      try {
+        const userWesternSign = localStorage.getItem("userSunSign")
+        const userChineseSign = localStorage.getItem("userChineseSign")
+
+        if (userWesternSign && userChineseSign) {
+          setUserZodiacSigns({
+            western: capitalizeSign(userWesternSign),
+            chinese: capitalizeSign(userChineseSign)
+          })
+          console.log("[Matches] User signs loaded:", { western: userWesternSign, chinese: userChineseSign })
+        } else {
+          console.log("[Matches] Using default signs: Leo-Rabbit")
+        }
+      } catch (error) {
+        console.error("[Matches] Error loading zodiac signs:", error)
+      }
+    }
+
+    loadUserSigns()
+    const handleSystemChange = () => loadUserSigns()
+    window.addEventListener('sunSignSystemChanged', handleSystemChange)
+    return () => window.removeEventListener('sunSignSystemChanged', handleSystemChange)
+  }, [])
+
+  // Filter profiles based on search criteria
+  useEffect(() => {
+    let filtered = [...enrichedProfiles]
+    
+    const getProfileWesternForSystem = (profile: typeof enrichedProfiles[number]) => {
+      const tropical = profile.tropicalWesternSign || profile.westernSign
+      const sidereal = profile.siderealWesternSign || profile.westernSign
+      return sunSignSystem === "sidereal" ? sidereal : tropical
+    }
+    
+    // Apply zodiac filters
+    if (searchFilters.westernSign) {
+      filtered = filtered.filter((p) => getProfileWesternForSystem(p) === searchFilters.westernSign)
+    }
+    if (searchFilters.easternSign) {
+      filtered = filtered.filter(p => p.easternSign === searchFilters.easternSign)
+    }
+    
+    // Apply match tier filters
+    const hasActiveTierFilters = matchTierFilters.perfect || matchTierFilters.excellent || matchTierFilters.good
+    if (hasActiveTierFilters && Object.keys(compatBoxes).length > 0) {
+      filtered = filtered.filter(profile => {
+        const compatBox = compatBoxes[profile.id]
+        if (!compatBox) return false
+        
+        const tierKey = compatBox.rankKey
+        
+        if (matchTierFilters.perfect && tierKey === "perfect") return true
+        if (matchTierFilters.excellent && tierKey === "excellent") return true
+        if (matchTierFilters.good && tierKey === "good") return true
+        
+        return false
+      })
+    }
+    
+    setFilteredProfiles(filtered)
+    setCurrentProfileIndex(0) // Reset to first profile when filters change
+  }, [searchFilters, matchTierFilters, compatBoxes, enrichedProfiles, sunSignSystem])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (showSettingsDropdown && !(event.target as Element).closest('.settings-dropdown-container')) {
+        setShowSettingsDropdown(false)
+      }
+    }
+
+    if (showSettingsDropdown) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showSettingsDropdown])
+
+  // Build compatibility boxes for all test profiles
+  useEffect(() => {
+    if (!userZodiacSigns.western || !userZodiacSigns.chinese) {
+      return
+    }
+    
+    console.log('[🚀 Match Engine] Building compatibility boxes for test profiles')
+    const boxes: {[key: number]: ConnectionBoxData} = {}
+    
+    for (const profile of enrichedProfiles) {
+      try {
+        const userWest = capitalizeSign(userZodiacSigns.western) as West
+        const userEast = capitalizeSign(userZodiacSigns.chinese) as East
+        const tropicalProfileWest = capitalizeSign(profile.tropicalWesternSign || profile.westernSign) as West
+        const profileEast = capitalizeSign(profile.easternSign) as East
+        
+        const savedSunSigns = getSavedSunSigns()
+        const userDisplayWest = sunSignSystem === "sidereal"
+          ? (savedSunSigns.sidereal ?? userWest)
+          : (savedSunSigns.tropical ?? userWest)
+        const profileDisplayWest = sunSignSystem === "sidereal"
+          ? (profile.siderealWesternSign || profile.westernSign)
+          : (profile.tropicalWesternSign || profile.westernSign)
+        const profileDisplayWestCapitalized = capitalizeSign(profileDisplayWest)
+        
+        // Calculate compatibility using NEW classifier (primary)
+        const classifierResult = computeMatchWithClassifier(
+          userWest,
+          userEast,
+          tropicalProfileWest,
+          profileEast
+        )
+        
+        // Also get result from old engines for fallback/legacy support
+        const newEngineResult = computeMatchWithNewEngine(
+          userWest,
+          userEast,
+          tropicalProfileWest,
+          profileEast
+        )
+        
+        const astroMatch = evaluateMatch(
+          userWest,
+          userEast,
+          tropicalProfileWest,
+          profileEast
+        )
+        
+        const legacyResult = explainMatchAndScore(
+          userWest,
+          userEast,
+          tropicalProfileWest,
+          profileEast
+        )
+        
+        // Use new classifier result as primary, with fallback to legacy for missing fields
+        const result = {
+          score: classifierResult.score,
+          rankKey: classifierResult.rankKey,
+          rankLabel: classifierResult.rankLabel,
+          emoji: classifierResult.emoji,
+          colorRgb: classifierResult.colorRgb,
+          connectionLabel: classifierResult.connectionLabel,
+          east_relation: classifierResult.east_relation,
+          east_summary: classifierResult.east_summary,
+          west_relation: classifierResult.west_relation,
+          west_summary: classifierResult.west_summary,
+          tagline: classifierResult.tagline,
+          tags: classifierResult.tags || [],
+          hasOverride: legacyResult.hasOverride,
+          hasLongform: legacyResult.hasLongform,
+          tier: classifierResult.tier,
+        }
+        
+        // Create normalized pair ID
+        const pairId = createPairId(userWest, userEast, tropicalProfileWest, profileEast)
+        
+        // Get tier key from score
+        const tierKey = getTierKeyFromScore(result.score)
+        
+        // Try to get longform content
+        const longformContent = getCompleteLongformBlurb(pairId, tierKey)
+        
+        // Determine insight
+        let insight: string | undefined
+        
+        if (longformContent) {
+          insight = longformContent.body
+        } else {
+          const pairKey = `${userWest.toLowerCase()}_${userEast.toLowerCase()}__${tropicalProfileWest.toLowerCase()}_${profileEast.toLowerCase()}` as OverrideKey
+          const override = INSIGHT_OVERRIDES[pairKey]
+          const useOverride = override && (override.rank === result.rankKey)
+          insight = useOverride ? override.insight : autoInsight(result)
+        }
+        
+        // Use longform labels if available, otherwise use new match engine relationship data
+        // New match engine provides:
+        // - east_relation: e.g., "Rabbit × Monkey — ⚡ Magnetic Opposites" or "Rabbit × Dragon — Same Trine: Visionaries"
+        // - east_summary: e.g., "High-voltage chemistry through contrast..." or "Effortless rhythm and shared instincts..."
+        const eastLabel = longformContent?.east_label || result.east_relation
+        const eastText = longformContent?.east_text || result.east_summary
+        const westLabel = longformContent?.west_label || result.west_relation
+        const westText = longformContent?.west_text || result.west_summary
+        // Always use classifier result for headline/connectionLabel - don't let longform override it
+        const headline = result.connectionLabel || classifierResult.rankLabel
+        const eastTagline = longformContent?.east_tagline || result.east_tagline || result.tagline
+        const overallTagline = longformContent?.tagline || result.tagline
+        
+        // Use classifier tags as primary, with fallback to astroMatch badges
+        const badgeTags = classifierResult.tags?.length ? classifierResult.tags : (astroMatch.badges?.length ? astroMatch.badges : [])
+        const combinedTags = Array.from(new Set([...(result.tags ?? []), ...badgeTags]))
+        // Always prioritize classifier result for rank label
+        const rankLabelDisplay = classifierResult.rankLabel || result.rankLabel
+
+        const boxData: ConnectionBoxData = {
+          score: classifierResult.score,
+          rank: rankLabelDisplay,
+          rankLabel: rankLabelDisplay,
+          rankKey: classifierResult.rankKey,  // Always use classifier rankKey
+          emoji: classifierResult.emoji,  // Use classifier emoji for consistency
+          colorRgb: classifierResult.colorRgb,  // Always use classifier color from TIER_TO_COLOR
+          connectionLabel: headline,
+          tagline: overallTagline,
+          east_tagline: eastTagline,
+          tags: combinedTags,
+          notes: classifierResult.notes || badgeTags, // Use classifier badges as notes
+          insight: insight,
+          longformBody: longformContent?.body,
+          hasOverride: result.hasOverride,
+          hasLongform: !!longformContent,
+          east_relation: eastLabel,
+          east_summary: eastText,
+          west_relation: westLabel,
+          west_summary: westText,
+          tier: classifierResult.tier || result.tier,  // Use classifier tier
+          astroMatch,
+          a: {
+            west: userDisplayWest,
+            east: userEast,
+            westGlyph: getWesternSignGlyph(userDisplayWest),
+            eastGlyph: getChineseSignGlyph(userEast)
+          },
+          b: {
+            west: profileDisplayWestCapitalized,
+            east: profileEast,
+            westGlyph: getWesternSignGlyph(profileDisplayWestCapitalized),
+            eastGlyph: getChineseSignGlyph(profileEast)
+          }
+        }
+        
+        boxes[profile.id] = boxData
+        
+        // Log match engine relationship data for debugging (using classifier results)
+        console.log(`[✓] ${profile.name} (${profileDisplayWest}-${profile.easternSign}): ${classifierResult.score}% ${result.emoji} - ${rankLabelDisplay}`)
+        console.log(`   Classifier Tier: ${classifierResult.rankLabel} | Rank Key: ${classifierResult.rankKey}`)
+        console.log(`   BoxData rankLabel: ${rankLabelDisplay} | rank: ${rankLabelDisplay} | rankKey: ${classifierResult.rankKey}`)
+        console.log(`   User: ${userDisplayWest}-${userEast} × Profile: ${profileDisplayWestCapitalized}-${profileEast}`)
+        console.log(`   East: ${eastLabel}`)
+        if (eastText) console.log(`   East Summary: ${eastText.substring(0, 80)}...`)
+        console.log(`   West: ${westLabel}`)
+        if (westText) console.log(`   West Summary: ${westText.substring(0, 80)}...`)
+        if (badgeTags.length > 0) console.log(`   Badges: ${badgeTags.join(', ')}`)
+        if (profile.name === "Emma") {
+          console.log(`[DEBUG EMMA] Full boxData:`, JSON.stringify({
+            rank: rankLabelDisplay,
+            rankLabel: rankLabelDisplay,
+            rankKey: classifierResult.rankKey,
+            connectionLabel: headline,
+            score: classifierResult.score
+          }, null, 2))
+        }
+      } catch (error) {
+        console.error(`[✗] Error building compatibility for ${profile.name}:`, error)
+      }
+    }
+    
+    setCompatBoxes(boxes)
+    setProfilesLoading(false)
+    console.log('[📊 Match Engine] Compatibility boxes ready:', Object.keys(boxes).length)
+  }, [userZodiacSigns, enrichedProfiles, sunSignSystem])
+
+  useEffect(() => {
+    setFilteredProfiles(enrichedProfiles)
+  }, [enrichedProfiles])
+
+  const currentProfile = filteredProfiles[currentProfileIndex]
+
+  const handlePrevProfile = () => {
+    if (currentProfileIndex > 0) {
+      // Show button flash
+      setBackButtonFlash(true)
+      setTimeout(() => setBackButtonFlash(false), 400)
+      setCurrentProfileIndex(currentProfileIndex - 1)
+      setCurrentPhotoIndex(0)
+      setIsUserInteracting(false)
+    }
+  }
+
+  const handleNextProfile = () => {
+    if (currentProfileIndex < filteredProfiles.length - 1) {
+      setCurrentProfileIndex(currentProfileIndex + 1)
+      setCurrentPhotoIndex(0)
+      setIsUserInteracting(false)
+    }
+  }
+
+  const handleLike = () => {
+    console.log('Liked:', currentProfile.name)
+    // Step 1: Show the heart icon first
+    setActiveButton('like')
+    setLikeButtonFlash(true)
+    setShowLikeFlash(true)
+    
+    // Step 2: Wait a brief moment (300ms) then start the swipe animation
+    setTimeout(() => {
+      setIsAnimating(true)
+      // Animate card flying off to the right
+      setSwipeOffset(1000) // Swipe right off screen
+    }, 300)
+    
+    // Hide flash as card is leaving
+    setTimeout(() => setShowLikeFlash(false), 1000)
+    
+    // Step 3: Reset buttons quickly as soon as card starts leaving (400ms)
+    setTimeout(() => {
+      setLikeButtonFlash(false)
+      setActiveButton(null)
+    }, 400) // Buttons return to normal much faster
+    
+    // Step 4: Change profile shortly after
+    setTimeout(() => {
+      setIsAnimating(false)
+      // Reset swipe BEFORE changing profile so new card doesn't inherit the offset
+      setSwipeOffset(0)
+      // Small delay to ensure state is reset
+      requestAnimationFrame(() => {
+        handleNextProfile()
+      })
+    }, 1050) // 300ms pause + 750ms swipe animation
+  }
+
+  const handlePass = () => {
+    console.log('Passed:', currentProfile.name)
+    // Step 1: Show the X icon first
+    setActiveButton('pass')
+    setPassButtonFlash(true)
+    setShowPassFlash(true)
+    
+    // Step 2: Wait a brief moment (300ms) then start the swipe animation
+    setTimeout(() => {
+      setIsAnimating(true)
+      // Animate card flying off to the left
+      setSwipeOffset(-1000) // Swipe left off screen
+    }, 300)
+    
+    // Hide flash as card is leaving
+    setTimeout(() => setShowPassFlash(false), 1000)
+    
+    // Step 3: Reset buttons quickly as soon as card starts leaving (400ms)
+    setTimeout(() => {
+      setPassButtonFlash(false)
+      setActiveButton(null)
+    }, 400) // Buttons return to normal much faster
+    
+    // Step 4: Change profile shortly after
+    setTimeout(() => {
+      setIsAnimating(false)
+      // Reset swipe BEFORE changing profile so new card doesn't inherit the offset
+      setSwipeOffset(0)
+      // Small delay to ensure state is reset
+      requestAnimationFrame(() => {
+        handleNextProfile()
+      })
+    }, 1050) // 300ms pause + 750ms swipe animation
+  }
+
+  const handleChat = () => {
+    console.log('Chat with:', currentProfile.name)
+    // Show button flash
+    setMessageButtonFlash(true)
+    setTimeout(() => setMessageButtonFlash(false), 400)
+    router.push(`/messages/${currentProfile.id}`)
+  }
+
+  // Swipe handlers
+  const onTouchStart = (e: React.TouchEvent) => {
+    const touch = e.targetTouches[0]
+    setTouchEnd(null)
+    setTouchStart(touch.clientX)
+    setTouchStartY(touch.clientY)
+    setIsUserInteracting(true)
+    // Capture the Y position relative to the card
+    if (cardRef.current) {
+      const cardRect = cardRef.current.getBoundingClientRect()
+      setTouchY(touch.clientY - cardRect.top)
+    }
+  }
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    if (touchStart === null) return
+    const currentTouch = e.targetTouches[0]
+    const diff = currentTouch.clientX - touchStart
+
+    if (!isUserInteracting) {
+      setIsUserInteracting(true)
+    }
+
+    if (touchStartY !== null) {
+      const deltaY = currentTouch.clientY - touchStartY
+      if (Math.abs(deltaY) > Math.abs(diff) && Math.abs(deltaY) > 8) {
+        // treat gesture as vertical scroll; cancel swipe state so page can scroll
+        setTouchStart(null)
+        setTouchEnd(null)
+        setTouchStartY(null)
+        setSwipeOffset(0)
+        if (showLikeFlash) setShowLikeFlash(false)
+        if (showPassFlash) setShowPassFlash(false)
+        setLikeButtonFlash(false)
+        setPassButtonFlash(false)
+        setActiveButton(null)
+        setIsUserInteracting(false)
+        return
+      }
+    }
+
+    setSwipeOffset(diff)
+    setTouchEnd(currentTouch.clientX)
+    
+    // Update Y position as user moves finger
+    if (cardRef.current) {
+      const cardRect = cardRef.current.getBoundingClientRect()
+      setTouchY(currentTouch.clientY - cardRect.top)
+    }
+    
+    // Show flash animations immediately when swiping in either direction
+    const minSwipeToShow = 50 // Very small threshold - just 50px
+    
+    if (diff > minSwipeToShow) {
+      // Swiping right = like - Trigger ALL button animations immediately
+      if (!showLikeFlash) {
+        setShowLikeFlash(true)
+        setLikeButtonFlash(true)
+        setActiveButton('like') // Start button animations NOW
+      }
+      if (showPassFlash) {
+        setShowPassFlash(false)
+        setPassButtonFlash(false)
+        setActiveButton(null)
+      }
+    } else if (diff < -minSwipeToShow) {
+      // Swiping left = pass - Trigger ALL button animations immediately
+      if (!showPassFlash) {
+        setShowPassFlash(true)
+        setPassButtonFlash(true)
+        setActiveButton('pass') // Start button animations NOW
+      }
+      if (showLikeFlash) {
+        setShowLikeFlash(false)
+        setLikeButtonFlash(false)
+        setActiveButton(null)
+      }
+    } else {
+      // Not far enough, hide both
+      if (showLikeFlash) {
+        setShowLikeFlash(false)
+        setLikeButtonFlash(false)
+        setActiveButton(null)
+      }
+      if (showPassFlash) {
+        setShowPassFlash(false)
+        setPassButtonFlash(false)
+        setActiveButton(null)
+      }
+    }
+  }
+
+  const onTouchEnd = () => {
+    if (touchStart === null || touchEnd === null) {
+      setSwipeOffset(0)
+      setShowLikeFlash(false)
+      setShowPassFlash(false)
+      setActiveButton(null)
+      setTouchStartY(null)
+      setIsUserInteracting(false)
+      return
+    }
+    
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+    
+    if (isLeftSwipe) {
+      // Swipe left = pass - Animations already running from onTouchMove
+      setIsAnimating(true)
+      // Animate card all the way off screen
+      setSwipeOffset(-1000)
+      
+      // Wait for animation to complete, then show next profile from underneath
+      setTimeout(() => {
+        setShowPassFlash(false)
+        setPassButtonFlash(false)
+        setActiveButton(null)
+        setIsAnimating(false)
+        // Reset swipe BEFORE changing profile so new card doesn't inherit the offset
+        setSwipeOffset(0)
+        // Small delay to ensure state is reset
+        requestAnimationFrame(() => {
+          handleNextProfile()
+        })
+      }, 400)
+    } else if (isRightSwipe) {
+      // Swipe right = like - Animations already running from onTouchMove
+      setIsAnimating(true)
+      // Animate card all the way off screen
+      setSwipeOffset(1000)
+      
+      // Wait for animation to complete, then show next profile from underneath
+      setTimeout(() => {
+        setShowLikeFlash(false)
+        setLikeButtonFlash(false)
+        setActiveButton(null)
+        setIsAnimating(false)
+        // Reset swipe BEFORE changing profile so new card doesn't inherit the offset
+        setSwipeOffset(0)
+        // Small delay to ensure state is reset
+        requestAnimationFrame(() => {
+          handleNextProfile()
+        })
+      }, 400)
+    } else {
+      // Reset if swipe wasn't far enough
+      setSwipeOffset(0)
+      setShowLikeFlash(false)
+      setShowPassFlash(false)
+      setLikeButtonFlash(false)
+      setPassButtonFlash(false)
+      setActiveButton(null)
+      setIsUserInteracting(false)
+    }
+    
+    setTouchStart(null)
+    setTouchEnd(null)
+    setTouchStartY(null)
+    setIsUserInteracting(false)
+  }
+
+  const onTouchCancel = () => {
+    setSwipeOffset(0)
+    setShowLikeFlash(false)
+    setShowPassFlash(false)
+    setLikeButtonFlash(false)
+    setPassButtonFlash(false)
+    setActiveButton(null)
+    setTouchStart(null)
+    setTouchEnd(null)
+    setTouchStartY(null)
+    setIsUserInteracting(false)
+  }
+
+  // Button swipe handlers
+  const onButtonTouchStart = (e: React.TouchEvent) => {
+    setButtonTouchStart({
+      x: e.targetTouches[0].clientX,
+      y: e.targetTouches[0].clientY
+    })
+  }
+
+  const onButtonTouchEnd = (e: React.TouchEvent, action: 'like' | 'pass') => {
+    if (!buttonTouchStart) return
+    
+    const touchEndX = e.changedTouches[0].clientX
+    const touchEndY = e.changedTouches[0].clientY
+    const diffX = touchEndX - buttonTouchStart.x
+    const diffY = Math.abs(touchEndY - buttonTouchStart.y)
+    
+    // Only trigger if horizontal swipe is dominant (more than vertical)
+    if (Math.abs(diffX) > 50 && Math.abs(diffX) > diffY) {
+      if (action === 'like' && diffX > 0) {
+        // Swipe right on like button
+        handleLike()
+      } else if (action === 'pass' && diffX < 0) {
+        // Swipe left on pass button
+        handlePass()
+      }
+    }
+    
+    setButtonTouchStart(null)
+  }
+
+  if (profilesLoading) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${theme === "light" ? "bg-white" : "bg-black"}`}>
+        <div className="text-center">
+          <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+            Loading matches...
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  const containerStyle: React.CSSProperties = isTouchDevice
+    ? {
+        WebkitOverflowScrolling: 'touch',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        minHeight: '100dvh',
+        position: 'relative',
+        paddingBottom: '90px',
+        paddingTop: '16px',
+      }
+    : {
+        WebkitOverflowScrolling: 'auto',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        minHeight: '100vh',
+        position: 'relative',
+        paddingBottom: '120px',
+        paddingTop: '24px',
+      }
+
+  return (
+    <div
+      className={`overscroll-y-contain ${theme === "light" ? "bg-white" : "bg-black"}`}
+      style={containerStyle}
+    >
+      {/* CSS Animations for Flash */}
+      <style jsx global>{`
+        html {
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        body {
+          overflow-x: hidden;
+          overscroll-behavior-y: contain;
+        }
+        
+        @keyframes scaleIn {
+          0% {
+            opacity: 0;
+            transform: scale(0.5);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        @keyframes buttonFlash {
+          0% {
+            background-color: var(--button-bg-start);
+          }
+          50% {
+            background-color: rgb(249, 115, 22);
+          }
+          100% {
+            background-color: var(--button-bg-start);
+          }
+        }
+        
+        @keyframes buttonFlashActive {
+          0% {
+            background-color: var(--button-bg-start);
+            transform: scale(1);
+          }
+          40% {
+            background-color: rgb(249, 115, 22);
+            transform: scale(1.2);
+          }
+          100% {
+            background-color: rgb(249, 115, 22);
+            transform: scale(1.15);
+          }
+        }
+        
+        @keyframes buttonShrinkOut {
+          0% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(0);
+            opacity: 0;
+          }
+        }
+        
+        @keyframes iconFlash {
+          0% {
+            stroke: rgb(249, 115, 22);
+            fill: none;
+          }
+          50% {
+            stroke: white;
+            fill: white;
+          }
+          100% {
+            stroke: rgb(249, 115, 22);
+            fill: none;
+          }
+        }
+        
+        @keyframes iconFlashFilled {
+          0% {
+            fill: rgb(249, 115, 22);
+          }
+          50% {
+            fill: white;
+          }
+          100% {
+            fill: rgb(249, 115, 22);
+          }
+        }
+        
+        @keyframes iconFlashActive {
+          0% {
+            stroke: rgb(249, 115, 22);
+            fill: none;
+          }
+          40% {
+            stroke: white;
+            fill: white;
+          }
+          100% {
+            stroke: white;
+            fill: white;
+          }
+        }
+        
+        .button-flash-animation {
+          animation: buttonFlash 0.4s ease-out;
+        }
+        
+        .button-flash-active {
+          animation: buttonFlashActive 0.5s ease-out forwards;
+        }
+        
+        .button-shrink-out {
+          animation: buttonShrinkOut 0.4s ease-out forwards;
+        }
+        
+        .icon-flash-animation {
+          animation: iconFlash 0.4s ease-out;
+        }
+        
+        .icon-flash-animation-filled {
+          animation: iconFlashFilled 0.4s ease-out;
+        }
+        
+        .icon-flash-active {
+          animation: iconFlashActive 0.5s ease-out forwards;
+        }
+      `}</style>
+      
+      <div className="relative z-10 max-w-sm mx-auto overflow-visible">
+        {/* Header */}
+        <div className="px-3 pt-2 pb-2">
+          <div className="flex items-center justify-between">
+            {/* Logo */}
+            <div className="flex items-center gap-0.5">
+              <FourPointedStar className="w-4 h-4 text-orange-500" />
+              <span className="font-bold text-base bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
+                Matches
+              </span>
+            </div>
+            
+            {/* Right side: Back button, Settings and Theme toggle */}
+            <div className="flex items-center gap-2">
+              {/* Back button */}
+              <button
+                onClick={handlePrevProfile}
+                className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 transition-colors"
+                aria-label="Go to previous profile"
+              >
+                <svg 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke={theme === "light" ? "rgb(75, 85, 99)" : "rgba(255, 255, 255, 0.7)"} 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  className="w-5 h-5"
+                >
+                  <path d="M3 7v6h6" />
+                  <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13" />
+                </svg>
+              </button>
+              
+              {/* Settings Dropdown */}
+              <div className="relative settings-dropdown-container">
+                <button
+                  onClick={() => setShowSettingsDropdown(!showSettingsDropdown)}
+                  className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 transition-colors"
+                  aria-label="Match settings"
+                >
+                  <Settings className={`w-5 h-5 ${theme === "light" ? "text-gray-600" : "text-white/70"}`} />
+                </button>
+                
+                {showSettingsDropdown && (
+                  <div className={`absolute right-0 top-10 w-80 backdrop-blur-sm rounded-lg shadow-xl p-4 z-50 ${theme === "light" ? "bg-white border border-gray-200" : "bg-zinc-800/95 border border-white/20"}`}>
+                    <h3 className={`text-lg font-bold mb-4 ${theme === "light" ? "text-black" : "text-white"}`}>Search Settings</h3>
+                    
+                    {/* Western Sign Filter */}
+                    <div className="mb-4">
+                      <label className={`block text-sm font-medium mb-2 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>Western Zodiac Sign</label>
+                      <select
+                        value={searchFilters.westernSign}
+                        onChange={(e) => setSearchFilters(prev => ({ ...prev, westernSign: e.target.value }))}
+                        className={`w-full px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-purple-500 ${
+                          theme === "light" 
+                            ? "bg-white border border-gray-300 text-black" 
+                            : "bg-zinc-700/50 border border-white/20 text-white"
+                        }`}
+                        style={{ 
+                          colorScheme: theme === 'light' ? 'light' : 'dark',
+                          WebkitTextFillColor: theme === 'light' ? '#000000' : 'white',
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none'
+                        } as React.CSSProperties}
+                      >
+                        <option value="" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>Any Western Sign</option>
+                        <option value="Aries" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♈ Aries</option>
+                        <option value="Taurus" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♉ Taurus</option>
+                        <option value="Gemini" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♊ Gemini</option>
+                        <option value="Cancer" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♋ Cancer</option>
+                        <option value="Leo" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♌ Leo</option>
+                        <option value="Virgo" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♍ Virgo</option>
+                        <option value="Libra" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♎ Libra</option>
+                        <option value="Scorpio" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♏ Scorpio</option>
+                        <option value="Sagittarius" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♐ Sagittarius</option>
+                        <option value="Capricorn" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♑ Capricorn</option>
+                        <option value="Aquarius" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♒ Aquarius</option>
+                        <option value="Pisces" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>♓ Pisces</option>
+                      </select>
+                    </div>
+                    
+                    {/* Eastern Sign Filter */}
+                    <div className="mb-4">
+                      <label className={`block text-sm font-medium mb-2 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>Chinese Zodiac Sign</label>
+                      <select
+                        value={searchFilters.easternSign}
+                        onChange={(e) => setSearchFilters(prev => ({ ...prev, easternSign: e.target.value }))}
+                        className={`w-full px-3 py-2 rounded-lg text-sm focus:outline-none focus:border-purple-500 ${
+                          theme === "light" 
+                            ? "bg-white border border-gray-300 text-black" 
+                            : "bg-zinc-700/50 border border-white/20 text-white"
+                        }`}
+                        style={{ 
+                          colorScheme: theme === 'light' ? 'light' : 'dark',
+                          WebkitTextFillColor: theme === 'light' ? '#000000' : 'white',
+                          appearance: 'none',
+                          WebkitAppearance: 'none',
+                          MozAppearance: 'none'
+                        } as React.CSSProperties}
+                      >
+                        <option value="" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>Any Chinese Sign</option>
+                        <option value="Rat" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐭 Rat</option>
+                        <option value="Ox" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐂 Ox</option>
+                        <option value="Tiger" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐅 Tiger</option>
+                        <option value="Rabbit" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐰 Rabbit</option>
+                        <option value="Dragon" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐉 Dragon</option>
+                        <option value="Snake" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐍 Snake</option>
+                        <option value="Horse" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐎 Horse</option>
+                        <option value="Goat" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐐 Goat</option>
+                        <option value="Monkey" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐒 Monkey</option>
+                        <option value="Rooster" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐓 Rooster</option>
+                        <option value="Dog" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐕 Dog</option>
+                        <option value="Pig" style={{ color: theme === 'light' ? '#000000' : 'white', backgroundColor: theme === 'light' ? '#ffffff' : '#3f3f46' }}>🐷 Pig</option>
+                      </select>
+                    </div>
+                    
+                    {/* Match Tier Filters */}
+                    <div className="mb-4">
+                    <p className={`text-sm mb-3 ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>Search:</p>
+                    
+                    {/* Perfect Filter */}
+                    <div className="mb-3">
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={matchTierFilters.perfect}
+                          onChange={(e) => setMatchTierFilters(prev => ({ ...prev, perfect: e.target.checked }))}
+                          className={`w-4 h-4 text-purple-600 rounded focus:ring-purple-500 focus:ring-2 ${
+                            theme === "light" 
+                              ? "bg-white border-gray-300" 
+                              : "bg-zinc-700 border-white/20"
+                          }`}
+                        />
+                        <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          ✨ Perfect matches
+                        </span>
+                      </label>
+                      <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
+                        90–100% compatibility
+                      </p>
+                    </div>
+                    
+                    {/* Excellent Filter */}
+                    <div className="mb-3">
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={matchTierFilters.excellent}
+                          onChange={(e) => setMatchTierFilters(prev => ({ ...prev, excellent: e.target.checked }))}
+                          className={`w-4 h-4 text-purple-600 rounded focus:ring-purple-500 focus:ring-2 ${
+                            theme === "light" 
+                              ? "bg-white border-gray-300" 
+                              : "bg-zinc-700 border-white/20"
+                          }`}
+                        />
+                        <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          💖 Excellent matches
+                        </span>
+                      </label>
+                      <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
+                        75–89% compatibility
+                      </p>
+                    </div>
+                    
+                    {/* Good Filter */}
+                    <div className="mb-4">
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={matchTierFilters.good}
+                          onChange={(e) => setMatchTierFilters(prev => ({ ...prev, good: e.target.checked }))}
+                          className={`w-4 h-4 text-purple-600 rounded focus:ring-purple-500 focus:ring-2 ${
+                            theme === "light" 
+                              ? "bg-white border-gray-300" 
+                              : "bg-zinc-700 border-white/20"
+                          }`}
+                        />
+                        <span className={`text-sm font-medium ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
+                          🌙 Good matches
+                        </span>
+                      </label>
+                      <p className={`text-xs mt-1 ml-7 ${theme === "light" ? "text-gray-500" : "text-white/60"}`}>
+                        60–74% compatibility
+                      </p>
+                    </div>
+                    </div>
+                    
+                    {/* Action Buttons */}
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          setSearchFilters({ westernSign: '', easternSign: '' })
+                          setMatchTierFilters({ perfect: false, excellent: false, good: false })
+                          setShowSettingsDropdown(false)
+                        }}
+                        className={`flex-1 px-3 py-2 text-sm rounded-lg transition-colors ${
+                          theme === "light"
+                            ? "bg-gray-200 hover:bg-gray-300 text-gray-800"
+                            : "bg-zinc-600/50 hover:bg-zinc-600/70 text-white"
+                        }`}
+                      >
+                        Clear
+                      </button>
+                      <button
+                        onClick={() => setShowSettingsDropdown(false)}
+                        className="flex-1 px-3 py-2 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 hover:from-orange-500 hover:via-orange-400 hover:to-red-400 text-white text-sm rounded-lg transition-colors"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              {/* Theme Toggle Button */}
+              <button
+                onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                className={`p-2 rounded-lg transition-colors ${theme === "light" ? "hover:bg-gray-100" : "hover:bg-white/10"}`}
+                aria-label="Toggle theme"
+              >
+                {theme === "light" ? (
+                  <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="5" />
+                    <line x1="12" y1="1" x2="12" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="23" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                    <line x1="1" y1="12" x2="3" y2="12" />
+                    <line x1="21" y1="12" x2="23" y2="12" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Profile Card Stack */}
+        {currentProfile ? (
+          <div className="pb-32 relative overflow-visible">
+            {/* Next profile card (underneath) - Full size and ready */}
+            {filteredProfiles[currentProfileIndex + 1] && (
+              <div 
+                key={`next-${filteredProfiles[currentProfileIndex + 1].id}`}
+                className="absolute top-0 left-0 right-0 pb-32"
+                style={{
+                  zIndex: 1,
+                  pointerEvents: 'none'
+                }}
+              >
+                <MatchProfileCard
+                  profile={{
+                    id: filteredProfiles[currentProfileIndex + 1].id,
+                    name: filteredProfiles[currentProfileIndex + 1].name,
+                    age: filteredProfiles[currentProfileIndex + 1].age,
+                    photos: filteredProfiles[currentProfileIndex + 1].photos,
+                    aboutMe: filteredProfiles[currentProfileIndex + 1].aboutMe,
+                    occupation: filteredProfiles[currentProfileIndex + 1].occupation,
+                    city: filteredProfiles[currentProfileIndex + 1].city,
+                    height: filteredProfiles[currentProfileIndex + 1].height,
+                    children: filteredProfiles[currentProfileIndex + 1].children,
+                    religion: filteredProfiles[currentProfileIndex + 1].religion,
+                    prompts: filteredProfiles[currentProfileIndex + 1].prompts,
+                  }}
+                  connectionBoxData={compatBoxes[filteredProfiles[currentProfileIndex + 1].id]}
+                  theme={theme}
+                  onPhotoChange={() => {}}
+                  onMessageClick={() => {
+                    const nextProfile = filteredProfiles[currentProfileIndex + 1];
+                    if (nextProfile) {
+                      router.push(`/messages/${nextProfile.id}`);
+                    }
+                  }}
+                />
+              </div>
+            )}
+            
+            {/* Current profile card (on top) */}
+            <div 
+              key={`current-${currentProfile.id}`}
+              ref={cardRef}
+              className="relative"
+              style={{ 
+                zIndex: 2, 
+                touchAction: isTouchDevice 
+                  ? (isUserInteracting ? ('none' as const) : ('pan-y' as const))
+                  : ('auto' as const)
+              }}
+              onTouchStart={isTouchDevice ? onTouchStart : undefined}
+              onTouchMove={isTouchDevice ? onTouchMove : undefined}
+              onTouchEnd={isTouchDevice ? onTouchEnd : undefined}
+              onTouchCancel={isTouchDevice ? onTouchCancel : undefined}
+            >
+              <div
+                className="relative"
+                style={{
+                  transform: `translateX(${swipeOffset}px) rotate(${swipeOffset * 0.03}deg)`,
+                  transition: isAnimating ? 'transform 0.7s ease-out' : touchStart ? 'none' : 'transform 0.2s ease-out',
+                }}
+              >
+                {/* 
+                ====================================================================
+                ORIGINAL FLASH ANIMATION CODE (BACKUP - RESTORE IF NEEDED)
+                ====================================================================
+                
+                {/* Like/Pass Flash - Inside the card, counteracting rotation */}
+                {/* Like Flash - Top Left Corner */}
+                {/*
+                {showLikeFlash && (
+                  <div 
+                    className="absolute top-8 left-8 z-50 pointer-events-none"
+                    style={{
+                      transform: `rotate(${-15 - (swipeOffset * 0.03)}deg)`
+                    }}
+                  >
+                    <div style={{ animation: 'scaleIn 0.2s ease-out' }}>
+                      <svg 
+                        className="w-32 h-32" 
+                        viewBox="0 0 24 24" 
+                        fill="rgb(249, 115, 22)"
+                        style={{
+                          filter: 'drop-shadow(0 10px 30px rgba(249, 115, 22, 0.5))'
+                        }}
+                      >
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Pass Flash - Top Right Corner */}
+                {/*
+                {showPassFlash && (
+                  <div 
+                    className="absolute top-8 right-8 z-50 pointer-events-none"
+                    style={{
+                      transform: `rotate(${15 - (swipeOffset * 0.03)}deg)`
+                    }}
+                  >
+                    <div style={{ animation: 'scaleIn 0.2s ease-out' }}>
+                      <svg 
+                        className="w-32 h-32" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="rgb(249, 115, 22)" 
+                        strokeWidth="3"
+                        style={{
+                          filter: 'drop-shadow(0 10px 30px rgba(249, 115, 22, 0.5))'
+                        }}
+                      >
+                        <path d="m18 6-12 12" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                */}
+                
+                {/* ====================================================================
+                    BUMBLE-STYLE FLASH ANIMATIONS - Slide in from screen edges
+                    ==================================================================== */}
+
+                <MatchProfileCard
+                  profile={{
+                    id: currentProfile.id,
+                    name: currentProfile.name,
+                    age: currentProfile.age,
+                    photos: currentProfile.photos,
+                    aboutMe: currentProfile.aboutMe,
+                    occupation: currentProfile.occupation,
+                    city: currentProfile.city,
+                    height: currentProfile.height,
+                    children: currentProfile.children,
+                    religion: currentProfile.religion,
+                    prompts: currentProfile.prompts,
+                  }}
+                  connectionBoxData={compatBoxes[currentProfile.id]}
+                  theme={theme}
+                  onPhotoChange={(index) => setCurrentPhotoIndex(index)}
+                  onMessageClick={handleChat}
+                />
+              </div>
+            </div>
+            
+            {/* Bumble-Style Flash Animations - Fixed on screen, slide from opposite edges */}
+            {showLikeFlash && (() => {
+              // Like flash: swiping right, so flash comes from RIGHT edge (opposite side)
+              // Animation phases:
+              // 0-120px: slide in from right edge
+              // 120-180px: hold at max position (shorter hold)
+              // 180px+: retreat WITH the card (starts earlier, very fast - 60px range)
+              const maxPosition = windowWidth * 0.58
+              const iconSize = 128 // w-28 = 7rem = 112px
+              const startPosition = windowWidth + iconSize // Start completely off-screen right
+              
+              let currentX: number
+              let opacity: number
+              
+              if (swipeOffset <= 120) {
+                // Phase 1: Slide in (0-120px)
+                const progress = Math.max(swipeOffset, 0) / 120
+                currentX = startPosition - (progress * (startPosition - maxPosition))
+                opacity = progress
+              } else if (swipeOffset <= 180) {
+                // Phase 2: Hold at max position (120-180px) - shorter
+                currentX = maxPosition
+                opacity = 1
+              } else {
+                // Phase 3: Retreat WITH the card (180px+, only 60px range - very fast)
+                const retreatProgress = Math.min((swipeOffset - 180) / 60, 1)
+                currentX = maxPosition + (retreatProgress * (startPosition - maxPosition))
+                opacity = 1 - retreatProgress
+              }
+              
+              return (
+                <div 
+                  className="fixed z-50 pointer-events-none"
+                  style={{
+                    top: '25%',
+                    left: 0,
+                    transform: `translateX(${currentX}px)`,
+                    transition: isAnimating ? 'transform 0.7s ease-out, opacity 0.7s ease-out' : 'none',
+                    opacity: opacity * 0.7,
+                  }}
+                >
+                  <svg 
+                    className="w-28 h-28" 
+                    viewBox="0 0 24 24" 
+                    fill="rgba(249, 115, 22, 0.55)"
+                    style={{
+                      filter: 'drop-shadow(0 8px 28px rgba(249, 115, 22, 0.25)) blur(0.6px)',
+                    }}
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </div>
+              )
+            })()}
+            
+            {showPassFlash && (() => {
+              // Pass flash: swiping left, so flash comes from LEFT edge (opposite side)
+              // Animation phases:
+              // 0-120px: slide in from left edge
+              // 120-180px: hold at max position (shorter hold)
+              // 180px+: retreat WITH the card (starts earlier, very fast - 60px range)
+              const maxPosition = windowWidth * 0.12
+              const iconSize = 128
+              const startPosition = -iconSize // Start completely off-screen left
+              
+              let currentX: number
+              let opacity: number
+              
+              if (swipeOffset >= -120) {
+                // Phase 1: Slide in (0 to -120px)
+                const progress = Math.max(-swipeOffset, 0) / 120
+                currentX = startPosition + (progress * (maxPosition - startPosition))
+                opacity = progress
+              } else if (swipeOffset >= -180) {
+                // Phase 2: Hold at max position (-120 to -180px) - shorter
+                currentX = maxPosition
+                opacity = 1
+              } else {
+                // Phase 3: Retreat WITH the card (-180px and beyond, only 60px range - very fast)
+                const retreatProgress = Math.min((-swipeOffset - 180) / 60, 1)
+                currentX = maxPosition - (retreatProgress * (maxPosition - startPosition))
+                opacity = 1 - retreatProgress
+              }
+              
+              return (
+                <div 
+                  className="fixed z-50 pointer-events-none"
+                  style={{
+                    top: '25%',
+                    left: 0,
+                    transform: `translateX(${currentX}px)`,
+                    transition: isAnimating ? 'transform 0.7s ease-out, opacity 0.7s ease-out' : 'none',
+                    opacity: opacity * 0.7,
+                  }}
+                >
+                  <svg 
+                    className="w-32 h-32" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="rgba(249, 115, 22, 0.55)" 
+                    strokeWidth="3"
+                    style={{
+                      filter: 'drop-shadow(0 8px 28px rgba(249, 115, 22, 0.25)) blur(0.6px)',
+                    }}
+                  >
+                    <path d="m18 6-12 12" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </div>
+              )
+            })()}
+          </div>
+        ) : (
+          <div className="px-4 py-8 text-center">
+            <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+              No profiles match your filters
+            </p>
+            <button
+              onClick={() => {
+                setSearchFilters({ westernSign: '', easternSign: '' })
+                          setMatchTierFilters({ perfect: false, excellent: false, good: false })
+              }}
+              className="mt-4 px-6 py-2 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 hover:from-orange-500 hover:via-orange-400 hover:to-red-400 text-white rounded-lg transition-colors"
+            >
+              Clear Filters
+            </button>
+          </div>
+        )}
+
+
+      </div>
+    </div>
+  )
+}
+

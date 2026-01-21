@@ -1,0 +1,1298 @@
+{
+  "Rat-Rat": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Rat-Ox": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Rat-Tiger": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rat-Rabbit": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rat-Dragon": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Rat-Snake": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rat-Horse": {
+    "chem": 3,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Rat-Goat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rat-Monkey": {
+    "chem": 14,
+    "long": 10,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Rat-Rooster": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rat-Dog": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rat-Pig": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Ox-Rat": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Ox-Ox": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Ox-Tiger": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Ox-Rabbit": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Ox-Dragon": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Ox-Snake": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Ox-Horse": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Ox-Goat": {
+    "chem": 3,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Ox-Monkey": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Ox-Rooster": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Ox-Dog": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Ox-Pig": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Tiger-Rat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Tiger-Ox": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Tiger-Tiger": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Tiger-Rabbit": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Tiger-Dragon": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Tiger-Snake": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Tiger-Horse": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Tiger-Goat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Tiger-Monkey": {
+    "chem": 12,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Tiger-Rooster": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Tiger-Dog": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Tiger-Pig": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Rabbit-Rat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rabbit-Ox": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rabbit-Tiger": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Rabbit-Rabbit": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Rabbit-Dragon": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Rabbit-Snake": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rabbit-Horse": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rabbit-Goat": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Rabbit-Monkey": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rabbit-Rooster": {
+    "chem": 3,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Rabbit-Dog": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Rabbit-Pig": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Dragon-Rat": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Dragon-Ox": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dragon-Tiger": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dragon-Rabbit": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Dragon-Dragon": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Dragon-Snake": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Dragon-Horse": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dragon-Goat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dragon-Monkey": {
+    "chem": 14,
+    "long": 10,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Dragon-Rooster": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Dragon-Dog": {
+    "chem": 2,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Dragon-Pig": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Snake-Rat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Snake-Ox": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Snake-Tiger": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Snake-Rabbit": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Snake-Dragon": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Snake-Snake": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Snake-Horse": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Snake-Goat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Snake-Monkey": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Snake-Rooster": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Snake-Dog": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Snake-Pig": {
+    "chem": 0,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Horse-Rat": {
+    "chem": 3,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Horse-Ox": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Horse-Tiger": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Horse-Rabbit": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Horse-Dragon": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Horse-Snake": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Horse-Horse": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Horse-Goat": {
+    "chem": 12,
+    "long": 11,
+    "tone": "great",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Horse-Monkey": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Horse-Rooster": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Horse-Dog": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Horse-Pig": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Rat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Ox": {
+    "chem": 3,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Goat-Tiger": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Rabbit": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Goat-Dragon": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Snake": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Horse": {
+    "chem": 12,
+    "long": 11,
+    "tone": "great",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Goat-Goat": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Goat-Monkey": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Goat-Rooster": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Dog": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Goat-Pig": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Monkey-Rat": {
+    "chem": 14,
+    "long": 10,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Monkey-Ox": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Monkey-Tiger": {
+    "chem": 12,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Monkey-Rabbit": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Monkey-Dragon": {
+    "chem": 14,
+    "long": 10,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Monkey-Snake": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Monkey-Horse": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Monkey-Goat": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Monkey-Monkey": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Monkey-Rooster": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Monkey-Dog": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Monkey-Pig": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rooster-Rat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rooster-Ox": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Rooster-Tiger": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rooster-Rabbit": {
+    "chem": 3,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Rooster-Dragon": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Rooster-Snake": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Rooster-Horse": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rooster-Goat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Rooster-Monkey": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Rooster-Rooster": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Rooster-Dog": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Rooster-Pig": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dog-Rat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dog-Ox": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dog-Tiger": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Dog-Rabbit": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Dog-Dragon": {
+    "chem": 2,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Dog-Snake": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dog-Horse": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Dog-Goat": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dog-Monkey": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Dog-Rooster": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Dog-Dog": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  },
+  "Dog-Pig": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Pig-Rat": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Pig-Ox": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Pig-Tiger": {
+    "chem": 8,
+    "long": 7,
+    "tone": "good",
+    "notes": [
+      "There's a quiet, natural affinity.",
+      "You steady each other without trying."
+    ]
+  },
+  "Pig-Rabbit": {
+    "chem": 10,
+    "long": 8,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Pig-Dragon": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Pig-Snake": {
+    "chem": 0,
+    "long": -12,
+    "tone": "hard",
+    "notes": [
+      "Strong pull, but emotions can flare.",
+      "Different instincts — fairness matters."
+    ]
+  },
+  "Pig-Horse": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Pig-Goat": {
+    "chem": 13,
+    "long": 12,
+    "tone": "great",
+    "notes": [
+      "You fall into an easy, encouraging rhythm.",
+      "Instincts align; trust builds quickly."
+    ]
+  },
+  "Pig-Monkey": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Pig-Rooster": {
+    "chem": 3,
+    "long": 3,
+    "tone": "mixed",
+    "notes": [
+      "Different strengths that can fit well.",
+      "Care and clarity keep it strong."
+    ]
+  },
+  "Pig-Dog": {
+    "chem": 4,
+    "long": 1,
+    "tone": "mixed",
+    "notes": [
+      "Neighbors in temperament; curiosity keeps it lively.",
+      "Similar pace with just enough contrast."
+    ]
+  },
+  "Pig-Pig": {
+    "chem": 6,
+    "long": 4,
+    "tone": "good",
+    "notes": [
+      "Like meets like — familiar strengths and blind spots.",
+      "Shared style makes bonding quick and honest."
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+---
+description: Anti-patterns to avoid in AstroMatch development
+globs: 
+alwaysApply: true
+---
+# AstroMatch Anti-Patterns
+
+## ❌ Code Anti-Patterns
+- **Don't use `any` type**: Always use proper TypeScript types
+- **Don't ignore errors**: Handle all errors gracefully
+- **Don't hardcode values**: Use constants and environment variables
+- **Don't skip validation**: Validate all user inputs
+
+## 🚫 Security Anti-Patterns
+- **Don't expose API keys**: Never commit API keys to version control
+- **Don't trust user input**: Always validate and sanitize
+- **Don't skip authentication**: Protect all sensitive routes
+- **Don't store passwords**: Use proper authentication systems
+
+## 📱 UI/UX Anti-Patterns
+- **Don't ignore accessibility**: Always consider screen readers
+- **Don't use small touch targets**: Minimum 44px touch targets
+- **Don't ignore loading states**: Show loading indicators
+- **Don't break on small screens**: Test on all device sizes
+
+## 🗄️ Database Anti-Patterns
+- **Don't use raw SQL**: Use parameterized queries
+- **Don't ignore indexes**: Create proper database indexes
+- **Don't store sensitive data**: Encrypt sensitive information
+- **Don't skip backups**: Regular database backups
+
+## 🔮 Astrological Anti-Patterns
+- **Don't fake calculations**: Use real astrological principles
+- **Don't ignore timezones**: Handle timezone conversions properly
+- **Don't skip validation**: Validate birth date and time
+- **Don't use outdated data**: Keep astrological data current
+
+## 📱 Mobile Anti-Patterns
+- **Don't ignore touch gestures**: Support swipe and tap gestures
+- **Don't break offline**: Handle network connectivity issues
+- **Don't ignore battery life**: Optimize for mobile devices
+- **Don't skip responsive design**: Test on all screen sizes

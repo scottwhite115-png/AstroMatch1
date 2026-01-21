@@ -1,0 +1,232 @@
+{
+  "Aquarius-Rat": {
+    "Aquarius-Rat": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Air fusion → inventive and socially sharp.",
+        "Rat–Rat same trine → quick thinkers, adaptable.",
+        "Fixed loyalty with mutual curiosity and humor.",
+        "West/East balance → 92/96 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 100,
+        "lifestyle": 90,
+        "long_term": 92,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Aquarius-Ox": {
+      "overall": 70,
+      "summary": "Good Potential",
+      "insight": [
+        "Air–Earth → visionary meets realist.",
+        "Rat–Ox neighbor combo requires patience.",
+        "With time, balance creates stability.",
+        "West/East balance → 74/66 split."
+      ],
+      "scores": {
+        "core_vibe": 76,
+        "chemistry": 72,
+        "communication": 78,
+        "lifestyle": 70,
+        "long_term": 68,
+        "growth": 72
+      },
+      "color": "yellow"
+    },
+    "Aquarius-Tiger": {
+      "overall": 98,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Fire → bold, witty, visionary pair.",
+        "Rat–Tiger drive amplifies creative ambition.",
+        "Both progressive and fearless in love.",
+        "West/East balance → 96/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 98,
+        "communication": 98,
+        "lifestyle": 90,
+        "long_term": 94,
+        "growth": 90
+      },
+      "color": "green"
+    },
+    "Aquarius-Rabbit": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Water → emotion softens intellect.",
+        "Rat–Rabbit blend curiosity and grace.",
+        "Different but complement beautifully.",
+        "West/East balance → 84/88 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 90,
+        "lifestyle": 82,
+        "long_term": 84,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Aquarius-Dragon": {
+      "overall": 100,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Fire → genius connection of passion and intellect.",
+        "Rat–Dragon same trine → unstoppable duo.",
+        "They inspire and innovate endlessly.",
+        "West/East balance → 100/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 100,
+        "communication": 98,
+        "lifestyle": 94,
+        "long_term": 96,
+        "growth": 92
+      },
+      "color": "green"
+    },
+    "Aquarius-Snake": {
+      "overall": 82,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Earth → visionary and strategic.",
+        "Rat–Snake secret-friend harmony → calm minds connect.",
+        "Intellectual romance thrives quietly.",
+        "West/East balance → 84/80 split."
+      ],
+      "scores": {
+        "core_vibe": 86,
+        "chemistry": 82,
+        "communication": 88,
+        "lifestyle": 80,
+        "long_term": 82,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Aquarius-Horse": {
+      "overall": 94,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Fire = freedom, laughter, rebellion.",
+        "Rat–Horse clash adds challenge but fun sparks.",
+        "Great for growth and exploration.",
+        "West/East balance → 96/92 split."
+      ],
+      "scores": {
+        "core_vibe": 98,
+        "chemistry": 94,
+        "communication": 96,
+        "lifestyle": 88,
+        "long_term": 90,
+        "growth": 86
+      },
+      "color": "green"
+    },
+    "Aquarius-Goat": {
+      "overall": 72,
+      "summary": "Good Potential",
+      "insight": [
+        "Air–Earth → creative but uneven rhythm.",
+        "Rat–Goat emotional vs logical clash at times.",
+        "Balance of head and heart required.",
+        "West/East balance → 74/70 split."
+      ],
+      "scores": {
+        "core_vibe": 76,
+        "chemistry": 72,
+        "communication": 80,
+        "lifestyle": 70,
+        "long_term": 68,
+        "growth": 72
+      },
+      "color": "yellow"
+    },
+    "Aquarius-Monkey": {
+      "overall": 100,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Air = brilliance, humor, invention.",
+        "Rat–Monkey same trine → deep intellectual harmony.",
+        "Innovators who push each other forward.",
+        "West/East balance → 100/100 split."
+      ],
+      "scores": {
+        "core_vibe": 100,
+        "chemistry": 100,
+        "communication": 100,
+        "lifestyle": 94,
+        "long_term": 96,
+        "growth": 92
+      },
+      "color": "green"
+    },
+    "Aquarius-Rooster": {
+      "overall": 80,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Air pairing: logic, wit, and debate.",
+        "Rat–Rooster same trine → shared ideals.",
+        "Needs equal respect for differences.",
+        "West/East balance → 82/78 split."
+      ],
+      "scores": {
+        "core_vibe": 84,
+        "chemistry": 80,
+        "communication": 90,
+        "lifestyle": 78,
+        "long_term": 80,
+        "growth": 78
+      },
+      "color": "green"
+    },
+    "Aquarius-Dog": {
+      "overall": 86,
+      "summary": "Great Match",
+      "insight": [
+        "Air–Air → social, idealistic partnership.",
+        "Rat–Dog share vision and principles.",
+        "Together they serve a greater purpose.",
+        "West/East balance → 86/86 split."
+      ],
+      "scores": {
+        "core_vibe": 90,
+        "chemistry": 86,
+        "communication": 92,
+        "lifestyle": 82,
+        "long_term": 84,
+        "growth": 82
+      },
+      "color": "green"
+    },
+    "Aquarius-Pig": {
+      "overall": 92,
+      "summary": "Exceptional Match",
+      "insight": [
+        "Air–Water → intellect meets compassion.",
+        "Rat–Pig secret-friend link → kindness and humor.",
+        "Easy, honest, and emotionally supportive.",
+        "West/East balance → 92/92 split."
+      ],
+      "scores": {
+        "core_vibe": 96,
+        "chemistry": 92,
+        "communication": 94,
+        "lifestyle": 86,
+        "long_term": 92,
+        "growth": 86
+      },
+      "color": "green"
+    }
+  }
+}

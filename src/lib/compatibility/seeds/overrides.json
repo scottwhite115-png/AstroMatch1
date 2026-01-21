@@ -1,0 +1,12 @@
+{
+  "Aries-Rat": { "Aries-Tiger": 95, "Aries-Dragon": 92, "Aries-Horse": 88, "Aries-Rabbit": 50 },
+  "Aries-Ox":  { "Aries-Dragon": 82, "Aries-Horse": 85 },
+  "Aries-Tiger": { "Aries-Rat": 95, "Aries-Dragon": 92, "Aries-Horse": 90 },
+  "Aries-Rabbit": { "Aries-Goat": 82, "Aries-Pig": 77 },
+  "Aries-Dragon": { "Aries-Rat": 92, "Aries-Ox": 82, "Aries-Tiger": 92, "Aries-Horse": 90 },
+  "Aries-Snake": { "Aries-Dragon": 85 },
+  "Aries-Horse": { "Aries-Dragon": 90, "Aries-Dog": 85 },
+  "Aries-Goat":  { "Aries-Rabbit": 82 },
+  "Aries-Monkey":{ "Aries-Dragon": 88 },
+  "Aries-Rooster": { "Aries-Dragon": 80 }
+}

@@ -1,0 +1,271 @@
+// This is your Prisma schema file
+// Manually defined based on existing Supabase schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums for Community features
+enum PostType {
+  STORY
+  QUESTION
+}
+
+enum NotificationType {
+  POST_REPLY
+  COMMENT_REPLY
+}
+
+enum Role {
+  USER
+  ADMIN
+  OWNER
+}
+
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWED
+  ACTIONED
+}
+
+// Enums for San He Live Chat
+enum SanHeHouse {
+  VISIONARIES // Rat · Dragon · Monkey
+  STRATEGISTS // Ox · Snake · Rooster
+  ADVENTURERS // Tiger · Horse · Dog
+  ARTISTS // Rabbit · Goat · Pig
+}
+
+enum ChatRegionScope {
+  NEAR_ME
+  COUNTRY
+  GLOBAL
+}
+
+model profiles {
+  id             String   @id @db.Uuid
+  display_name   String?
+  west_east      String? // Legacy combined field, kept for backward compatibility
+  western_sign   String? // e.g. "Aquarius", "Leo", "Pisces"
+  chinese_sign   String? // e.g. "Monkey", "Rabbit", "Rat"
+  east_west_code String? // e.g. "Aquarius Monkey" or your combo key
+  photo_url      String?
+  email          String?
+  phone          String?
+  email_verified Boolean  @default(false)
+  phone_verified Boolean  @default(false)
+  lat            Float?
+  lon            Float?
+  last_active    DateTime @default(now())
+  created_at     DateTime @default(now())
+  updated_at     DateTime @default(now())
+
+  // Admin and moderation fields
+  role            Role          @default(USER)
+  isStaff         Boolean       @default(false)
+  showStaffBadge  Boolean       @default(true)
+  status          AccountStatus @default(ACTIVE)
+  suspensionEndsAt DateTime?
+
+  posts           Post[]
+  comments        Comment[]
+  sanHeMessages   SanHeMessage[]
+  sanHePresence   SanHePresence[]
+  reports         PostReport[]  @relation("ReporterReports")
+  blocksInitiated UserBlock[]   @relation("BlocksInitiated")
+  blocksReceived  UserBlock[]   @relation("BlocksReceived")
+}
+
+model connections {
+  id              String    @id @default(uuid()) @db.Uuid
+  user1_id        String    @db.Uuid
+  user2_id        String    @db.Uuid
+  is_mutual       Boolean   @default(false)
+  is_new_match    Boolean   @default(true)
+  last_message_at DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @default(now())
+
+  @@unique([user1_id, user2_id])
+  @@index([user1_id])
+  @@index([user2_id])
+  @@index([is_new_match])
+}
+
+model Post {
+  id           String   @id @default(cuid())
+  title        String
+  content      String
+  topic        String // e.g. "general-astrology", "sun-signs", "chinese-astrology", "vedic-astrology", "compatibility-and-synastry", "astromatch-feedback"
+  type         PostType @default(STORY) // STORY or QUESTION
+  authorId     String   @db.Uuid
+  author       profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  language     String? // ISO code like "en", optional
+  countryCode  String? // ISO 2-letter country code, optional
+  likeCount    Int      @default(0)
+  commentCount Int      @default(0)
+  isHidden     Boolean  @default(false) // Moderation: hide post without deleting
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  comments Comment[]
+  likes    PostLike[]
+  reports  PostReport[]
+
+  @@index([topic, createdAt(sort: Desc)])
+  @@index([authorId])
+  @@index([createdAt(sort: Desc)])
+}
+
+model Comment {
+  id     String @id @default(cuid())
+  postId String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  // Optional parent for replies to comments (1-level nesting)
+  parentId String?
+  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  replies  Comment[] @relation("CommentToComment")
+
+  authorId  String   @db.Uuid
+  author    profiles @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  likeCount Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likes CommentLike[]
+
+  @@index([postId, createdAt])
+  @@index([authorId])
+}
+
+model PostLike {
+  id        String   @id @default(cuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String           @db.Uuid // who should be notified
+  actorId   String           @db.Uuid // who triggered it
+  type      NotificationType // POST_REPLY | COMMENT_REPLY
+  postId    String?
+  commentId String?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, isRead])
+}
+
+// ========================================
+// San He Live Chat Models (AstroLounge Live)
+// ========================================
+
+model SanHeRoom {
+  id           String          @id @default(cuid())
+  house        SanHeHouse // VISIONARIES, STRATEGISTS, ADVENTURERS, ARTISTS
+  regionScope  ChatRegionScope // NEAR_ME, COUNTRY, GLOBAL
+  countryCode  String? // ISO 2-letter code, used when regionScope = COUNTRY
+  maxUsers     Int             @default(40) // soft cap per table
+  currentUsers Int             @default(0) // approximate count
+  isActive     Boolean         @default(true)
+  createdAt    DateTime        @default(now())
+
+  messages SanHeMessage[]
+  presence SanHePresence[]
+
+  @@index([house, regionScope, countryCode])
+  @@index([isActive])
+}
+
+model SanHeMessage {
+  id        String    @id @default(cuid())
+  roomId    String
+  room      SanHeRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  authorId  String    @db.Uuid
+  author    profiles  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime  @default(now())
+
+  @@index([roomId, createdAt])
+}
+
+model SanHePresence {
+  id         String    @id @default(cuid())
+  roomId     String
+  room       SanHeRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  userId     String    @db.Uuid
+  user       profiles  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastSeenAt DateTime  @default(now())
+
+  @@unique([roomId, userId])
+  @@index([roomId])
+  @@index([userId])
+}
+
+// ========================================
+// Post Reports & User Blocking
+// ========================================
+
+model PostReport {
+  id         String       @id @default(cuid())
+  postId     String
+  reporterId String       @db.Uuid
+  reason     String
+  status     ReportStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
+  reviewedAt DateTime?
+
+  post     Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporter profiles @relation("ReporterReports", fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([postId])
+  @@index([reporterId])
+}
+
+model UserBlock {
+  id        String   @id @default(cuid())
+  blockerId String   @db.Uuid
+  blockedId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  blocker profiles @relation("BlocksInitiated", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked profiles @relation("BlocksReceived", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+}

@@ -1,0 +1,29 @@
+{
+  "user": {
+    "birthdate": "1980-02-16",
+    "western": "Aquarius",
+    "eastern": "Monkey",
+    "element": "Air"
+  },
+  "soulmates": [
+    {"birthdate": "1996-10-12", "western": "Libra", "eastern": "Rat", "notes": "Air×Air, same trine"},
+    {"birthdate": "2000-10-18", "western": "Libra", "eastern": "Dragon", "notes": "Air×Air, same trine"},
+    {"birthdate": "1996-06-05", "western": "Gemini", "eastern": "Rat", "notes": "Air×Air, same trine"},
+    {"birthdate": "2000-06-12", "western": "Gemini", "eastern": "Dragon", "notes": "Air×Air, same trine"}
+  ],
+  "twin_flames": [
+    {"birthdate": "1996-03-25", "western": "Aries", "eastern": "Rat", "notes": "Fire×Air, same trine"},
+    {"birthdate": "2000-04-10", "western": "Aries", "eastern": "Dragon", "notes": "Fire×Air, same trine"},
+    {"birthdate": "1996-07-28", "western": "Leo", "eastern": "Rat", "notes": "Fire×Air, same trine"},
+    {"birthdate": "2000-08-15", "western": "Leo", "eastern": "Dragon", "notes": "Fire×Air, same trine"},
+    {"birthdate": "1996-12-15", "western": "Sagittarius", "eastern": "Rat", "notes": "Fire×Air, same trine"}
+  ],
+  "opposites_attract": [
+    {"birthdate": "1998-02-11", "western": "Aquarius", "eastern": "Tiger", "notes": "Same sign, Liu Chong"},
+    {"birthdate": "1998-07-28", "western": "Leo", "eastern": "Tiger", "notes": "Opposite signs, Liu Chong"},
+    {"birthdate": "1986-08-10", "western": "Leo", "eastern": "Tiger", "notes": "Opposite signs, Liu Chong"},
+    {"birthdate": "1974-07-25", "western": "Leo", "eastern": "Tiger", "notes": "Opposite signs, Liu Chong"},
+    {"birthdate": "1998-08-05", "western": "Leo", "eastern": "Tiger", "notes": "Opposite signs, Liu Chong"},
+    {"birthdate": "1986-02-20", "western": "Aquarius", "eastern": "Tiger", "notes": "Same sign, Liu Chong"}
+  ]
+}

@@ -1,0 +1,392 @@
+{
+  "Rat-Rat": {
+    "tagline": "Quick and calculating",
+    "description": "Two Rats form a quick-witted, perceptive bond full of sharp humour and intuitive recognition. Sharing the same instinctive style can create subtle competitiveness or overthinking, but the mental chemistry is strong and engaging. The connection feels lively, intelligent, and quietly charged.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Rat-Ox": {
+    "tagline": "Smart and steady",
+    "description": "Ox and Rat share the Liu He (\u516d\u5408) secret-friend harmony, forming one of the zodiac's most stable and reliable bonds. Rat offers strategy, adaptability, and quick insight; Ox contributes steadiness, loyalty, and patient strength. Together they turn ideas into tangible results with ease. The connection feels dependable, balanced, and deeply supportive.",
+    "extra": "Secret Friend (Liu He \u516d\u5408)"
+  },
+  "Rat-Tiger": {
+    "tagline": "Nerves and impulse",
+    "description": "Rat and Tiger share strong instincts expressed in very different ways. Rat moves strategically and subtly, while Tiger moves boldly and directly. Their dynamic blends sharp thinking with raw momentum, creating a connection that feels lively and unpredictable. The pairing is spirited, fast-paced, and full of contrast.",
+    "extra": "Neutral"
+  },
+  "Rat-Rabbit": {
+    "tagline": "Fast and soft",
+    "description": "Rabbit's sensitivity meets Rat's sharp, strategic nature, creating a connection shaped by contrast. Rat brings clarity and structure, while Rabbit adds emotional nuance and softness. As a Xing (\u5211) \"Punishment\" pairing, unspoken frustrations or differences in style can quietly build if not addressed. The dynamic feels thoughtful and quietly complex, with a blend of calm intuition and quick insight when both stay open and respectful.",
+    "extra": "Punishment (Xing \u5211)"
+  },
+  "Rat-Dragon": {
+    "tagline": "Ambitious and bold",
+    "description": "Dragon and Rat share the San He (\u4e09\u5408) visionary trine, creating a dynamic bond full of momentum and clarity. Rat brings strategy and insight; Dragon brings strength and ambition. Together the connection feels energised, purposeful, and naturally aligned. This is one of Dragon's most confident and mutually empowering matches.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Rat-Snake": {
+    "tagline": "Quiet operators",
+    "description": "Snake and Rat share quiet intelligence and emotional depth, forming a connection that unfolds gradually but meaningfully. Rat brings strategic clarity; Snake contributes insight and intuition. The pairing feels private, thoughtful, and quietly steady when understood. The energy is subtle and perceptive, with a natural respect for each other's inner world.",
+    "extra": "Neutral"
+  },
+  "Rat-Horse": {
+    "tagline": "Pulling in opposite directions",
+    "description": "Horse and Rat differ sharply in rhythm and priorities \u2014 Rat plans ahead while Horse moves on instinct. Rat brings strategy and caution; Horse brings momentum and independence. The connection can feel charged and effortful without pacing. This pairing has vivid chemistry but contrasting emotional tempos.",
+    "extra": "Clash Pair (Liu Chong \u516d\u51b2)"
+  },
+  "Rat-Goat": {
+    "tagline": "Practical vs. tender",
+    "description": "Rat's direct approach contrasts with Goat's emotional sensitivity, creating misunderstandings if not handled gently. Rat brings strategy and clarity; Goat offers warmth and empathy. The connection feels delicate and requires emotional pacing. With patience, this pairing becomes workable but remains easily unsettled.",
+    "extra": "Six Harms (Liu Hai \u516d\u5bb3)"
+  },
+  "Rat-Monkey": {
+    "tagline": "Clever and restless",
+    "description": "Monkey and Rat belong to the San He (\u4e09\u5408) Visionary trine, creating a naturally sharp, clever, and energising match. Monkey adds creativity and playful ingenuity; Rat brings insight and strategic thinking. You lift each other quickly and instinctively. This is one of Monkey's most synergistic and mentally alive partnerships.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Rat-Rooster": {
+    "tagline": "Details and tactics",
+    "description": "Rooster's precision contrasts with Rat's flexible, quick-thinking approach. Rat brings adaptability and creativity; Rooster adds clarity and structure. As a Po (\u7834) \"Break\" pairing, they tend to shake each other's routines and assumptions about presentation versus practicality. The dynamic feels mentally sharp but easily reactive, with real change triggered when their different priorities collide. Respectful communication keeps the connection functional.",
+    "extra": "Break (Po \u7834)"
+  },
+  "Rat-Dog": {
+    "tagline": "Loyal schemers",
+    "description": "Dog and Rat share perceptiveness and strong instincts but express them differently. Rat's adaptability helps Dog navigate complexity, while Dog's loyalty grounds Rat's restlessness. The connection grows through consistency and emotional honesty. Warm communication keeps the bond steady and supportive.",
+    "extra": "Neutral"
+  },
+  "Rat-Pig": {
+    "tagline": "Warm and resourceful",
+    "description": "Rat and Pig create a gentle, supportive connection when both honour each other's emotional pace. Pig brings sincerity and warmth; Rat brings structure and inventive thinking. There's no classical harmony, but goodwill grows naturally. Patience and steady communication make this a nurturing match.",
+    "extra": "Neutral"
+  },
+  "Ox-Ox": {
+    "tagline": "Slow and solid",
+    "description": "Two Oxen create a patient, principled pairing marked by loyalty, endurance, and shared values. Their similar rigidity can sometimes lead to standstills or long silences when neither wants to bend, yet the foundation is strong, grounded, and sincere. The dynamic feels steady, traditional, and quietly powerful when both allow room for flexibility and emotional expression.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Ox-Tiger": {
+    "tagline": "Stable vs. impulsive",
+    "description": "Tiger's intensity contrasts with Ox's steady, grounded approach. Tiger prefers movement and quick impact; Ox prefers structure and patient effort. Together they form a rhythm built on contrast rather than similarity. The dynamic feels firm, centred, and quietly powerful when aligned.",
+    "extra": "Neutral"
+  },
+  "Ox-Rabbit": {
+    "tagline": "Gentle and grounded",
+    "description": "Rabbit and Ox create a calm, sincere pairing rooted in steadiness and emotional comfort. Ox brings reliability and grounded presence; Rabbit contributes warmth and subtle perception. Together they form a peaceful, understated bond. The connection feels stable, reassuring, and filled with quiet care.",
+    "extra": "Neutral"
+  },
+  "Ox-Dragon": {
+    "tagline": "Weight and flare",
+    "description": "Dragon's bold movement contrasts with Ox's steady, practical rhythm. Ox prefers measured progress, while Dragon charges forward with instinct and intensity. As a Po (\u7834) \"Break\" pairing, they tend to shake each other's routines and assumptions about pace and control. The connection feels firm, grounded, and shaped by contrasting styles, with real change triggered when they collide.",
+    "extra": "Break (Po \u7834)"
+  },
+  "Ox-Snake": {
+    "tagline": "Calm strategists",
+    "description": "Snake and Ox belong to the San He (\u4e09\u5408) strategic trine, creating a bond grounded in trust, patience, and long-range thinking. Ox offers strength and consistency; Snake offers perception and calm understanding. Together the relationship feels steady, intentional, and quietly powerful. This is one of Snake's most harmonious and dependable connections.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Ox-Horse": {
+    "tagline": "Routine vs. freedom",
+    "description": "Ox prefers reliability and steady structure, while Horse thrives on motion and freedom. These differences create subtle emotional erosion over time. Ox offers grounding; Horse brings spark and change. The bond feels contrasting, requiring space and awareness to stay balanced.",
+    "extra": "Six Harms (Liu Hai \u516d\u5bb3)"
+  },
+  "Ox-Goat": {
+    "tagline": "Security and sensitivity",
+    "description": "Ox relies on steadiness and structure, while Goat moves through intuition and emotional expression. This contrast creates mismatched expectations and frequent tension. Ox brings grounding; Goat adds creativity and softness. The relationship depends on openness and clear alignment of pace.",
+    "extra": "Clash Pair (Liu Chong \u516d\u51b2)"
+  },
+  "Ox-Monkey": {
+    "tagline": "Work and improvisation",
+    "description": "Ox values steadiness and structure, while Monkey thrives on movement and flexibility. Ox brings grounding and reliability; Monkey contributes adaptability and inventive thinking. The tone is balanced when both appreciate each other's strengths. Clear rhythm and communication keep the partnership harmonious.",
+    "extra": "Neutral"
+  },
+  "Ox-Rooster": {
+    "tagline": "Efficient and exacting",
+    "description": "Rooster and Ox share the San He (\u4e09\u5408) Strategic trine, creating a strong, focused, and highly dependable bond. Rooster contributes insight and refinement; Ox offers patience and practical strength. You align naturally around commitment and long-term goals. This is one of Rooster's most stable and harmonious partnerships.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Ox-Dog": {
+    "tagline": "Duty and devotion",
+    "description": "Both value commitment and sincerity, creating a calm, dependable foundation. Ox brings stability and patience; Dog brings intuition and fairness. As a Xing (\u5211) punishment pairing, pressure and unspoken resentment can build if duty feels one-sided. When both share the load and talk honestly, shared reliability strengthens the match over time. Mutual encouragement keeps this pairing solid and quietly loyal.",
+    "extra": "Punishment (Xing \u5211)"
+  },
+  "Ox-Pig": {
+    "tagline": "Steady and soft",
+    "description": "Ox's reliability blends well with Pig's softness, forming a calm and comforting bond. Pig helps Ox open emotionally, while Ox gives Pig consistency and grounding. Though not part of San He or Liu He, the match deepens beautifully through everyday care. Kindness and stability keep this connection fulfilling.",
+    "extra": "Neutral"
+  },
+  "Tiger-Tiger": {
+    "tagline": "High-voltage duo",
+    "description": "Two Tigers form a passionate, high-energy pairing marked by courage, charisma, and fierce independence. Sharing the same intense style can amplify both chemistry and conflict, especially when pride or control issues surface. Yet when that power is channelled constructively, the bond feels unstoppable and inspiring. The connection is bold, dynamic, and emotionally electric.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Tiger-Rabbit": {
+    "tagline": "Edge and gentleness",
+    "description": "Rabbit's diplomacy balances Tiger's boldness, creating a mix of strength and softness. Tiger offers protection and expressive energy; Rabbit brings calm understanding. Their pace differs, but the relationship forms a gentle equilibrium when attuned. The dynamic feels supportive, tempered, and quietly resilient.",
+    "extra": "Neutral"
+  },
+  "Tiger-Dragon": {
+    "tagline": "Big moves",
+    "description": "Dragon and Tiger share powerful Yang energy expressed through confidence, drive, and action. Tiger brings courage and immediacy; Dragon brings presence and ambition. The dynamic is strong and expressive, with moments of intensity when neither yields. At its best, the connection feels bold, spirited, and vividly alive.",
+    "extra": "Neutral"
+  },
+  "Tiger-Snake": {
+    "tagline": "Impulse vs. calculation",
+    "description": "Snake's introspective style contrasts with Tiger's bold, outward energy. Tiger brings force and immediacy; Snake brings secrecy and subtlety. These differences create emotional friction beneath the surface. The connection feels sharp, reactive, and sensitive to misunderstanding.",
+    "extra": "Six Harms (Liu Hai \u516d\u5bb3)"
+  },
+  "Tiger-Horse": {
+    "tagline": "Adventurous and wild",
+    "description": "Horse and Tiger belong to the San He (\u4e09\u5408) Adventurer trine, creating a vibrant, bold, and forward-moving match. Tiger brings courage and intensity; Horse adds enthusiasm and momentum. Together the connection feels dynamic, inspired, and full of shared drive. This is one of Horse's most naturally energising pairings.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Tiger-Goat": {
+    "tagline": "Brave and tender",
+    "description": "Tiger's boldness can overwhelm Goat's sensitivity unless approached with care. Tiger offers courage and decisive energy; Goat brings warmth and emotional insight. The tone is supportive when both honour each other's needs. This pairing grows through gentle communication and shared respect.",
+    "extra": "Neutral"
+  },
+  "Tiger-Monkey": {
+    "tagline": "Competitive spark",
+    "description": "Tiger and Monkey form a high-voltage clash where styles and instincts differ strongly. Tiger leads boldly and directly; Monkey moves through wit, agility, and quick shifts. In some traditions this pair also sits in a punishment (\u5211) group, adding extra edge and lesson-learning to the connection. The bond feels charged, memorable, and unpredictable. Success requires humour, patience, and a real willingness to meet in the middle.",
+    "extra": "Clash Pair (Liu Chong \u516d\u51b2)"
+  },
+  "Tiger-Rooster": {
+    "tagline": "Pride and critique",
+    "description": "Tiger's bold momentum meets Rooster's careful precision, producing a contrast in pace and communication. Tiger brings courage and initiative; Rooster provides clarity and direction. The pairing works when each values the other's strengths. Shared goals help this connection find balance.",
+    "extra": "Neutral"
+  },
+  "Tiger-Dog": {
+    "tagline": "Loyal fighters",
+    "description": "Dog and Tiger share the San He (\u4e09\u5408) Adventurer trine, forming a principled, courageous, and emotionally aligned bond. Tiger brings boldness and passion; Dog brings loyalty, integrity, and protection. You elevate each other's confidence and sense of purpose. This is one of Dog's most reliable and empowering matches.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Tiger-Pig": {
+    "tagline": "Brave and generous",
+    "description": "Pig and Tiger share the Liu He (\u516d\u5408) secret-friend harmony, creating a bond of trust, emotional openness, and mutual encouragement. Pig softens Tiger's intensity; Tiger strengthens Pig's confidence. The pairing feels supportive and balanced when communication stays honest and warm. This is one of Pig's most dependable matches.",
+    "extra": "Secret Friend (Liu He \u516d\u5408)"
+  },
+  "Rabbit-Rabbit": {
+    "tagline": "Soft and cautious",
+    "description": "Two Rabbits form a deeply intuitive, emotionally attuned partnership. Sharing the same sensitivity can sometimes lead to withdrawal or over-reflection when feelings get overwhelming, yet the connection is naturally tender and attentive. It feels soothing, empathetic, and quietly harmonious when emotional openness is shared.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Rabbit-Dragon": {
+    "tagline": "Quiet vs. bold",
+    "description": "Dragon and Rabbit sit in a Liu Hai (\u516d\u5bb3) \"Six Harms\" pattern, where bold ambition meets caution in ways that can feel mismatched. Dragon moves with force, confidence, and grand visions, while Rabbit prefers subtlety, emotional safety, and quiet rhythms. Misunderstandings and unmet expectations can build if needs aren't clearly expressed. The dynamic feels dramatic, vivid, and shaped by deep temperament differences.",
+    "extra": "Six Harms (Liu Hai \u516d\u5bb3)"
+  },
+  "Rabbit-Snake": {
+    "tagline": "Soft and strategic",
+    "description": "Snake and Rabbit share sensitivity expressed in different ways \u2014 Rabbit through emotion, Snake through intuition. Rabbit brings warmth and gentleness; Snake contributes depth and quiet reassurance. The pairing is reflective and subtle, growing best through trust. The connection feels soft, composed, and delicately balanced.",
+    "extra": "Neutral"
+  },
+  "Rabbit-Horse": {
+    "tagline": "Calm vs. restless",
+    "description": "Rabbit seeks calm clarity, while Horse responds quickly to instinct \u2014 creating a mismatch in pacing. Rabbit brings sensitivity and gentleness; Horse adds motion and initiative. This pairing works when rhythms align deliberately. The connection is soft but easily unsettled by timing differences.",
+    "extra": "Break (Po \u7834)"
+  },
+  "Rabbit-Goat": {
+    "tagline": "Gentle support",
+    "description": "Goat and Rabbit share the San He (\u4e09\u5408) Artist trine, forming a naturally harmonious, gentle, and nurturing bond. Rabbit offers diplomacy and emotional understanding; Goat brings softness and sincerity. Conflict is rare and easily resolved. This is one of Goat's most peaceful and emotionally secure matches.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Rabbit-Monkey": {
+    "tagline": "Soft and sharp",
+    "description": "Rabbit's calm warmth contrasts with Monkey's quick, playful tempo. Monkey introduces new ideas and spark; Rabbit adds sensitivity and steady emotional presence. The dynamic feels lively but delicate. Pacing and mutual respect allow this bond to deepen softly.",
+    "extra": "Neutral"
+  },
+  "Rabbit-Rooster": {
+    "tagline": "Delicate vs. direct",
+    "description": "Rabbit's gentle, tactful nature differs strongly from Rooster's direct, detail-oriented style. Rabbit brings softness and emotional nuance; Rooster brings focus and honesty. The connection feels sensitive and easily activated. Clear boundaries and steady appreciation keep the pairing workable.",
+    "extra": "Clash Pair (Liu Chong \u516d\u51b2)"
+  },
+  "Rabbit-Dog": {
+    "tagline": "Kind and protective",
+    "description": "Dog and Rabbit form a gentle Liu He (\u516d\u5408) harmony rooted in emotional safety and shared sincerity. Rabbit offers warmth and empathy; Dog provides protection and steadfast loyalty. You understand each other intuitively, creating a peaceful, trusting connection. This is one of Dog's most secure and heartfelt partnerships.",
+    "extra": "Secret Friend (Liu He \u516d\u5408)"
+  },
+  "Rabbit-Pig": {
+    "tagline": "Soft and sweet",
+    "description": "Pig and Rabbit belong to the San He (\u4e09\u5408) Artist trine, creating emotional harmony, gentleness, and natural affection. Both value sincerity and emotional connection, making conflict rare. You understand each other intuitively and build comfort easily. This is one of the zodiac's softest, most secure pairings.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Dragon-Dragon": {
+    "tagline": "Big presence",
+    "description": "Two Dragons create a striking, high-energy partnership filled with charisma and ambition. As a self-punishment Xing (\u76f8\u5211) match, shared intensity can heighten both synergy and conflict, making the bond feel powerful yet demanding. The pairing radiates presence and determination. When emotions align, the connection feels magnetic, bold, and unmistakably strong.",
+    "extra": "Same Sign (Self-Punishment Xing \u76f8\u5211)"
+  },
+  "Dragon-Snake": {
+    "tagline": "Charisma and strategy",
+    "description": "Snake and Dragon create a bond marked by intuition, strategy, and mutual understanding. Snake brings insight and psychological depth; Dragon adds strength and expressive confidence. While they don't form a classical Liu He pair, their mix of depth and drive can feel quietly powerful when aligned. The connection feels calm, perceptive, and purpose-driven.",
+    "extra": "Neutral"
+  },
+  "Dragon-Horse": {
+    "tagline": "Fire and motion",
+    "description": "Horse and Dragon share energy, confidence, and a taste for movement, creating an exciting and forward-leaning match. Dragon brings presence and charisma; Horse brings freedom and spontaneity. The relationship feels bright and adventurous. Independence needs balance to keep the energy steady.",
+    "extra": "Neutral"
+  },
+  "Dragon-Goat": {
+    "tagline": "Strong and sensitive",
+    "description": "Dragon's strength and confidence can overshadow Goat's subtle emotional rhythm at first. Goat brings warmth and empathy; Dragon provides direction and protection. The connection becomes tender when both respect each other's pace. This pairing thrives through emotional consideration.",
+    "extra": "Neutral"
+  },
+  "Dragon-Monkey": {
+    "tagline": "Ambitious and inventive",
+    "description": "Monkey and Dragon share the San He (\u4e09\u5408) Visionary trine, creating a dynamic full of charisma, willpower, and mental brightness. Dragon brings drive and bold leadership; Monkey brings cleverness and adaptability. Together the connection feels inspiring and effortlessly collaborative. This is one of Monkey's strongest and most rewarding matches.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Dragon-Rooster": {
+    "tagline": "Show and precision",
+    "description": "Rooster and Dragon share a Liu He (\u516d\u5408) harmony built on mutual vision, loyalty, and clarity. Rooster adds refinement and strategy; Dragon contributes strength and inspiration. Together, you create stability and forward momentum. This is a deeply supportive and capable partnership.",
+    "extra": "Secret Friend (Liu He \u516d\u5408)"
+  },
+  "Dragon-Dog": {
+    "tagline": "Pride vs. principle",
+    "description": "Dog and Dragon often differ in values and emotional tempo. Dragon seeks recognition and momentum; Dog prioritises integrity and caution. Without clear communication, misunderstandings form quickly. With empathy and patience, the relationship can stabilise \u2014 but it requires deliberate effort.",
+    "extra": "Clash Pair (Liu Chong \u516d\u51b2)"
+  },
+  "Dragon-Pig": {
+    "tagline": "Bold and kind",
+    "description": "Dragon offers strength and vision; Pig offers warmth and empathy. The match feels caring and quietly aspirational when both stay patient. Pig tempers Dragon's intensity, while Dragon boosts Pig's confidence. With steady communication, the relationship grows in a grounded, supportive way.",
+    "extra": "Neutral"
+  },
+  "Snake-Snake": {
+    "tagline": "Quiet intensity",
+    "description": "Two Snakes create a deep, intuitive connection filled with quiet understanding and emotional complexity. Shared sensitivity can create calm unity or silent tension depending on communication. The relationship feels intimate, thoughtful, and almost telepathic at times. When balanced, the bond carries a composed, timeless quality.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Snake-Horse": {
+    "tagline": "Stillness vs. motion",
+    "description": "Snake moves quietly and thoughtfully, while Horse acts quickly and openly. Snake offers depth and reflection; Horse brings optimism and drive. This pairing grows through appreciation of contrast. The tone feels dynamic, subtle, and shaped by pacing.",
+    "extra": "Neutral"
+  },
+  "Snake-Goat": {
+    "tagline": "Calm and receptive",
+    "description": "Snake and Goat share a quiet, thoughtful tone marked by sensitivity and emotional depth. Snake offers calm intuition; Goat brings openness and gentleness. The relationship strengthens through reassurance and privacy. It's a subtle, steady connection with quiet longevity.",
+    "extra": "Neutral"
+  },
+  "Snake-Monkey": {
+    "tagline": "Clever and composed",
+    "description": "Monkey and Snake form a Liu He (\u516d\u5408) secret-friend harmony grounded in intelligence, intuition, and emotional subtlety. Snake offers depth and clarity; Monkey adds spark and mental agility. The connection feels stimulating, thoughtful, and quietly supportive. This is one of Monkey's safest and most balanced partnerships.",
+    "extra": "Secret Friend (Liu He \u516d\u5408)"
+  },
+  "Snake-Rooster": {
+    "tagline": "Exact and incisive",
+    "description": "Rooster and Snake form part of the San He (\u4e09\u5408) Strategic trine, creating a sharp, perceptive, and intellectually attuned match. Snake brings calm wisdom; Rooster brings precision and focus. The connection feels steady, insightful, and deeply complementary. This is one of Rooster's strongest and most reliable matches.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Snake-Dog": {
+    "tagline": "Insight and loyalty",
+    "description": "Dog and Snake share emotional perceptiveness but express it in different ways. Snake brings depth and psychological insight; Dog brings sincerity and grounded reassurance. This pairing grows through honesty and mutual respect. Trust becomes the stabilising force of the connection.",
+    "extra": "Neutral"
+  },
+  "Snake-Pig": {
+    "tagline": "Guarded vs. open",
+    "description": "Pig and Snake form a Liu Chong (\u516d\u51b2) clash, where emotional expression and priorities differ sharply. Snake's reserve may confuse Pig's openness, while Pig's vulnerability can overwhelm Snake's inward style. This match needs clear boundaries and emotional transparency. Without them, misunderstandings escalate quickly.",
+    "extra": "Clash Pair (Liu Chong \u516d\u51b2)"
+  },
+  "Horse-Horse": {
+    "tagline": "Fast and free",
+    "description": "Two Horses create a lively, passionate connection full of motion, instinct, and shared excitement. As a self-punishment Xing (\u76f8\u5211) match, restlessness and impatience can escalate quickly. The relationship feels spirited, bold, and fast-moving. Grounding and steadiness define its long-term strength.",
+    "extra": "Same Sign (Self-Punishment Xing \u76f8\u5211)"
+  },
+  "Horse-Goat": {
+    "tagline": "Active and gentle",
+    "description": "Horse and Goat form a gentle, emotionally supportive Liu He (\u516d\u5408) harmony. Goat's creativity softens Horse's intensity, while Horse brings enthusiasm and uplifting energy. The connection feels warm, caring, and deeply encouraging. This is one of Goat's most comforting and naturally affectionate matches.",
+    "extra": "Secret Friend (Liu He \u516d\u5408)"
+  },
+  "Horse-Monkey": {
+    "tagline": "Action and antics",
+    "description": "Monkey's strategic mind meets Horse's instinctive momentum, creating a connection full of movement and unpredictability. Horse brings enthusiasm and decisiveness; Monkey brings creativity and flexibility. The bond is adventurous but inconsistent. Stability depends on shared goals and honest communication.",
+    "extra": "Neutral"
+  },
+  "Horse-Rooster": {
+    "tagline": "Pace and precision",
+    "description": "Rooster values organisation and detail, while Horse values freedom and instinct. Horse brings vitality and enthusiasm; Rooster adds clarity and structure. The relationship becomes functional when roles are respected. Balance grows through flexibility and shared intention.",
+    "extra": "Neutral"
+  },
+  "Horse-Dog": {
+    "tagline": "Loyal adventurers",
+    "description": "Dog and Horse share the San He (\u4e09\u5408) Adventurer trine, creating a purposeful, energetic, and mutually uplifting match. Horse adds optimism and momentum; Dog brings loyalty and emotional steadiness. Together, you align around shared ideals and long-term commitment. This is one of Dog's strongest, most natural partnerships.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Horse-Pig": {
+    "tagline": "Fun and comfort",
+    "description": "Pig seeks emotional depth; Horse seeks freedom and movement \u2014 a rhythm that requires pacing. Pig brings warmth and compassion; Horse brings enthusiasm and momentum. With respect for each other's needs, the connection feels wholesome and uplifting. Patience helps this pairing become steady and supportive.",
+    "extra": "Neutral"
+  },
+  "Goat-Goat": {
+    "tagline": "Soft and moody",
+    "description": "Two Goats create a deeply intuitive and empathetic connection. Mirrored sensitivities can intensify emotional withdrawal or insecurity if feelings go unspoken, but they also bring great compassion and shared understanding. When communication stays soft and open, the match becomes loving and nurturing. Reassurance and presence keep the bond strong.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Goat-Monkey": {
+    "tagline": "Soft and quick",
+    "description": "Goat offers tenderness and emotional presence, while Monkey brings inventiveness and lively charm. The contrast can feel exciting yet delicate. When paced well, the relationship becomes warm, imaginative, and quietly supportive. Gentleness and reassurance keep this pairing steady.",
+    "extra": "Neutral"
+  },
+  "Goat-Rooster": {
+    "tagline": "Art and order",
+    "description": "Goat's emotional openness contrasts with Rooster's exacting style, creating a dynamic that requires thoughtful communication. Goat brings warmth and creativity; Rooster brings stability and guidance. The pairing thrives when each honours the other's rhythm. Mutual appreciation keeps the connection grounded.",
+    "extra": "Neutral"
+  },
+  "Goat-Dog": {
+    "tagline": "Caring and conscientious",
+    "description": "Dog and Goat fall under Po (\u7834), where emotional rhythms and communication styles often clash. Goat expresses through sensitivity; Dog expresses through conviction \u2014 creating misunderstandings if unspoken. Still, kindness and patience soften the edges. This connection works best with clear boundaries and steady reassurance.",
+    "extra": "Break (Po \u7834)"
+  },
+  "Goat-Pig": {
+    "tagline": "Gentle nesters",
+    "description": "Pig and Goat share the San He (\u4e09\u5408) Artist trine, forming a heartfelt, intuitive, and emotionally rich match. Both are gentle, thoughtful, and nurturing, making the bond naturally safe. You comfort each other easily and speak a similar emotional language. This is one of the most compassionate and peaceful relationships in the zodiac.",
+    "extra": "Same Trine (San He \u4e09\u5408)"
+  },
+  "Monkey-Monkey": {
+    "tagline": "Busy minds",
+    "description": "Two Monkeys create a clever, quick-moving, and intellectually vibrant pairing. Shared restlessness or scattered focus can unsettle the bond if there's no grounding, but curiosity and mutual encouragement make this dynamic inspiring. Consistency and emotional steadiness help it thrive long-term.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Monkey-Rooster": {
+    "tagline": "Wit and critique",
+    "description": "Monkey's spontaneity and wit mesh intriguingly with Rooster's order and precision. Monkey injects creativity and fresh ideas; Rooster offers structure and refinement. This bond grows through teamwork and shared goals. Honest, balanced dialogue keeps things smooth.",
+    "extra": "Neutral"
+  },
+  "Monkey-Dog": {
+    "tagline": "Clever and loyal",
+    "description": "Monkey brings cleverness and adaptability; Dog brings steadiness and loyalty. Their strengths complement each other when communication is open. Monkey helps Dog lighten up, while Dog helps Monkey feel grounded. This match grows through humour and shared problem-solving.",
+    "extra": "Neutral"
+  },
+  "Monkey-Pig": {
+    "tagline": "Play and comfort",
+    "description": "Pig values warmth and emotional steadiness, while Monkey moves quickly and unpredictably. Their rhythms differ, creating misunderstandings if not managed gently. Pig may feel unsettled; Monkey may feel restricted. With patience, the match stays friendly, but it remains a delicate pairing overall.",
+    "extra": "Six Harms (Liu Hai \u516d\u5bb3)"
+  },
+  "Rooster-Rooster": {
+    "tagline": "High standards",
+    "description": "Two Roosters create a relationship full of clarity, drive, and high standards. But as a self-punishment Xing (\u76f8\u5211) pairing, perfectionism and critique can escalate quickly. The connection becomes strong and purposeful when appreciation leads. Warmth softens intensity and allows this match to thrive.",
+    "extra": "Same Sign (Self-Punishment \u76f8\u5211)"
+  },
+  "Rooster-Dog": {
+    "tagline": "Rules and principles",
+    "description": "Dog seeks emotional truth, while Rooster values precision and direct critique \u2014 a mismatch that can create tension. Dog brings sincerity; Rooster brings clarity, but differing delivery styles cause friction. Gentle communication is essential. With care, the pairing can remain functional but tends to feel delicate.",
+    "extra": "Six Harms (Liu Hai \u516d\u5bb3)"
+  },
+  "Rooster-Pig": {
+    "tagline": "Critique and care",
+    "description": "Rooster's directness blends surprisingly well with Pig's warmth and sincerity when both communicate gently. Pig softens Rooster's rigidity; Rooster adds structure that strengthens Pig's confidence. Though not a classical harmony, the relationship becomes emotionally supportive with patience. Kindness and consistency keep the match thriving.",
+    "extra": "Neutral"
+  },
+  "Dog-Dog": {
+    "tagline": "Loyal hearts",
+    "description": "Two Dogs form a deeply loyal and principled bond. Shared sensitivity and concern for what's \"right\" can either create a safe emotional home or amplify worry and overthinking. When both practice reassurance and avoid spiralling into worst-case scenarios, the match becomes protective and fulfilling. This pairing creates a strong emotional home when balanced with patience and perspective.",
+    "extra": "Same Sign (\u540c\u751f\u8096)"
+  },
+  "Dog-Pig": {
+    "tagline": "Safe and kind",
+    "description": "Pig brings empathy and emotional softness; Dog brings loyalty and grounded reassurance. This pairing feels kind, safe, and mutually supportive even without San He or Liu He alignment. Pig calms Dog's internal tension, while Dog protects Pig's sensitive nature. The bond grows through warmth and steady honesty.",
+    "extra": "Neutral"
+  },
+  "Pig-Pig": {
+    "tagline": "Extra-soft landing",
+    "description": "Two Pigs create a nurturing, compassionate connection filled with generosity and emotional sincerity. But as a self-punishment Xing (\u76f8\u5211) pairing, shared softness can lead to avoidance or emotional overwhelm. Healthy boundaries and open communication keep the match balanced. When aligned, this becomes a deeply loving and comforting partnership.",
+    "extra": "Same Sign (Self-Punishment Xing \u76f8\u5211)"
+  }
+}

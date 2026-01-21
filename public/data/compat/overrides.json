@@ -1,0 +1,24 @@
+{
+  "pairs": {
+    "aquarius_monkey__gemini_rat": { "score": 92, "themes": ["brains","spark"], "warnings": ["pace"] },
+    "aries_dragon__leo_tiger": { "score": 90, "themes": ["royal","spark"], "warnings": ["ego","impulse"] },
+    "cancer_goat__capricorn_ox": { "score": 83, "themes": ["builder","cozy"], "warnings": ["control"] },
+    "taurus_ox__virgo_snake": { "score": 86, "themes": ["builder"], "warnings": ["drift"] },
+    "libra_rooster__gemini_rat": { "score": 84, "themes": ["brains","spark"], "warnings": ["ego"] },
+    "scorpio_dragon__cancer_rabbit": { "score": 85, "themes": ["cozy","builder"], "warnings": ["control"] },
+    "sagittarius_horse__aries_dragon": { "score": 88, "themes": ["spark","royal"], "warnings": ["impulse"] },
+    "pisces_pig__cancer_goat": { "score": 82, "themes": ["cozy"], "warnings": ["pace"] },
+    "leo_monkey__libra_rat": { "score": 86, "themes": ["royal","spark"], "warnings": ["ego"] },
+    "virgo_snake__capricorn_ox": { "score": 87, "themes": ["builder"], "warnings": ["drift"] },
+    "aries_rat__virgo_snake": { "score": 72, "themes": ["brains"], "warnings": ["pace"] },
+    "taurus_goat__aquarius_dog": { "score": 66, "themes": ["cozy"], "warnings": ["pace","drift"] },
+    "gemini_dragon__sagittarius_horse": { "score": 79, "themes": ["spark"], "warnings": ["impulse"] },
+    "cancer_pig__libra_rooster": { "score": 61, "themes": ["cozy"], "warnings": ["ego","pace"] },
+    "leo_tiger__scorpio_snake": { "score": 68, "themes": ["royal"], "warnings": ["control"] },
+    "libra_dog__aquarius_monkey": { "score": 81, "themes": ["brains"], "warnings": ["drift"] },
+    "scorpio_rooster__taurus_ox": { "score": 70, "themes": ["builder"], "warnings": ["ego"] },
+    "capricorn_ox__pisces_pig": { "score": 74, "themes": ["cozy"], "warnings": ["pace"] },
+    "aquarius_rat__aries_dragon": { "score": 83, "themes": ["spark"], "warnings": ["impulse"] },
+    "pisces_rabbit__virgo_snake": { "score": 76, "themes": ["builder"], "warnings": ["drift"] }
+  }
+}

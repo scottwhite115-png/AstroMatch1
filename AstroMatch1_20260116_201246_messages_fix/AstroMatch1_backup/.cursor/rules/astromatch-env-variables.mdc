@@ -1,0 +1,126 @@
+---
+description: Add environment variable
+globs: 
+alwaysApply: false
+---
+# Environment Variables
+
+This is how we add environment variables to the project:
+
+  1. Add to `.env.example`:
+      ```bash
+      NEW_VARIABLE=value_example
+      ```
+
+  2. Add to `apps/web/env.ts`:
+      ```typescript
+      // For server-only variables
+      server: {
+        NEW_VARIABLE: z.string(),
+      }
+      // For client-side variables
+      client: {
+        NEXT_PUBLIC_NEW_VARIABLE: z.string(),
+      }
+      experimental__runtimeEnv: {
+        NEXT_PUBLIC_NEW_VARIABLE: process.env.NEXT_PUBLIC_NEW_VARIABLE,
+      }
+      ```
+
+  3. For client-side variables:
+      - Must be prefixed with `NEXT_PUBLIC_`
+      - Add to both `client` and `experimental__runtimeEnv` sections
+
+  4. Add to `turbo.json` under `globalDependencies`:
+      ```json
+      {
+        "tasks": {
+          "build": {
+            "env": [
+              "NEW_VARIABLE"
+            ]
+          }
+        }
+      }
+      ```
+
+## AstroMatch Specific Examples
+
+### Supabase Configuration
+```bash
+# .env.example
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### API Keys
+```bash
+# .env.example
+ASTROLOGY_API_KEY=your_astrology_api_key
+GOOGLE_MAPS_API_KEY=your_google_maps_key
+```
+
+### Feature Flags
+```bash
+# .env.example
+NEXT_PUBLIC_ENABLE_CHAT=true
+NEXT_PUBLIC_ENABLE_VIDEO_CALLS=false
+NEXT_PUBLIC_DEBUG_MODE=false
+```
+
+### Database Configuration
+```bash
+# .env.example
+DATABASE_URL=postgresql://user:password@localhost:5432/astromatch
+REDIS_URL=redis://localhost:6379
+```
+
+## Examples
+
+### Adding a server-side API key
+```bash
+# .env.example
+API_KEY=your_api_key_here
+```
+
+```typescript
+# env.ts
+server: {
+  API_KEY: z.string(),
+}
+```
+
+```json
+# turbo.json
+"build": {
+  "env": ["API_KEY"]
+}
+```
+
+### Adding a client-side feature flag
+```bash
+# .env.example
+NEXT_PUBLIC_FEATURE_ENABLED=false
+```
+
+```typescript
+# env.ts
+client: {
+  NEXT_PUBLIC_FEATURE_ENABLED: z.coerce.boolean().default(false),
+},
+experimental__runtimeEnv: {
+  NEXT_PUBLIC_FEATURE_ENABLED: process.env.NEXT_PUBLIC_FEATURE_ENABLED,
+}
+```
+
+```json
+# turbo.json
+"build": {
+  "env": ["NEXT_PUBLIC_FEATURE_ENABLED"]
+}
+```
+
+## References
+- `apps/web/env.ts`
+- `apps/web/.env.example`
+- `turbo.json`
