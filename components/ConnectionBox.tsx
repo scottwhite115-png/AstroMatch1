@@ -130,6 +130,12 @@ interface ConnectionBoxProps {
   // External control of dropdowns
   showProfile?: boolean;
   showElements?: boolean;
+  
+  // NEW: Tarot snippet (1-2 sentence archetype explanation)
+  tarotSnippet?: string;
+  
+  // NEW: Match label (tarot name like "Page of Cups Connection")
+  matchLabel?: string;
 }
 
 /** ===== Helper functions ===== */
@@ -409,6 +415,8 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   patternColors,
   showProfile: externalShowProfile,
   showElements: externalShowElements,
+  tarotSnippet,
+  matchLabel,
 }) => {
   const [internalShowOverview, setInternalShowOverview] = useState(false);
   const [internalShowAbout, setInternalShowAbout] = useState(false);
@@ -539,7 +547,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
   const gradientColors = patternColors || getGradientColors();
 
   return (
-    <div className="w-full">
+    <div className="w-full" style={{ paddingBottom: '2rem' }}>
       {/* Match Box - Signs, Match Label Pill, and Blurb - border removed */}
         <div 
           className="w-full"
@@ -568,11 +576,11 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
               </span>
             </div>
             
-            {/* Heart icon in the center */}
-            <span className={`text-xl flex-shrink-0 self-center ${
-              theme === "light" ? "text-pink-500" : "text-pink-400"
+            {/* X icon in the center */}
+            <span className={`text-xl font-bold flex-shrink-0 self-center ${
+              theme === "light" ? "text-slate-500" : "text-slate-400"
             }`}>
-              ♥
+              ×
             </span>
             
             {/* Right side - emojis and label */}
@@ -610,7 +618,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                   console.log('Match pill clicked, new state:', !showMatchLabelDropdown);
                 }}
               >
-                <span>{primaryLabel}</span>
+                <span>{matchLabel || primaryLabel}</span>
                 {typeof score === "number" && (
                   <>
                     <span className={`ml-2 text-lg font-bold ${theme === "light" ? "text-black" : "text-white"}`}>
@@ -640,6 +648,7 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                         backgroundColor: theme === "light" ? "#ffffff" : "#1e293b",
                         padding: '1.5rem',
                         overflow: 'hidden',
+                        border: `1px solid ${theme === "light" ? "#d1d5db" : "#334155"}`,
                       }}
                     >
                     {/* About Me - Inside dropdown */}
@@ -845,6 +854,28 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
         {/* Profile Information - Combined into match box */}
         {/* About Me moved to dropdown - Removed from here */}
         
+        {/* Tarot Snippet Section - 1-2 sentence archetype explanation */}
+        {tarotSnippet && (
+          <div 
+            style={{ 
+              marginBottom: '1.5rem', 
+              marginTop: '1.5rem', 
+              paddingTop: '1.5rem',
+              borderTop: `1px solid ${theme === "light" ? "#e2e8f0" : "#334155"}`
+            }}
+          >
+            <p 
+              className={`text-base leading-relaxed text-center ${theme === "light" ? "text-slate-700" : "text-slate-300"}`}
+              style={{ 
+                lineHeight: '1.6',
+                fontStyle: 'normal'
+              }}
+            >
+              {tarotSnippet}
+            </p>
+          </div>
+        )}
+        
         {/* Chinese Zodiac Compatibility Section - Displayed outside dropdown in profile view */}
             {externalShowProfile !== undefined && connectionOverviewText && (
               <div style={{ marginBottom: '1.5rem', marginTop: '1.5rem', paddingTop: '1.5rem' }}>
@@ -858,10 +889,10 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                       }`}>
                         {chineseAnimalA}
                       </span>
-                      <span className={`text-lg ${
-                        theme === "light" ? "text-pink-500" : "text-pink-400"
+                      <span className={`text-lg font-bold ${
+                        theme === "light" ? "text-slate-500" : "text-slate-400"
                       }`}>
-                        ♥
+                        ×
                       </span>
                       <span className={`font-bold text-lg ${
                         theme === "light" ? "text-slate-700" : "text-slate-200"
@@ -922,10 +953,10 @@ export const ConnectionBox: React.FC<ConnectionBoxProps> = ({
                       }`}>
                         {westernSignA}
                       </span>
-                      <span className={`text-lg ${
-                        theme === "light" ? "text-pink-500" : "text-pink-400"
+                      <span className={`text-lg font-bold ${
+                        theme === "light" ? "text-slate-500" : "text-slate-400"
                       }`}>
-                        ♥
+                        ×
                       </span>
                       <span className={`font-bold text-lg ${
                         theme === "light" ? "text-slate-700" : "text-slate-200"

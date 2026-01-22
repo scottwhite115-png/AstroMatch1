@@ -196,10 +196,10 @@ export default function LoginPage() {
           <div className="flex items-center justify-center gap-0.5 mb-2">
             <FourPointedStar className="w-9 h-9 text-orange-500" />
             <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
-              AstroMatch
+              Happy Cards
             </h1>
           </div>
-          <p className="text-gray-700 text-sm">Find your perfect match</p>
+          <p className="text-gray-700 text-sm">Discover the meaning of your connections</p>
         </div>
 
         {/* Login Form */}

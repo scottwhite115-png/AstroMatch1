@@ -60,10 +60,22 @@ import {
 import { 
   buildCardOverlay, 
   attachCardOverlay,
+  projectScoreToRankBand,
+  getTarotIdentity,
+  generateTarotSnippet,
+  isDeathOverride,
+  isTenOfSwordsOverride,
+  isFoolOverride,
+  resolveTarotOverride,
+  assertLiuHaiRankImmutability,
+  normWestRel,
+  qaGuard,
   type CardOverlay,
   type ChineseAnimal as CardChineseAnimal,
   type WesternElementRelation as CardWesternElementRelation,
-  type WestOpposition as CardWestOpposition
+  type WestOpposition as CardWestOpposition,
+  type RankBand,
+  RANK_BANDS
 } from "@/lib/cardOverlay";
 
 // Chinese animal type used in AstroMatch
@@ -1584,18 +1596,13 @@ export function buildSimpleConnectionBox(
     originalTier: matchResult.tier
   });
   
-  // Map new tier system to labels (keep new tier names)
-  const tierToLabel: Record<MatchTier, string> = {
-    "Soulmate Match": "Soulmate Match",
-    "Twin Flame Match": "Twin Flame Match",
-    "Harmonious Match": "Harmonious Match",
-    "Neutral Match": "Neutral Match",
-    "Opposites Attract": "Opposites Attract",
-    "Difficult Match": "Difficult Match",
-  };
-  
-  const matchLabel = tierToLabel[finalTier] || "Neutral Match";
-  const headingLine = `${matchLabel} · ${score}%`;
+  // 🔮 OLD LABEL SYSTEM REMOVED - Tarot identity replaces match labels
+  // Labels like "Soulmate Match", "Excellent Match" are now obsolete
+  // Tarot identity (from card rank) will be used instead
+  // matchLabel and headingLine will be replaced with tarot identity after rank derivation
+  // (Tarot identity will be set after card overlay is built)
+  const matchLabel = ""; // Placeholder - will be replaced with tarot identity
+  const headingLine = `${score}%`; // Temporary - will be replaced with tarot + rank + score
   
   // Update matchResult.score to use the capped score
   matchResult.score = score;
@@ -2182,6 +2189,146 @@ export function buildSimpleConnectionBox(
     trinePipFromAnimal: animalB.toLowerCase() as CardChineseAnimal, // Use User B's animal for the pip
   });
   console.log(`[🃏 Card Overlay] Built card for ${animalALabel} × ${animalBLabel}:`, cardOverlay);
+
+  // ============================================================================
+  // 🔒 IMMEDIATE ACTION ITEMS (Minimal, High-Impact) - ALL THREE FIXES APPLIED
+  // ============================================================================
+  // 
+  // 1) Assert rank immutability for LIU_HAI
+  //    - Guard prevents any later logic from upgrading rank if overlays includes LIU_HAI
+  //    - LIU_HAI must always result in ranks 3, 2, or 1 - no exceptions
+  //
+  // 2) Make tarot + snippet come from rank only
+  //    - Killed any logic like "if score > 60 use Six of Cups snippet"
+  //    - Killed any logic like "if label === Challenging use X snippet"
+  //    - There is exactly one snippet source: final rank + override rules
+  //
+  // 3) Add rank-band projection before UI
+  //    - After rank is known: score = projectIntoBand(rawScore, RANK_BANDS[rank].min, RANK_BANDS[rank].max)
+  //    - This happens before any UI rendering to prevent semantic incoherence
+  //
+  // ============================================================================
+
+  // 🔒 FIX 1: Assert rank immutability for LIU_HAI
+  // Guard that prevents any later logic from upgrading rank if overlays includes LIU_HAI
+  // This is a hard lock - LIU_HAI must always result in ranks 3, 2, or 1 - no exceptions
+  cardOverlay.rank = assertLiuHaiRankImmutability(cardOverlay.rank, chineseOverlays);
+  
+  // Additional validation logging
+  if (chineseOverlays.includes("LIU_HAI")) {
+    console.log(`[🔒 FIX 1] LIU_HAI rank immutability enforced - Final rank: ${cardOverlay.rank}`);
+  }
+
+  // 🔒 FIX 3: Add rank-band projection before UI
+  // After rank is known: score = projectIntoBand(rawScore, RANK_BANDS[rank].min, RANK_BANDS[rank].max)
+  // This MUST happen before any UI rendering to prevent semantic incoherence
+  const rawScore = matchEngineResult.score;
+  const rankBand = RANK_BANDS[cardOverlay.rank];
+  if (!rankBand) {
+    console.error(`[🔒 FIX 3 ERROR] No rank band found for rank ${cardOverlay.rank}`);
+  }
+  const projectedScore = projectScoreToRankBand(rawScore, cardOverlay.rank, {
+    overlays: chineseOverlays,
+    westElemRel: cardWestElemRel,
+    westOpposition: cardWestOpposition,
+  });
+  
+  // Final validation: ensure projected score is within band
+  if (rankBand) {
+    const isInBand = projectedScore >= rankBand.min && projectedScore <= rankBand.max;
+    if (!isInBand) {
+      console.error(`[🔒 FIX 3 VIOLATION] Projected score ${projectedScore} is outside band ${rankBand.min}-${rankBand.max} for rank ${cardOverlay.rank}`);
+    }
+  }
+  
+  console.log(`[🔒 FIX 3] Rank-band projection - Rank: ${cardOverlay.rank}, Raw: ${rawScore}, Projected: ${projectedScore}, Band: ${rankBand?.min}-${rankBand?.max}`);
+
+  // 🔒 FIX 2: Make tarot + snippet come from rank only
+  // Kill any logic like: "if score > 60 use Six of Cups snippet" or "if label === Challenging use X snippet"
+  // There must be exactly one snippet source: final rank + override rules
+  // NEVER infer from: score, legacy label, westRelation, or UI state
+  
+  // Get tarot identity from final rank + override rules (never infer from score/label/relation)
+  const tarotIdentity = getTarotIdentity(cardOverlay.rank, {
+    overlays: chineseOverlays,
+    westElemRel: cardWestElemRel,
+    westOpposition: cardWestOpposition,
+  });
+  const tarotName = tarotIdentity.name;
+  const tarotArchetype = tarotIdentity.archetypeName;
+  const tarotCoreMeaning = tarotIdentity.coreMeaning;
+  
+  // Check for overrides to pass to snippet generator
+  const isDeath = isDeathOverride(
+    chineseOverlays,
+    cardWestElemRel,
+    cardWestOpposition
+  );
+  const isTenOfSwords = isTenOfSwordsOverride(
+    chineseOverlays,
+    cardWestElemRel
+  );
+  
+  // Generate Tarot snippet using FINAL rank + override rules ONLY
+  // DO NOT use: rawScore, matchLabel, westRelation, or any other source
+  const tarotSnippet = generateTarotSnippet(tarotCoreMeaning, cardOverlay.rank, {
+    isDeathOverride: isDeath,
+    isTenOfSwordsOverride: isTenOfSwords,
+  });
+  console.log(`[🔒 FIX 2] Tarot + Snippet from rank only - Rank: ${cardOverlay.rank}, Tarot: ${tarotName}, Snippet: ${tarotSnippet.substring(0, 50)}...`);
+  
+  // 🔒 Milestone 7: QA Guardrails - Validate all invariants before UI render
+  // This runs after full resolution but before UI render
+  // It never crashes prod - it only logs and fails safe
+  const tarotOverride = resolveTarotOverride({
+    overlays: chineseOverlays,
+    westElemRel: cardWestElemRel,
+    westOpposition: cardWestOpposition,
+  });
+  
+  const qaState = qaGuard({
+    rank: cardOverlay.rank,
+    tarot: tarotName,
+    tarotOverride: tarotOverride,
+    score: projectedScore,
+    suit: cardOverlay.suit,
+    glow: cardOverlay.edgeGlow,
+    overlays: chineseOverlays,
+    chineseBase: chineseBase,
+  });
+
+  // If QA guard detected violations, use failsafe state
+  let finalRank = cardOverlay.rank;
+  let finalTarot = tarotName;
+  let finalScore = projectedScore;
+  let finalSuit = cardOverlay.suit;
+  let finalGlow = cardOverlay.edgeGlow;
+  
+  if (qaState.rank !== cardOverlay.rank || qaState.tarot !== tarotName) {
+    console.error(`[🔒 QA GUARD] Using failsafe state due to invariant violations`);
+    // Update with failsafe values
+    finalRank = qaState.rank;
+    finalSuit = qaState.suit;
+    finalGlow = qaState.glow;
+    finalScore = qaState.score;
+    // Update tarot identity from failsafe rank
+    const failsafeTarot = getTarotIdentity(qaState.rank, {
+      overlays: chineseOverlays,
+      westElemRel: cardWestElemRel,
+      westOpposition: cardWestOpposition,
+    });
+    finalTarot = failsafeTarot.name;
+    // Update card overlay with failsafe values
+    cardOverlay.rank = finalRank;
+    cardOverlay.suit = finalSuit;
+    cardOverlay.edgeGlow = finalGlow;
+  }
+
+  // Update simpleBox with projected score, tarot identity, and snippet
+  simpleBox.score = finalScore;
+  simpleBox.matchLabel = finalTarot; // Replace old match label with tarot name
+  simpleBox.headingLine = `${finalTarot} · ${finalRank} · ${finalScore}%`; // Tarot + Rank + Score
+  simpleBox.tarotSnippet = tarotSnippet; // Add Tarot snippet
 
   // Attach card overlay to the box and return
   const finalBox = attachCardOverlay(simpleBox, cardOverlay);

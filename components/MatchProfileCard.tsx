@@ -285,11 +285,11 @@ export default function MatchProfileCard({
   }, [showProfile, showElements, hasOpenDropdown, connectionBoxData, externalShowProfile, externalShowElements, profile.name, profile.photos]);
 
   return (
-    <div className="w-full">
+    <div className="w-full h-full" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Outer border wrapper for entire profile card - matches profile view tab exactly */}
         {profile.photos.length > 0 && (
-          <div style={{ width: '100%' }}>
-            <div style={{ overflow: 'visible' }}>
+          <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ overflow: 'visible', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
               {/* Photo Carousel - border removed */}
               {(() => {
                 console.log('[MatchProfileCard] Photo carousel render check:', {
@@ -304,20 +304,24 @@ export default function MatchProfileCard({
               })()}
               {profile.photos.length > 0 && (
                 <div
-                  className="w-full rounded-3xl relative"
+                  className="w-full rounded-3xl relative flex-1"
                   style={{ 
                     borderRadius: '1.5rem',
                     overflow: 'hidden',
+                    minHeight: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
                   }}
                 >
-                  <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
+                  <div className="w-full h-full rounded-3xl overflow-hidden flex-1" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a", minHeight: 0 }}>
                     <ProfilePhotoCarouselWithRanking
                       images={profile.photos}
                       profileName={profile.name}
                       profileAge={profile.age}
                       connectionBoxData={connectionBoxData}
                       theme={theme}
-                      showDropdown={false}
+                      showDropdown={true}
+                      alwaysOpenDropdown={true}
                       badgePosition="overlay-bottom"
                       aboutMeText={profile.aboutMe}
                       selectedRelationshipGoals={profile.selectedRelationshipGoals}
@@ -375,6 +379,8 @@ export default function MatchProfileCard({
                     patternColors={patternColors}
                     relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
                     interests={profile.interests || profile.selectedOrganizedInterests}
+                    tarotSnippet={connectionBoxData?.tarotSnippet}
+                    matchLabel={connectionBoxData?.matchLabel}
                     onPass={onPass}
                     onLike={onLike}
                     onMessage={onMessageClick}
@@ -449,6 +455,8 @@ export default function MatchProfileCard({
                         patternColors={patternColors}
                         relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
                         interests={profile.interests || profile.selectedOrganizedInterests}
+                        tarotSnippet={connectionBoxData?.tarotSnippet}
+                        matchLabel={connectionBoxData?.matchLabel}
                         onPass={onPass}
                         onLike={onLike}
                         onMessage={onMessageClick}

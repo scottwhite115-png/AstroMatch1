@@ -1925,6 +1925,8 @@ export default function MatchesPage() {
       },
       // NEW: Card overlay data for photo carousel
       card: simpleBox.card,
+      // NEW: Tarot snippet (1-2 sentence archetype explanation)
+      tarotSnippet: simpleBox.tarotSnippet,
     };
   };
 
@@ -2982,7 +2984,9 @@ export default function MatchesPage() {
 
     if (touchStartY !== null) {
       const deltaY = currentTouch.clientY - touchStartY
-      if (Math.abs(deltaY) > Math.abs(diff) && Math.abs(deltaY) > 8) {
+      const deltaX = Math.abs(diff)
+      // If vertical movement is significantly more than horizontal, allow vertical scroll
+      if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 10) {
         // treat gesture as vertical scroll; cancel swipe state so page can scroll
         setTouchStart(null)
         setTouchEnd(null)
@@ -3065,39 +3069,43 @@ export default function MatchesPage() {
     const isRightSwipe = distance < -minSwipeDistance
     
     if (isLeftSwipe) {
-      // Swipe left = pass - Animations already running from onTouchMove
+      // Swipe left = next card
       setIsAnimating(true)
-      // Animate card all the way off screen
       setSwipeOffset(-1000)
       
-      // Wait for animation to complete, then show next profile from underneath
       setTimeout(() => {
+        // Move to next card
+        if (currentProfileIndex < filteredProfiles.length - 1) {
+          setCurrentProfileIndex(currentProfileIndex + 1)
+        }
+        // Reset animation state and swipe offset
+        setIsAnimating(false)
+        setSwipeOffset(0)
+        setShowLikeFlash(false)
         setShowPassFlash(false)
+        setLikeButtonFlash(false)
         setPassButtonFlash(false)
         setActiveButton(null)
-        // Change profile FIRST while card is still off screen
-        handleNextProfile()
-        // Then reset animation state and swipe offset immediately after
-        setIsAnimating(false)
-        setSwipeOffset(0)
-      }, 350)
+      }, 400)
     } else if (isRightSwipe) {
-      // Swipe right = like - Animations already running from onTouchMove
+      // Swipe right = previous card
       setIsAnimating(true)
-      // Animate card all the way off screen
       setSwipeOffset(1000)
       
-      // Wait for animation to complete, then show next profile from underneath
       setTimeout(() => {
-        setShowLikeFlash(false)
-        setLikeButtonFlash(false)
-        setActiveButton(null)
-        // Change profile FIRST while card is still off screen
-        handleNextProfile()
-        // Then reset animation state and swipe offset immediately after
+        // Move to previous card
+        if (currentProfileIndex > 0) {
+          setCurrentProfileIndex(currentProfileIndex - 1)
+        }
+        // Reset animation state and swipe offset
         setIsAnimating(false)
         setSwipeOffset(0)
-      }, 350)
+        setShowLikeFlash(false)
+        setShowPassFlash(false)
+        setLikeButtonFlash(false)
+        setPassButtonFlash(false)
+        setActiveButton(null)
+      }, 400)
     } else {
       // Reset if swipe wasn't far enough
       setSwipeOffset(0)
@@ -3244,35 +3252,43 @@ export default function MatchesPage() {
       const isRightSwipe = distance < -minSwipeDistance
       
       if (isLeftSwipe) {
-        // Drag left = pass
+        // Drag left = next card
         setIsAnimating(true)
         setSwipeOffset(-1000)
         
         setTimeout(() => {
-          setShowPassFlash(false)
-          setPassButtonFlash(false)
-          setActiveButton(null)
-          // Change profile FIRST while card is still off screen
-          handleNextProfile()
-          // Then reset animation state and swipe offset
+          // Move to next card
+          if (currentProfileIndex < filteredProfiles.length - 1) {
+            setCurrentProfileIndex(currentProfileIndex + 1)
+          }
+          // Reset animation state and swipe offset
           setIsAnimating(false)
           setSwipeOffset(0)
-        }, 350)
+          setShowLikeFlash(false)
+          setShowPassFlash(false)
+          setLikeButtonFlash(false)
+          setPassButtonFlash(false)
+          setActiveButton(null)
+        }, 400)
       } else if (isRightSwipe) {
-        // Drag right = like
+        // Drag right = previous card
         setIsAnimating(true)
         setSwipeOffset(1000)
         
         setTimeout(() => {
-          setShowLikeFlash(false)
-          setLikeButtonFlash(false)
-          setActiveButton(null)
-          // Change profile FIRST while card is still off screen
-          handleNextProfile()
-          // Then reset animation state and swipe offset
+          // Move to previous card
+          if (currentProfileIndex > 0) {
+            setCurrentProfileIndex(currentProfileIndex - 1)
+          }
+          // Reset animation state and swipe offset
           setIsAnimating(false)
           setSwipeOffset(0)
-        }, 350)
+          setShowLikeFlash(false)
+          setShowPassFlash(false)
+          setLikeButtonFlash(false)
+          setPassButtonFlash(false)
+          setActiveButton(null)
+        }, 400)
       } else {
         // Reset if drag wasn't far enough
         setSwipeOffset(0)
@@ -3376,7 +3392,6 @@ export default function MatchesPage() {
   const containerStyle: React.CSSProperties = isTouchDevice
     ? {
         WebkitOverflowScrolling: 'touch',
-        overflowY: 'auto',
         overflowX: 'hidden',
         minHeight: '100dvh',
         position: 'relative',
@@ -3398,7 +3413,7 @@ export default function MatchesPage() {
 
   return (
     <div
-      className={`${isTouchDevice ? 'overscroll-y-contain' : ''} min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
+      className={`min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
       style={{
         ...containerStyle,
         ...(theme !== "light" ? {
@@ -3416,7 +3431,14 @@ export default function MatchesPage() {
         
         body {
           overflow-x: hidden;
-          overscroll-behavior-y: contain;
+        }
+        
+        .card-gallery-container::-webkit-scrollbar {
+          display: none; /* Chrome/Safari */
+        }
+        
+        .match-card-container::-webkit-scrollbar {
+          display: none; /* Chrome/Safari */
         }
         
         @keyframes scaleIn {
@@ -3535,7 +3557,7 @@ export default function MatchesPage() {
         }
       `}</style>
       
-       <div className={`relative z-10 w-full overflow-visible ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : ""}`}>
+       <div className={`relative z-10 w-full ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : "bg-white"}`}>
         {/* Header */}
         <header className={`sticky top-0 z-50 ${
           theme === "light"
@@ -3871,7 +3893,13 @@ export default function MatchesPage() {
 
         {/* Profile Card Stack */}
         {profilesToShow.length === 0 ? (
-          <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)', paddingTop: '20px' }}>
+          <div className="flex items-center justify-center" style={{ 
+            minHeight: 'calc(100vh - 80px)', 
+            paddingTop: '80px', // Account for sticky header
+            paddingBottom: '20px',
+            height: 'calc(100vh - 80px)', // Fixed height to fit viewport
+            overflow: 'hidden', // Prevent page scroll
+          }}>
             <div className="text-center px-4">
               <p className={`text-lg mb-2 ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
               <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
@@ -3879,325 +3907,201 @@ export default function MatchesPage() {
               </p>
             </div>
           </div>
-        ) : currentProfile ? (
-          <div className="pb-32 relative overflow-visible">
-            {/* Cover the bottom padding area with dark background */}
-            {theme !== "light" && (
-              <div 
-                className="absolute bottom-0 left-0 right-0"
+        ) : filteredProfiles.length > 0 ? (
+          /* 🔒 Deck-Style Swipe Browsing Model - Single Card Focus */
+          <div
+            className="relative"
+            style={{
+              height: 'calc(100vh - 80px)', // Account for header (sticky header is ~80px with padding)
+              paddingTop: '0px', // No extra padding - header is sticky
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'visible', // Allow scrolling
+              position: 'relative',
+            }}
+          >
+            {/* Deck Context - Card Counter */}
+            {filteredProfiles.length > 0 && (
+              <div
+                className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10"
                 style={{
-                  height: '8rem',
-                  background: 'linear-gradient(to bottom right, rgb(2, 6, 23), rgb(30, 27, 75), rgb(15, 23, 42))',
-                  zIndex: 0,
-                  pointerEvents: 'none'
+                  pointerEvents: 'none',
+                }}
+              >
+                <p className={`text-xs font-medium ${
+                  theme === "light" ? "text-slate-600" : "text-slate-400"
+                }`}>
+                  {currentProfileIndex + 1} of {filteredProfiles.length}
+                </p>
+              </div>
+            )}
+
+            {/* Next Card Peeking (Subtle Edge) */}
+            {currentProfileIndex < filteredProfiles.length - 1 && (
+              <div
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-0"
+                style={{
+                  width: '8px',
+                  height: '60%',
+                  backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)",
+                  borderRadius: '4px 0 0 4px',
+                  pointerEvents: 'none',
                 }}
               />
             )}
-            {/* Next profile card (underneath) - Full size and ready */}
-            {filteredProfiles[currentProfileIndex + 1] && (
-              <div 
-                key={`next-${profilesToShow[currentProfileIndex + 1].id}`}
-                className="absolute top-0 left-0 right-0 pb-32"
-                style={{
-                  zIndex: 1,
-                  pointerEvents: 'none',
-                  clipPath: 'inset(0 0 0 0)' // Will be overridden by current card
-                }}
-              >
-                <MatchProfileCard
-                  profile={{
-                    id: filteredProfiles[currentProfileIndex + 1].id,
-                    name: filteredProfiles[currentProfileIndex + 1].name,
-                    age: filteredProfiles[currentProfileIndex + 1].age,
-                    photos: filteredProfiles[currentProfileIndex + 1].photos,
-                    aboutMe: filteredProfiles[currentProfileIndex + 1].aboutMe,
-                    occupation: filteredProfiles[currentProfileIndex + 1].occupation,
-                    city: filteredProfiles[currentProfileIndex + 1].city,
-                    height: filteredProfiles[currentProfileIndex + 1].height,
-                    children: filteredProfiles[currentProfileIndex + 1].children,
-                    religion: filteredProfiles[currentProfileIndex + 1].religion,
-                    prompts: filteredProfiles[currentProfileIndex + 1].prompts,
-                    westernSign: sunSignSystem === "sidereal"
-                      ? (filteredProfiles[currentProfileIndex + 1].siderealWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign)
-                      : (filteredProfiles[currentProfileIndex + 1].tropicalWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign),
-                    easternSign: filteredProfiles[currentProfileIndex + 1].easternSign,
-                    relationshipGoals: filteredProfiles[currentProfileIndex + 1].relationshipGoals || filteredProfiles[currentProfileIndex + 1].selectedRelationshipGoals,
-                    interests: filteredProfiles[currentProfileIndex + 1].interests || filteredProfiles[currentProfileIndex + 1].selectedOrganizedInterests,
-                  } as any}
-                  connectionBoxData={compatBoxes[filteredProfiles[currentProfileIndex + 1].id]}
-                  theme={theme}
-                  onPhotoChange={() => {}}
-                  onMessageClick={() => {
-                    const nextProfile = filteredProfiles[currentProfileIndex + 1];
-                    if (nextProfile) {
-                      router.push(`/messages/${nextProfile.id}`);
-                    }
-                  }}
-                />
-              </div>
-            )}
-            
-            {/* Current profile card (on top) - This card clips the one underneath */}
-            <div 
-              key={`current-${currentProfile.id}`}
-              ref={cardRef}
-              className="relative"
-              style={{ 
-                zIndex: 2, 
-                touchAction: isTouchDevice 
-                  ? (isUserInteracting ? ('none' as const) : ('pan-y' as const))
-                  : ('auto' as const),
-                cursor: !isTouchDevice ? (isDragging ? 'grabbing' : 'grab') : 'default',
-                // Use a pseudo-element or mask to hide the bottom card below this one
-                backgroundColor: 'transparent',
-                WebkitTouchCallout: 'none',
-                WebkitUserSelect: 'none',
-                userSelect: 'none'
-              } as React.CSSProperties}
-              onTouchStart={isTouchDevice ? onTouchStart : undefined}
-              onTouchMove={isTouchDevice ? onTouchMove : undefined}
-              onTouchEnd={isTouchDevice ? onTouchEnd : undefined}
-              onTouchCancel={isTouchDevice ? onTouchCancel : undefined}
-              onMouseDown={!isTouchDevice ? onMouseDown : undefined}
-              onMouseMove={!isTouchDevice ? onMouseMove : undefined}
-              onMouseUp={!isTouchDevice ? onMouseUp : undefined}
-            >
-              <div
-                className="relative"
-                style={{
-                  transform: `translateX(${swipeOffset}px) rotate(${swipeOffset * 0.03}deg)`,
-                  transition: isAnimating ? 'transform 0.7s ease-out' : (touchStart || isDragging) ? 'none' : 'transform 0.2s ease-out',
-                }}
-              >
-                {/* 
-                ====================================================================
-                ORIGINAL FLASH ANIMATION CODE (BACKUP - RESTORE IF NEEDED)
-                ====================================================================
-                
-                {/* Like/Pass Flash - Inside the card, counteracting rotation */}
-                {/* Like Flash - Top Left Corner */}
-                {/*
-                {showLikeFlash && (
-                  <div 
-                    className="absolute top-8 left-8 z-50 pointer-events-none"
-                    style={{
-                      transform: `rotate(${-15 - (swipeOffset * 0.03)}deg)`
-                    }}
-                  >
-                    <div style={{ animation: 'scaleIn 0.2s ease-out' }}>
-                      <svg 
-                        className="w-32 h-32" 
-                        viewBox="0 0 24 24" 
-                        fill="rgb(249, 115, 22)"
-                        style={{
-                          filter: 'drop-shadow(0 10px 30px rgba(249, 115, 22, 0.5))'
-                        }}
-                      >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Pass Flash - Top Right Corner */}
-                {/*
-                {showPassFlash && (
-                  <div 
-                    className="absolute top-8 right-8 z-50 pointer-events-none"
-                    style={{
-                      transform: `rotate(${15 - (swipeOffset * 0.03)}deg)`
-                    }}
-                  >
-                    <div style={{ animation: 'scaleIn 0.2s ease-out' }}>
-                      <svg 
-                        className="w-32 h-32" 
-                        viewBox="0 0 24 24" 
-                        fill="none" 
-                        stroke="rgb(249, 115, 22)" 
-                        strokeWidth="3"
-                        style={{
-                          filter: 'drop-shadow(0 10px 30px rgba(249, 115, 22, 0.5))'
-                        }}
-                      >
-                        <path d="m18 6-12 12" />
-                        <path d="m6 6 12 12" />
-                      </svg>
-                    </div>
-                  </div>
-                )}
-                */}
-                
-                {/* ====================================================================
-                    BUMBLE-STYLE FLASH ANIMATIONS - Slide in from screen edges
-                    ==================================================================== */}
 
-                <MatchProfileCard
-                  profile={{
-                    id: currentProfile.id,
-                    name: currentProfile.name,
-                    age: currentProfile.age,
-                    photos: currentProfile.photos,
-                    aboutMe: currentProfile.aboutMe,
-                    occupation: currentProfile.occupation,
-                    city: currentProfile.city,
-                    height: currentProfile.height,
-                    children: currentProfile.children,
-                    religion: currentProfile.religion,
-                    prompts: currentProfile.prompts,
-                    westernSign: sunSignSystem === "sidereal"
-                      ? (currentProfile.siderealWesternSign || currentProfile.westernSign)
-                      : (currentProfile.tropicalWesternSign || currentProfile.westernSign),
-                    easternSign: currentProfile.easternSign,
-                    relationshipGoals: currentProfile.relationshipGoals || currentProfile.selectedRelationshipGoals,
-                    interests: currentProfile.interests || currentProfile.selectedOrganizedInterests,
-                  } as any}
-                  connectionBoxData={compatBoxes[currentProfile.id]}
-                  theme={theme}
-                  onPhotoChange={(index) => setCurrentPhotoIndex(index)}
-                  onMessageClick={handleChat}
-                  onPass={handlePass}
-                  onLike={handleLike}
-                />
-                {/* Debug: Show if connection box data is missing */}
-                {process.env.NODE_ENV === 'development' && !compatBoxes[currentProfile.id] && (
-                  <div className="p-4 text-center text-yellow-500 text-xs bg-yellow-50 dark:bg-yellow-900/20 rounded m-2">
-                    ⚠️ Debug: No connection box data for profile ID {currentProfile.id}. 
-                    Available IDs: {Object.keys(compatBoxes).length > 0 ? Object.keys(compatBoxes).join(', ') : 'None'}
-                  </div>
-                )}
+            {/* Previous Card Peeking (Subtle Edge) */}
+            {currentProfileIndex > 0 && (
+              <div
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-0"
+                style={{
+                  width: '8px',
+                  height: '60%',
+                  backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)",
+                  borderRadius: '0 4px 4px 0',
+                  pointerEvents: 'none',
+                }}
+              />
+            )}
+
+            {/* Deck Shadow Behind Card */}
+            <div
+              className="absolute inset-0 z-0"
+              style={{
+                background: theme === "light"
+                  ? "radial-gradient(circle at center, rgba(0, 0, 0, 0.02) 0%, transparent 70%)"
+                  : "radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 70%)",
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Single Card Focus View - Centered, Full Height */}
+            <div
+              className="relative w-full max-w-md mx-auto"
+              style={{
+                height: '100%',
+                width: '100%',
+                maxWidth: '420px', // Optimal card width
+                display: 'flex',
+                alignItems: 'stretch', // Stretch to fill height
+                justifyContent: 'center',
+                perspective: '1000px',
+                padding: '0 16px', // Side padding
+              }}
+            >
+              {/* Next Card Preview (Behind Current) */}
+              {currentProfileIndex < filteredProfiles.length - 1 && (
+                <div
+                  className="absolute w-full"
+                  style={{
+                    zIndex: 1,
+                    opacity: 0.3,
+                    transform: 'scale(0.95) translateY(20px)',
+                    filter: 'blur(2px)',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  <MatchProfileCard
+                    profile={{
+                      id: filteredProfiles[currentProfileIndex + 1].id,
+                      name: filteredProfiles[currentProfileIndex + 1].name,
+                      age: filteredProfiles[currentProfileIndex + 1].age,
+                      photos: filteredProfiles[currentProfileIndex + 1].photos,
+                      aboutMe: filteredProfiles[currentProfileIndex + 1].aboutMe,
+                      occupation: filteredProfiles[currentProfileIndex + 1].occupation,
+                      city: filteredProfiles[currentProfileIndex + 1].city,
+                      height: filteredProfiles[currentProfileIndex + 1].height,
+                      children: filteredProfiles[currentProfileIndex + 1].children,
+                      religion: filteredProfiles[currentProfileIndex + 1].religion,
+                      prompts: filteredProfiles[currentProfileIndex + 1].prompts,
+                      westernSign: sunSignSystem === "sidereal"
+                        ? (filteredProfiles[currentProfileIndex + 1].siderealWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign)
+                        : (filteredProfiles[currentProfileIndex + 1].tropicalWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign),
+                      easternSign: filteredProfiles[currentProfileIndex + 1].easternSign,
+                      relationshipGoals: filteredProfiles[currentProfileIndex + 1].relationshipGoals || filteredProfiles[currentProfileIndex + 1].selectedRelationshipGoals,
+                      interests: filteredProfiles[currentProfileIndex + 1].interests || filteredProfiles[currentProfileIndex + 1].selectedOrganizedInterests,
+                    } as any}
+                    connectionBoxData={compatBoxes[filteredProfiles[currentProfileIndex + 1].id]}
+                    theme={theme}
+                    onPhotoChange={() => {}}
+                    onMessageClick={() => {}}
+                  />
+                </div>
+              )}
+
+              {/* Current Card - Fully Visible, Swipeable */}
+              <div
+                key={`current-${currentProfile.id}`}
+                ref={cardRef}
+                className="relative w-full"
+                style={{
+                  zIndex: 2,
+                  touchAction: 'pan-y', // Allow vertical scrolling only (swipe handled separately)
+                  cursor: !isTouchDevice ? (isDragging ? 'grabbing' : 'grab') : 'default',
+                  WebkitTouchCallout: 'none',
+                  WebkitUserSelect: 'none',
+                  userSelect: 'none',
+                  transformStyle: 'preserve-3d',
+                  height: '100%',
+                } as React.CSSProperties}
+                onTouchStart={isTouchDevice ? onTouchStart : undefined}
+                onTouchMove={isTouchDevice ? onTouchMove : undefined}
+                onTouchEnd={isTouchDevice ? onTouchEnd : undefined}
+                onTouchCancel={isTouchDevice ? onTouchCancel : undefined}
+                onMouseDown={!isTouchDevice ? onMouseDown : undefined}
+                onMouseMove={!isTouchDevice ? onMouseMove : undefined}
+                onMouseUp={!isTouchDevice ? onMouseUp : undefined}
+              >
+                <div
+                  className="relative"
+                  style={{
+                    transform: `translateX(${swipeOffset}px) rotateY(${swipeOffset * 0.05}deg)`,
+                    transition: isAnimating ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : (touchStart || isDragging) ? 'none' : 'transform 0.2s ease-out',
+                    boxShadow: theme === "light"
+                      ? `0 ${Math.abs(swipeOffset) * 0.1}px ${Math.abs(swipeOffset) * 0.2}px rgba(0, 0, 0, ${0.1 + Math.abs(swipeOffset) * 0.0001})`
+                      : `0 ${Math.abs(swipeOffset) * 0.1}px ${Math.abs(swipeOffset) * 0.2}px rgba(255, 255, 255, ${0.05 + Math.abs(swipeOffset) * 0.0001})`,
+                  }}
+                >
+                  <MatchProfileCard
+                    profile={{
+                      id: currentProfile.id,
+                      name: currentProfile.name,
+                      age: currentProfile.age,
+                      photos: currentProfile.photos,
+                      aboutMe: currentProfile.aboutMe,
+                      occupation: currentProfile.occupation,
+                      city: currentProfile.city,
+                      height: currentProfile.height,
+                      children: currentProfile.children,
+                      religion: currentProfile.religion,
+                      prompts: currentProfile.prompts,
+                      westernSign: sunSignSystem === "sidereal"
+                        ? (currentProfile.siderealWesternSign || currentProfile.westernSign)
+                        : (currentProfile.tropicalWesternSign || currentProfile.westernSign),
+                      easternSign: currentProfile.easternSign,
+                      relationshipGoals: currentProfile.relationshipGoals || currentProfile.selectedRelationshipGoals,
+                      interests: currentProfile.interests || currentProfile.selectedOrganizedInterests,
+                    } as any}
+                    connectionBoxData={compatBoxes[currentProfile.id]}
+                    theme={theme}
+                    onPhotoChange={() => {}}
+                    onMessageClick={() => {
+                      handleChat()
+                    }}
+                  />
+                </div>
               </div>
             </div>
-            
-            {/* Bumble-Style Flash Animations - Fixed on screen, slide from opposite edges */}
-            {showLikeFlash && (() => {
-              // Like flash: swiping right, so flash comes from RIGHT edge (opposite side)
-              // Animation phases:
-              // 0-120px: slide in from right edge
-              // 120-180px: hold at max position (shorter hold)
-              // 180px+: retreat WITH the card (starts earlier, very fast - 60px range)
-              const maxPosition = windowWidth * 0.58
-              const iconSize = 128 // w-28 = 7rem = 112px
-              const startPosition = windowWidth + iconSize // Start completely off-screen right
-              
-              let currentX: number
-              let opacity: number
-              
-              if (swipeOffset <= 120) {
-                // Phase 1: Slide in (0-120px)
-                const progress = Math.max(swipeOffset, 0) / 120
-                currentX = startPosition - (progress * (startPosition - maxPosition))
-                opacity = progress
-              } else if (swipeOffset <= 180) {
-                // Phase 2: Hold at max position (120-180px) - shorter
-                currentX = maxPosition
-                opacity = 1
-              } else {
-                // Phase 3: Retreat WITH the card (180px+, only 60px range - very fast)
-                const retreatProgress = Math.min((swipeOffset - 180) / 60, 1)
-                currentX = maxPosition + (retreatProgress * (startPosition - maxPosition))
-                opacity = 1 - retreatProgress
-              }
-              
-              return (
-                <div 
-                  className="fixed z-50 pointer-events-none"
-                  style={{
-                    top: '25%',
-                    left: 0,
-                    transform: `translateX(${currentX}px)`,
-                    transition: isAnimating ? 'transform 0.7s ease-out, opacity 0.7s ease-out' : 'none',
-                    opacity: opacity * 0.7,
-                  }}
-                >
-                  <svg 
-                    className="w-28 h-28" 
-                    viewBox="0 0 24 24" 
-                    fill="rgba(249, 115, 22, 0.55)"
-                    style={{
-                      filter: 'drop-shadow(0 8px 28px rgba(249, 115, 22, 0.25)) blur(0.6px)',
-                    }}
-                  >
-                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                  </svg>
-                </div>
-              )
-            })()}
-            
-            {showPassFlash && (() => {
-              // Pass flash: swiping left, so flash comes from LEFT edge (opposite side)
-              // Animation phases:
-              // 0-120px: slide in from left edge
-              // 120-180px: hold at max position (shorter hold)
-              // 180px+: retreat WITH the card (starts earlier, very fast - 60px range)
-              const maxPosition = windowWidth * 0.12
-              const iconSize = 128
-              const startPosition = -iconSize // Start completely off-screen left
-              
-              let currentX: number
-              let opacity: number
-              
-              if (swipeOffset >= -120) {
-                // Phase 1: Slide in (0 to -120px)
-                const progress = Math.max(-swipeOffset, 0) / 120
-                currentX = startPosition + (progress * (maxPosition - startPosition))
-                opacity = progress
-              } else if (swipeOffset >= -180) {
-                // Phase 2: Hold at max position (-120 to -180px) - shorter
-                currentX = maxPosition
-                opacity = 1
-              } else {
-                // Phase 3: Retreat WITH the card (-180px and beyond, only 60px range - very fast)
-                const retreatProgress = Math.min((-swipeOffset - 180) / 60, 1)
-                currentX = maxPosition - (retreatProgress * (maxPosition - startPosition))
-                opacity = 1 - retreatProgress
-              }
-              
-              return (
-                <div 
-                  className="fixed z-50 pointer-events-none"
-                  style={{
-                    top: '25%',
-                    left: 0,
-                    transform: `translateX(${currentX}px)`,
-                    transition: isAnimating ? 'transform 0.7s ease-out, opacity 0.7s ease-out' : 'none',
-                    opacity: opacity * 0.7,
-                  }}
-                >
-                  <svg 
-                    className="w-32 h-32" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="rgba(249, 115, 22, 0.55)" 
-                    strokeWidth="3"
-                    style={{
-                      filter: 'drop-shadow(0 8px 28px rgba(249, 115, 22, 0.25)) blur(0.6px)',
-                    }}
-                  >
-                    <path d="m18 6-12 12" />
-                    <path d="m6 6 12 12" />
-                  </svg>
-                </div>
-              )
-            })()}
           </div>
         ) : (
-          <div className="px-4 py-8 text-center">
-            <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
-              {filteredProfiles.length === 0 ? "No profiles available" : "No profiles match your filters"}
+          <div className="flex flex-col items-center justify-center h-full">
+            <p className={`text-lg mb-2 ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
+            <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
+              {enrichedProfiles.length === 0 ? "Loading profiles..." : "Try adjusting your filters"}
             </p>
-            <button
-              onClick={() => {
-                setSearchFilters({ westernSign: '', easternSign: '' })
-                          setMatchTierFilters({ Soulmate: false, "Twin Flame": false, Excellent: false, Favourable: false })
-              }}
-              className="mt-4 px-6 py-2 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 hover:from-orange-500 hover:via-orange-400 hover:to-red-400 text-white rounded-lg transition-colors"
-            >
-              Clear Filters
-            </button>
           </div>
         )}
-
-
       </div>
       
       {/* Match Modal - "It's a Match!" */}

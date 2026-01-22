@@ -3186,7 +3186,6 @@ export default function AstrologyProfilePage({
   return (
     <div
       className={`${theme === "light" ? "light bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} profile-page min-h-screen relative overflow-x-hidden touch-pan-y`}
-      style={{ overscrollBehavior: 'contain' }}
     >
 
       <header className={`sticky top-0 z-50 ${
@@ -3202,7 +3201,7 @@ export default function AstrologyProfilePage({
                   <div className="flex items-center gap-0.5">
                     <FourPointedStar className="w-5 h-5 text-orange-500" />
                     <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                      AstroMatch
+                      Happy Cards
                     </span>
                   </div>
                 </div>

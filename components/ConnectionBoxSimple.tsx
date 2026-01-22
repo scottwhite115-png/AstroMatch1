@@ -249,6 +249,7 @@ export interface ConnectionBoxData {
   chemistryStars?: number; // 0–5 in 0.5 steps - for star rating display
   stabilityStars?: number; // 0–5 in 0.5 steps - for star rating display
   card?: import('@/lib/cardOverlay').CardOverlay; // NEW: Playing card overlay for photo carousel
+  tarotSnippet?: string; // NEW: Tarot snippet (1-2 sentence archetype explanation)
   a: { west: string; east: string; westGlyph: string; eastGlyph: string; chineseElement?: string };
   b: { west: string; east: string; westGlyph: string; eastGlyph: string; chineseElement?: string };
   tier?: Tier;

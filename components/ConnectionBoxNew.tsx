@@ -88,6 +88,8 @@ interface ConnectionBoxNewProps {
   onLike?: () => void;
   onMessage?: () => void;
   onViewProfile?: () => void;
+  tarotSnippet?: string; // NEW: Tarot snippet (1-2 sentence archetype explanation)
+  matchLabel?: string; // NEW: Match label (tarot name like "Page of Cups Connection")
 }
 
 export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
@@ -228,6 +230,8 @@ export const ConnectionBoxNew: React.FC<ConnectionBoxNewProps> = (props) => {
       onLike={props.onLike}
       showProfile={props.showProfile}
       showElements={props.showElements}
+      tarotSnippet={props.tarotSnippet}
+      matchLabel={props.matchLabel}
     />
   );
 };
