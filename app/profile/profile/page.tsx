@@ -26,6 +26,7 @@ import { getWesternSignGlyph, getChineseSignGlyph, capitalizeSign } from "@/lib/
 import { createClient } from "@/lib/supabase/client"
 import { fetchUserProfile } from "@/lib/supabase/profileQueries"
 import { uploadProfilePhoto, deleteProfilePhoto } from "@/lib/supabase/photoUpload"
+import { saveProfilePhotosAction } from "@/app/actions/profile/savePhotos"
 import { checkProfileCompletion, getCompletionMessage } from "@/lib/profileCompletion"
 import { autoInsight } from "@/lib/insight"
 import { INSIGHT_OVERRIDES, type OverrideKey } from "@/data/insight_overrides"
@@ -1212,15 +1213,57 @@ export default function AstrologyProfilePage({
     "Lima, Peru",
   ].sort()
 
-  // Initialize photos as empty - will load from Supabase
-  const [photos, setPhotos] = useState([
-    { id: 1, src: "", hasImage: false },
-    { id: 2, src: "", hasImage: false },
-    { id: 3, src: "", hasImage: false },
-    { id: 4, src: "", hasImage: false },
-    { id: 5, src: "", hasImage: false },
-    { id: 6, src: "", hasImage: false },
-  ])
+  // Initialize photos from localStorage when available (so grid shows on return to page); else empty
+  const getInitialPhotos = (): { id: number; src: string; hasImage: boolean }[] => {
+    if (typeof window === 'undefined') {
+      return [
+        { id: 1, src: "", hasImage: false },
+        { id: 2, src: "", hasImage: false },
+        { id: 3, src: "", hasImage: false },
+        { id: 4, src: "", hasImage: false },
+        { id: 5, src: "", hasImage: false },
+        { id: 6, src: "", hasImage: false },
+      ]
+    }
+    const stored = localStorage.getItem("userPhotos")
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored) as { src?: string; hasImage?: boolean }[]
+        if (Array.isArray(parsed) && parsed.some(p => p?.src && (String(p.src).startsWith("http") || String(p.src).startsWith("data:")))) {
+          return [
+            { id: 1, src: parsed[0]?.src ?? "", hasImage: !!(parsed[0]?.src) },
+            { id: 2, src: parsed[1]?.src ?? "", hasImage: !!(parsed[1]?.src) },
+            { id: 3, src: parsed[2]?.src ?? "", hasImage: !!(parsed[2]?.src) },
+            { id: 4, src: parsed[3]?.src ?? "", hasImage: !!(parsed[3]?.src) },
+            { id: 5, src: parsed[4]?.src ?? "", hasImage: !!(parsed[4]?.src) },
+            { id: 6, src: parsed[5]?.src ?? "", hasImage: !!(parsed[5]?.src) },
+          ]
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+    const p1 = localStorage.getItem("profilePhoto1")
+    if (p1 && p1.startsWith("http")) {
+      return [
+        { id: 1, src: p1, hasImage: true },
+        { id: 2, src: "", hasImage: false },
+        { id: 3, src: "", hasImage: false },
+        { id: 4, src: "", hasImage: false },
+        { id: 5, src: "", hasImage: false },
+        { id: 6, src: "", hasImage: false },
+      ]
+    }
+    return [
+      { id: 1, src: "", hasImage: false },
+      { id: 2, src: "", hasImage: false },
+      { id: 3, src: "", hasImage: false },
+      { id: 4, src: "", hasImage: false },
+      { id: 5, src: "", hasImage: false },
+      { id: 6, src: "", hasImage: false },
+    ]
+  }
+  const [photos, setPhotos] = useState(getInitialPhotos)
 
   const fileInputRefs = useRef<(HTMLInputElement | null)[]>([])
 
@@ -1340,8 +1383,46 @@ export default function AstrologyProfilePage({
 
   // Load profile data from Supabase when component mounts
   useEffect(() => {
+    // Restore photos from localStorage first so grid + View tab show when returning to page (same source as nav icon)
+    const restorePhotosFromStorage = () => {
+      if (typeof window === 'undefined') return
+      const stored = localStorage.getItem("userPhotos")
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored) as { id?: number; src?: string; hasImage?: boolean }[]
+          if (Array.isArray(parsed) && parsed.some(p => p?.src && (String(p.src).startsWith('http') || String(p.src).startsWith('data:')))) {
+            const restored = [
+              { id: 1, src: parsed[0]?.src ?? "", hasImage: !!(parsed[0]?.src) },
+              { id: 2, src: parsed[1]?.src ?? "", hasImage: !!(parsed[1]?.src) },
+              { id: 3, src: parsed[2]?.src ?? "", hasImage: !!(parsed[2]?.src) },
+              { id: 4, src: parsed[3]?.src ?? "", hasImage: !!(parsed[3]?.src) },
+              { id: 5, src: parsed[4]?.src ?? "", hasImage: !!(parsed[4]?.src) },
+              { id: 6, src: parsed[5]?.src ?? "", hasImage: !!(parsed[5]?.src) },
+            ]
+            setPhotos(restored)
+            return
+          }
+        } catch {
+          /* ignore */
+        }
+      }
+      const profilePhoto1 = localStorage.getItem("profilePhoto1")
+      if (profilePhoto1 && profilePhoto1.startsWith("http")) {
+        setPhotos([
+          { id: 1, src: profilePhoto1, hasImage: true },
+          { id: 2, src: "", hasImage: false },
+          { id: 3, src: "", hasImage: false },
+          { id: 4, src: "", hasImage: false },
+          { id: 5, src: "", hasImage: false },
+          { id: 6, src: "", hasImage: false },
+        ])
+      }
+    }
+
     const loadProfileData = async () => {
       try {
+        restorePhotosFromStorage()
+
         const supabase = createClient()
         const { data: { user }, error: userError } = await supabase.auth.getUser()
         
@@ -1361,6 +1442,7 @@ export default function AstrologyProfilePage({
         console.log('[Profile] Profile result:', profile ? 'Found' : 'NULL')
         if (profile) {
           console.log('[Profile] Profile has photos:', profile.photos?.length || 0)
+          console.log('[Profile] Profile.photos raw value:', JSON.stringify(profile.photos))
         }
         
         if (!profile) {
@@ -1368,26 +1450,66 @@ export default function AstrologyProfilePage({
           return
         }
         
-        // Load photos
-        if (profile.photos && Array.isArray(profile.photos)) {
-          // Map Supabase photos to component format
+        // Load photos from DB, or fall back to localStorage (e.g. after nav away/back if DB didn't persist)
+        const hasDbPhotos = profile.photos && Array.isArray(profile.photos) && profile.photos.some((p: string | null) => p && p.length > 0)
+        console.log('[Profile] hasDbPhotos check:', hasDbPhotos)
+        console.log('[Profile] Will use:', hasDbPhotos ? 'DB photos' : 'localStorage restore')
+        if (hasDbPhotos) {
           const loadedPhotos = [
-            { id: 1, src: profile.photos[0] || "", hasImage: !!profile.photos[0] },
-            { id: 2, src: profile.photos[1] || "", hasImage: !!profile.photos[1] },
-            { id: 3, src: profile.photos[2] || "", hasImage: !!profile.photos[2] },
-            { id: 4, src: profile.photos[3] || "", hasImage: !!profile.photos[3] },
-            { id: 5, src: profile.photos[4] || "", hasImage: !!profile.photos[4] },
-            { id: 6, src: profile.photos[5] || "", hasImage: !!profile.photos[5] },
+            { id: 1, src: profile.photos[0] || "", hasImage: !!(profile.photos[0] && profile.photos[0].length) },
+            { id: 2, src: profile.photos[1] || "", hasImage: !!(profile.photos[1] && profile.photos[1].length) },
+            { id: 3, src: profile.photos[2] || "", hasImage: !!(profile.photos[2] && profile.photos[2].length) },
+            { id: 4, src: profile.photos[3] || "", hasImage: !!(profile.photos[3] && profile.photos[3].length) },
+            { id: 5, src: profile.photos[4] || "", hasImage: !!(profile.photos[4] && profile.photos[4].length) },
+            { id: 6, src: profile.photos[5] || "", hasImage: !!(profile.photos[5] && profile.photos[5].length) },
           ]
-          
           setPhotos(loadedPhotos)
-          
-          // Save first photo to localStorage for nav bar
-          if (loadedPhotos[0]?.hasImage && loadedPhotos[0].src) {
+          if (loadedPhotos[0]?.hasImage && loadedPhotos[0].src && typeof window !== 'undefined') {
             localStorage.setItem("profilePhoto1", loadedPhotos[0].src)
-            if (typeof window !== 'undefined') {
-              window.dispatchEvent(new Event('profilePhotoUpdated'))
+            window.dispatchEvent(new Event('profilePhotoUpdated'))
+          }
+        } else if (typeof window !== 'undefined') {
+          // DB has no photos: restore from localStorage so grid and View tab match nav icon
+          const stored = localStorage.getItem("userPhotos")
+          if (stored) {
+            try {
+              const parsed = JSON.parse(stored) as { id: number; src: string; hasImage: boolean }[]
+              if (Array.isArray(parsed) && parsed.some(p => p?.src && (String(p.src).startsWith('http') || String(p.src).startsWith('data:')))) {
+                const restored = [
+                  { id: 1, src: parsed[0]?.src || "", hasImage: !!(parsed[0]?.src) },
+                  { id: 2, src: parsed[1]?.src || "", hasImage: !!(parsed[1]?.src) },
+                  { id: 3, src: parsed[2]?.src || "", hasImage: !!(parsed[2]?.src) },
+                  { id: 4, src: parsed[3]?.src || "", hasImage: !!(parsed[3]?.src) },
+                  { id: 5, src: parsed[4]?.src || "", hasImage: !!(parsed[4]?.src) },
+                  { id: 6, src: parsed[5]?.src || "", hasImage: !!(parsed[5]?.src) },
+                ]
+                setPhotos(restored)
+                if (restored[0]?.src) {
+                  localStorage.setItem("profilePhoto1", restored[0].src)
+                  window.dispatchEvent(new Event('profilePhotoUpdated'))
+                }
+                // Re-persist to DB so next load gets photos from DB
+                const photoUrls: (string | null)[] = restored.map(p => (p.src && p.hasImage ? p.src : null))
+                saveProfilePhotosAction(photoUrls).then(() => {})
+              }
+            } catch {
+              // ignore parse error
             }
+          }
+          // Also sync from profilePhoto1 if we have no userPhotos but nav has a photo
+          const profilePhoto1 = localStorage.getItem("profilePhoto1")
+          if (profilePhoto1 && profilePhoto1.startsWith("http") && !stored) {
+            const restored = [
+              { id: 1, src: profilePhoto1, hasImage: true },
+              { id: 2, src: "", hasImage: false },
+              { id: 3, src: "", hasImage: false },
+              { id: 4, src: "", hasImage: false },
+              { id: 5, src: "", hasImage: false },
+              { id: 6, src: "", hasImage: false },
+            ]
+            setPhotos(restored)
+            localStorage.setItem("userPhotos", JSON.stringify(restored))
+            saveProfilePhotosAction([profilePhoto1, null, null, null, null, null]).then(() => {})
           }
         }
         
@@ -1553,9 +1675,13 @@ export default function AstrologyProfilePage({
         return
       }
 
+      console.log('[Photo Upload] Starting upload for photo', photoId, 'file:', file.name)
+      
       // Upload photo to Supabase Storage
       const photoIndex = photoId - 1 // Convert 1-6 to 0-5
       const uploadResult = await uploadProfilePhoto(file, user.id, photoIndex)
+      
+      console.log('[Photo Upload] Storage upload result:', uploadResult)
       
       if (!uploadResult.success || !uploadResult.url) {
         alert(uploadResult.error || "Failed to upload photo")
@@ -1564,28 +1690,47 @@ export default function AstrologyProfilePage({
 
       // Get current profile to update photos array
       const profile = await fetchUserProfile(user.id)
-      const currentPhotos = profile?.photos || []
-      const updatedPhotos = [...currentPhotos]
+      const currentPhotos = Array.isArray(profile?.photos) ? profile.photos : []
+      console.log('[Photo Upload] Current photos from DB:', currentPhotos)
+      
+      // Build 6-slot array: preserve existing photos, set new URL at slot
+      const updatedPhotos: (string | null)[] = Array.from({ length: 6 }, (_, i) =>
+        currentPhotos[i] ?? null
+      )
       updatedPhotos[photoIndex] = uploadResult.url
+      console.log('[Photo Upload] Updated photos array to save:', updatedPhotos)
 
-      // Update profile in database
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ photos: updatedPhotos })
-        .eq('id', user.id)
-
-      if (updateError) {
-        console.error('[Photo Upload] Error updating profile:', updateError)
-        alert("Photo uploaded but failed to save to profile")
+      // Persist via server action (server has proper session; avoids RLS/cookie issues)
+      const saveResult = await saveProfilePhotosAction(updatedPhotos)
+      console.log('[Photo Upload] Server action save result:', saveResult)
+      
+      if (!saveResult.ok) {
+        console.error('[Photo Upload] Error saving to profile:', saveResult.error)
+        alert("Photo uploaded but failed to save to profile: " + saveResult.error)
         return
       }
 
-      // Update local state
-      const updatedPhotoState = photos.map((photo) =>
-        photo.id === photoId ? { ...photo, src: uploadResult.url!, hasImage: true } : photo,
-      )
-      setPhotos(updatedPhotoState)
-      localStorage.setItem("userPhotos", JSON.stringify(updatedPhotoState))
+      // Reload profile and sync photos state so View tab and persistence are correct
+      const updatedProfile = await fetchUserProfile(user.id)
+      console.log('[Photo Upload] Reloaded profile photos:', updatedProfile?.photos)
+      if (updatedProfile?.photos && Array.isArray(updatedProfile.photos)) {
+        const syncedPhotos = [
+          { id: 1, src: updatedProfile.photos[0] || "", hasImage: !!updatedProfile.photos[0] },
+          { id: 2, src: updatedProfile.photos[1] || "", hasImage: !!updatedProfile.photos[1] },
+          { id: 3, src: updatedProfile.photos[2] || "", hasImage: !!updatedProfile.photos[2] },
+          { id: 4, src: updatedProfile.photos[3] || "", hasImage: !!updatedProfile.photos[3] },
+          { id: 5, src: updatedProfile.photos[4] || "", hasImage: !!updatedProfile.photos[4] },
+          { id: 6, src: updatedProfile.photos[5] || "", hasImage: !!updatedProfile.photos[5] },
+        ]
+        setPhotos(syncedPhotos)
+        localStorage.setItem("userPhotos", JSON.stringify(syncedPhotos))
+      } else {
+        const updatedPhotoState = photos.map((photo) =>
+          photo.id === photoId ? { ...photo, src: uploadResult.url!, hasImage: true } : photo,
+        )
+        setPhotos(updatedPhotoState)
+        localStorage.setItem("userPhotos", JSON.stringify(updatedPhotoState))
+      }
       
       // If this is the first photo (id: 1), save it separately for the nav bar
       if (photoId === 1) {
@@ -1621,29 +1766,40 @@ export default function AstrologyProfilePage({
 
       // Get current profile to update photos array
       const profile = await fetchUserProfile(user.id)
-      const currentPhotos = profile?.photos || []
-      const updatedPhotos = [...currentPhotos]
-      updatedPhotos[photoIndex] = null // Set to null instead of removing to maintain array length
+      const currentPhotos = Array.isArray(profile?.photos) ? profile.photos : []
+      const updatedPhotos: (string | null)[] = Array.from({ length: 6 }, (_, i) =>
+        currentPhotos[i] ?? null
+      )
+      updatedPhotos[photoIndex] = null
 
-      // Update profile in database
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({ photos: updatedPhotos })
-        .eq('id', user.id)
-
-      if (updateError) {
-        console.error('[Photo Delete] Error updating profile:', updateError)
-        alert("Failed to delete photo from profile")
+      const saveResult = await saveProfilePhotosAction(updatedPhotos)
+      if (!saveResult.ok) {
+        console.error('[Photo Delete] Error saving profile:', saveResult.error)
+        alert("Failed to delete photo from profile: " + saveResult.error)
         return
       }
 
-      // Update local state
-      const updatedPhotoState = photos.map((photo) => (photo.id === photoId ? { ...photo, src: "", hasImage: false } : photo))
-      setPhotos(updatedPhotoState)
+      // Reload profile and sync photos state
+      const updatedProfile = await fetchUserProfile(user.id)
+      let photoStateToStore: typeof photos
+      if (updatedProfile?.photos && Array.isArray(updatedProfile.photos)) {
+        const syncedPhotos = [
+          { id: 1, src: updatedProfile.photos[0] || "", hasImage: !!updatedProfile.photos[0] },
+          { id: 2, src: updatedProfile.photos[1] || "", hasImage: !!updatedProfile.photos[1] },
+          { id: 3, src: updatedProfile.photos[2] || "", hasImage: !!updatedProfile.photos[2] },
+          { id: 4, src: updatedProfile.photos[3] || "", hasImage: !!updatedProfile.photos[3] },
+          { id: 5, src: updatedProfile.photos[4] || "", hasImage: !!updatedProfile.photos[4] },
+          { id: 6, src: updatedProfile.photos[5] || "", hasImage: !!updatedProfile.photos[5] },
+        ]
+        setPhotos(syncedPhotos)
+        photoStateToStore = syncedPhotos
+      } else {
+        const updatedPhotoState = photos.map((photo) => (photo.id === photoId ? { ...photo, src: "", hasImage: false } : photo))
+        setPhotos(updatedPhotoState)
+        photoStateToStore = updatedPhotoState
+      }
       if (typeof window !== 'undefined') {
-        localStorage.setItem("userPhotos", JSON.stringify(updatedPhotoState))
-        
-        // If deleting the first photo, also remove it from nav bar
+        localStorage.setItem("userPhotos", JSON.stringify(photoStateToStore))
         if (photoId === 1) {
           localStorage.removeItem("profilePhoto1")
           window.dispatchEvent(new Event('profilePhotoUpdated'))
@@ -3110,8 +3266,17 @@ export default function AstrologyProfilePage({
         }
       }
       
-      // Filter out nulls to get final array
-      const finalPhotoUrls = photoUrls.filter((url): url is string => url !== null)
+      // Save full 6-slot array (with nulls for empty slots) to preserve slot order
+      const photosToSave = photoUrls.some(url => url !== null) ? photoUrls : null
+
+      // Persist photos via server action first (avoids RLS/cookie issues on client)
+      if (photosToSave) {
+        const photoResult = await saveProfilePhotosAction(photoUrls)
+        if (!photoResult.ok) {
+          alert('Failed to save photos: ' + photoResult.error)
+          return
+        }
+      }
 
       // Prepare update object
       const updateData: any = {
@@ -3139,7 +3304,7 @@ export default function AstrologyProfilePage({
         show_height: visibilitySettings.showHeight,
         show_children: visibilitySettings.showChildren,
         show_location: visibilitySettings.showLocation,
-        photos: finalPhotoUrls.length > 0 ? finalPhotoUrls : null,
+        photos: photosToSave,
         updated_at: new Date().toISOString()
       }
 
@@ -3157,13 +3322,30 @@ export default function AstrologyProfilePage({
         return
       }
 
-      // Reload profile data to ensure view tab updates
+      // Reload profile and sync photos state so View tab shows saved photos
       try {
         const profile = await fetchUserProfile(user.id)
         if (profile) {
-          // Reload children preference
           if (profile.children_preference) {
             setSelectedChildrenOption(profile.children_preference)
+          }
+          if (profile.photos && Array.isArray(profile.photos)) {
+            const syncedPhotos = [
+              { id: 1, src: profile.photos[0] || "", hasImage: !!profile.photos[0] },
+              { id: 2, src: profile.photos[1] || "", hasImage: !!profile.photos[1] },
+              { id: 3, src: profile.photos[2] || "", hasImage: !!profile.photos[2] },
+              { id: 4, src: profile.photos[3] || "", hasImage: !!profile.photos[3] },
+              { id: 5, src: profile.photos[4] || "", hasImage: !!profile.photos[4] },
+              { id: 6, src: profile.photos[5] || "", hasImage: !!profile.photos[5] },
+            ]
+            setPhotos(syncedPhotos)
+            if (typeof window !== 'undefined') {
+              localStorage.setItem("userPhotos", JSON.stringify(syncedPhotos))
+              if (syncedPhotos[0]?.hasImage && syncedPhotos[0].src) {
+                localStorage.setItem("profilePhoto1", syncedPhotos[0].src)
+                window.dispatchEvent(new Event('profilePhotoUpdated'))
+              }
+            }
           }
         }
       } catch (error) {
