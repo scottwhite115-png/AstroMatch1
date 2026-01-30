@@ -819,103 +819,6 @@ const TEST_PROFILES = [
     ],
     distance: 19,
   },
-  // Additional test profiles for 1974, 1976, 1983
-  // 1974 - Tiger (Wood)
-  {
-    id: 33,
-    name: "Sophia",
-    age: 50,
-    birthdate: "1974-03-15",
-    westernSign: "Pisces",
-    easternSign: "Tiger",
-    photos: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80", "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80"],
-    aboutMe: "Yoga instructor and wellness coach. Teaching mindfulness and helping others find balance in life.",
-    aboutMeText: "Yoga instructor and wellness coach. Teaching mindfulness and helping others find balance in life.",
-    occupation: "Yoga Instructor",
-    city: "Byron Bay, NSW",
-    height: "5'6\"",
-    children: "Have, teenagers",
-    religion: "Spiritual",
-    prompts: [
-      { question: "What I teach", answer: "The importance of connecting mind, body, and spirit through practice." },
-      { question: "Looking for", answer: "Someone who values personal growth and living authentically." }
-    ],
-    relationshipGoals: ["Life partner", "Deep connection"],
-    selectedRelationshipGoals: ["Life partner", "Deep connection"],
-    interests: {
-      "Health & Wellness": ["Yoga", "Meditation", "Natural Healing"],
-      "Lifestyle": ["Mindfulness", "Organic Living"]
-    },
-    selectedOrganizedInterests: {
-      "Health & Wellness": ["Yoga", "Meditation", "Natural Healing"],
-      "Lifestyle": ["Mindfulness", "Organic Living"]
-    },
-    distance: 12,
-  },
-  // 1976 - Dragon (Fire)
-  {
-    id: 34,
-    name: "Isabella",
-    age: 48,
-    birthdate: "1976-07-22",
-    westernSign: "Cancer",
-    easternSign: "Dragon",
-    photos: ["https://images.unsplash.com/photo-1485875437342-9b39470b3d95?w=800&q=80", "https://images.unsplash.com/photo-1521577352947-9bb58764b69a?w=800&q=80"],
-    aboutMe: "Real estate developer creating sustainable communities. Passionate about architecture and green living.",
-    aboutMeText: "Real estate developer creating sustainable communities. Passionate about architecture and green living.",
-    occupation: "Real Estate Developer",
-    city: "Brisbane, QLD",
-    height: "5'9\"",
-    children: "Have, grown",
-    religion: "Agnostic",
-    prompts: [
-      { question: "Current project", answer: "Building an eco-friendly residential community with solar panels and community gardens." },
-      { question: "I value", answer: "Sustainability, innovation, and creating spaces where people thrive." }
-    ],
-    relationshipGoals: ["Long-term partner", "Building a life together"],
-    selectedRelationshipGoals: ["Long-term partner", "Building a life together"],
-    interests: {
-      "Business": ["Real Estate", "Architecture"],
-      "Lifestyle": ["Sustainability", "Green Living"]
-    },
-    selectedOrganizedInterests: {
-      "Business": ["Real Estate", "Architecture"],
-      "Lifestyle": ["Sustainability", "Green Living"]
-    },
-    distance: 8,
-  },
-  // 1983 - Pig (Water)
-  {
-    id: 35,
-    name: "Charlotte",
-    age: 41,
-    birthdate: "1983-04-03",
-    westernSign: "Aries",
-    easternSign: "Pig",
-    photos: ["https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=800&q=80", "https://images.unsplash.com/photo-1504439904031-93ded9f93e4e?w=800&q=80"],
-    aboutMe: "Social worker supporting families in need. Dedicated to making a positive impact in my community.",
-    aboutMeText: "Social worker supporting families in need. Dedicated to making a positive impact in my community.",
-    occupation: "Social Worker",
-    city: "Adelaide, SA",
-    height: "5'5\"",
-    children: "Have, young",
-    religion: "Christian",
-    prompts: [
-      { question: "Why I do this", answer: "Every family deserves support and resources to thrive." },
-      { question: "Looking for", answer: "Someone compassionate, family-oriented, and values-driven." }
-    ],
-    relationshipGoals: ["Life partner", "Family connection"],
-    selectedRelationshipGoals: ["Life partner", "Family connection"],
-    interests: {
-      "Social Causes": ["Community Service", "Family Support"],
-      "Lifestyle": ["Family Time", "Volunteering"]
-    },
-    selectedOrganizedInterests: {
-      "Social Causes": ["Community Service", "Family Support"],
-      "Lifestyle": ["Family Time", "Volunteering"]
-    },
-    distance: 5,
-  },
 ]
 
 // Shuffle the profiles randomly
@@ -959,7 +862,7 @@ export default function MatchesPage() {
     }
   }, [])
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
-  const [compatBoxes, setCompatBoxes] = useState<{[key: string | number]: ConnectionBoxData}>({})
+  const [compatBoxes, setCompatBoxes] = useState<{[key: number]: ConnectionBoxData}>({})
   const [showSettingsDropdown, setShowSettingsDropdown] = useState(false)
   const [searchFilters, setSearchFilters] = useState({
     westernSign: '',
@@ -1141,121 +1044,10 @@ export default function MatchesPage() {
   }
 
   // REAL DATABASE: Fetch user profile and matchable profiles
-  // Also load test profiles if no user is logged in (for mobile/demo access)
   useEffect(() => {
+    if (!currentUserId) return
+
     const loadRealProfiles = async () => {
-      // If no user is logged in, show test profiles
-      if (!currentUserId) {
-        console.log('[Matches] ℹ️  No user logged in - loading test profiles')
-        setIsLoadingProfiles(true)
-        try {
-          // Convert test profiles to match the expected format
-          const testProfilesFormatted = SHUFFLED_PROFILES.map(p => ({
-            id: `test-${p.id}`,
-            name: p.name,
-            age: p.age,
-            birthdate: p.birthdate,
-            westernSign: p.westernSign,
-            easternSign: p.easternSign,
-            tropicalWesternSign: p.westernSign,
-            siderealWesternSign: p.westernSign,
-            photos: p.photos,
-            bio: p.aboutMe || p.aboutMeText || '',
-            occupation: p.occupation || 'Not specified',
-            city: p.city || 'Unknown',
-            height: p.height || 'Not specified',
-            children_preference: p.children || 'Not specified',
-            religion: p.religion || 'Not specified',
-            relationship_goals: p.relationshipGoals || p.selectedRelationshipGoals || [],
-            interests: p.interests ? Object.values(p.interests || p.selectedOrganizedInterests || {}).flat() : [],
-            distance: p.distance || 0,
-            lat: 0,
-            lon: 0
-          }))
-
-          const formattedProfiles = testProfilesFormatted.map((p: EnrichedProfile) => ({
-            id: p.id,
-            name: p.name,
-            age: p.age,
-            birthdate: p.birthdate,
-            westernSign: p.westernSign,
-            easternSign: p.easternSign,
-            tropicalWesternSign: p.tropicalWesternSign || p.westernSign,
-            siderealWesternSign: p.siderealWesternSign || p.westernSign,
-            photos: p.photos,
-            aboutMe: p.bio || 'No bio yet',
-            aboutMeText: p.bio || 'No bio yet',
-            occupation: p.occupation || 'Not specified',
-            city: p.city || 'Unknown',
-            height: p.height || 'Not specified',
-            children: p.children_preference || 'Not specified',
-            religion: p.religion || 'Not specified',
-            relationshipGoals: p.relationship_goals || [],
-            selectedRelationshipGoals: p.relationship_goals || [],
-            interests: (() => {
-              if (!p.interests || !Array.isArray(p.interests) || p.interests.length === 0) {
-                return {}
-              }
-              const interestCategories = {
-                "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
-                "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
-                "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
-                "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
-                "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
-              }
-              const organized: {[category: string]: string[]} = {}
-              p.interests.forEach((interest: string) => {
-                for (const [category, items] of Object.entries(interestCategories)) {
-                  if (items.includes(interest)) {
-                    if (!organized[category]) {
-                      organized[category] = []
-                    }
-                    organized[category].push(interest)
-                    break
-                  }
-                }
-              })
-              return organized
-            })(),
-            selectedOrganizedInterests: (() => {
-              if (!p.interests || !Array.isArray(p.interests) || p.interests.length === 0) {
-                return {}
-              }
-              const interestCategories = {
-                "Wellness": ["Yoga", "Meditation", "Pilates", "Beach Walks", "Healthy Eating", "Gym", "Wellness Retreats", "Vegan", "Vegetarian", "Breath Work", "Spa Days", "Journaling", "Staying Active", "Morning Routines", "Cold Plunge"],
-                "Staying In": ["TV Series", "Gardening", "Cooking", "Reading", "Sleep Ins", "Podcasts", "Movie Nights", "Baking", "Video Games", "Streaming", "Arts & Crafts", "Wine Tasting", "Listening to Music"],
-                "Going Out": ["Pubs & Bars", "Wine Bars", "Beach Clubs", "Live Music", "Concerts", "Festivals", "Comedy Shows", "Night Markets", "Restaurants", "Brunch Spots", "Fine Dining", "Dancing", "Clubbing", "Karaoke", "Trivia Nights"],
-                "Sport & Fitness": ["Surfing", "Running", "Yoga", "Swimming", "Cycling", "Boxing", "CrossFit", "Tennis", "Basketball", "Football", "Soccer", "Golf", "Rock Climbing", "Skating", "Snowboarding", "Skiing"],
-                "Adventure & Travels": ["Beach Days", "Camping", "Road Trips", "Bushwalking", "Kayaking", "Paddle Boarding", "Fishing", "Photography", "Backpacking", "Weekend Getaways", "Tropical Destinations", "City Breaks", "Mountain Escapes", "Island Hopping", "Scuba Diving", "Snorkeling", "Safari Adventures", "Food Tourism", "Cultural Exploration", "Solo Travel", "Hiking"]
-              }
-              const organized: {[category: string]: string[]} = {}
-              p.interests.forEach((interest: string) => {
-                for (const [category, items] of Object.entries(interestCategories)) {
-                  if (items.includes(interest)) {
-                    if (!organized[category]) {
-                      organized[category] = []
-                    }
-                    organized[category].push(interest)
-                    break
-                  }
-                }
-              })
-              return organized
-            })(),
-            distance: p.distance || 0,
-          }))
-
-          setEnrichedProfiles(formattedProfiles)
-          setFilteredProfiles(formattedProfiles)
-          console.log('[Matches] ✅ Test profiles loaded (no user logged in)')
-        } catch (error) {
-          console.error('[Matches] ❌ Error loading test profiles:', error)
-          setHasError(true)
-        } finally {
-          setIsLoadingProfiles(false)
-        }
-        return
-      }
       setIsLoadingProfiles(true)
       console.log('[Matches] 🔄 Loading real profiles from database...')
 
@@ -1315,10 +1107,10 @@ export default function MatchesPage() {
           })
         }
 
-        // 4. Fetch matchable profiles based on user's preferences
+        // 4. Fetch matchable profiles based on user's preferences (gender + interested in)
         const filters = {
-          userGender: profile.gender || 'Man',
-          lookingForGender: profile.looking_for_gender || 'Everyone',
+          userGender: profile.gender || '',
+          lookingForGender: (profile.orientation || profile.looking_for_gender || 'Everyone').trim(),
           ageMin: profile.age_min || 18,
           ageMax: profile.age_max || 99,
           distanceRadius: profile.distance_radius || 50,
@@ -1331,6 +1123,14 @@ export default function MatchesPage() {
         const candidates = await fetchMatchableProfiles(filters)
         console.log(`[Matches] 📋 Found ${candidates.length} potential matches`)
 
+        if (candidates.length === 0) {
+          console.log('[Matches] ℹ️  No profiles found - check location or preferences')
+          setEnrichedProfiles([])
+          setFilteredProfiles([])
+          setIsLoadingProfiles(false)
+          return
+        }
+
         // 5. Filter out already liked/passed profiles
         const likedIds = await fetchLikedProfileIds(currentUserId)
         const passedIds = await fetchPassedProfileIds(currentUserId)
@@ -1339,42 +1139,11 @@ export default function MatchesPage() {
         const unseenProfiles = filterSeenProfiles(candidates, likedIds, passedIds)
         console.log(`[Matches] ✨ ${unseenProfiles.length} new profiles to show`)
 
-        // Use test profiles as fallback if no database profiles found
-        let profilesToProcess = unseenProfiles
-        if (profilesToProcess.length === 0) {
-          console.log('[Matches] ℹ️  No database profiles found - using test profiles as fallback')
-          // Convert test profiles to match the expected format
-          profilesToProcess = SHUFFLED_PROFILES.map(p => ({
-            id: `test-${p.id}`,
-            name: p.name,
-            age: p.age,
-            birthdate: p.birthdate,
-            westernSign: p.westernSign,
-            easternSign: p.easternSign,
-            tropicalWesternSign: p.westernSign,
-            siderealWesternSign: p.westernSign,
-            photos: p.photos,
-            bio: p.aboutMe || p.aboutMeText || '',
-            occupation: p.occupation || 'Not specified',
-            city: p.city || 'Unknown',
-            height: p.height || 'Not specified',
-            children_preference: p.children || 'Not specified',
-            religion: p.religion || 'Not specified',
-            relationship_goals: p.relationshipGoals || p.selectedRelationshipGoals || [],
-            interests: p.interests ? Object.values(p.interests || p.selectedOrganizedInterests || {}).flat() : [],
-            distance: p.distance || 0,
-            lat: 0,
-            lon: 0
-          }))
-        }
-
-        // 6. Update last active timestamp (only if we have real profiles)
-        if (candidates.length > 0) {
-          updateLastActive(currentUserId)
-        }
+        // 6. Update last active timestamp
+        updateLastActive(currentUserId)
 
         // 7. Convert to component format and enrich with zodiac signs
-        const formattedProfiles = profilesToProcess.map((p: EnrichedProfile) => ({
+        const formattedProfiles = unseenProfiles.map((p: EnrichedProfile) => ({
           id: p.id,
           name: p.name,
           age: p.age,
@@ -1713,40 +1482,38 @@ export default function MatchesPage() {
     const connectionBlurb = getConnectionBlurb(archetype, ease, chineseBase, chineseOverlays);
     // Map match label to rank key (updated with new labels)
     const labelToRankKey: Record<string, RankKey> = {
-      "Soulmate Match": "perfect",
-      "Twin Flame Match": "excellent",
-      "Triple Harmony Match": "excellent",
-      "Excellent Match": "excellent",
-      "Favourable Match": "good",
-      "Six Harmoniess Match": "good", // NEW label
-      "Good Friends": "good",
-      "Good Friends Match": "good",
-      "Opposites Attract": "fair",
-      "Six Conflicts": "fair",
-      "Six Conflicts Match": "fair", // NEW label
-      "Same Sign Match": "fair",
-      "Neutral Match": "fair",
-      "Challenging Match": "challenging",
-      "Difficult Match": "challenging",
+      "Soulmate Match": "perfect", "Twin Flame Match": "excellent", "Triple Harmony Match": "excellent",
+      "Excellent Match": "excellent", "Favourable Match": "good", "Six Harmoniess Match": "good",
+      "Good Friends": "good", "Good Friends Match": "good", "Opposites Attract": "fair",
+      "Six Conflicts": "fair", "Six Conflicts Match": "fair", "Same Sign Match": "fair",
+      "Neutral Match": "fair", "Challenging Match": "challenging", "Difficult Match": "challenging",
+      "Triple Harmony 三合": "excellent", "Six Harmonies 六合": "good",
+      "Six Conflicts 六冲": "fair", "Same Sign 同": "fair",
+      "Punishment 同 刑": "challenging", "Neutral 中": "fair",
+      "Six Harms 六害": "challenging", "Punishment 刑": "challenging", "Breakpoint 破": "challenging",
     };
+    const rankKey: RankKey = labelToRankKey[simpleBox.matchLabel] ?? (() => {
+      const L = simpleBox.matchLabel;
+      if (L.includes("Six Conflicts")) return "fair";
+      if (L.includes("Triple Harmony")) return "excellent";
+      if (L.includes("Six Harmonies")) return "good";
+      if (L.includes("Same Sign") || L.includes("同")) return (L.includes("Punishment") || L.includes("刑")) ? "challenging" : "fair";
+      if (L.includes("Six Harms") || L.includes("Punishment") || L.includes("Breakpoint") || L.includes("六害") || L.includes("破")) return "challenging";
+      if (L.includes("Neutral") || L.includes("中")) return "fair";
+      return "neutral";
+    })();
     
-    const rankKey = labelToRankKey[simpleBox.matchLabel] || "neutral";
-    
-    // Map label to tier (updated to support new match engine labels)
     const labelToTier = (label: string): Tier => {
-      // New match engine labels
+      if (label.includes("Six Conflicts")) return "Six Conflicts";
+      if (label.includes("Triple Harmony")) return "Soulmate";
+      if (label.includes("Six Harmonies")) return "Favourable";
+      if (label.includes("同 刑") || (label.includes("Punishment") && label.includes("同"))) return "Difficult";
+      if (label.includes("Same Sign") || label.includes("同")) return "Neutral";
+      if (label.includes("Neutral") || label.includes("中")) return "Neutral";
+      if (label.includes("Six Harms") || label.includes("Punishment") || label.includes("Breakpoint")) return "Difficult";
       if (label === "SOULMATE" || label === "SOULMATE MATCH" || label === "Soulmate Match") return "Soulmate";
       if (label === "TWIN FLAME" || label === "TWIN FLAME MATCH" || label === "Twin Flame Match") return "Twin Flame";
-      if (label === "Triple Harmony Match") return "Excellent";
-      if (label === "HARMONIOUS" || label === "HARMONIOUS MATCH" || label === "Excellent Match") return "Excellent";
-      if (label === "Six Harmoniess Match") return "Favourable"; // NEW label
-      if (label === "Favourable Match") return "Favourable";
-      if (label === "Good Friends" || label === "Good Friends Match") return "Favourable";
-      if (label === "Six Conflicts Match") return "Six Conflicts"; // NEW label
-      if (label === "OPPOSITES_ATTRACT" || label === "OPPOSITES ATTRACT" || label === "Opposites Attract" || label === "Six Conflicts") return "Six Conflicts";
-      if (label === "Same Sign Match") return "Neutral";
-      if (label === "NEUTRAL" || label === "NEUTRAL MATCH" || label === "Neutral Match") return "Neutral";
-      if (label === "Challenging Match") return "Difficult"; // NEW label
+      if (label === "OPPOSITES_ATTRACT" || label === "Opposites Attract") return "Six Conflicts";
       if (label === "DIFFICULT" || label === "DIFFICULT MATCH" || label === "Difficult Match") return "Difficult";
       return "Neutral";
     };
@@ -1776,10 +1543,12 @@ export default function MatchesPage() {
       "NEUTRAL": "✨",
       "NEUTRAL MATCH": "✨",
       "Neutral Match": "✨",
-      "Challenging Match": "💔", // NEW label
-      "DIFFICULT": "💔",
-      "DIFFICULT MATCH": "💔",
-      "Difficult Match": "💔",
+      "Challenging Match": "💔",
+      "DIFFICULT": "💔", "DIFFICULT MATCH": "💔", "Difficult Match": "💔",
+      "Triple Harmony 三合": "✨", "Six Harmonies 六合": "💕",
+      "Six Conflicts 六冲": "⚡", "Same Sign 同": "✨",
+      "Punishment 同 刑": "💔", "Neutral 中": "✨",
+      "Six Harms 六害": "💔", "Punishment 刑": "💔", "Breakpoint 破": "💔",
     };
     
     const labelToColor: Record<string, string> = {
@@ -1806,10 +1575,12 @@ export default function MatchesPage() {
       "NEUTRAL": "rgb(34, 139, 34)",                  // Green
       "NEUTRAL MATCH": "rgb(34, 139, 34)",            // Green
       "Neutral Match": "rgb(34, 139, 34)",            // Green
-      "Challenging Match": "rgb(239, 68, 68)",        // NEW label - Red
-      "DIFFICULT": "rgb(239, 68, 68)",                // Red
-      "DIFFICULT MATCH": "rgb(239, 68, 68)",          // Red
-      "Difficult Match": "rgb(239, 68, 68)",          // Red
+      "Challenging Match": "rgb(239, 68, 68)", "DIFFICULT": "rgb(239, 68, 68)",
+      "DIFFICULT MATCH": "rgb(239, 68, 68)", "Difficult Match": "rgb(239, 68, 68)",
+      "Triple Harmony 三合": "rgb(212, 175, 55)", "Six Harmonies 六合": "rgb(219, 39, 119)",
+      "Six Conflicts 六冲": "rgb(239, 68, 68)", "Same Sign 同": "rgb(34, 139, 34)",
+      "Punishment 同 刑": "rgb(239, 68, 68)", "Neutral 中": "rgb(34, 139, 34)",
+      "Six Harms 六害": "rgb(239, 68, 68)", "Punishment 刑": "rgb(239, 68, 68)", "Breakpoint 破": "rgb(239, 68, 68)",
     };
     
     const tier = labelToTier(simpleBox.matchLabel);
@@ -1923,10 +1694,6 @@ export default function MatchesPage() {
         chineseOverlays,
         westernRelation,
       },
-      // NEW: Card overlay data for photo carousel
-      card: simpleBox.card,
-      // NEW: Tarot snippet (1-2 sentence archetype explanation)
-      tarotSnippet: simpleBox.tarotSnippet,
     };
   };
 
@@ -1944,7 +1711,7 @@ export default function MatchesPage() {
       }
       
       console.log('[Match Engine] Building compatibility boxes for', enrichedProfiles.length, 'profiles')
-      const boxes: {[key: string | number]: ConnectionBoxData} = {}
+      const boxes: {[key: number]: ConnectionBoxData} = {}
       
       // Get user's display signs based on sun sign system
       const savedSunSigns = getSavedSunSigns()
@@ -2714,9 +2481,8 @@ export default function MatchesPage() {
     }
     
     // After processing all profiles, set the boxes
-    // Note: profile IDs can be either strings ("test-34") or numbers
-    const processedIds = Object.keys(boxes) // Keep as strings
-    const allProfileIds = enrichedProfiles.map(p => String(p.id)) // Convert all to strings for comparison
+    const processedIds = Object.keys(boxes).map(id => parseInt(id)).sort((a, b) => a - b)
+    const allProfileIds = enrichedProfiles.map(p => p.id).sort((a, b) => a - b)
     const missingIds = allProfileIds.filter(id => !processedIds.includes(id))
     
     console.log('[Match Engine] Finished. Total boxes:', Object.keys(boxes).length)
@@ -2984,9 +2750,7 @@ export default function MatchesPage() {
 
     if (touchStartY !== null) {
       const deltaY = currentTouch.clientY - touchStartY
-      const deltaX = Math.abs(diff)
-      // If vertical movement is significantly more than horizontal, allow vertical scroll
-      if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 10) {
+      if (Math.abs(deltaY) > Math.abs(diff) && Math.abs(deltaY) > 8) {
         // treat gesture as vertical scroll; cancel swipe state so page can scroll
         setTouchStart(null)
         setTouchEnd(null)
@@ -3069,43 +2833,39 @@ export default function MatchesPage() {
     const isRightSwipe = distance < -minSwipeDistance
     
     if (isLeftSwipe) {
-      // Swipe left = next card
+      // Swipe left = pass - Animations already running from onTouchMove
       setIsAnimating(true)
+      // Animate card all the way off screen
       setSwipeOffset(-1000)
       
+      // Wait for animation to complete, then show next profile from underneath
       setTimeout(() => {
-        // Move to next card
-        if (currentProfileIndex < filteredProfiles.length - 1) {
-          setCurrentProfileIndex(currentProfileIndex + 1)
-        }
-        // Reset animation state and swipe offset
-        setIsAnimating(false)
-        setSwipeOffset(0)
-        setShowLikeFlash(false)
         setShowPassFlash(false)
-        setLikeButtonFlash(false)
         setPassButtonFlash(false)
         setActiveButton(null)
-      }, 400)
+        // Change profile FIRST while card is still off screen
+        handleNextProfile()
+        // Then reset animation state and swipe offset immediately after
+        setIsAnimating(false)
+        setSwipeOffset(0)
+      }, 350)
     } else if (isRightSwipe) {
-      // Swipe right = previous card
+      // Swipe right = like - Animations already running from onTouchMove
       setIsAnimating(true)
+      // Animate card all the way off screen
       setSwipeOffset(1000)
       
+      // Wait for animation to complete, then show next profile from underneath
       setTimeout(() => {
-        // Move to previous card
-        if (currentProfileIndex > 0) {
-          setCurrentProfileIndex(currentProfileIndex - 1)
-        }
-        // Reset animation state and swipe offset
+        setShowLikeFlash(false)
+        setLikeButtonFlash(false)
+        setActiveButton(null)
+        // Change profile FIRST while card is still off screen
+        handleNextProfile()
+        // Then reset animation state and swipe offset immediately after
         setIsAnimating(false)
         setSwipeOffset(0)
-        setShowLikeFlash(false)
-        setShowPassFlash(false)
-        setLikeButtonFlash(false)
-        setPassButtonFlash(false)
-        setActiveButton(null)
-      }, 400)
+      }, 350)
     } else {
       // Reset if swipe wasn't far enough
       setSwipeOffset(0)
@@ -3252,43 +3012,35 @@ export default function MatchesPage() {
       const isRightSwipe = distance < -minSwipeDistance
       
       if (isLeftSwipe) {
-        // Drag left = next card
+        // Drag left = pass
         setIsAnimating(true)
         setSwipeOffset(-1000)
         
         setTimeout(() => {
-          // Move to next card
-          if (currentProfileIndex < filteredProfiles.length - 1) {
-            setCurrentProfileIndex(currentProfileIndex + 1)
-          }
-          // Reset animation state and swipe offset
-          setIsAnimating(false)
-          setSwipeOffset(0)
-          setShowLikeFlash(false)
           setShowPassFlash(false)
-          setLikeButtonFlash(false)
           setPassButtonFlash(false)
           setActiveButton(null)
-        }, 400)
+          // Change profile FIRST while card is still off screen
+          handleNextProfile()
+          // Then reset animation state and swipe offset
+          setIsAnimating(false)
+          setSwipeOffset(0)
+        }, 350)
       } else if (isRightSwipe) {
-        // Drag right = previous card
+        // Drag right = like
         setIsAnimating(true)
         setSwipeOffset(1000)
         
         setTimeout(() => {
-          // Move to previous card
-          if (currentProfileIndex > 0) {
-            setCurrentProfileIndex(currentProfileIndex - 1)
-          }
-          // Reset animation state and swipe offset
+          setShowLikeFlash(false)
+          setLikeButtonFlash(false)
+          setActiveButton(null)
+          // Change profile FIRST while card is still off screen
+          handleNextProfile()
+          // Then reset animation state and swipe offset
           setIsAnimating(false)
           setSwipeOffset(0)
-          setShowLikeFlash(false)
-          setShowPassFlash(false)
-          setLikeButtonFlash(false)
-          setPassButtonFlash(false)
-          setActiveButton(null)
-        }, 400)
+        }, 350)
       } else {
         // Reset if drag wasn't far enough
         setSwipeOffset(0)
@@ -3392,6 +3144,7 @@ export default function MatchesPage() {
   const containerStyle: React.CSSProperties = isTouchDevice
     ? {
         WebkitOverflowScrolling: 'touch',
+        overflowY: 'auto',
         overflowX: 'hidden',
         minHeight: '100dvh',
         position: 'relative',
@@ -3399,6 +3152,8 @@ export default function MatchesPage() {
         paddingTop: '0px',
       }
     : {
+        WebkitOverflowScrolling: 'auto',
+        overflowY: 'auto',
         overflowX: 'hidden',
         minHeight: '100vh',
         position: 'relative',
@@ -3413,7 +3168,7 @@ export default function MatchesPage() {
 
   return (
     <div
-      className={`min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
+      className={`overscroll-y-contain min-h-screen ${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"}`}
       style={{
         ...containerStyle,
         ...(theme !== "light" ? {
@@ -3431,14 +3186,7 @@ export default function MatchesPage() {
         
         body {
           overflow-x: hidden;
-        }
-        
-        .card-gallery-container::-webkit-scrollbar {
-          display: none; /* Chrome/Safari */
-        }
-        
-        .match-card-container::-webkit-scrollbar {
-          display: none; /* Chrome/Safari */
+          overscroll-behavior-y: contain;
         }
         
         @keyframes scaleIn {
@@ -3557,7 +3305,7 @@ export default function MatchesPage() {
         }
       `}</style>
       
-       <div className={`relative z-10 w-full ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : "bg-white"}`}>
+       <div className={`relative z-10 w-full overflow-visible ${theme !== "light" ? "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900" : ""}`}>
         {/* Header */}
         <header className={`sticky top-0 z-50 ${
           theme === "light"
@@ -3565,26 +3313,17 @@ export default function MatchesPage() {
             : "bg-slate-900/80 backdrop-blur-sm"
         }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
           <div className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4">
-            {/* Tabs: Matches | AstroLab */}
+            {/* Tabs: Connections | AstroLab */}
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex-1 -ml-8">
                 <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-                  <div className="flex gap-4 min-w-max ml-8">
+                  <div className="flex gap-0.5 min-w-max ml-8">
                     <div className="flex items-center gap-0.5">
                       <FourPointedStar className="w-5 h-5 text-orange-500" />
                       <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                        Matches
+                        Connections
                       </span>
                     </div>
-                    <button
-                      onClick={() => router.push("/astrology")}
-                      className="flex items-center gap-0.5 hover:opacity-80 transition-opacity"
-                    >
-                      <FourPointedStar className="w-5 h-5 text-orange-500" />
-                      <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                        AstroLab
-                      </span>
-                    </button>
                   </div>
                 </div>
               </div>
@@ -3893,13 +3632,7 @@ export default function MatchesPage() {
 
         {/* Profile Card Stack */}
         {profilesToShow.length === 0 ? (
-          <div className="flex items-center justify-center" style={{ 
-            minHeight: 'calc(100vh - 80px)', 
-            paddingTop: '80px', // Account for sticky header
-            paddingBottom: '20px',
-            height: 'calc(100vh - 80px)', // Fixed height to fit viewport
-            overflow: 'hidden', // Prevent page scroll
-          }}>
+          <div className="flex items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)', paddingTop: '20px' }}>
             <div className="text-center px-4">
               <p className={`text-lg mb-2 ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
               <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
@@ -3907,201 +3640,325 @@ export default function MatchesPage() {
               </p>
             </div>
           </div>
-        ) : filteredProfiles.length > 0 ? (
-          /* 🔒 Deck-Style Swipe Browsing Model - Single Card Focus */
-          <div
-            className="relative"
-            style={{
-              height: 'calc(100vh - 80px)', // Account for header (sticky header is ~80px with padding)
-              paddingTop: '0px', // No extra padding - header is sticky
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              overflow: 'visible', // Allow scrolling
-              position: 'relative',
-            }}
-          >
-            {/* Deck Context - Card Counter */}
-            {filteredProfiles.length > 0 && (
-              <div
-                className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10"
+        ) : currentProfile ? (
+          <div className="pb-32 relative overflow-visible">
+            {/* Cover the bottom padding area with dark background */}
+            {theme !== "light" && (
+              <div 
+                className="absolute bottom-0 left-0 right-0"
                 style={{
+                  height: '8rem',
+                  background: 'linear-gradient(to bottom right, rgb(2, 6, 23), rgb(30, 27, 75), rgb(15, 23, 42))',
+                  zIndex: 0,
+                  pointerEvents: 'none'
+                }}
+              />
+            )}
+            {/* Next profile card (underneath) - Full size and ready */}
+            {filteredProfiles[currentProfileIndex + 1] && (
+              <div 
+                key={`next-${profilesToShow[currentProfileIndex + 1].id}`}
+                className="absolute top-0 left-0 right-0 pb-32"
+                style={{
+                  zIndex: 1,
                   pointerEvents: 'none',
+                  clipPath: 'inset(0 0 0 0)' // Will be overridden by current card
                 }}
               >
-                <p className={`text-xs font-medium ${
-                  theme === "light" ? "text-slate-600" : "text-slate-400"
-                }`}>
-                  {currentProfileIndex + 1} of {filteredProfiles.length}
-                </p>
+                <MatchProfileCard
+                  profile={{
+                    id: filteredProfiles[currentProfileIndex + 1].id,
+                    name: filteredProfiles[currentProfileIndex + 1].name,
+                    age: filteredProfiles[currentProfileIndex + 1].age,
+                    photos: filteredProfiles[currentProfileIndex + 1].photos,
+                    aboutMe: filteredProfiles[currentProfileIndex + 1].aboutMe,
+                    occupation: filteredProfiles[currentProfileIndex + 1].occupation,
+                    city: filteredProfiles[currentProfileIndex + 1].city,
+                    height: filteredProfiles[currentProfileIndex + 1].height,
+                    children: filteredProfiles[currentProfileIndex + 1].children,
+                    religion: filteredProfiles[currentProfileIndex + 1].religion,
+                    prompts: filteredProfiles[currentProfileIndex + 1].prompts,
+                    westernSign: sunSignSystem === "sidereal"
+                      ? (filteredProfiles[currentProfileIndex + 1].siderealWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign)
+                      : (filteredProfiles[currentProfileIndex + 1].tropicalWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign),
+                    easternSign: filteredProfiles[currentProfileIndex + 1].easternSign,
+                    relationshipGoals: filteredProfiles[currentProfileIndex + 1].relationshipGoals || filteredProfiles[currentProfileIndex + 1].selectedRelationshipGoals,
+                    interests: filteredProfiles[currentProfileIndex + 1].interests || filteredProfiles[currentProfileIndex + 1].selectedOrganizedInterests,
+                  } as any}
+                  connectionBoxData={compatBoxes[filteredProfiles[currentProfileIndex + 1].id]}
+                  theme={theme}
+                  onPhotoChange={() => {}}
+                  onMessageClick={() => {
+                    const nextProfile = filteredProfiles[currentProfileIndex + 1];
+                    if (nextProfile) {
+                      router.push(`/messages/${nextProfile.id}`);
+                    }
+                  }}
+                />
               </div>
             )}
-
-            {/* Next Card Peeking (Subtle Edge) */}
-            {currentProfileIndex < filteredProfiles.length - 1 && (
-              <div
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 z-0"
-                style={{
-                  width: '8px',
-                  height: '60%',
-                  backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)",
-                  borderRadius: '4px 0 0 4px',
-                  pointerEvents: 'none',
-                }}
-              />
-            )}
-
-            {/* Previous Card Peeking (Subtle Edge) */}
-            {currentProfileIndex > 0 && (
-              <div
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 z-0"
-                style={{
-                  width: '8px',
-                  height: '60%',
-                  backgroundColor: theme === "light" ? "rgba(0, 0, 0, 0.05)" : "rgba(255, 255, 255, 0.05)",
-                  borderRadius: '0 4px 4px 0',
-                  pointerEvents: 'none',
-                }}
-              />
-            )}
-
-            {/* Deck Shadow Behind Card */}
-            <div
-              className="absolute inset-0 z-0"
-              style={{
-                background: theme === "light"
-                  ? "radial-gradient(circle at center, rgba(0, 0, 0, 0.02) 0%, transparent 70%)"
-                  : "radial-gradient(circle at center, rgba(255, 255, 255, 0.02) 0%, transparent 70%)",
-                pointerEvents: 'none',
-              }}
-            />
-
-            {/* Single Card Focus View - Centered, Full Height */}
-            <div
-              className="relative w-full max-w-md mx-auto"
-              style={{
-                height: '100%',
-                width: '100%',
-                maxWidth: '420px', // Optimal card width
-                display: 'flex',
-                alignItems: 'stretch', // Stretch to fill height
-                justifyContent: 'center',
-                perspective: '1000px',
-                padding: '0 16px', // Side padding
-              }}
+            
+            {/* Current profile card (on top) - This card clips the one underneath */}
+            <div 
+              key={`current-${currentProfile.id}`}
+              ref={cardRef}
+              className="relative"
+              style={{ 
+                zIndex: 2, 
+                touchAction: isTouchDevice 
+                  ? (isUserInteracting ? ('none' as const) : ('pan-y' as const))
+                  : ('auto' as const),
+                cursor: !isTouchDevice ? (isDragging ? 'grabbing' : 'grab') : 'default',
+                // Use a pseudo-element or mask to hide the bottom card below this one
+                backgroundColor: 'transparent',
+                WebkitTouchCallout: 'none',
+                WebkitUserSelect: 'none',
+                userSelect: 'none'
+              } as React.CSSProperties}
+              onTouchStart={isTouchDevice ? onTouchStart : undefined}
+              onTouchMove={isTouchDevice ? onTouchMove : undefined}
+              onTouchEnd={isTouchDevice ? onTouchEnd : undefined}
+              onTouchCancel={isTouchDevice ? onTouchCancel : undefined}
+              onMouseDown={!isTouchDevice ? onMouseDown : undefined}
+              onMouseMove={!isTouchDevice ? onMouseMove : undefined}
+              onMouseUp={!isTouchDevice ? onMouseUp : undefined}
             >
-              {/* Next Card Preview (Behind Current) */}
-              {currentProfileIndex < filteredProfiles.length - 1 && (
-                <div
-                  className="absolute w-full"
-                  style={{
-                    zIndex: 1,
-                    opacity: 0.3,
-                    transform: 'scale(0.95) translateY(20px)',
-                    filter: 'blur(2px)',
-                    pointerEvents: 'none',
-                  }}
-                >
-                  <MatchProfileCard
-                    profile={{
-                      id: filteredProfiles[currentProfileIndex + 1].id,
-                      name: filteredProfiles[currentProfileIndex + 1].name,
-                      age: filteredProfiles[currentProfileIndex + 1].age,
-                      photos: filteredProfiles[currentProfileIndex + 1].photos,
-                      aboutMe: filteredProfiles[currentProfileIndex + 1].aboutMe,
-                      occupation: filteredProfiles[currentProfileIndex + 1].occupation,
-                      city: filteredProfiles[currentProfileIndex + 1].city,
-                      height: filteredProfiles[currentProfileIndex + 1].height,
-                      children: filteredProfiles[currentProfileIndex + 1].children,
-                      religion: filteredProfiles[currentProfileIndex + 1].religion,
-                      prompts: filteredProfiles[currentProfileIndex + 1].prompts,
-                      westernSign: sunSignSystem === "sidereal"
-                        ? (filteredProfiles[currentProfileIndex + 1].siderealWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign)
-                        : (filteredProfiles[currentProfileIndex + 1].tropicalWesternSign || filteredProfiles[currentProfileIndex + 1].westernSign),
-                      easternSign: filteredProfiles[currentProfileIndex + 1].easternSign,
-                      relationshipGoals: filteredProfiles[currentProfileIndex + 1].relationshipGoals || filteredProfiles[currentProfileIndex + 1].selectedRelationshipGoals,
-                      interests: filteredProfiles[currentProfileIndex + 1].interests || filteredProfiles[currentProfileIndex + 1].selectedOrganizedInterests,
-                    } as any}
-                    connectionBoxData={compatBoxes[filteredProfiles[currentProfileIndex + 1].id]}
-                    theme={theme}
-                    onPhotoChange={() => {}}
-                    onMessageClick={() => {}}
-                  />
-                </div>
-              )}
-
-              {/* Current Card - Fully Visible, Swipeable */}
               <div
-                key={`current-${currentProfile.id}`}
-                ref={cardRef}
-                className="relative w-full"
+                className="relative"
                 style={{
-                  zIndex: 2,
-                  touchAction: 'pan-y', // Allow vertical scrolling only (swipe handled separately)
-                  cursor: !isTouchDevice ? (isDragging ? 'grabbing' : 'grab') : 'default',
-                  WebkitTouchCallout: 'none',
-                  WebkitUserSelect: 'none',
-                  userSelect: 'none',
-                  transformStyle: 'preserve-3d',
-                  height: '100%',
-                } as React.CSSProperties}
-                onTouchStart={isTouchDevice ? onTouchStart : undefined}
-                onTouchMove={isTouchDevice ? onTouchMove : undefined}
-                onTouchEnd={isTouchDevice ? onTouchEnd : undefined}
-                onTouchCancel={isTouchDevice ? onTouchCancel : undefined}
-                onMouseDown={!isTouchDevice ? onMouseDown : undefined}
-                onMouseMove={!isTouchDevice ? onMouseMove : undefined}
-                onMouseUp={!isTouchDevice ? onMouseUp : undefined}
+                  transform: `translateX(${swipeOffset}px) rotate(${swipeOffset * 0.03}deg)`,
+                  transition: isAnimating ? 'transform 0.7s ease-out' : (touchStart || isDragging) ? 'none' : 'transform 0.2s ease-out',
+                }}
               >
-                <div
-                  className="relative"
-                  style={{
-                    transform: `translateX(${swipeOffset}px) rotateY(${swipeOffset * 0.05}deg)`,
-                    transition: isAnimating ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : (touchStart || isDragging) ? 'none' : 'transform 0.2s ease-out',
-                    boxShadow: theme === "light"
-                      ? `0 ${Math.abs(swipeOffset) * 0.1}px ${Math.abs(swipeOffset) * 0.2}px rgba(0, 0, 0, ${0.1 + Math.abs(swipeOffset) * 0.0001})`
-                      : `0 ${Math.abs(swipeOffset) * 0.1}px ${Math.abs(swipeOffset) * 0.2}px rgba(255, 255, 255, ${0.05 + Math.abs(swipeOffset) * 0.0001})`,
-                  }}
-                >
-                  <MatchProfileCard
-                    profile={{
-                      id: currentProfile.id,
-                      name: currentProfile.name,
-                      age: currentProfile.age,
-                      photos: currentProfile.photos,
-                      aboutMe: currentProfile.aboutMe,
-                      occupation: currentProfile.occupation,
-                      city: currentProfile.city,
-                      height: currentProfile.height,
-                      children: currentProfile.children,
-                      religion: currentProfile.religion,
-                      prompts: currentProfile.prompts,
-                      westernSign: sunSignSystem === "sidereal"
-                        ? (currentProfile.siderealWesternSign || currentProfile.westernSign)
-                        : (currentProfile.tropicalWesternSign || currentProfile.westernSign),
-                      easternSign: currentProfile.easternSign,
-                      relationshipGoals: currentProfile.relationshipGoals || currentProfile.selectedRelationshipGoals,
-                      interests: currentProfile.interests || currentProfile.selectedOrganizedInterests,
-                    } as any}
-                    connectionBoxData={compatBoxes[currentProfile.id]}
-                    theme={theme}
-                    onPhotoChange={() => {}}
-                    onMessageClick={() => {
-                      handleChat()
+                {/* 
+                ====================================================================
+                ORIGINAL FLASH ANIMATION CODE (BACKUP - RESTORE IF NEEDED)
+                ====================================================================
+                
+                {/* Like/Pass Flash - Inside the card, counteracting rotation */}
+                {/* Like Flash - Top Left Corner */}
+                {/*
+                {showLikeFlash && (
+                  <div 
+                    className="absolute top-8 left-8 z-50 pointer-events-none"
+                    style={{
+                      transform: `rotate(${-15 - (swipeOffset * 0.03)}deg)`
                     }}
-                  />
-                </div>
+                  >
+                    <div style={{ animation: 'scaleIn 0.2s ease-out' }}>
+                      <svg 
+                        className="w-32 h-32" 
+                        viewBox="0 0 24 24" 
+                        fill="rgb(249, 115, 22)"
+                        style={{
+                          filter: 'drop-shadow(0 10px 30px rgba(249, 115, 22, 0.5))'
+                        }}
+                      >
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Pass Flash - Top Right Corner */}
+                {/*
+                {showPassFlash && (
+                  <div 
+                    className="absolute top-8 right-8 z-50 pointer-events-none"
+                    style={{
+                      transform: `rotate(${15 - (swipeOffset * 0.03)}deg)`
+                    }}
+                  >
+                    <div style={{ animation: 'scaleIn 0.2s ease-out' }}>
+                      <svg 
+                        className="w-32 h-32" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="rgb(249, 115, 22)" 
+                        strokeWidth="3"
+                        style={{
+                          filter: 'drop-shadow(0 10px 30px rgba(249, 115, 22, 0.5))'
+                        }}
+                      >
+                        <path d="m18 6-12 12" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </div>
+                  </div>
+                )}
+                */}
+                
+                {/* ====================================================================
+                    BUMBLE-STYLE FLASH ANIMATIONS - Slide in from screen edges
+                    ==================================================================== */}
+
+                <MatchProfileCard
+                  profile={{
+                    id: currentProfile.id,
+                    name: currentProfile.name,
+                    age: currentProfile.age,
+                    photos: currentProfile.photos,
+                    aboutMe: currentProfile.aboutMe,
+                    occupation: currentProfile.occupation,
+                    city: currentProfile.city,
+                    height: currentProfile.height,
+                    children: currentProfile.children,
+                    religion: currentProfile.religion,
+                    prompts: currentProfile.prompts,
+                    westernSign: sunSignSystem === "sidereal"
+                      ? (currentProfile.siderealWesternSign || currentProfile.westernSign)
+                      : (currentProfile.tropicalWesternSign || currentProfile.westernSign),
+                    easternSign: currentProfile.easternSign,
+                    relationshipGoals: currentProfile.relationshipGoals || currentProfile.selectedRelationshipGoals,
+                    interests: currentProfile.interests || currentProfile.selectedOrganizedInterests,
+                  } as any}
+                  connectionBoxData={compatBoxes[currentProfile.id]}
+                  theme={theme}
+                  onPhotoChange={(index) => setCurrentPhotoIndex(index)}
+                  onMessageClick={handleChat}
+                  onPass={handlePass}
+                  onLike={handleLike}
+                />
+                {/* Debug: Show if connection box data is missing */}
+                {process.env.NODE_ENV === 'development' && !compatBoxes[currentProfile.id] && (
+                  <div className="p-4 text-center text-yellow-500 text-xs bg-yellow-50 dark:bg-yellow-900/20 rounded m-2">
+                    ⚠️ Debug: No connection box data for profile ID {currentProfile.id}. 
+                    Available IDs: {Object.keys(compatBoxes).length > 0 ? Object.keys(compatBoxes).join(', ') : 'None'}
+                  </div>
+                )}
               </div>
             </div>
+            
+            {/* Bumble-Style Flash Animations - Fixed on screen, slide from opposite edges */}
+            {showLikeFlash && (() => {
+              // Like flash: swiping right, so flash comes from RIGHT edge (opposite side)
+              // Animation phases:
+              // 0-120px: slide in from right edge
+              // 120-180px: hold at max position (shorter hold)
+              // 180px+: retreat WITH the card (starts earlier, very fast - 60px range)
+              const maxPosition = windowWidth * 0.58
+              const iconSize = 128 // w-28 = 7rem = 112px
+              const startPosition = windowWidth + iconSize // Start completely off-screen right
+              
+              let currentX: number
+              let opacity: number
+              
+              if (swipeOffset <= 120) {
+                // Phase 1: Slide in (0-120px)
+                const progress = Math.max(swipeOffset, 0) / 120
+                currentX = startPosition - (progress * (startPosition - maxPosition))
+                opacity = progress
+              } else if (swipeOffset <= 180) {
+                // Phase 2: Hold at max position (120-180px) - shorter
+                currentX = maxPosition
+                opacity = 1
+              } else {
+                // Phase 3: Retreat WITH the card (180px+, only 60px range - very fast)
+                const retreatProgress = Math.min((swipeOffset - 180) / 60, 1)
+                currentX = maxPosition + (retreatProgress * (startPosition - maxPosition))
+                opacity = 1 - retreatProgress
+              }
+              
+              return (
+                <div 
+                  className="fixed z-50 pointer-events-none"
+                  style={{
+                    top: '25%',
+                    left: 0,
+                    transform: `translateX(${currentX}px)`,
+                    transition: isAnimating ? 'transform 0.7s ease-out, opacity 0.7s ease-out' : 'none',
+                    opacity: opacity * 0.7,
+                  }}
+                >
+                  <svg 
+                    className="w-28 h-28" 
+                    viewBox="0 0 24 24" 
+                    fill="rgba(249, 115, 22, 0.55)"
+                    style={{
+                      filter: 'drop-shadow(0 8px 28px rgba(249, 115, 22, 0.25)) blur(0.6px)',
+                    }}
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </div>
+              )
+            })()}
+            
+            {showPassFlash && (() => {
+              // Pass flash: swiping left, so flash comes from LEFT edge (opposite side)
+              // Animation phases:
+              // 0-120px: slide in from left edge
+              // 120-180px: hold at max position (shorter hold)
+              // 180px+: retreat WITH the card (starts earlier, very fast - 60px range)
+              const maxPosition = windowWidth * 0.12
+              const iconSize = 128
+              const startPosition = -iconSize // Start completely off-screen left
+              
+              let currentX: number
+              let opacity: number
+              
+              if (swipeOffset >= -120) {
+                // Phase 1: Slide in (0 to -120px)
+                const progress = Math.max(-swipeOffset, 0) / 120
+                currentX = startPosition + (progress * (maxPosition - startPosition))
+                opacity = progress
+              } else if (swipeOffset >= -180) {
+                // Phase 2: Hold at max position (-120 to -180px) - shorter
+                currentX = maxPosition
+                opacity = 1
+              } else {
+                // Phase 3: Retreat WITH the card (-180px and beyond, only 60px range - very fast)
+                const retreatProgress = Math.min((-swipeOffset - 180) / 60, 1)
+                currentX = maxPosition - (retreatProgress * (maxPosition - startPosition))
+                opacity = 1 - retreatProgress
+              }
+              
+              return (
+                <div 
+                  className="fixed z-50 pointer-events-none"
+                  style={{
+                    top: '25%',
+                    left: 0,
+                    transform: `translateX(${currentX}px)`,
+                    transition: isAnimating ? 'transform 0.7s ease-out, opacity 0.7s ease-out' : 'none',
+                    opacity: opacity * 0.7,
+                  }}
+                >
+                  <svg 
+                    className="w-32 h-32" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="rgba(249, 115, 22, 0.55)" 
+                    strokeWidth="3"
+                    style={{
+                      filter: 'drop-shadow(0 8px 28px rgba(249, 115, 22, 0.25)) blur(0.6px)',
+                    }}
+                  >
+                    <path d="m18 6-12 12" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </div>
+              )
+            })()}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center h-full">
-            <p className={`text-lg mb-2 ${theme === "light" ? "text-gray-700" : "text-white"}`}>No profiles available</p>
-            <p className={`text-sm ${theme === "light" ? "text-gray-500" : "text-gray-400"}`}>
-              {enrichedProfiles.length === 0 ? "Loading profiles..." : "Try adjusting your filters"}
+          <div className="px-4 py-8 text-center">
+            <p className={`text-lg ${theme === "light" ? "text-gray-900" : "text-white"}`}>
+              {filteredProfiles.length === 0 ? "No profiles available" : "No profiles match your filters"}
             </p>
+            <button
+              onClick={() => {
+                setSearchFilters({ westernSign: '', easternSign: '' })
+                          setMatchTierFilters({ Soulmate: false, "Twin Flame": false, Excellent: false, Favourable: false })
+              }}
+              className="mt-4 px-6 py-2 bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 hover:from-orange-500 hover:via-orange-400 hover:to-red-400 text-white rounded-lg transition-colors"
+            >
+              Clear Filters
+            </button>
           </div>
         )}
+
+
       </div>
       
       {/* Match Modal - "It's a Match!" */}

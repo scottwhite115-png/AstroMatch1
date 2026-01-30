@@ -36,6 +36,7 @@ export interface EnrichedProfile {
   interests?: string[]
   relationship_goals?: string[]
   gender?: string
+  orientation?: string
   lat?: number
   lon?: number
 }
@@ -77,40 +78,79 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
       return []
     }
 
-    // Filter profiles based on preferences
+    // Fetch orientation/interested_in for nearby profiles (RPC doesn't return it)
+    const ids = nearbyProfiles.map((p: any) => p.id)
+    const { data: orientationRows } = await supabase
+      .from('profiles')
+      .select('id, orientation, looking_for_gender')
+      .in('id', ids)
+    const orientationById: Record<string, string> = {}
+    if (orientationRows) {
+      for (const row of orientationRows) {
+        const orient = (row as any).orientation || (row as any).looking_for_gender || ''
+        orientationById[row.id] = orient
+      }
+    }
+
+    // Normalize for matching (Men/Women/Everyone/Prefer not to say; Man/Woman/Non-binary/Prefer not to say)
+    const norm = (s: string) => (s || '').toLowerCase().trim()
+    const viewerGender = norm(filters.userGender)
+    const viewerInterestedInRaw = (filters.lookingForGender || '').trim()
+    const viewerInterestedIn = norm(viewerInterestedInRaw)
+
+    const profileGenderMatchesInterestedIn = (profileGender: string, interestedIn: string) => {
+      const g = norm(profileGender)
+      const i = norm(interestedIn)
+      if (i === 'everyone' || i === 'prefer not to say') return true
+      if (g === 'prefer not to say' || g === 'non-binary') return true // show them; viewer's interested_in is what matters
+      if (i === 'men' && (g === 'man' || g === 'male')) return true
+      if (i === 'women' && (g === 'woman' || g === 'female')) return true
+      return false
+    }
+
+    const profileInterestedInMatchesGender = (profileInterestedIn: string, gender: string) => {
+      const pi = norm(profileInterestedIn)
+      const g = norm(gender)
+      if (pi === 'everyone' || pi === 'prefer not to say') return true
+      if (g === 'prefer not to say' || g === 'non-binary') return true // profile sees viewer when viewer didn't specify
+      if (pi === 'men' && (g === 'man' || g === 'male')) return true
+      if (pi === 'women' && (g === 'woman' || g === 'female')) return true
+      return false
+    }
+
+    // Filter profiles based on preferences + gender/interested-in logic
+    // Rules: same-sex sees same-sex, hetero sees hetero, Everyone sees all, Prefer not to say (gender) → interested-in dictates; Prefer not to say (interested in) → see all. Mutual: profile must also be interested in viewer.
     let filteredCount = 0
     const matchableProfiles = nearbyProfiles.filter((profile: any) => {
       // Exclude own profile
       if (profile.id === filters.userId) {
         filteredCount++
-        console.log(`[Profile Queries] Filtered out own profile: ${profile.email || profile.id}`)
         return false
       }
       
-      // Must be complete and active
       if (!profile.profile_complete || !profile.account_active) {
         filteredCount++
-        console.log(`[Profile Queries] Filtered out incomplete/inactive: ${profile.email || profile.id} (complete: ${profile.profile_complete}, active: ${profile.account_active})`)
         return false
       }
-      
-      // Gender filter - check if user wants to see this profile's gender
-      if (filters.lookingForGender !== 'Everyone') {
-        const profileGender = profile.gender?.toLowerCase() || ''
-        const lookingFor = filters.lookingForGender.toLowerCase()
-        
-        // Handle variations: Man/Male, Woman/Female, Men/Women
-        const isMatch = 
-          lookingFor === 'everyone' ||
-          profileGender === lookingFor ||
-          (lookingFor === 'men' && (profileGender === 'man' || profileGender === 'male')) ||
-          (lookingFor === 'women' && (profileGender === 'woman' || profileGender === 'female')) ||
-          (lookingFor === 'man' && (profileGender === 'man' || profileGender === 'male')) ||
-          (lookingFor === 'woman' && (profileGender === 'woman' || profileGender === 'female'))
-        
-        if (!isMatch) {
+
+      const profileInterestedIn = orientationById[profile.id] || (profile.orientation || profile.looking_for_gender || '')
+      const profileGender = profile.gender || ''
+
+      // --- 1) Viewer "Interested in" Men/Women: profile's gender must match (or profile gender is Prefer not to say / Non-binary)
+      if (viewerInterestedIn !== 'everyone' && viewerInterestedIn !== 'prefer not to say') {
+        if (!profileGenderMatchesInterestedIn(profileGender, viewerInterestedInRaw)) {
+          const profileG = norm(profileGender)
+          if (profileG !== 'prefer not to say' && profileG !== 'non-binary' && profileG !== '') {
+            filteredCount++
+            return false
+          }
+        }
+      }
+
+      // --- 2) Mutual: profile's "interested in" must include viewer's gender (or profile is Everyone/Prefer not to say). When viewer gender is Prefer not to say / Non-binary, we don't require profile to "include" them — show based on viewer's interested-in only.
+      if (viewerGender !== 'prefer not to say' && viewerGender !== 'non-binary' && viewerGender !== '') {
+        if (!profileInterestedInMatchesGender(profileInterestedIn, filters.userGender)) {
           filteredCount++
-          console.log(`[Profile Queries] Filtered out gender mismatch: ${profile.email || profile.id} (profile: ${profile.gender}, looking for: ${filters.lookingForGender})`)
           return false
         }
       }
@@ -142,8 +182,13 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
 
     console.log(`[Profile Queries] After filtering: ${matchableProfiles.length} matchable profiles (filtered out ${filteredCount})`)
 
-    // Map to EnrichedProfile format
-    const enrichedProfiles: EnrichedProfile[] = matchableProfiles.map((profile: any) => ({
+    // Map to EnrichedProfile format (photos from profile – same as View tab carousel source)
+    const enrichedProfiles: EnrichedProfile[] = matchableProfiles.map((profile: any) => {
+      const photosRaw = profile.photos
+      const photos = Array.isArray(photosRaw)
+        ? photosRaw.filter((url: any) => url != null && String(url).trim() !== '')
+        : []
+      return {
       id: profile.id,
       name: profile.display_name || 'Anonymous',
       age: profile.age,
@@ -152,7 +197,7 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
       easternSign: profile.chinese_sign,
       tropicalWesternSign: profile.tropical_western_sign || profile.western_sign,
       siderealWesternSign: profile.sidereal_western_sign || profile.western_sign,
-      photos: profile.photos || [],
+      photos,
       bio: profile.bio,
       occupation: profile.occupation,
       height: profile.height,
@@ -163,9 +208,11 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
       interests: profile.interests || [],
       relationship_goals: profile.relationship_goals || [],
       gender: profile.gender,
+      orientation: orientationById[profile.id] || profile.orientation || profile.looking_for_gender,
       lat: profile.lat,
       lon: profile.lon
-    }))
+      }
+    })
 
     console.log(`[Profile Queries] Found ${enrichedProfiles.length} matchable profiles`)
     return enrichedProfiles
