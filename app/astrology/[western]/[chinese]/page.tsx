@@ -1691,7 +1691,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
           <div className="text-center">
             <h1 className="astrology-heading-primary mb-4">Combination Not Found</h1>
             <Link href="/astrology" className="zodiac-list-item inline-flex items-center gap-2 px-6 py-3">
-              Return to Astrology
+              Return to AstroLab
             </Link>
           </div>
         </div>
@@ -1742,7 +1742,7 @@ export default function ZodiacCombinationPage({ params }: ZodiacCombinationPageP
                 />
               </svg>
               <span className="font-bold text-base bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
-                Astrology
+                AstroLab
               </span>
             </div>
 

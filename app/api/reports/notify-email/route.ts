@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
     const reporterName = reporterProfile?.display_name || "Unknown";
     const reportedName = reportedUserName || "Unknown";
 
-    const subject = `[Lunar] User Report: ${reportedName}`;
+    const subject = `[AstroChat] User Report: ${reportedName}`;
     const html = `
       <h2>User Report Received</h2>
       <p><strong>Reported user:</strong> ${reportedName} (ID: ${reportedUserId})</p>
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
           Authorization: `Bearer ${apiKey}`,
         },
         body: JSON.stringify({
-          from: process.env.RESEND_FROM_EMAIL || "Lunar Reports <onboarding@resend.dev>",
+          from: process.env.RESEND_FROM_EMAIL || "AstroChat Reports <onboarding@resend.dev>",
           to: ADMIN_EMAIL,
           subject,
           html,

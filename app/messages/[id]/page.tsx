@@ -1052,7 +1052,7 @@ export default function ChatPage() {
       const result = await reportUser(currentUserId, userId, "Reported from chat")
       
       if (result.success) {
-        let message = `Thank you for your report. ${conversation?.userName || "This user"}'s profile and your chat history have been sent to Lunar admin for review. We take all reports seriously and will investigate this matter.`
+        let message = `Thank you for your report. ${conversation?.userName || "This user"}'s profile and your chat history have been sent to AstroChat admin for review. We take all reports seriously and will investigate this matter.`
         
         // Show warning/ban message if applicable
         if (result.shouldWarn && result.warningMessage) {

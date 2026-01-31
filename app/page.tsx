@@ -24,7 +24,7 @@ export default function HomePage() {
       flexDirection: 'column',
       gap: '20px'
     }}>
-      <p style={{ color: 'black', fontSize: '18px' }}>Loading AstroMatch...</p>
+      <p style={{ color: 'black', fontSize: '18px' }}>Loading AstroChat...</p>
       <a 
         href="/network-test" 
         style={{ color: 'blue', textDecoration: 'underline', fontSize: '14px' }}

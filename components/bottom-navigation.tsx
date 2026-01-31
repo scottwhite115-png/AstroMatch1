@@ -150,7 +150,7 @@ export function BottomNavigation() {
   const navItems = [
     {
       icon: FourPointedStar,
-      label: "Astrology",
+      label: "AstroLab",
       path: "/astrology",
     },
     {

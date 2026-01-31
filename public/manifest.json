@@ -1,7 +1,7 @@
 {
-  "name": "AstroMatch - Dating App",
-  "short_name": "AstroMatch",
-  "description": "Find your perfect match through astrology and compatibility",
+  "name": "AstroChat - Dating App",
+  "short_name": "AstroChat",
+  "description": "Find your perfect match through Chinese Zodiac & Sun Sign compatibility",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",

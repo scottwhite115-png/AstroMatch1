@@ -17,8 +17,8 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: "AstroMatch - Dating App",
-  description: "Find your perfect match through astrology compatibility",
+  title: "AstroChat - Dating App",
+  description: "Find your perfect match through Chinese Zodiac & Sun Sign compatibility",
   generator: "v0.app",
 }
 
@@ -44,7 +44,7 @@ export default function RootLayout({
         <noscript>
           <div style={{ padding: '20px', textAlign: 'center', background: 'white', color: 'black' }}>
             <h1>JavaScript Required</h1>
-            <p>Please enable JavaScript to use AstroMatch.</p>
+            <p>Please enable JavaScript to use AstroChat.</p>
           </div>
         </noscript>
       </body>

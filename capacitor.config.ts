@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.astromatch.app',
-  appName: 'AstroMatch',
+  appId: 'com.scottwhite115.lunar',
+  appName: 'AstroChat',
   webDir: 'public',
   server: {
     url: 'https://astro-match1.vercel.app',

@@ -99,7 +99,7 @@ export function SidebarNavigation() {
     },
     {
       icon: FourPointedStar,
-      label: "Astrology",
+      label: "AstroLab",
       path: "/astrology",
     },
     {

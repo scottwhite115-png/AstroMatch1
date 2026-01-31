@@ -372,7 +372,7 @@ export default function AccountPage({
   }
 
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     const firstConfirm = confirm(
       "⚠️ WARNING: This will PERMANENTLY delete your account!\n\n" +
         "All your data including:\n" +
@@ -391,6 +391,19 @@ export default function AccountPage({
     const secondConfirm = prompt('To confirm permanent deletion, please type "DELETE" (in capital letters):')
 
     if (secondConfirm === "DELETE") {
+      try {
+        const res = await fetch("/api/account/delete", { method: "POST" })
+        const data = await res.json()
+
+        if (!res.ok) {
+          alert(data.error || "Failed to delete account. Please contact support.")
+          return
+        }
+      } catch (err) {
+        alert("Failed to delete account. Please try again or contact support.")
+        return
+      }
+
       // Clear all user data from localStorage
       const keysToRemove = [
         "userFullName",
@@ -414,6 +427,13 @@ export default function AccountPage({
         "manualCity",
         "pushNotifications",
         "visibilitySettings",
+        "profilePhoto1",
+        "userSunSign",
+        "userChineseSign",
+        "userBirthInfo",
+        "viewedMatches",
+        "conversations",
+        "instantMessageEnabled",
       ]
 
       keysToRemove.forEach((key) => {
@@ -422,8 +442,8 @@ export default function AccountPage({
 
       alert(
         "Your account has been permanently deleted.\n\n" +
-          "All your data has been removed.\n\n" +
-          "Thank you for using AstroHarmony. We hope to see you again in the future.",
+          "All your data has been removed from our servers.\n\n" +
+          "Thank you for using AstroChat. We hope to see you again in the future.",
       )
 
       // Redirect to login page
@@ -465,7 +485,7 @@ export default function AccountPage({
                   <div className="flex items-center gap-0.5">
                     <FourPointedStar className="w-5 h-5 text-orange-500" />
                     <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                      Lunar
+                      AstroChat
                     </span>
                   </div>
                 </div>
@@ -1036,7 +1056,7 @@ export default function AccountPage({
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                Lunar Privacy Policy
+                AstroChat Privacy Policy
               </h2>
               <button
                 onClick={() => setPrivacyPolicyOpen(false)}
@@ -1053,7 +1073,7 @@ export default function AccountPage({
               </div>
 
               <p className="text-gray-900">
-                Lunar is a dating and astrology-based application (the "App"). This Privacy Policy explains how Lunar ("Lunar," "we," "us," "our") collects, uses, shares, and protects information about you, and the choices you have.
+                AstroChat is a dating and astrology-based application (the "App"). This Privacy Policy explains how AstroChat ("AstroChat," "we," "us," "our") collects, uses, shares, and protects information about you, and the choices you have.
               </p>
               <p className="text-gray-900">
                 This policy applies when you use our App, websites, and related services (collectively, the "Services").
@@ -1063,7 +1083,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">1) Who We Are (Controller) and How to Contact Us</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar is the entity responsible for processing your personal information (the "data controller" in many regions).
+                  AstroChat is the entity responsible for processing your personal information (the "data controller" in many regions).
                 </p>
                 <p className="text-gray-900 mb-2">
                   <strong>Privacy Contact:</strong> astromatchchat@gmail.com
@@ -1181,7 +1201,7 @@ export default function AccountPage({
                   <li>comply with law, regulation, legal process, or lawful government requests;</li>
                   <li>enforce our Terms and policies;</li>
                   <li>detect, prevent, or address fraud, security, or technical issues; or</li>
-                  <li>protect the rights, property, and safety of Lunar, our users, or the public.</li>
+                  <li>protect the rights, property, and safety of AstroChat, our users, or the public.</li>
                 </ul>
 
                 <h4 className="text-lg font-semibold text-gray-900 mb-2">D. Business transfers</h4>
@@ -1194,7 +1214,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">7) International Data Transfers</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar may process and store information in countries other than where you live. When we transfer personal information internationally, we use appropriate safeguards as required by law, which may include:
+                  AstroChat may process and store information in countries other than where you live. When we transfer personal information internationally, we use appropriate safeguards as required by law, which may include:
                 </p>
                 <ul className="list-disc pl-6 space-y-1 text-gray-900">
                   <li>adequacy decisions (where recognized),</li>
@@ -1265,7 +1285,7 @@ export default function AccountPage({
                   <li>lodge a complaint with your local data protection authority.</li>
                 </ul>
                 <p className="text-gray-900 mb-4">
-                  <strong>Profiling/automated decisions:</strong> Lunar uses algorithms to suggest matches and compatibility insights. This is not intended to produce legal or similarly significant effects. You can adjust preferences and controls within the App.
+                  <strong>Profiling/automated decisions:</strong> AstroChat uses algorithms to suggest matches and compatibility insights. This is not intended to produce legal or similarly significant effects. You can adjust preferences and controls within the App.
                 </p>
 
                 <h4 className="text-lg font-semibold text-gray-900 mb-2">C. United States (including California CCPA/CPRA and other state laws)</h4>
@@ -1324,7 +1344,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">13) User-Generated Content, Reports, and Safety Moderation</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar is a social platform. Content you share (profile info, photos, messages, posts) may be visible to other users depending on your settings and the feature used.
+                  AstroChat is a social platform. Content you share (profile info, photos, messages, posts) may be visible to other users depending on your settings and the feature used.
                 </p>
                 <p className="text-gray-900 mb-2">We may review content and related information to:</p>
                 <ul className="list-disc pl-6 space-y-1 text-gray-900 mb-2">
@@ -1342,7 +1362,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">14) Children's Privacy</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar is intended only for users 18 years or older (or the age of majority in your jurisdiction, if higher). We do not knowingly collect personal information from minors. If we learn we have collected such information, we will take steps to delete it.
+                  AstroChat is intended only for users 18 years or older (or the age of majority in your jurisdiction, if higher). We do not knowingly collect personal information from minors. If we learn we have collected such information, we will take steps to delete it.
                 </p>
               </div>
 
@@ -1369,7 +1389,7 @@ export default function AccountPage({
                   For questions, requests, or complaints about privacy, contact:
                 </p>
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <p className="text-gray-900 font-semibold">Lunar Privacy Team</p>
+                  <p className="text-gray-900 font-semibold">AstroChat Privacy Team</p>
                   <p className="text-gray-900">
                     📧{" "}
                     <a href="mailto:astromatchchat@gmail.com" className="text-blue-600 hover:underline">
@@ -1403,7 +1423,7 @@ export default function AccountPage({
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                Lunar – Terms of Service
+                AstroChat – Terms of Service
               </h2>
               <button
                 onClick={() => setTermsOfServiceOpen(false)}
@@ -1420,7 +1440,7 @@ export default function AccountPage({
               </div>
 
               <p className="text-gray-900">
-                These Terms of Service (the "Terms") govern your access to and use of Lunar's mobile application, websites, and related services (collectively, the "Services"). By creating an account or using the Services, you agree to these Terms.
+                These Terms of Service (the "Terms") govern your access to and use of AstroChat's mobile application, websites, and related services (collectively, the "Services"). By creating an account or using the Services, you agree to these Terms.
               </p>
               <p className="text-gray-900 font-semibold">
                 If you do not agree, do not use the Services.
@@ -1430,7 +1450,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">1) Who We Are and Contact</h3>
                 <p className="text-gray-900 mb-2">
-                  The Services are operated by [INSERT LEGAL ENTITY NAME] ("Lunar," "we," "us," "our").
+                  The Services are operated by [INSERT LEGAL ENTITY NAME] ("AstroChat," "we," "us," "our").
                 </p>
                 <p className="text-gray-900 mb-2">
                   <strong>Contact:</strong> astromatchchat@gmail.com
@@ -1497,7 +1517,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">5) Community Guidelines, Moderation, and Enforcement</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar may provide reporting tools and moderation. We may, at our discretion and consistent with applicable law:
+                  AstroChat may provide reporting tools and moderation. We may, at our discretion and consistent with applicable law:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
                   <li>remove or limit visibility of content;</li>
@@ -1514,7 +1534,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">6) Dating Safety and User Responsibility</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar is a platform that helps users meet and communicate. You are responsible for your interactions with others.
+                  AstroChat is a platform that helps users meet and communicate. You are responsible for your interactions with others.
                 </p>
                 <p className="text-gray-900 mb-2">You acknowledge and agree:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
@@ -1524,7 +1544,7 @@ export default function AccountPage({
                   <li>you will take reasonable steps to protect your personal safety when meeting in person.</li>
                 </ul>
                 <p className="text-gray-900">
-                  To the maximum extent permitted by law, Lunar is not responsible for offline conduct or events between users.
+                  To the maximum extent permitted by law, AstroChat is not responsible for offline conduct or events between users.
                 </p>
               </div>
 
@@ -1532,7 +1552,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">7) Astrology and Compatibility Disclaimer (Entertainment Purposes)</h3>
                 <p className="text-gray-900 mb-2">
-                  Lunar includes astrological profiles, compatibility scores, and related content. You agree and understand:
+                  AstroChat includes astrological profiles, compatibility scores, and related content. You agree and understand:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
                   <li><strong>Astrology and compatibility features are provided for entertainment and informational purposes only.</strong></li>
@@ -1549,7 +1569,7 @@ export default function AccountPage({
                   User Content includes your profile details, photos, messages, posts, and any content you submit through the Services.
                 </p>
                 <p className="text-gray-900 mb-2">
-                  You retain ownership of your User Content, but you grant Lunar a worldwide, non-exclusive, royalty-free, sublicensable license to host, store, reproduce, modify (for formatting), display, and distribute your User Content solely to:
+                  You retain ownership of your User Content, but you grant AstroChat a worldwide, non-exclusive, royalty-free, sublicensable license to host, store, reproduce, modify (for formatting), display, and distribute your User Content solely to:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
                   <li>operate, provide, maintain, and improve the Services;</li>
@@ -1586,7 +1606,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">10) Third-Party Services and Links</h3>
                 <p className="text-gray-900">
-                  The Services may integrate with or link to third-party services. Lunar does not control and is not responsible for third-party services, terms, or privacy practices. Your use of those services may be governed by their separate terms.
+                  The Services may integrate with or link to third-party services. AstroChat does not control and is not responsible for third-party services, terms, or privacy practices. Your use of those services may be governed by their separate terms.
                 </p>
               </div>
 
@@ -1640,10 +1660,10 @@ export default function AccountPage({
                 <p className="text-gray-900 mb-2">To the maximum extent permitted by law:</p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900 mb-3">
                   <li>
-                    Lunar will not be liable for indirect, incidental, special, consequential, or punitive damages, or loss of profits/data/goodwill, arising out of or related to your use of the Services.
+                    AstroChat will not be liable for indirect, incidental, special, consequential, or punitive damages, or loss of profits/data/goodwill, arising out of or related to your use of the Services.
                   </li>
                   <li>
-                    Lunar's total liability for any claim will not exceed the greater of: (a) amounts you paid to Lunar in the 12 months before the event giving rise to the claim, or (b) USD $100 (or local equivalent), unless applicable law requires otherwise.
+                    AstroChat's total liability for any claim will not exceed the greater of: (a) amounts you paid to AstroChat in the 12 months before the event giving rise to the claim, or (b) USD $100 (or local equivalent), unless applicable law requires otherwise.
                   </li>
                 </ul>
                 <p className="text-gray-900">
@@ -1655,7 +1675,7 @@ export default function AccountPage({
               <div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">15) Indemnity</h3>
                 <p className="text-gray-900 mb-2">
-                  To the maximum extent permitted by law, you agree to indemnify and hold Lunar harmless from claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising from:
+                  To the maximum extent permitted by law, you agree to indemnify and hold AstroChat harmless from claims, liabilities, damages, losses, and expenses (including reasonable legal fees) arising from:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-900">
                   <li>your use of the Services;</li>
