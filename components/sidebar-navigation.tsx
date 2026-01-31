@@ -84,7 +84,7 @@ export function SidebarNavigation() {
   const navItems = [
     {
       icon: DiscoveryStar,
-      label: "Matches",
+      label: "Connections",
       path: "/matches",
     },
     {

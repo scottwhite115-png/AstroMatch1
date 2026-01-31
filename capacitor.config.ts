@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.scottwhite115.lunar',
+  appId: 'com.scottwhite115.astrochat',
   appName: 'AstroChat',
   webDir: 'public',
   server: {
