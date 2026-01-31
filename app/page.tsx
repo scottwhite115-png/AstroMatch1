@@ -1,26 +1,18 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
-  // In static export, HomePage can render on any page
-  // Only show loading + redirect when at root
-  const currentPath = typeof window !== 'undefined' ? window.location.pathname : '/'
+  const router = useRouter()
   
   useEffect(() => {
-    if (currentPath !== '/') return
-    
+    // Small delay to ensure router is ready
     const timer = setTimeout(() => {
-            window.location.href = '/matches'
-    }, 100)
+      router.push('/matches')
+    }, 50)
     return () => clearTimeout(timer)
-  }, [currentPath])
-  
-  // CRITICAL FIX: Return null when not at root
-  // This prevents HomePage from blocking other pages (fixes Apple's blank screen issue)
-  if (currentPath !== '/') {
-    return null
-  }
+  }, [router])
   
   return (
     <div style={{ 
@@ -33,12 +25,18 @@ export default function HomePage() {
       gap: '20px'
     }}>
       <p style={{ color: 'black', fontSize: '18px' }}>Loading AstroMatch...</p>
-        <a 
-          href="/matches" 
+      <a 
+        href="/network-test" 
         style={{ color: 'blue', textDecoration: 'underline', fontSize: '14px' }}
-        >
-          Go to Matches
-        </a>
+      >
+        Network Test
+      </a>
+      <a 
+        href="/matches" 
+        style={{ color: 'blue', textDecoration: 'underline', fontSize: '14px' }}
+      >
+        Go to Matches
+      </a>
     </div>
   )
 }

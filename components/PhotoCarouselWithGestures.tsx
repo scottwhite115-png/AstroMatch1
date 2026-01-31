@@ -7,7 +7,6 @@ interface PhotoCarouselWithGesturesProps {
   currentPhotoIndex: number;
   onPhotoChange: (index: number) => void;
   className?: string;
-  style?: React.CSSProperties;
   children?: React.ReactNode;
 }
 
@@ -16,7 +15,6 @@ export default function PhotoCarouselWithGestures({
   currentPhotoIndex,
   onPhotoChange,
   className = "",
-  style,
   children,
 }: PhotoCarouselWithGesturesProps) {
   const [scale, setScale] = useState(1);
@@ -486,7 +484,6 @@ export default function PhotoCarouselWithGestures({
           WebkitUserSelect: 'none',
           userSelect: 'none',
           WebkitTapHighlightColor: 'transparent',
-          ...style,
         }}
       >
         <div

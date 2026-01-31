@@ -93,29 +93,43 @@ export function BottomNavigation() {
   const pathname = usePathname()
   const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
   const [isHidden, setIsHidden] = useState(false)
+  const [firstName, setFirstName] = useState<string | null>(null)
 
-  // Check for profile photo on mount and when page changes
+  // Check for profile photo and first name on mount and when page changes
   useEffect(() => {
-    const checkProfilePhoto = () => {
+    const checkProfileData = () => {
       if (typeof window !== 'undefined') {
         const savedPhoto = localStorage.getItem('profilePhoto1')
         setProfilePhoto(savedPhoto)
+        
+        // Get first name from localStorage or fetch from database
+        const savedFullName = localStorage.getItem('userFullName')
+        if (savedFullName) {
+          // Extract first name (first word)
+          const first = savedFullName.trim().split(/\s+/)[0]
+          setFirstName(first || null)
+        } else {
+          // Try to fetch from database if available
+          setFirstName(null)
+        }
       }
     }
 
-    checkProfilePhoto()
+    checkProfileData()
 
-    // Listen for photo updates
-    const handlePhotoUpdate = () => {
-      checkProfilePhoto()
+    // Listen for photo and name updates
+    const handleProfileUpdate = () => {
+      checkProfileData()
     }
 
-    window.addEventListener('profilePhotoUpdated', handlePhotoUpdate)
-    window.addEventListener('storage', handlePhotoUpdate)
+    window.addEventListener('profilePhotoUpdated', handleProfileUpdate)
+    window.addEventListener('profileNameUpdated', handleProfileUpdate)
+    window.addEventListener('storage', handleProfileUpdate)
 
     return () => {
-      window.removeEventListener('profilePhotoUpdated', handlePhotoUpdate)
-      window.removeEventListener('storage', handlePhotoUpdate)
+      window.removeEventListener('profilePhotoUpdated', handleProfileUpdate)
+      window.removeEventListener('profileNameUpdated', handleProfileUpdate)
+      window.removeEventListener('storage', handleProfileUpdate)
     }
   }, [pathname])
 
@@ -136,12 +150,12 @@ export function BottomNavigation() {
   const navItems = [
     {
       icon: FourPointedStar,
-      label: "AstroLab",
+      label: "Astrology",
       path: "/astrology",
     },
     {
       icon: Heart,
-      label: "Matches",
+      label: "Connections",
       path: "/matches",
     },
     {
@@ -193,8 +207,10 @@ export function BottomNavigation() {
               (item.path === "/profile/profile" && pathname?.startsWith("/profile/")) ||
               (item.path === "/astrology" && pathname?.startsWith("/astrology"))
             
-            // Use label directly
-            const displayLabel = item.label
+            // Use first name if available for Profile, otherwise use label
+            const displayLabel = item.path === "/profile/profile" && firstName 
+              ? firstName 
+              : item.label
 
             return (
               <button

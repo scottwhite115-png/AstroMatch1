@@ -15,7 +15,7 @@ function getPatternColor(pattern: string): { border: string; text: string } {
   if (patternUpper.includes('SAN_HE') || patternUpper.includes('TRIPLE HARMONY')) {
     return { border: '#eab308', text: '#ca8a04' }; // yellow
   }
-  if (patternUpper.includes('LIU_HE') || patternUpper.includes('SECRET ALLIES') || patternUpper.includes('SECRET FRIENDS')) {
+  if (patternUpper.includes('LIU_HE') || patternUpper.includes('SIX HARMONIES') || patternUpper.includes('SECRET ALLIES') || patternUpper.includes('SECRET FRIENDS')) {
     return { border: '#a855f7', text: '#9333ea' }; // purple
   }
   if (patternUpper.includes('SAME_ANIMAL') || patternUpper.includes('SAME ANIMAL') || patternUpper.includes('SAME_SIGN') || patternUpper.includes('SAME SIGN')) {
@@ -33,7 +33,7 @@ function getPatternColor(pattern: string): { border: string; text: string } {
   if (patternUpper.includes('XING') || patternUpper.includes('PUNISHMENT')) {
     return { border: '#ef4444', text: '#dc2626' }; // red
   }
-  if (patternUpper.includes('PO') || patternUpper.includes('BREAK')) {
+  if (patternUpper.includes('PO') || patternUpper.includes('BREAKPOINT') || patternUpper.includes('BREAK')) {
     return { border: '#ef4444', text: '#dc2626' }; // red
   }
   

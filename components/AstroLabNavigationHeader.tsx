@@ -6,8 +6,8 @@ import Link from "next/link"
 import { useTheme } from "@/contexts/ThemeContext"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" />
+  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" className={className}>
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" stroke="none" />
   </svg>
 )
 
@@ -15,38 +15,38 @@ const FourPointedStar = ({ className }: { className?: string }) => (
 const ASTROLAB_SECTIONS = [
   {
     id: 'triple-harmony-trines',
-    label: '💛 Soulmate',
-    icon: '',
+    label: 'Triple Harmony',
+    icon: '三合',
     description: 'Triple Harmony trine groups table',
   },
   {
     id: 'secret-friends',
-    label: '💕 Secret Friends',
-    icon: '',
+    label: 'Six Harmonies',
+    icon: '六合',
     description: 'Six Harmonies (Liu He) pairs table',
   },
   {
     id: 'six-conflicts',
-    label: '🧲 Magnetic Opposites',
-    icon: '',
+    label: 'Six Conflicts',
+    icon: '六冲',
     description: 'Six Conflicts (Liu Chong) pairs table',
   },
   {
     id: 'six-harms',
-    label: '⚠️ Challenging',
-    icon: '',
+    label: 'Six Harms',
+    icon: '六害',
     description: 'Six Harms (Liu Hai) pairs table',
   },
   {
     id: 'punishment',
-    label: '⚠️ Challenging',
-    icon: '',
+    label: 'Punishment',
+    icon: '刑',
     description: 'Punishment (Xing) groups table',
   },
   {
     id: 'break-pattern',
-    label: '⚠️ Challenging',
-    icon: '',
+    label: 'Breakpoint',
+    icon: '破',
     description: 'Breakpoints (Po) pairs table',
   },
   {
@@ -206,7 +206,7 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                 <div className="flex items-center gap-0.5">
                   <FourPointedStar className="w-5 h-5 text-orange-500" />
                   <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                    AstroLab
+                    Astrology
                   </span>
                 </div>
               </div>
@@ -252,16 +252,12 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
               <Link
                 key={page.id}
                 href={page.path}
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors ${
+                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border-2 px-3 py-1.5 text-base font-medium transition-colors ${
                   theme === "light"
-                    ? "border-amber-200 text-gray-700 hover:opacity-90"
-                    : "border-amber-800/50 text-slate-200 hover:opacity-90"
+                    ? "text-gray-700 hover:opacity-90"
+                    : "text-slate-200 hover:opacity-90"
                 }`}
-                style={{
-                  background: theme === "light"
-                    ? "linear-gradient(to right, rgba(254, 240, 138, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))"
-                    : "linear-gradient(to right, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.15))"
-                }}
+                style={{ borderColor: theme === "light" ? "#fb923c" : "#f97316" }}
                 title={page.description}
               >
                 <span>{page.icon}</span>
@@ -285,16 +281,12 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   <Link
                     key={section.id}
                     href={sectionPath}
-                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
+                    className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border-2 px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
                       theme === "light"
-                        ? "border-amber-200 text-gray-700 hover:opacity-90"
-                        : "border-amber-800/50 text-slate-200 hover:opacity-90"
+                        ? "text-gray-700 hover:opacity-90"
+                        : "text-slate-200 hover:opacity-90"
                     }`}
-                    style={{
-                      background: theme === "light"
-                        ? "linear-gradient(to right, rgba(254, 240, 138, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))"
-                        : "linear-gradient(to right, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.15))"
-                    }}
+                    style={{ borderColor: theme === "light" ? "#fb923c" : "#f97316" }}
                     title={section.description}
                   >
                     <span>{section.icon}</span>
@@ -307,16 +299,12 @@ export default function AstroLabNavigationHeader({ theme, setTheme }: AstroLabNa
                   key={section.id}
                   type="button"
                   onClick={(e) => handleSectionClick(section.id, e)}
-                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border-2 px-3 py-1.5 text-base font-medium transition-colors cursor-pointer ${
                     theme === "light"
-                      ? "border-amber-200 text-gray-700 hover:opacity-90"
-                      : "border-amber-800/50 text-slate-200 hover:opacity-90"
+                      ? "text-gray-700 hover:opacity-90"
+                      : "text-slate-200 hover:opacity-90"
                   }`}
-                  style={{
-                    background: theme === "light"
-                      ? "linear-gradient(to right, rgba(254, 240, 138, 0.4), rgba(251, 191, 36, 0.4), rgba(249, 115, 22, 0.4))"
-                      : "linear-gradient(to right, rgba(245, 158, 11, 0.15), rgba(251, 191, 36, 0.15), rgba(249, 115, 22, 0.15))"
-                  }}
+                  style={{ borderColor: theme === "light" ? "#fb923c" : "#f97316" }}
                   title={section.description}
                 >
                   <span>{section.icon}</span>

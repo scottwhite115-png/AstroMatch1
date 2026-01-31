@@ -92,34 +92,63 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
       }
     }
 
-    // Normalize for matching (Men/Women/Everyone/Prefer not to say; Man/Woman/Non-binary/Prefer not to say)
+    /**
+     * GENDER & ORIENTATION MATCHING LOGIC
+     * ====================================
+     * 
+     * RULES:
+     * 1. Man interested in Men      → sees only Men interested in Men (gay men see gay men)
+     * 2. Woman interested in Women  → sees only Women interested in Women (lesbian women see lesbian women)
+     * 3. Man interested in Women    → sees only Women interested in Men (straight man sees straight women)
+     * 4. Woman interested in Men    → sees only Men interested in Women (straight woman sees straight men)
+     * 5. Anyone interested in "Everyone"         → sees all genders who could be interested back (mutual)
+     * 6. Anyone interested in "Prefer not to say" → sees all genders who could be interested back (mutual)
+     * 7. Gender = "Prefer not to say", interested in Men   → sees all Men (gay + straight)
+     * 8. Gender = "Prefer not to say", interested in Women → sees all Women (lesbian + straight)
+     * 9. Gender = "Non-binary" → shown to those who select "Everyone" or "Prefer not to say" in interested-in
+     * 
+     * This separates homosexual and heterosexual users to prevent confusion.
+     * Mutual matching: you only see profiles that could also be interested in you.
+     */
+    
+    // Normalize for matching (case-insensitive comparison)
     const norm = (s: string) => (s || '').toLowerCase().trim()
     const viewerGender = norm(filters.userGender)
     const viewerInterestedInRaw = (filters.lookingForGender || '').trim()
     const viewerInterestedIn = norm(viewerInterestedInRaw)
 
+    console.log(`[Profile Queries] 🎯 Viewer preferences: gender="${viewerGender}", interested_in="${viewerInterestedIn}"`)
+
+    // Check if profile's gender matches what the viewer is interested in
     const profileGenderMatchesInterestedIn = (profileGender: string, interestedIn: string) => {
       const g = norm(profileGender)
       const i = norm(interestedIn)
+      // "Everyone" or "Prefer not to say" interested-in → see all genders
       if (i === 'everyone' || i === 'prefer not to say') return true
-      if (g === 'prefer not to say' || g === 'non-binary') return true // show them; viewer's interested_in is what matters
+      // Non-binary / Prefer not to say gender → shown to viewer (viewer's interested-in decides)
+      if (g === 'prefer not to say' || g === 'non-binary') return true
+      // Specific match: interested in Men → profile must be Man/Male
       if (i === 'men' && (g === 'man' || g === 'male')) return true
+      // Specific match: interested in Women → profile must be Woman/Female
       if (i === 'women' && (g === 'woman' || g === 'female')) return true
       return false
     }
 
-    const profileInterestedInMatchesGender = (profileInterestedIn: string, gender: string) => {
+    // Check if profile's "interested in" includes the viewer's gender (mutual matching)
+    const profileInterestedInMatchesGender = (profileInterestedIn: string, viewerGenderValue: string) => {
       const pi = norm(profileInterestedIn)
-      const g = norm(gender)
+      const g = norm(viewerGenderValue)
+      // Profile interested in "Everyone" or "Prefer not to say" → they see everyone
       if (pi === 'everyone' || pi === 'prefer not to say') return true
-      if (g === 'prefer not to say' || g === 'non-binary') return true // profile sees viewer when viewer didn't specify
+      // Viewer is Non-binary / Prefer not to say → profile sees them regardless
+      if (g === 'prefer not to say' || g === 'non-binary') return true
+      // Specific match: profile interested in Men → viewer must be Man/Male
       if (pi === 'men' && (g === 'man' || g === 'male')) return true
+      // Specific match: profile interested in Women → viewer must be Woman/Female
       if (pi === 'women' && (g === 'woman' || g === 'female')) return true
       return false
     }
 
-    // Filter profiles based on preferences + gender/interested-in logic
-    // Rules: same-sex sees same-sex, hetero sees hetero, Everyone sees all, Prefer not to say (gender) → interested-in dictates; Prefer not to say (interested in) → see all. Mutual: profile must also be interested in viewer.
     let filteredCount = 0
     const matchableProfiles = nearbyProfiles.filter((profile: any) => {
       // Exclude own profile
@@ -128,6 +157,7 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
         return false
       }
       
+      // Must have complete and active profile
       if (!profile.profile_complete || !profile.account_active) {
         filteredCount++
         return false
@@ -135,22 +165,35 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
 
       const profileInterestedIn = orientationById[profile.id] || (profile.orientation || profile.looking_for_gender || '')
       const profileGender = profile.gender || ''
+      const profileG = norm(profileGender)
+      const profileI = norm(profileInterestedIn)
 
-      // --- 1) Viewer "Interested in" Men/Women: profile's gender must match (or profile gender is Prefer not to say / Non-binary)
+      // --- Requirement: Profile must have gender and orientation set (empty = not discoverable)
+      if (profileG === '' || profileI === '') {
+        filteredCount++
+        console.log(`[Profile Queries] ❌ Filtered out incomplete gender/orientation: ${profile.email || profile.id} (gender="${profileG}", interested="${profileI}")`)
+        return false
+      }
+
+      // --- 1) Viewer's "Interested in" check: profile's gender must match what viewer wants
+      // Skip if viewer selected "Everyone" or "Prefer not to say" (they see all genders)
       if (viewerInterestedIn !== 'everyone' && viewerInterestedIn !== 'prefer not to say') {
         if (!profileGenderMatchesInterestedIn(profileGender, viewerInterestedInRaw)) {
-          const profileG = norm(profileGender)
-          if (profileG !== 'prefer not to say' && profileG !== 'non-binary' && profileG !== '') {
+          // Exception: show profiles with "Prefer not to say" or "Non-binary" gender
+          if (profileG !== 'prefer not to say' && profileG !== 'non-binary') {
             filteredCount++
+            console.log(`[Profile Queries] ❌ Gender mismatch: ${profile.email || profile.id} (viewer wants "${viewerInterestedIn}", profile is "${profileG}")`)
             return false
           }
         }
       }
 
-      // --- 2) Mutual: profile's "interested in" must include viewer's gender (or profile is Everyone/Prefer not to say). When viewer gender is Prefer not to say / Non-binary, we don't require profile to "include" them — show based on viewer's interested-in only.
+      // --- 2) Mutual matching: profile's "interested in" must include viewer's gender
+      // Skip if viewer's gender is "Prefer not to say" or "Non-binary" (they see based on their interested-in only)
       if (viewerGender !== 'prefer not to say' && viewerGender !== 'non-binary' && viewerGender !== '') {
         if (!profileInterestedInMatchesGender(profileInterestedIn, filters.userGender)) {
           filteredCount++
+          console.log(`[Profile Queries] ❌ Not mutual: ${profile.email || profile.id} (profile wants "${profileI}", viewer is "${viewerGender}")`)
           return false
         }
       }
@@ -176,7 +219,7 @@ export async function fetchMatchableProfiles(filters: MatchFilters): Promise<Enr
         return false
       }
       
-      console.log(`[Profile Queries] ✅ Profile passed all filters: ${profile.email || profile.id}`)
+      console.log(`[Profile Queries] ✅ Match: ${profile.email || profile.id} (gender="${profileG}", wants="${profileI}") ↔ viewer (gender="${viewerGender}", wants="${viewerInterestedIn}")`)
       return true
     })
 

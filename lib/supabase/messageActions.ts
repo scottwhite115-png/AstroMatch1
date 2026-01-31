@@ -41,6 +41,21 @@ export async function sendMessage(
   const supabase = createClient()
 
   try {
+    // Check if receiver has blocked the sender (User B cannot contact User A if A blocked B)
+    const { data: block } = await supabase
+      .from('blocks')
+      .select('id')
+      .eq('blocker_id', receiverId)
+      .eq('blocked_user_id', senderId)
+      .maybeSingle()
+
+    if (block) {
+      return {
+        success: false,
+        error: 'You cannot message this user. They have blocked you.'
+      }
+    }
+
     // Check if receiver allows instant messages
     const { data: receiverProfile } = await supabase
       .from('profiles')

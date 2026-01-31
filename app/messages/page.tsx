@@ -45,12 +45,24 @@ export default function MessagesPage() {
   const [instantMessageEnabled, setInstantMessageEnabled] = useState(true)
   const [activeTab, setActiveTab] = useState<'connections'>('connections')
 
-  // Load instant message setting from localStorage
+  // Load instant message setting from profile (DB) or localStorage
   useEffect(() => {
-    const savedInstantMessage = localStorage.getItem("instantMessageEnabled")
-    if (savedInstantMessage !== null) {
-      setInstantMessageEnabled(JSON.parse(savedInstantMessage))
+    const loadSetting = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const profile = await fetchUserProfile(user.id)
+        if (profile?.allow_instant_messages_connections !== undefined) {
+          setInstantMessageEnabled(!!profile.allow_instant_messages_connections)
+          localStorage.setItem("instantMessageEnabled", JSON.stringify(!!profile.allow_instant_messages_connections))
+          return
+        }
+      }
+      const savedInstantMessage = localStorage.getItem("instantMessageEnabled")
+      if (savedInstantMessage !== null) {
+        setInstantMessageEnabled(JSON.parse(savedInstantMessage))
+      }
     }
+    loadSetting()
   }, [])
 
   // Close dropdown when clicking outside
@@ -384,9 +396,21 @@ export default function MessagesPage() {
     router.push(`/messages/${userId}`)
   }
 
-  const handleInstantMessageToggle = (enabled: boolean) => {
+  const handleInstantMessageToggle = async (enabled: boolean) => {
     setInstantMessageEnabled(enabled)
     localStorage.setItem("instantMessageEnabled", JSON.stringify(enabled))
+    // Persist to profile in database
+    try {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        await supabase.from("profiles").update({
+          allow_instant_messages_connections: enabled,
+          allow_instant_messages_discover: enabled,
+        }).eq("id", user.id)
+      }
+    } catch (err) {
+      console.error("Failed to save instant message setting:", err)
+    }
   }
 
   return (
@@ -397,26 +421,17 @@ export default function MessagesPage() {
             ? "bg-white/80 backdrop-blur-sm"
             : "bg-slate-900/80 backdrop-blur-sm"
         }`} style={{ paddingTop: 'max(env(safe-area-inset-top), 44px)' }}>
-        <div className="mx-auto max-w-full px-2 pt-0.5 pb-1.5 sm:px-3 lg:px-4">
-          <div className="flex items-center justify-between mb-1.5">
+        <div className="mx-auto max-w-full px-2 pt-0.5 pb-1 sm:px-3 lg:px-4">
+          <div className="flex items-center justify-between mb-0.5">
             <div className="flex-1 -ml-8">
               <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-transparent">
-                <div className="flex gap-4 min-w-max ml-8">
+                <div className="flex gap-0.5 min-w-max ml-8">
                   <div className="flex items-center gap-0.5">
                     <FourPointedStar className="w-5 h-5 text-orange-500" />
                     <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
                       Messages
                     </span>
                   </div>
-                  <button
-                    onClick={() => router.push("/astrology")}
-                    className="flex items-center gap-0.5 hover:opacity-80 transition-opacity"
-                  >
-                    <FourPointedStar className="w-5 h-5 text-orange-500" />
-                    <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                      AstroLab
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>
@@ -503,17 +518,17 @@ export default function MessagesPage() {
 
         <div 
           className="flex-1 overflow-y-auto px-2 sm:px-4 pb-16"
-          style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 44px) + 3rem)' }}
+          style={{ paddingTop: 'calc(max(env(safe-area-inset-top), 44px) + 1.25rem)' }}
         >
           {chats.length === 0 ? (
-            <div className="flex flex-col items-center justify-center" style={{ minHeight: 'calc(100vh - 80px)', paddingTop: '20px' }}>
+            <div className="flex flex-col items-center justify-center h-full py-20">
               <MessageCircle className="w-16 h-16 mb-4 text-gray-300" />
-              <p className="text-lg text-gray-500">No conversations available</p>
+              <p className="text-lg text-gray-500">No conversations yet</p>
               <p className="text-sm text-gray-400">Start chatting with your matches!</p>
             </div>
           ) : (
             chats.map((chat, index) => (
-              <div key={chat.userId} className="relative mb-2 rounded-xl">
+              <div key={chat.userId} className="relative mb-1 rounded-xl">
                 {swipedChatId === chat.userId && swipeOffset > 0 && (
                   <div className="absolute inset-0 bg-red-500/80 flex items-center justify-end px-6 rounded-xl z-10">
                     <button

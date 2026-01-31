@@ -227,34 +227,48 @@ export function getMatchLabel(
 ): string {
   const hasLiuChong = overlays.includes('LIU_CHONG');
   const hasDamage = hasDamageOverlay(overlays);
+  const hasLiuHai = overlays.includes('LIU_HAI');
+  const hasXing = overlays.includes('XING');
+  const hasPo = overlays.includes('PO');
 
-  // Liu Chong → Six Conflicts
+  // Major pattern: Liu Chong → Six Conflicts 六冲
   if (hasLiuChong) {
-    return 'Six Conflicts Match';
+    return 'Six Conflicts 六冲';
   }
 
-  // Liu He → Six Harmonies
-  if (chineseBase === 'LIU_HE') {
-    return 'Six Harmonies Match';
-  }
-
-  // San He → Triple Harmony
+  // Major pattern: San He → Triple Harmony 三合
   if (chineseBase === 'SAN_HE') {
-    return 'Triple Harmony Match';
+    return 'Triple Harmony 三合';
   }
 
-  // Same Chinese sign (normal or self-punishment)
+  // Major pattern: Liu He → Six Harmonies 六合 (e.g. Monkey & Snake)
+  if (chineseBase === 'LIU_HE') {
+    return 'Six Harmonies 六合';
+  }
+
+  // Same sign: show punishment when present (同 刑)
   if (chineseBase === 'SAME_SIGN') {
-    return 'Same Sign Match';
+    if (hasXing) {
+      return 'Punishment 同 刑';
+    }
+    return 'Same Sign 同';
   }
 
-  // Damage-only / lesson-heavy cases
+  // Damage-only: Six Harms, Punishment, Breakpoint
   if (archetype === 'LESSON_REPAIR' || hasDamage) {
-    return 'Challenging Match';
+    if (hasLiuHai) {
+      return 'Six Harms 六害';
+    }
+    if (hasXing) {
+      return 'Punishment 刑';
+    }
+    if (hasPo) {
+      return 'Breakpoint 破';
+    }
+    return 'Challenging';
   }
 
-  // Everything else (no pattern, no damage)
-  return 'Neutral Match';
+  return 'Neutral 中';
 }
 
 // ------------------------------------

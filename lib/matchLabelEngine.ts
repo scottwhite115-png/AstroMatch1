@@ -81,28 +81,48 @@ export function getMatchLabel(
 ): string {
   const hasLiuChong = overlays.includes('LIU_CHONG');
   const hasDamage = hasDamageOverlay(overlays);
+  const hasLiuHai = overlays.includes('LIU_HAI');
+  const hasXing = overlays.includes('XING');
+  const hasPo = overlays.includes('PO');
 
+  // Major pattern: Liu Chong → Six Conflicts 六冲
   if (hasLiuChong) {
-    return 'Magnetic Opposites Match';
+    return 'Six Conflicts 六冲';
   }
 
+  // Major pattern: San He → Triple Harmony 三合
   if (chineseBase === 'SAN_HE') {
-    return 'Soulmate Match';
+    return 'Triple Harmony 三合';
   }
 
+  // Major pattern: Liu He → Six Harmonies 六合 (e.g. Monkey & Snake)
   if (chineseBase === 'LIU_HE') {
-    return 'Secret Friends Match';
+    return 'Six Harmonies 六合';
   }
 
+  // Same sign: show punishment overlay when present (same-sign punishment 同 刑)
   if (chineseBase === 'SAME_SIGN') {
-    return 'Same Sign Match';
+    if (hasXing) {
+      return 'Punishment 同 刑';
+    }
+    return 'Same Sign 同';
   }
 
+  // Damage-only: Six Harms, Punishment, Breakpoint (AstroLab pattern names)
   if (archetype === 'LESSON_REPAIR' || hasDamage) {
-    return 'Challenging Match';
+    if (hasLiuHai) {
+      return 'Six Harms 六害';
+    }
+    if (hasXing) {
+      return 'Punishment 刑';
+    }
+    if (hasPo) {
+      return 'Breakpoint 破';
+    }
+    return 'Challenging';
   }
 
-  return 'Neutral Match';
+  return 'Neutral 中';
 }
 
 // ------------------------------------

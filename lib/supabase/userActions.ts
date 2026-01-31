@@ -45,7 +45,7 @@ async function getBlockCount(userId: string): Promise<number> {
 /**
  * Ban a user with a specific ban type
  */
-async function banUser(userId: string, banType: '2week' | 'permanent'): Promise<boolean> {
+async function banUser(userId: string, banType: '1month' | '2week' | 'permanent'): Promise<boolean> {
   const supabase = createClient()
   
   try {
@@ -53,8 +53,12 @@ async function banUser(userId: string, banType: '2week' | 'permanent'): Promise<
       status: banType === 'permanent' ? 'BANNED' : 'SUSPENDED',
     }
     
-    // For 2-week ban, set the suspension end date
-    if (banType === '2week') {
+    // For 1-month ban, set the suspension end date
+    if (banType === '1month') {
+      const oneMonthFromNow = new Date()
+      oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 1)
+      updateData.suspensionEndsAt = oneMonthFromNow.toISOString()
+    } else if (banType === '2week') {
       const twoWeeksFromNow = new Date()
       twoWeeksFromNow.setDate(twoWeeksFromNow.getDate() + 14)
       updateData.suspensionEndsAt = twoWeeksFromNow.toISOString()
@@ -85,13 +89,13 @@ async function banUser(userId: string, banType: '2week' | 'permanent'): Promise<
  * Check report violations and return warning/ban info
  * Rules:
  * - 2 reports: Warning
- * - 3rd report: 2-week ban
- * - 4th report (after returning): Permanent ban
+ * - 3rd report: 1-month ban
+ * - 4th report (after returning): Permanent ban (email banned)
  */
 export async function checkReportViolation(userId: string): Promise<{
   shouldWarn: boolean
   shouldBan: boolean
-  banType?: '2week' | 'permanent'
+  banType?: '1month' | 'permanent'
   warningMessage?: string
 }> {
   const supabase = createClient()
@@ -111,29 +115,29 @@ export async function checkReportViolation(userId: string): Promise<{
     return {
       shouldWarn: true,
       shouldBan: false,
-      warningMessage: '⚠️ Warning: You have been reported twice. One more report will result in a 2-week ban from the platform.'
+      warningMessage: '⚠️ Warning: You have been reported twice. One more report will result in a 1-month ban from the platform.'
     }
   }
   
-  // 3rd report = 2-week ban
+  // 3rd report = 1-month ban
   if (reportCount === 3 && !hasBeenBanned) {
-    await banUser(userId, '2week')
+    await banUser(userId, '1month')
     return {
       shouldWarn: true,
       shouldBan: true,
-      banType: '2week',
-      warningMessage: '🚫 You have been banned for 2 weeks due to multiple reports. If you are reported again after your ban ends, it will result in a permanent ban.'
+      banType: '1month',
+      warningMessage: '🚫 You have been banned for 1 month due to multiple reports. If you are reported again after your ban ends, it will result in a permanent ban.'
     }
   }
   
-  // 4th report (after being banned once) = permanent ban
+  // 4th report (after being banned once) = permanent ban (email banned)
   if (reportCount >= 4) {
     await banUser(userId, 'permanent')
     return {
       shouldWarn: true,
       shouldBan: true,
       banType: 'permanent',
-      warningMessage: '🚫 You have been permanently banned from the platform due to repeated violations.'
+      warningMessage: '🚫 You have been permanently banned from the platform due to repeated violations. Your account and email are now banned.'
     }
   }
   
@@ -206,29 +210,20 @@ export async function checkBlockViolation(userId: string): Promise<{
 }
 
 /**
- * Unmatch with a user - deletes the match record
+ * Unmatch with a user - deletes the match record and likes.
+ * Uses API route with service role to bypass RLS (matches table may not have DELETE policy).
  */
 export async function unmatchUser(currentUserId: string, otherUserId: string, matchId: string): Promise<{ success: boolean; error?: string }> {
-  const supabase = createClient()
-  
   try {
-    // Delete the match
-    const { error } = await supabase
-      .from('matches')
-      .delete()
-      .eq('id', matchId)
-    
-    if (error) {
-      console.error('[Unmatch] Error deleting match:', error)
-      return { success: false, error: error.message }
+    const res = await fetch('/api/matches/unmatch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ matchId, otherUserId }),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      return { success: false, error: data.error || 'Failed to unmatch' }
     }
-    
-    // Also delete any likes between these users
-    await supabase
-      .from('likes')
-      .delete()
-      .or(`and(liker_id.eq.${currentUserId},liked_id.eq.${otherUserId}),and(liker_id.eq.${otherUserId},liked_id.eq.${currentUserId})`)
-    
     return { success: true }
   } catch (error: any) {
     console.error('[Unmatch] Unexpected error:', error)
@@ -248,7 +243,7 @@ export async function reportUser(
   error?: string
   shouldWarn?: boolean
   shouldBan?: boolean
-  banType?: '2week' | 'permanent'
+  banType?: '1month' | 'permanent'
   warningMessage?: string
 }> {
   const supabase = createClient()
@@ -294,7 +289,7 @@ export async function blockUser(
   error?: string
   shouldWarn?: boolean
   shouldBan?: boolean
-  banType?: '2week' | 'permanent'
+  banType?: '1month' | 'permanent'
   warningMessage?: string
 }> {
   const supabase = createClient()

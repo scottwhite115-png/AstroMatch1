@@ -2480,9 +2480,9 @@ export default function MatchesPage() {
         */
     }
     
-    // After processing all profiles, set the boxes
-    const processedIds = Object.keys(boxes).map(id => parseInt(id)).sort((a, b) => a - b)
-    const allProfileIds = enrichedProfiles.map(p => p.id).sort((a, b) => a - b)
+    // After processing all profiles, set the boxes (profile IDs are UUIDs, not numbers)
+    const processedIds = Object.keys(boxes).sort()
+    const allProfileIds = enrichedProfiles.map(p => String(p.id)).sort()
     const missingIds = allProfileIds.filter(id => !processedIds.includes(id))
     
     console.log('[Match Engine] Finished. Total boxes:', Object.keys(boxes).length)
@@ -2669,15 +2669,15 @@ export default function MatchesPage() {
     // Check if match exists, if not create it or like the profile first
     if (currentUserId) {
       try {
-        // Check receiver's instant messaging settings
+        // Check receiver's instant messaging settings (Connections page = connections)
         const supabase = createClient()
         const { data: receiverProfile } = await supabase
           .from('profiles')
-          .select('allow_instant_messages_discover')
+          .select('allow_instant_messages_connections, allow_instant_messages_discover')
           .eq('id', currentProfile.id)
           .single()
 
-        const allowInstantMessages = receiverProfile?.allow_instant_messages_discover ?? true
+        const allowInstantMessages = receiverProfile?.allow_instant_messages_connections ?? true
         
         // First check if match exists
         const match = await findMatchBetweenUsers(currentUserId, String(currentProfile.id))
@@ -2690,24 +2690,9 @@ export default function MatchesPage() {
             return
           }
           
-          // Instant messaging enabled - try to like the profile to create a match
-          console.log('[Matches] No match found, attempting to like profile to create match...')
-          const likeResult = await likeProfile(currentUserId, String(currentProfile.id))
-          
-          if (likeResult.success && likeResult.isMatch) {
-            // Match created! Navigate to chat
-            console.log('[Matches] ✅ Match created! Navigating to chat...')
-            router.push(`/messages/${currentProfile.id}`)
-          } else if (likeResult.success) {
-            // Like saved but no match yet - still navigate (match might be created)
-            console.log('[Matches] Like saved, navigating to chat...')
-            router.push(`/messages/${currentProfile.id}`)
-          } else {
-            // Error liking - show message but still try to navigate
-            console.error('[Matches] Error liking profile:', likeResult.error)
-            alert('Unable to start conversation. Please try liking this profile first.')
-            return
-          }
+          // Instant messaging enabled - navigate to chat; messages page will create instant match
+          console.log('[Matches] Receiver allows instant messages, navigating to chat...')
+          router.push(`/messages/${currentProfile.id}`)
         } else {
           // Match exists - navigate directly (matched users can always message)
           console.log('[Matches] Match found, navigating to chat...')
@@ -3146,15 +3131,17 @@ export default function MatchesPage() {
         WebkitOverflowScrolling: 'touch',
         overflowY: 'auto',
         overflowX: 'hidden',
+        height: '100dvh',
         minHeight: '100dvh',
         position: 'relative',
         paddingBottom: '90px',
         paddingTop: '0px',
       }
     : {
-        WebkitOverflowScrolling: 'auto',
+        WebkitOverflowScrolling: 'touch',
         overflowY: 'auto',
         overflowX: 'hidden',
+        height: '100vh',
         minHeight: '100vh',
         position: 'relative',
         paddingBottom: '120px',
@@ -3641,13 +3628,13 @@ export default function MatchesPage() {
             </div>
           </div>
         ) : currentProfile ? (
-          <div className="pb-32 relative overflow-visible">
+          <div className="relative overflow-visible" style={{ paddingBottom: '28rem' }}>
             {/* Cover the bottom padding area with dark background */}
             {theme !== "light" && (
               <div 
                 className="absolute bottom-0 left-0 right-0"
                 style={{
-                  height: '8rem',
+                  height: '28rem',
                   background: 'linear-gradient(to bottom right, rgb(2, 6, 23), rgb(30, 27, 75), rgb(15, 23, 42))',
                   zIndex: 0,
                   pointerEvents: 'none'
@@ -3658,7 +3645,8 @@ export default function MatchesPage() {
             {filteredProfiles[currentProfileIndex + 1] && (
               <div 
                 key={`next-${profilesToShow[currentProfileIndex + 1].id}`}
-                className="absolute top-0 left-0 right-0 pb-32"
+                className="absolute top-0 left-0 right-0"
+                style={{ paddingBottom: '28rem' }}
                 style={{
                   zIndex: 1,
                   pointerEvents: 'none',

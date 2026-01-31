@@ -269,69 +269,58 @@ export default function MatchProfileCard({
   // Debug logging
   React.useEffect(() => {
     console.log('[MatchProfileCard] State update:', {
-      profileName: profile.name,
-      profilePhotosLength: profile.photos?.length || 0,
       showProfile,
       showElements,
       hasOpenDropdown,
       hasConnectionBoxData: !!connectionBoxData,
-      hasCard: !!connectionBoxData?.card,
-      cardData: connectionBoxData?.card,
       externalShowProfile,
       externalShowElements,
       willRenderDropdown: hasOpenDropdown && !!connectionBoxData,
-      willRenderPhotoCarousel: (profile.photos?.length || 0) > 0,
     });
-  }, [showProfile, showElements, hasOpenDropdown, connectionBoxData, externalShowProfile, externalShowElements, profile.name, profile.photos]);
+  }, [showProfile, showElements, hasOpenDropdown, connectionBoxData, externalShowProfile, externalShowElements]);
 
   return (
-    <div className="w-full h-full" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <div className="w-full">
       {/* Outer border wrapper for entire profile card - matches profile view tab exactly */}
         {profile.photos.length > 0 && (
-          <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ overflow: 'visible', flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+          <div style={{ width: '100%' }}>
+            <div style={{ overflow: 'visible' }}>
               {/* Photo Carousel - border removed */}
-              {(() => {
-                console.log('[MatchProfileCard] Photo carousel render check:', {
-                  profileName: profile.name,
-                  hasPhotos: !!profile.photos,
-                  photosLength: profile.photos?.length || 0,
-                  willRender: (profile.photos?.length || 0) > 0,
-                  connectionBoxData: !!connectionBoxData,
-                  hasCard: !!connectionBoxData?.card
-                });
-                return null;
-              })()}
               {profile.photos.length > 0 && (
                 <div
-                  className="w-full rounded-3xl relative flex-1"
+                  className="w-full rounded-3xl relative"
                   style={{ 
                     borderRadius: '1.5rem',
                     overflow: 'hidden',
-                    minHeight: 0,
-                    display: 'flex',
-                    flexDirection: 'column',
                   }}
                 >
-                  <div className="w-full h-full rounded-3xl overflow-hidden flex-1" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a", minHeight: 0 }}>
+                  <div className="w-full rounded-3xl overflow-hidden" style={{ margin: '0', padding: '0', borderRadius: '1.5rem', backgroundColor: theme === "light" ? "#f9fafb" : "#0f172a" }}>
                     <ProfilePhotoCarouselWithRanking
                       images={profile.photos}
                       profileName={profile.name}
                       profileAge={profile.age}
                       connectionBoxData={connectionBoxData}
                       theme={theme}
-                      showDropdown={true}
-                      alwaysOpenDropdown={true}
+                      showDropdown={false}
                       badgePosition="overlay-bottom"
                       aboutMeText={profile.aboutMe}
-                      selectedRelationshipGoals={profile.selectedRelationshipGoals}
-                      selectedInterests={profile.selectedOrganizedInterests}
+                      selectedOccupation={profile.occupation}
+                      selectedCity={profile.city}
+                      cityInput={profile.city || ""}
+                      selectedHeight={profile.height}
+                      selectedChildrenOption={profile.children}
+                      selectedReligion={profile.religion}
                       westernSign={displayWesternSign}
                       easternSign={displayEasternSign}
                       onPhotoChange={onPhotoChange}
+                      showProfileToggle={false}
+                      onShowProfileToggle={() => {}}
+                      showElementsToggle={false}
+                      onShowElementsToggle={() => {}}
                       onMessageClick={onMessageClick}
                       patternColors={patternColors}
                       isNewMatch={isNewMatch}
+                      matchedAt={matchedAt}
                     />
                   </div>
                 </div>
@@ -356,11 +345,11 @@ export default function MatchProfileCard({
                     connectionBlurb={connectionBlurb || undefined}
                     theme={theme}
                     aboutMe={profile.aboutMe}
-                    age={profile.age}
-                    city={profile.city}
-                    occupation={profile.occupation}
-                    height={profile.height}
-                    children={profile.children}
+                    age={undefined}
+                    city={undefined}
+                    occupation={undefined}
+                    height={undefined}
+                    children={undefined}
                     religion={profile.religion}
                     chinesePattern={connectionBoxData.chinesePattern}
                     westAspect={connectionBoxData.westAspect}
@@ -377,10 +366,8 @@ export default function MatchProfileCard({
                     chemistryStars={connectionBoxData.chemistryStars}
                     stabilityStars={connectionBoxData.stabilityStars}
                     patternColors={patternColors}
-                    relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+                    relationshipGoals={undefined}
                     interests={profile.interests || profile.selectedOrganizedInterests}
-                    tarotSnippet={connectionBoxData?.tarotSnippet}
-                    matchLabel={connectionBoxData?.matchLabel}
                     onPass={onPass}
                     onLike={onLike}
                     onMessage={onMessageClick}
@@ -432,11 +419,11 @@ export default function MatchProfileCard({
                         connectionBlurb={connectionBlurb || undefined}
                         theme={theme}
                         aboutMe={profile.aboutMe}
-                        age={profile.age}
-                        city={profile.city}
-                        occupation={profile.occupation}
-                        height={profile.height}
-                        children={profile.children}
+                        age={undefined}
+                        city={undefined}
+                        occupation={undefined}
+                        height={undefined}
+                        children={undefined}
                         religion={profile.religion}
                         chinesePattern={connectionBoxData.chinesePattern}
                         westAspect={connectionBoxData.westAspect}
@@ -453,10 +440,8 @@ export default function MatchProfileCard({
                         chemistryStars={connectionBoxData.chemistryStars}
                         stabilityStars={connectionBoxData.stabilityStars}
                         patternColors={patternColors}
-                        relationshipGoals={profile.relationshipGoals || profile.selectedRelationshipGoals}
+                        relationshipGoals={undefined}
                         interests={profile.interests || profile.selectedOrganizedInterests}
-                        tarotSnippet={connectionBoxData?.tarotSnippet}
-                        matchLabel={connectionBoxData?.matchLabel}
                         onPass={onPass}
                         onLike={onLike}
                         onMessage={onMessageClick}

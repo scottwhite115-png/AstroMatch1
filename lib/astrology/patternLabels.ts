@@ -48,21 +48,21 @@ export function hasSelfPunishment(
 export function getPatternPillLabel(pattern: ChinesePattern): string {
   switch (pattern) {
     case "SAN_HE":
-      return "Soulmate Match";
+      return "Triple Harmony";
     case "LIU_HE":
-      return "Secret Friends Match";
+      return "Six Harmonies";
     case "SAME_SIGN":
       return "Same Sign";
     case "NEUTRAL":
       return "Neutral";
     case "LIU_CHONG":
-      return "Magnetic Opposites";
+      return "Six Conflicts";
     case "LIU_HAI":
-      return "Challenging Match";
+      return "Six Harms";
     case "XING":
       return "Punishment";
     case "PO":
-      return "Break";
+      return "Breakpoint";
     default:
       return "Neutral"; // Default to Neutral for any undefined or unknown patterns
   }

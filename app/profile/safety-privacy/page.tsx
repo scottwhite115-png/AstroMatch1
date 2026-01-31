@@ -30,8 +30,7 @@ export default function SafetyPrivacyPage({
 
   return (
     <div
-      className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} profile-page min-h-screen relative overflow-x-hidden touch-pan-y`}
-      style={{ overscrollBehavior: 'contain' }}
+      className={`${theme === "light" ? "bg-white" : "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900"} profile-page min-h-screen relative pb-24`}
     >
 
       <div className="relative z-10">

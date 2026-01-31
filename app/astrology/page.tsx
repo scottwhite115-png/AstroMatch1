@@ -133,21 +133,15 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
-                          <span className={`text-lg font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-300"}`}>Soulmate</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-yellow-600" : "text-yellow-400"}`}>Triple Harmony</span>
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-yellow-700" : "text-yellow-300"}`}>Triple Harmony</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Sān Hé <span className={`text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>三合</span></span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>三合</span>
-                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Sān Hé</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-yellow-100 text-yellow-800" : "bg-yellow-900/30 text-yellow-300"}`}>
-                            Harmony
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>72-98%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-yellow-100 text-yellow-800" : "bg-yellow-900/30 text-yellow-300"}`}>
+                          Harmony
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fbbf24, #f59e0b)" }}>72-98%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
@@ -164,21 +158,15 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
-                          <span className={`text-lg font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Secret Friends</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-pink-500" : "text-pink-300"}`}>Six Harmonies</span>
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-pink-600" : "text-pink-400"}`}>Six Harmonies</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hé <span className={`text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六合</span></span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六合</span>
-                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hé</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-pink-100 text-pink-800" : "bg-pink-900/30 text-pink-400"}`}>
-                            Harmony
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>68-91%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-pink-100 text-pink-800" : "bg-pink-900/30 text-pink-400"}`}>
+                          Harmony
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #c084fc, #e879f9)" }}>68-91%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
@@ -218,19 +206,14 @@ export default function AstrologySection() {
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
                           <span className={`text-lg font-semibold ${theme === "light" ? "text-blue-600" : "text-blue-400"}`}>Neutral</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-blue-500" : "text-blue-300"}`}>No Major Pattern</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>中</span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>中</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-blue-100 text-blue-800" : "bg-blue-900/30 text-blue-400"}`}>
-                            Neutral
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>52-68%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-blue-100 text-blue-800" : "bg-blue-900/30 text-blue-400"}`}>
+                          Neutral
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #60a5fa, #3b82f6)" }}>52-68%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
@@ -247,25 +230,19 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
-                          <span className={`text-lg font-semibold ${theme === "light" ? "text-orange-600" : "text-orange-400"}`}>Magnetic Opposites</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-orange-500" : "text-orange-300"}`}>Six Conflicts</span>
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-orange-600" : "text-orange-400"}`}>Six Conflicts</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Chōng <span className={`text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六冲</span></span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六冲</span>
-                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Chōng</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-orange-100 text-orange-800" : "bg-orange-900/30 text-orange-400"}`}>
-                            Conflict
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>45-62%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-orange-100 text-orange-800" : "bg-orange-900/30 text-orange-400"}`}>
+                          Conflict
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb923c, #f97316)" }}>45-62%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
-                      Magnetic opposites with sharp edges; big lessons, not automatic comfort.
+                      Opposing branches with sharp edges; big lessons, not automatic comfort.
                     </div>
                   </div>
                 </div>
@@ -278,21 +255,15 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
-                          <span className={`text-lg font-semibold ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Challenging</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-red-500" : "text-red-300"}`}>Six Harms</span>
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-red-600" : "text-red-400"}`}>Six Harms</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hài <span className={`text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六害</span></span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>六害</span>
-                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Liù Hài</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-400"}`}>
-                            Conflict
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>38-60%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-400"}`}>
+                          Conflict
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #fb7185, #f43f5e)" }}>38-60%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
@@ -309,21 +280,15 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
-                          <span className={`text-lg font-semibold ${theme === "light" ? "text-rose-600" : "text-rose-400"}`}>Challenging</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-rose-500" : "text-rose-300"}`}>Punishment</span>
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-rose-600" : "text-rose-400"}`}>Punishment</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Xíng <span className={`text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>刑</span></span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>刑</span>
-                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Xíng</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-rose-100 text-rose-800" : "bg-rose-900/30 text-rose-400"}`}>
-                            Conflict
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>38-60%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-rose-100 text-rose-800" : "bg-rose-900/30 text-rose-400"}`}>
+                          Conflict
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f87171, #ef4444)" }}>38-60%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
@@ -340,21 +305,15 @@ export default function AstrologySection() {
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center gap-3 flex-1">
                         <div className="flex flex-col">
-                          <span className={`text-lg font-semibold ${theme === "light" ? "text-red-700" : "text-red-300"}`}>Challenging</span>
-                          <span className={`text-sm font-medium ${theme === "light" ? "text-red-600" : "text-red-200"}`}>Breakpoint</span>
+                          <span className={`text-lg font-semibold ${theme === "light" ? "text-red-700" : "text-red-300"}`}>Breakpoint</span>
+                          <span className={`flex items-center gap-1.5 whitespace-nowrap mt-0.5 text-xs ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Pò <span className={`text-base ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>破</span></span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span className={`text-base whitespace-nowrap ${theme === "light" ? "text-gray-900" : "text-white/90"}`}>破</span>
-                          <span className={`text-xs whitespace-nowrap ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>Pò</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-1">
-                          <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-300"}`}>
-                            Conflict
-                          </span>
-                          <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>38-60%</span>
-                        </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`inline-block px-2 py-1 rounded text-xs font-medium ${theme === "light" ? "bg-red-100 text-red-800" : "bg-red-900/30 text-red-300"}`}>
+                          Conflict
+                        </span>
+                        <span className="inline-block px-2 py-1 rounded text-xs font-semibold text-white" style={{ background: "linear-gradient(to right, #f43f5e, #e11d48)" }}>38-60%</span>
                       </div>
                     </div>
                     <div className={`px-3 pb-3 text-sm ${theme === "light" ? "text-gray-700" : "text-white/80"}`}>
@@ -369,7 +328,7 @@ export default function AstrologySection() {
           {/* Triple Harmony Trine Groups Table */}
           <div id="triple-harmony-trines" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Soulmate · 三合</h2>
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Triple Harmony · 三合</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -446,7 +405,7 @@ export default function AstrologySection() {
           {/* Six Harmoniess Table */}
           <div id="secret-friends" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Secret Friends · 六合</h2>
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Harmonies · 六合</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -644,7 +603,7 @@ export default function AstrologySection() {
           {/* Six Conflicts Table */}
           <div id="six-conflicts" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Magnetic Opposites · 六冲</h2>
+              <h2 className="astrology-heading-secondary mb-2 whitespace-nowrap" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Conflicts · 六冲</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -744,7 +703,7 @@ export default function AstrologySection() {
           {/* Six Harms Table */}
           <div id="six-harms" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Challenging · 六害</h2>
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Six Harms · 六害</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -844,7 +803,7 @@ export default function AstrologySection() {
           {/* Punishment Table */}
           <div id="punishment" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Challenging · 刑</h2>
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Punishment · 刑</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -988,7 +947,7 @@ export default function AstrologySection() {
           {/* Break Table */}
           <div id="break-pattern" className="mb-6">
             <div className="zodiac-sign-card">
-              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Challenging · 破</h2>
+              <h2 className="astrology-heading-secondary mb-2" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Breakpoints · 破</h2>
               
               <div className="mb-4">
                 <p className={`text-base ${theme === "light" ? "text-gray-600" : "text-white/70"}`}>
@@ -1107,7 +1066,7 @@ export default function AstrologySection() {
                     Chinese patterns
                   </h4>
                   <p className={`text-sm ${theme === "light" ? "text-gray-700" : "text-white/70"}`}>
-                    Trines and relationship lines like; <span className="font-medium">Three Harmonies 三合</span>, <span className="font-medium">Secret friends 六合</span>, <span className="font-medium">Conflicts 六冲</span>, <span className="font-medium">Harms 六害</span>, <span className="font-medium">Punishment 刑</span>.
+                    Trines and relationship lines like; <span className="font-medium">Three Harmonies 三合</span>, <span className="font-medium">Six Harmonies 六合</span>, <span className="font-medium">Conflicts 六冲</span>, <span className="font-medium">Harms 六害</span>, <span className="font-medium">Punishment 刑</span>.
                   </p>
                 </div>
 
@@ -1135,7 +1094,7 @@ export default function AstrologySection() {
           </div>
 
           {/* Five Elements Reference Section */}
-          <div id="five-elements" className="mt-8 pt-6 border-t border-gray-200 dark:border-white/10">
+          <div id="five-elements" className="mt-8 pt-6">
             <div className="zodiac-sign-card">
               <h2 className="astrology-heading-secondary mb-4" style={{ fontSize: '1.5rem', fontWeight: '600' }}>Five Elements (五行)</h2>
 

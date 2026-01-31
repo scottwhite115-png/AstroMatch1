@@ -34,7 +34,7 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#000000" />
       </head>
-      <body className={`font-sans ${inter.variable} ${playfair.variable} lg:pl-64 min-h-screen`} suppressHydrationWarning>
+      <body className={`font-sans ${inter.variable} ${playfair.variable} lg:pl-64`} suppressHydrationWarning>
         <div id="app-root">
           <Providers>
             {children}

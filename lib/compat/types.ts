@@ -124,10 +124,6 @@ export interface SimpleConnectionBox {
   patternLabelZh?: string;         // e.g. "三合"
   patternTagline?: string;         // e.g. "Classic trine alliance with strong, long-term harmony."
   connectionOverview?: string;     // e.g. "Very strong, flowing harmony with excellent long-term potential."
-  // NEW: Card overlay for photo carousel (playing card rank/suit system)
-  card?: import('@/lib/cardOverlay').CardOverlay;
-  // NEW: Tarot snippet (1-2 sentence archetype explanation)
-  tarotSnippet?: string;           // e.g. "This connection often reflects emotional warmth, affection, and a natural sense of closeness."
 }
 
 // Original ConnectionBox interface (kept for backward compatibility)

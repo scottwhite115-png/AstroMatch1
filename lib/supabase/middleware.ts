@@ -56,8 +56,8 @@ export async function updateSession(request: NextRequest) {
     path: pathname,
   })
 
-  // Allow unauthenticated access only to login, signup, and auth callback pages
-  const publicPaths = ["/login", "/signup", "/auth"]
+  // Allow unauthenticated access only to login, signup, auth callback, and forgot-password pages
+  const publicPaths = ["/login", "/signup", "/auth", "/forgot-password"]
   const isPublicPath = publicPaths.some((path) => pathname.startsWith(path))
 
   if (!user && !isPublicPath) {

@@ -70,7 +70,6 @@ import { BirthInformationSection } from "@/components/profile/BirthInformationSe
 import { SectionHeader } from "@/components/profile/SectionHeader"
 import { GenderSection } from "@/components/profile/GenderSection"
 import { OrientationSection } from "@/components/profile/OrientationSection"
-import { ChildrenSection } from "@/components/profile/ChildrenSection"
 
 const FourPointedStar = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -231,6 +230,7 @@ export default function AstrologyProfilePage({
   const [activeTab, setActiveTab] = useState<"edit" | "view">("edit")
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0)
   const [isStaff, setIsStaff] = useState(false)
+  const [showBackroomTab, setShowBackroomTab] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [savedSuccessfully, setSavedSuccessfully] = useState(false)
   const [showProfileMenu, setShowProfileMenu] = useState(true)
@@ -442,6 +442,20 @@ export default function AstrologyProfilePage({
       }
     }
     checkStaffStatus()
+  }, [])
+
+  // Check if user is scottwhite115@gmail.com to show Backroom tab
+  useEffect(() => {
+    async function checkBackroomAccess() {
+      try {
+        const supabase = createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+        setShowBackroomTab(user?.email?.toLowerCase() === 'scottwhite115@gmail.com')
+      } catch (error) {
+        setShowBackroomTab(false)
+      }
+    }
+    checkBackroomAccess()
   }, [])
 
   // Scroll handler for sticky name header in view tab
@@ -3008,13 +3022,14 @@ export default function AstrologyProfilePage({
 
   const handleOrganizedInterestToggle = (category: string, interest: string) => {
     const currentCategoryInterests = selectedOrganizedInterests[category] || []
+    const totalSelected = Object.values(selectedOrganizedInterests).flat().length
     let updatedInterests: string[]
     
     if (currentCategoryInterests.includes(interest)) {
       updatedInterests = currentCategoryInterests.filter((item) => item !== interest)
     } else {
-      // Limit to 6 selections per category
-      if (currentCategoryInterests.length >= 6) return
+      // Limit to 10 interests total across all categories
+      if (totalSelected >= 10) return
       updatedInterests = [...currentCategoryInterests, interest]
     }
     
@@ -3297,6 +3312,7 @@ export default function AstrologyProfilePage({
         age: calculatedAge || null,
         gender: genderOrientation.gender || null,
         orientation: genderOrientation.orientation || null,
+        looking_for_gender: genderOrientation.orientation || null,
         age_min: ageRange[0] || null,
         age_max: ageRange[1] || null,
         distance_radius: distanceRadius || null,
@@ -3383,7 +3399,7 @@ export default function AstrologyProfilePage({
                   <div className="flex items-center gap-0.5">
                     <FourPointedStar className="w-5 h-5 text-orange-500" />
                     <span className="font-bold text-lg bg-gradient-to-r from-orange-600 via-orange-500 to-red-500 bg-clip-text text-transparent">
-                      Happy Cards
+                      Lunar
                     </span>
                   </div>
                 </div>
@@ -3444,6 +3460,19 @@ export default function AstrologyProfilePage({
               >
                 Account
               </button>
+              {showBackroomTab && (
+                <button
+                  onClick={() => router.push("/profile/backroom")}
+                  className={`relative px-5 py-1.5 text-xl font-medium transition-all duration-200 whitespace-nowrap ${
+                    theme === "light"
+                      ? "text-gray-600 hover:text-gray-900"
+                      : "text-gray-400 hover:text-gray-200"
+                  }`}
+                >
+                  Backroom
+                  <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-transparent group-hover:bg-gray-300 dark:group-hover:bg-gray-600 rounded-full transition-colors" />
+                </button>
+              )}
               {isStaff && (
                 <button
                   onClick={() => router.push("/admin")}
@@ -3523,7 +3552,7 @@ export default function AstrologyProfilePage({
 
         {activeTab === "view" && (
           <>
-            <div className="w-full pb-32 -mt-2">
+            <div className="w-full -mt-2" style={{ paddingBottom: '28rem' }}>
               <div className="w-full" style={{ marginBottom: '2rem', padding: '0', margin: '0 auto', maxWidth: '100%' }}>
                 {/* Get pattern colors for border */}
                 {(() => {
@@ -3647,13 +3676,6 @@ export default function AstrologyProfilePage({
                                     theme={theme}
                                     aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
                                     interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
-                                    relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
-                                    age={calculatedAge}
-                                    city={connectionBoxData.city ?? selectedCity ?? cityInput}
-                                    occupation={connectionBoxData.occupation ?? selectedOccupation}
-                                    height={connectionBoxData.height ?? selectedHeight}
-                                    children={connectionBoxData.children ?? selectedChildrenOption}
-                                    religion={connectionBoxData.religion ?? selectedReligion}
                                     chinesePattern={connectionBoxData.chinesePattern}
                                     westAspect={connectionBoxData.westAspect}
                                     westElementRelation={connectionBoxData.westElementRelation}
@@ -3713,13 +3735,6 @@ export default function AstrologyProfilePage({
                                       theme={theme}
                                       aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
                                       interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
-                                      relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
-                                      age={calculatedAge}
-                                      city={connectionBoxData.city ?? selectedCity ?? cityInput}
-                                      occupation={connectionBoxData.occupation ?? selectedOccupation}
-                                      height={connectionBoxData.height ?? selectedHeight}
-                                      children={connectionBoxData.children ?? selectedChildrenOption}
-                                      religion={connectionBoxData.religion ?? selectedReligion}
                                       chinesePattern={connectionBoxData.chinesePattern}
                                       westAspect={connectionBoxData.westAspect}
                                       westElementRelation={connectionBoxData.westElementRelation}
@@ -3808,13 +3823,6 @@ export default function AstrologyProfilePage({
                                 theme={theme}
                                 aboutMe={connectionBoxData.aboutMeText ?? aboutMeText}
                                 interests={connectionBoxData.selectedOrganizedInterests ?? selectedOrganizedInterests}
-                                relationshipGoals={connectionBoxData.selectedRelationshipGoals ?? selectedRelationshipGoals}
-                                age={calculatedAge}
-                                city={connectionBoxData.city ?? selectedCity ?? cityInput}
-                                occupation={connectionBoxData.occupation ?? selectedOccupation}
-                                height={connectionBoxData.height ?? selectedHeight}
-                                children={connectionBoxData.children ?? selectedChildrenOption}
-                                religion={connectionBoxData.religion ?? selectedReligion}
                                 chinesePattern={connectionBoxData.chinesePattern}
                                 westAspect={connectionBoxData.westAspect}
                                 westElementRelation={connectionBoxData.westElementRelation}
@@ -3911,24 +3919,6 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-            {/* Occupation / Industry Section */}
-            <div className="mb-8">
-              <SectionHeader
-                label="Occupation / Industry"
-              />
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  value={selectedOccupation}
-                  onChange={handleOccupationChange}
-                  placeholder="Enter your profession"
-                  maxLength={30}
-                  className={`w-full px-4 py-3 rounded-xl focus:outline-none transition-all occupation-input ${theme === "starlight" ? "border border-white/20 bg-white/5 text-white placeholder-white/40" : theme === "light" ? "border border-gray-300 bg-white text-black placeholder-black/40" : "bg-slate-900/50 border border-indigo-400/20 !text-white/95 placeholder-white/40 focus:border-indigo-400/40"}`}
-                  style={{ fontSize: '1.25rem !important' }}
-                />
-              </div>
-            </div>
-
             {/* Birth Information Section */}
             <BirthInformationSection
               birthDateISO={birthInfo.birthdate}
@@ -3974,90 +3964,6 @@ export default function AstrologyProfilePage({
               </div>
             </div>
 
-            {/* Relationship Goals Section */}
-            <div className="mb-8">
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className={`font-semibold text-base ${
-                  theme === "light"
-                    ? "text-purple-600"
-                    : "text-purple-400"
-                }`}>
-                  Relationship Goals
-                </h2>
-                {selectedRelationshipGoals.length > 0 && (
-                  <span className={`text-xs px-2 py-0.5 rounded-full ${
-                    theme === "light" ? "bg-purple-100 text-purple-700" : "bg-purple-500/20 text-purple-300"
-                  }`}>
-                    {selectedRelationshipGoals.length}/6
-                  </span>
-                )}
-              </div>
-              <div className="space-y-4">
-                {/* Selected Goals Pills */}
-                {selectedRelationshipGoals.filter(goal => goal !== "Life Companion" && goal !== "Life companion").length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {selectedRelationshipGoals
-                      .filter(goal => goal !== "Life Companion" && goal !== "Life companion")
-                      .map((goal) => (
-                        <span
-                          key={goal}
-                          className="px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-purple-600 via-purple-500 to-fuchsia-500 text-white"
-                        >
-                          {goal}
-                        </span>
-                      ))}
-                  </div>
-                )}
-
-                {/* Scrollable Goals List */}
-                <div className="relative relationship-goals-dropdown-container">
-                  <div
-                    className={`max-h-48 overflow-y-auto rounded-lg border ${
-                      theme === "light"
-                        ? "bg-white border-gray-200"
-                        : "bg-slate-900/50 border-indigo-400/20"
-                    }`}
-                    style={{ scrollbarWidth: 'thin' }}
-                  >
-                    <div className="p-2 space-y-1">
-                      {relationshipGoalsOptions.map((goal) => {
-                        const isSelected = selectedRelationshipGoals.includes(goal)
-                        const isDisabled = !isSelected && selectedRelationshipGoals.length >= 6
-                        return (
-                          <button
-                            key={goal}
-                            type="button"
-                            onClick={() => handleRelationshipGoalToggle(goal)}
-                            disabled={isDisabled}
-                            className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                              isSelected
-                                ? theme === "light"
-                                  ? "bg-purple-100 text-purple-900"
-                                  : "bg-purple-500/20 text-purple-300"
-                                : isDisabled
-                                ? theme === "light"
-                                  ? "text-gray-400 cursor-not-allowed"
-                                  : "text-slate-500 cursor-not-allowed"
-                                : theme === "light"
-                                ? "text-gray-700 hover:bg-gray-100"
-                                : "text-slate-300 hover:bg-slate-800/50"
-                            }`}
-                          >
-                            {goal}
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                  {selectedRelationshipGoals.length >= 6 && (
-                    <p className={`text-xs mt-2 ${theme === "light" ? "text-gray-500" : "text-slate-400"}`}>
-                      Maximum of 6 goals selected
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-
             {/* Interests Section */}
             <div className="mb-8">
               <div className="mb-4 flex items-center justify-between">
@@ -4074,7 +3980,7 @@ export default function AstrologyProfilePage({
                     <span className={`text-xs px-2 py-0.5 rounded-full ${
                       theme === "light" ? "bg-purple-100 text-purple-700" : "bg-purple-500/20 text-purple-300"
                     }`}>
-                      {totalSelected}/6
+                      {totalSelected}/10
                     </span>
                   ) : null;
                 })()}
@@ -4101,7 +4007,8 @@ export default function AstrologyProfilePage({
                   {Object.entries(interestCategories).map(([category, interests]) => {
                     const categoryInterests = selectedOrganizedInterests[category] || []
                     const isOpen = showInterestCategoryDropdowns[category] || false
-                    const isMaxReached = categoryInterests.length >= 6
+                    const totalSelected = Object.values(selectedOrganizedInterests).reduce((sum, arr) => sum + (arr?.length || 0), 0)
+                    const isMaxReached = totalSelected >= 10
 
                     return (
                       <div key={category} className="relative interest-category-item">
@@ -4165,79 +4072,6 @@ export default function AstrologyProfilePage({
                   })}
                 </div>
               </div>
-            </div>
-
-            <div className="mb-8">
-              <SectionHeader
-                label="Height"
-              />
-              <div className="relative height-dropdown-container">
-                <button
-                  type="button"
-                  onClick={() => setShowHeightDropdown(!showHeightDropdown)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${
-                    theme === "light"
-                      ? "bg-gray-100 hover:bg-gray-200 text-gray-900"
-                      : "bg-slate-800/50 hover:bg-slate-800/70 text-slate-200"
-                  }`}
-                >
-                  <span className={selectedHeight ? "font-medium" : theme === "light" ? "text-gray-500" : "text-slate-400"}>
-                    {selectedHeight || "Select height"}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${showHeightDropdown ? "rotate-180" : ""}`}
-                  />
-                </button>
-
-                {showHeightDropdown && (
-                  <div
-                    className={`mt-2 rounded-lg border max-h-64 overflow-y-auto ${
-                      theme === "light"
-                        ? "bg-white border-gray-200"
-                        : "bg-slate-900/50 border-indigo-400/20"
-                    }`}
-                  >
-                    <div className="p-2 space-y-1">
-                      {heightOptions.map((height) => {
-                        const isSelected = selectedHeight === height
-                        return (
-                          <button
-                            key={height}
-                            type="button"
-                            onClick={() => {
-                              handleHeightSelect(height)
-                              setShowHeightDropdown(false)
-                            }}
-                            className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                              isSelected
-                                ? theme === "light"
-                                  ? "bg-purple-100 text-purple-900"
-                                  : "bg-purple-500/20 text-purple-300"
-                                : theme === "light"
-                                ? "text-gray-700 hover:bg-gray-100"
-                                : "text-slate-300 hover:bg-slate-800/50"
-                            }`}
-                          >
-                            {height}
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="mb-8">
-              <ChildrenSection
-                value={selectedChildrenOption as "I have children" | "I don't have children" | ""}
-                onChange={(value) => {
-                  setSelectedChildrenOption(value)
-                  if (typeof window !== 'undefined') {
-                    localStorage.setItem("childrenPreference", value)
-                  }
-                }}
-              />
             </div>
 
             <div className="mb-8">

@@ -24,10 +24,12 @@ export async function uploadProfilePhoto(
   photoIndex: number
 ): Promise<UploadResult> {
   try {
+    console.log('[photoUpload.ts] Starting upload:', { fileName: file.name, size: file.size, userId, photoIndex })
     const supabase = createClient()
 
     // Validate file
     const validation = validatePhotoFile(file)
+    console.log('[photoUpload.ts] Validation result:', validation)
     if (!validation.valid) {
       return {
         success: false,
@@ -36,11 +38,14 @@ export async function uploadProfilePhoto(
     }
 
     // Compress/resize image if needed
+    console.log('[photoUpload.ts] Processing image...')
     const processedFile = await processImage(file)
+    console.log('[photoUpload.ts] Processed file size:', processedFile.size)
 
     // Generate unique filename
     const fileExt = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const fileName = `${userId}/photo_${photoIndex}_${Date.now()}.${fileExt}`
+    console.log('[photoUpload.ts] Uploading to storage path:', fileName)
 
     // Upload to Supabase Storage
     const { data, error } = await supabase.storage
@@ -52,24 +57,28 @@ export async function uploadProfilePhoto(
       })
 
     if (error) {
-      console.error('[Photo Upload] Error uploading:', error)
+      console.error('[photoUpload.ts] Storage upload error:', error)
       return {
         success: false,
         error: error.message || 'Failed to upload photo'
       }
     }
 
+    console.log('[photoUpload.ts] Storage upload successful:', data)
+
     // Get public URL
     const { data: urlData } = supabase.storage
       .from('profile-photos')
       .getPublicUrl(fileName)
+
+    console.log('[photoUpload.ts] Public URL generated:', urlData.publicUrl)
 
     return {
       success: true,
       url: urlData.publicUrl
     }
   } catch (error) {
-    console.error('[Photo Upload] Unexpected error:', error)
+    console.error('[photoUpload.ts] Unexpected error:', error)
     return {
       success: false,
       error: 'Unexpected error uploading photo'
